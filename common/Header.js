@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, TouchableOpacity, StyleSheet, Dimensions, Text, ImageBackground } from 'react-native'
+import { View, Image, TouchableOpacity, StyleSheet, Dimensions, Text, ImageBackground, I18nManager } from 'react-native'
 
 import Colors from '../consts/Colors';
 
@@ -15,7 +15,13 @@ function Header({ label, navigation, }) {
                 <View style={{ right: 20, bottom: 15 }}>
                     <ImageBackground source={require('../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Image source={require('../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+
+                            }
                         </TouchableOpacity>
                     </ImageBackground>
                 </View>
@@ -25,7 +31,7 @@ function Header({ label, navigation, }) {
                     <Image source={require('../assets/Images/yass.jpg')} style={{ height: 45, width: 45, borderRadius: 50, }} />
                 </View>
             </View>
-            <Text style={{ marginHorizontal: 10, fontFamily: 'flatMedium', fontSize: 20 }}>{label}</Text>
+            <Text style={{ marginHorizontal: 10, fontFamily: 'flatMedium', fontSize: 20, }}>{label}</Text>
         </>
     )
 }

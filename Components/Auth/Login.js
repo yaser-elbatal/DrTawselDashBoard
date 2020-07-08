@@ -19,7 +19,7 @@ import UserContext from '../../routes/UserContext';
 
 function Login({ navigation }) {
     const [phone, setPhone] = useState("98765432101111");
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('000000000000');
     const [isLoading, Setisloading] = useState(false);
 
     const { setLogin } = useContext(UserContext);

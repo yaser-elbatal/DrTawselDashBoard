@@ -20,6 +20,8 @@ import Colors from '../consts/Colors';
 import { Dimensions } from 'react-native';
 import Settings from '../Components/DrawerComponent/Settings/Settings';
 import Lang from '../Components/DrawerComponent/Settings/Lang';
+import myProfil from '../Components/Home/myProfil';
+import EditProfile from '../Components/Home/EditProfile';
 
 
 const Stack = createStackNavigator();
@@ -51,6 +53,10 @@ export const DrawerNAv = () => {
             <Stack.Screen name="HomePage" component={HomePage} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Lang" component={Lang} />
+            <Stack.Screen name="MyProfile" component={myProfil} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
+
+
 
         </Drawer.Navigator>
 

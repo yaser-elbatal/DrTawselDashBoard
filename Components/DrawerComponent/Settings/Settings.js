@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManager } from 'react-native'
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
@@ -18,7 +18,13 @@ function Settings({ navigation }) {
                 <TouchableOpacity>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('myProfile')}</Text>
-                        <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                        {
+                            I18nManager.isRTL ?
+                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                :
+                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                        }
                     </View>
                 </TouchableOpacity>
 
@@ -27,7 +33,13 @@ function Settings({ navigation }) {
                 <TouchableOpacity>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('RestInfo')}</Text>
-                        <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                        {
+                            I18nManager.isRTL ?
+                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                :
+                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                        }
                     </View>
                 </TouchableOpacity>
 
@@ -36,7 +48,13 @@ function Settings({ navigation }) {
                 <TouchableOpacity>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('password')}</Text>
-                        <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                        {
+                            I18nManager.isRTL ?
+                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                :
+                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                        }
                     </View>
                 </TouchableOpacity>
 
@@ -45,7 +63,13 @@ function Settings({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate('Lang')}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('language')}</Text>
-                        <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                        {
+                            I18nManager.isRTL ?
+                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                :
+                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                        }
                     </View>
                 </TouchableOpacity>
 
