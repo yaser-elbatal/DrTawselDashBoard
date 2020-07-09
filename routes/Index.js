@@ -24,7 +24,7 @@ function MainRoot() {
 
                         <DrawerNAv />
                         :
-                        <DrawerNAv />
+                        <MainStackNav />
 
 
                 }

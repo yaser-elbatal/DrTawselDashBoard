@@ -79,7 +79,7 @@ function Products({ navigation }) {
             />
 
             <ScrollView style={{ flex: 1 }}>
-                <View style={{ margin: 10, marginVertical: 0 }}>
+                <View style={{ margin: 10, marginVertical: 0, alignItems: 'center' }}>
                     <FlatList
                         horizontal
                         pagingEnabled={true}
