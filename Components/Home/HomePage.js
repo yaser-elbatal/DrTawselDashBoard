@@ -6,6 +6,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../consts/Colors';
 import { width } from '../../consts/HeightWidth';
 import i18n from '../../locale/i18n'
+
+
+
 function HomePage({ navigation }) {
 
     const Orderdata = [{
@@ -82,8 +85,7 @@ function HomePage({ navigation }) {
         <View style={{ flex: 1, }}>
 
             <HomeHeader navigation={navigation} label={i18n.t('Hello')} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
-            <ScrollView style={{ flex: 1 }}>
-
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <FlatList
                     horizontal
                     pagingEnabled={true}
@@ -92,21 +94,23 @@ function HomePage({ navigation }) {
                     keyExtractor={(item) => item.id}
                     renderItem={(item) => (
 
-                        <View style={styles.wrab}>
-                            <LinearGradient
-                                colors={item.item.color}
-                                style={styles.Linear}>
-                                <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-                                    <Image source={require('../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                    <Text style={styles.Text}>{item.item.title}</Text>
-                                    <Text style={styles.Text}>{item.item.number}</Text>
-                                </View>
-                            </LinearGradient>
-                        </View>
+                        <LinearGradient
+                            colors={item.item.color}
+                            style={styles.Linear}>
+                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
+                                <Image source={require('../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
+                                <Text style={styles.Text}>{item.item.title}</Text>
+                                <Text style={styles.Text}>{item.item.number}</Text>
+                            </View>
+                        </LinearGradient>
 
                     )} />
+            </View>
 
-                <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
+
+            <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
+
+            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
 
                 <FlatList
                     horizontal
@@ -127,7 +131,6 @@ function HomePage({ navigation }) {
                         </View>
                     )} />
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
-
                 <FlatList
                     pagingEnabled={true}
                     showsVerticalScrollIndicator={false}
@@ -151,6 +154,7 @@ function HomePage({ navigation }) {
 
             </ScrollView>
 
+
         </View >
     )
 }
@@ -159,16 +163,22 @@ const styles = StyleSheet.create({
         width: 100,
         alignSelf: 'center',
         overflow: 'hidden',
-        marginStart: 15
+        marginEnd: 15,
+        marginStart: 10,
+
+        flex: 1
     },
     Linear: {
-        height: 120,
-        justifyContent: 'center',
         borderTopStartRadius: 0,
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
+        marginStart: 5,
+        marginEnd: 5,
+        height: 120,
+        width: 100,
         flex: 1
+
     },
     num: {
         alignSelf: 'center',

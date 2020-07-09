@@ -25,13 +25,15 @@ function Header({ label, navigation, }) {
                         </TouchableOpacity>
                     </ImageBackground>
                 </View>
+                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                    <View style={{ marginTop: 45, marginHorizontal: 20 }}>
+                        <Image source={require('../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                        <Image source={require('../assets/Images/yass.jpg')} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                    </View>
+                </TouchableOpacity>
 
-                <View style={{ marginTop: 45, marginHorizontal: 20 }}>
-                    <Image source={require('../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                    <Image source={require('../assets/Images/yass.jpg')} style={{ height: 45, width: 45, borderRadius: 50, }} />
-                </View>
             </View>
-            <Text style={{ marginHorizontal: 10, fontFamily: 'flatMedium', fontSize: 20, }}>{label}</Text>
+            <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{label}</Text>
         </>
     )
 }

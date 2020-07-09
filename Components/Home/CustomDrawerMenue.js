@@ -15,7 +15,7 @@ function CustomDrawerMenue({ navigation }) {
         <View style={{ flex: 1, overflow: 'hidden' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', }} >
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
                     <View style={{ marginTop: 50, marginHorizontal: 20 }}>
                         <Image source={require('../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
                         <Image source={require('../../assets/Images/yass.jpg')} style={{ height: 45, width: 45, borderRadius: 50, }} />
@@ -36,31 +36,31 @@ function CustomDrawerMenue({ navigation }) {
             <ScrollView style={{ flex: 1, bottom: 50 }}>
                 <View style={{ flexDirection: 'column', }}>
 
-                    <TouchableOpacity onPress={() => setClick(0)} >
+                    <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
                         <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, marginTop: 10, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('HomePage')}</Text>
                         </View>
                     </TouchableOpacity >
 
-                    <TouchableOpacity onPress={() => setClick(1)} >
+                    <TouchableOpacity onPress={() => { setClick(1), navigation.navigate('Menue') }} >
                         <View style={{ backgroundColor: Clicle === 1 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText} >{i18n.t('menue')}</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(2)}>
+                    <TouchableOpacity onPress={() => { setClick(2); navigation.navigate('Products') }} >
                         <View style={{ backgroundColor: Clicle === 2 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('Prod')}</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(3)}>
+                    <TouchableOpacity onPress={() => { setClick(3); navigation.navigate('Orders') }} >
                         <View style={{ backgroundColor: Clicle === 3 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('orders')}</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(4)}>
+                    <TouchableOpacity onPress={() => { setClick(4); navigation.navigate('SpecialOrders') }}>
                         <View style={{ backgroundColor: Clicle === 4 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('specialOrder')}</Text>
                         </View>

@@ -68,8 +68,8 @@ function myProfil({ navigation }) {
                             <View style={{ flexDirection: 'column' }}>
                                 <Text style={styles.user}>{i18n.t('CommercialRegister')}</Text>
                                 <Text style={[styles.user, { fontSize: 12, color: Colors.fontNormal }]}>97822222222222222</Text>
-
                             </View>
+
                             <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
                                 <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
                             </TouchableOpacity>

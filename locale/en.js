@@ -29,10 +29,17 @@ const en = {
   order: 'Order',
   Quickreports: 'Quick Reports',
   Yourproducts: 'Your Products',
+  AddMenue: '+ Add Menue',
+  Select: 'select All',
+  filter: 'Filter By',
+  num: 'number',
+  AddProd: '+  Add Product',
   Comm: 'Store Comments',
   Rate: 'Store Reviews',
   comments: 'Comments',
   rateing: 'Rateings',
+  menueAr: 'Arabic Meue',
+  menueEn: 'En Menue',
   city: 'City',
   dep: 'His department',
   term: 'Terms and Conditions',
@@ -281,7 +288,7 @@ const en = {
   entercostGod: 'please enter cost God',
 
   deliveryDetailes: 'Delivery Detailes',
-
+  Rejectedrequests: 'Rejected Requests',
 
   language: "Language",
   chooseLang: "Choose your favourite language",
@@ -468,6 +475,10 @@ const en = {
   OrderQuestion: "Order Question",
   TechnicalQuestion: "Technical Question",
   Remember: "Remember",
+  time: 'Time',
+  minutes: 'Minutes',
+  prices: 'Prices'
+
 };
 
 export default en;

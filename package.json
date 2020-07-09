@@ -22,6 +22,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.1.tar.gz",
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-dropdown-autocomplete-textinput": "^1.0.1",
+    "react-native-dropdown-picker": "^3.1.6",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-reanimated": "~1.9.0",

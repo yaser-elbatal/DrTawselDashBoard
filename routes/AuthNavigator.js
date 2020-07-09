@@ -22,6 +22,15 @@ import Settings from '../Components/DrawerComponent/Settings/Settings';
 import Lang from '../Components/DrawerComponent/Settings/Lang';
 import myProfil from '../Components/Home/myProfil';
 import EditProfile from '../Components/Home/EditProfile';
+import Menue from '../Components/DrawerComponent/Menue/Menue';
+import Products from '../Components/DrawerComponent/Products/Products';
+import Orders from '../Components/DrawerComponent/Orders/Order';
+import SpecialOrders from '../Components/DrawerComponent/SpecialOrders/SpecialOrders';
+import IncomingRequests from '../Components/DrawerComponent/Orders/IncomingRequests';
+import ActiveRequests from '../Components/DrawerComponent/Orders/ActiveRequests';
+import Completedrequests from '../Components/DrawerComponent/Orders/Completedrequests';
+import Rejectedrequests from '../Components/DrawerComponent/Orders/Rejectedrequests';
+import OrderDetailes from '../Components/DrawerComponent/Orders/OrderDetailes';
 
 
 const Stack = createStackNavigator();
@@ -55,7 +64,15 @@ export const DrawerNAv = () => {
             <Stack.Screen name="Lang" component={Lang} />
             <Stack.Screen name="MyProfile" component={myProfil} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
-
+            <Stack.Screen name="Menue" component={Menue} />
+            <Stack.Screen name="Products" component={Products} />
+            <Stack.Screen name="Orders" component={Orders} />
+            <Stack.Screen name="SpecialOrders" component={SpecialOrders} />
+            <Stack.Screen name="IncomingRequests" component={IncomingRequests} />
+            <Stack.Screen name="ActiveRequests" component={ActiveRequests} />
+            <Stack.Screen name="Completedrequests" component={Completedrequests} />
+            <Stack.Screen name="Rejectedrequests" component={Rejectedrequests} />
+            <Stack.Screen name="OrderDetailes" component={OrderDetailes} />
 
 
         </Drawer.Navigator>

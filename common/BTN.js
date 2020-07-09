@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
         height: width * .1,
         marginTop: 30,
         alignItems: 'center',
+        justifyContent: 'center'
     },
     sText: {
         fontFamily: 'flatMedium',
         color: Colors.bg,
         fontSize: width * .04,
         textAlign: 'center',
-        paddingTop: 5
     }
 })
 export default BTN

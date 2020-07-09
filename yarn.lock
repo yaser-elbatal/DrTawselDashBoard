@@ -10863,6 +10863,14 @@ react-native-dropdown-autocomplete-textinput@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-dropdown-autocomplete-textinput/-/react-native-dropdown-autocomplete-textinput-1.0.1.tgz#253699d131936b4993dd9b457f8f2c763155d8b2"
   integrity sha512-jIvzHWY3i92POBzpRbD3mvTc8lzWF+q22kBzAUquXAL6r+cgGd51YPS6E8T4VScS4eLP/j0u4Z+9vblkip1Jdg==
 
+react-native-dropdown-picker@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-3.1.6.tgz#5bb6a75c07dd350dc624c68f4ecb422997f1584e"
+  integrity sha512-m7cYB0ixvhfMkfeqVWb5yxwTKRX6Z8WT5f3LoRxYlW3bDPUZIOhL1ieOVLdTHRJwi13JlfsoN7if2ufbsiv8Uw==
+  dependencies:
+    prop-types "^15.7.2"
+    react-native-vector-icons "^6.6.0"
+
 react-native-easy-grid@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.2.tgz#f0be33620be1ebe2d2295918eb58b0a27e8272ab"

@@ -1,23 +1,22 @@
-import React, { useState } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManager } from 'react-native'
+import React from 'react'
+import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManager } from 'react-native';
+
+
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
 
-
 const { width } = Dimensions.get('window')
-function Settings({ navigation }) {
 
-    const [Select, setSelect] = useState(false)
-
+function Orders({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('settings')} />
+            <Header navigation={navigation} />
             <View style={styles.wrap}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                <TouchableOpacity onPress={() => navigation.navigate('IncomingRequests')}>
                     <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('myProfile')}</Text>
+                        <Text style={styles.text}>{i18n.t('IncomingRequests')}</Text>
                         {
                             I18nManager.isRTL ?
                                 <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
@@ -30,9 +29,9 @@ function Settings({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('ActiveRequests')}>
                     <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('RestInfo')}</Text>
+                        <Text style={styles.text}>{i18n.t('ActiveRequests')}</Text>
                         {
                             I18nManager.isRTL ?
                                 <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
@@ -45,9 +44,9 @@ function Settings({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Completedrequests')}>
                     <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('password')}</Text>
+                        <Text style={styles.text}>{i18n.t('Completedrequests')}</Text>
                         {
                             I18nManager.isRTL ?
                                 <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
@@ -60,9 +59,9 @@ function Settings({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Lang')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Rejectedrequests')}>
                     <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('language')}</Text>
+                        <Text style={styles.text}>{i18n.t('Rejectedrequests')}</Text>
                         {
                             I18nManager.isRTL ?
                                 <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
@@ -77,18 +76,7 @@ function Settings({ navigation }) {
 
 
             </View>
-            <View style={styles.Container}>
-                <Text style={styles.text}>{i18n.t('notifications')}</Text>
-                <TouchableOpacity onPress={() => setSelect(!Select)}>
-                    {
-                        Select ?
-                            <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-                            :
-                            <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
 
-                    }
-                </TouchableOpacity>
-            </View>
 
         </View>
     )
@@ -97,7 +85,7 @@ const styles = StyleSheet.create({
     wrap: {
         flexDirection: 'column',
         marginTop: 25,
-        backgroundColor: '#E3E3E3',
+        backgroundColor: Colors.bgGray,
     },
     Container: {
         flexDirection: 'row',
@@ -126,4 +114,4 @@ const styles = StyleSheet.create({
         color: Colors.fontNormal
     }
 })
-export default Settings
+export default Orders

@@ -33,7 +33,7 @@ function Lang({ navigation }) {
 
             <TouchableOpacity onPress={() => changeLang("ar", "RTL")}>
                 <View style={[styles.Container, { marginTop: 25 }]}>
-                    <Text style={[styles.text, { color: lan === ' ar' ? Colors.sky : Colors.IconBlack }]}>{i18n.t('Arab')}</Text>
+                    <Text style={[styles.text, { color: lan === 'ar' ? Colors.sky : Colors.IconBlack }]}>{i18n.t('Arab')}</Text>
                 </View>
             </TouchableOpacity>
 

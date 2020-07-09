@@ -88,9 +88,9 @@ const ar = {
   Hello: 'اهلا ياسر!',
   Dash: 'اهلا بك في لوحه التحكم الخاص من جديد',
   newProduct: 'احدث المنتجات',
-  IncomingRequests: 'طلبات وارده',
-  ActiveRequests: 'طلبات وارده',
-  Completedrequests: 'طلبات منتهيه',
+
+
+
   order: 'طلب',
   Quickreports: 'تقارير سريعه',
   Yourproducts: 'المنتجات الخاصه بك',
@@ -98,6 +98,13 @@ const ar = {
   Rate: 'التقييمات الخاص بالمتجر',
   comments: 'التعليقات',
   rateing: 'التقييمات',
+  menueAr: 'اسم المنيو بالعربي',
+  menueEn: 'اسم المنيو بالانجليزي',
+  AddMenue: '  +  اضافه منيو ',
+  Select: 'تحديد الكل',
+  filter: 'فلتر بحسب',
+  num: 'رقم',
+  AddProd: '+ اضافه منتج',
   //home
   departments: 'الاقسام',
   Parceldelivery: 'توصيل طرود',
@@ -457,6 +464,15 @@ const ar = {
   OrderQuestion: "الاسئله المتعلقه بالطلب",
   TechnicalQuestion: "الاسئله التقنيه",
   Remember: "تذكري",
+  minutes: 'دقايق',
+  IncomingRequests: 'الطلبات الوارده',
+  ActiveRequests: 'الطلبات النشطه',
+  Completedrequests: 'الطلبات منتهيه',
+  Rejectedrequests: "الطلبات المرفوضه",
+  time: 'الوقت',
+  prices: 'الاسعار',
+
+
 };
 
 export default ar;
