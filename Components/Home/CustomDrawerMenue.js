@@ -66,7 +66,7 @@ function CustomDrawerMenue({ navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(5)}>
+                    <TouchableOpacity onPress={() => { setClick(5); navigation.navigate('AddOffer') }}>
                         <View style={{ backgroundColor: Clicle === 5 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('AddOffer')}</Text>
                         </View>

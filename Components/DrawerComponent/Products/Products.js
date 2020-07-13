@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { CheckBox, Content } from 'native-base';
+
+
 import HomeHeader from '../../../common/HomeHeader'
 import i18n from '../../../locale/i18n'
-import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../../consts/Colors';
 import { InputIcon } from '../../../common/InputText';
 import { width, height } from '../../../consts/HeightWidth';
-import { CheckBox } from 'native-base';
-import DropDownPicker from 'react-native-dropdown-picker';
 import BTN from '../../../common/BTN';
 
 function Products({ navigation }) {
     const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
-    const [modalVisible, setModalVisible] = useState(false);
-
     const [Operation, setOpeartion] = useState('uk');
     const [Arange, setArange] = useState('new');
 
@@ -78,7 +78,7 @@ function Products({ navigation }) {
                 inputStyle={{ backgroundColor: '#DBDBDB' }}
             />
 
-            <ScrollView style={{ flex: 1 }}>
+            <Content style={{ flex: 1 }}>
                 <View style={{ margin: 10, marginVertical: 0, alignItems: 'center' }}>
                     <FlatList
                         horizontal
@@ -136,7 +136,7 @@ function Products({ navigation }) {
 
                 </View>
 
-                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => { }} />
+                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('AddProduct')} />
 
 
                 <FlatList
@@ -145,40 +145,42 @@ function Products({ navigation }) {
                     data={MeueCard}
                     keyExtractor={(item) => item.id}
                     renderItem={(item) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductDet')}>
+                            <View style={styles.Card}>
+                                <View style={{ flexDirection: 'row', flex: .75 }}>
+                                    <Image source={require('../../../assets/Images/imagesix.png')} style={{ height: '100%', width: '25%' }} />
+                                    <View style={styles.FWrab}>
+                                        <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
+                                        <Text style={styles.nText}>{i18n.t('num')} # {item.item.num}</Text>
+                                        <Text style={styles.name}>{item.item.title}</Text>
+                                        <Text style={styles.nMenu}>{i18n.t('Prod')}</Text>
+                                        <Text style={styles.nText}>122</Text>
 
-                        <View style={styles.Card}>
-                            <View style={{ flexDirection: 'row', flex: .75 }}>
-                                <Image source={require('../../../assets/Images/imagesix.png')} style={{ height: '100%', width: 60 }} />
-                                <View style={styles.FWrab}>
-                                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
-                                    <Text style={styles.nText}>{i18n.t('num')} # {item.item.num}</Text>
-                                    <Text style={styles.name}>{item.item.title}</Text>
-                                    <Text style={styles.nMenu}>{i18n.t('Prod')}</Text>
-                                    <Text style={styles.nText}>122</Text>
 
+                                    </View>
+                                </View>
+
+                                <View style={styles.SWarb}>
+                                    <View style={styles.Edit}>
+                                        <TouchableOpacity>
+                                            <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={styles.Delete}>
+                                        <TouchableOpacity>
+                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                        </TouchableOpacity>
+                                    </View>
 
                                 </View>
+
                             </View>
+                        </TouchableOpacity>
 
-                            <View style={styles.SWarb}>
-                                <View style={styles.Edit}>
-                                    <TouchableOpacity>
-                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View style={styles.Delete}>
-                                    <TouchableOpacity>
-                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                    </TouchableOpacity>
-                                </View>
-
-                            </View>
-
-                        </View>
                     )} />
 
-            </ScrollView>
+            </Content>
 
         </View >
     )
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
         flex: 1,
-        width: 100,
+        width: width * .27,
         marginHorizontal: 5
 
     },
@@ -231,8 +233,7 @@ const styles = StyleSheet.create({
     FWrab: {
         flexDirection: 'column',
         justifyContent: 'center',
-        alignContent: 'center',
-        marginStart: 10
+        marginStart: 5
     },
     nText: {
         color: Colors.sky,

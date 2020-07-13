@@ -6,7 +6,9 @@ function Rejectedrequests({ navigation }) {
     return (
         <AllOrders
             navigation={navigation}
+            onPress={() => navigation.navigate('RejectedOrderDetailes')}
             label={i18n.t('Rejectedrequests')}
+
         />
     )
 }

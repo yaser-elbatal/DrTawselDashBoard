@@ -7,7 +7,7 @@ function ActiveRequests({ navigation }) {
         <AllOrders
             navigation={navigation}
             label={i18n.t('ActiveRequests')}
-            onPress={navigation.navigate('OrderDetailes')}
+            onPress={() => navigation.navigate('ActiveOrderDetailes')}
         />
     )
 }

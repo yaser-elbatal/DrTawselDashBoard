@@ -137,34 +137,37 @@ function Menue({ navigation }) {
 
                 </View>
 
-                <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(true)} />
+                <BTN title={i18n.t('AddMenue')} ContainerStyle={[styles.LoginBtn, { marginHorizontal: 18, marginVertical: 10 }]} onPress={() => setModalVisible(true)} />
 
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible} >
 
-                    <View style={styles.Modal}>
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible} >
 
-                        <ScrollView style={{ flex: 1 }}>
-                            <View style={{ margin: 20 }}>
-                                <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddMenue')} </Text>
-                                <InputIcon
-                                    placeholder={i18n.t('menueAr')}
-                                />
-                                <InputIcon
-                                    placeholder={i18n.t('menueEn')}
-                                    styleCont={{ marginTop: -5 }}
-                                />
-                                <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <View style={{ margin: 20 }}>
+                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddMenue')} </Text>
+                                    <InputIcon
+                                        placeholder={i18n.t('menueAr')}
+                                        inputStyle={{ textAlign: 'center', }}
+
+                                    />
+                                    <InputIcon
+                                        placeholder={i18n.t('menueEn')}
+                                        styleCont={{ marginTop: -5 }}
+                                        inputStyle={{ textAlign: 'center', }}
+                                    />
+                                    <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
+                                </View>
                             </View>
-                        </ScrollView>
+                        </View>
+                    </Modal>
+                </View>
 
 
-
-                    </View>
-
-                </Modal>
 
                 <FlatList
                     pagingEnabled={true}
@@ -217,7 +220,8 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
         flex: 1,
-        width: 100,
+        width: width * .27,
+
         marginHorizontal: 5
 
     },
@@ -230,9 +234,9 @@ const styles = StyleSheet.create({
     LoginBtn: {
         marginVertical: 5,
         borderRadius: 5,
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         marginTop: 0,
-        width: '90%',
+        width: '91%',
     },
     Card: {
         flexDirection: 'row',
@@ -291,13 +295,29 @@ const styles = StyleSheet.create({
         width: 20,
         alignSelf: 'center'
     },
-    Modal: {
+    centeredView: {
         flex: 1,
-        backgroundColor: Colors.bg,
-        borderTopRightRadius: 40,
-        borderTopLeftRadius: 40,
-        marginTop: height * .55,
-    }
+        justifyContent: "flex-end",
+        alignItems: "center",
+        backgroundColor: '#737373',
+        opacity: .9,
+
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderTopRightRadius: 25,
+        borderTopLeftRadius: 25,
+        width: width,
+        height: height * .4,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
 })
 
 export default Menue

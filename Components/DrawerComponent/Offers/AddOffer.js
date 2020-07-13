@@ -1,22 +1,20 @@
 import React from 'react'
 import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManager } from 'react-native';
-
-
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
-
 const { width } = Dimensions.get('window')
 
-function SpecialOrders({ navigation }) {
+
+function AddOffer({ navigation }) {
     return (
-        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('specialOrder')} />
+        <View style={{ flex: 1 }}>
+            <Header navigation={navigation} label={i18n.t('AddPices')} />
             <View style={styles.wrap}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('IncomingSpecialOrder')}>
+                <TouchableOpacity onPress={() => navigation.navigate('AddPices')}>
                     <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('IncomingRequests')}</Text>
+                        <Text style={styles.text}>{i18n.t('AddPice')}</Text>
                         {
                             I18nManager.isRTL ?
                                 <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
@@ -29,9 +27,9 @@ function SpecialOrders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('ActiveSpecialOrderDetailes')}>
+                <TouchableOpacity onPress={() => navigation.navigate('')}>
                     <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('ActiveRequests')}</Text>
+                        <Text style={styles.text}>{i18n.t('Previousoffers')}</Text>
                         {
                             I18nManager.isRTL ?
                                 <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
@@ -43,41 +41,7 @@ function SpecialOrders({ navigation }) {
                 </TouchableOpacity>
 
                 <View style={styles.Line}></View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('CompletedSpecialOrderDetailes')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('Completedrequests')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
-
-                        }
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.Line}></View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('RejectedSpecialOrderDetailes')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('Rejectedrequests')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
-
-                        }
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.Line}></View>
-
-
             </View>
-
-
         </View>
     )
 }
@@ -111,7 +75,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'flatMedium',
         fontSize: 14,
-        color: Colors.fontNormal
+        color: Colors.IconBlack
     }
 })
-export default SpecialOrders
+export default AddOffer

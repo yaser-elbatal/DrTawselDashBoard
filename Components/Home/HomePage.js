@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, StyleSheet, Image, Text, FlatList, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, } from 'react-native';
 
 import HomeHeader from '../../common/HomeHeader'
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../consts/Colors';
 import { width } from '../../consts/HeightWidth';
 import i18n from '../../locale/i18n'
+import { Content } from 'native-base';
 
 
 
@@ -29,6 +30,8 @@ function HomePage({ navigation }) {
         number: `100 ${i18n.t('order')}`,
         color: [Colors.GradianRed, Colors.GradianRed2]
     }
+
+
         ,
     ]
 
@@ -110,7 +113,7 @@ function HomePage({ navigation }) {
 
             <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
 
-            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+            <Content showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
 
                 <FlatList
                     horizontal
@@ -152,7 +155,7 @@ function HomePage({ navigation }) {
                             </View>
                         </View>)} />
 
-            </ScrollView>
+            </Content>
 
 
         </View >
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
         marginStart: 5,
         marginEnd: 5,
         height: 120,
-        width: 100,
+        width: width * .27,
         flex: 1
 
     },

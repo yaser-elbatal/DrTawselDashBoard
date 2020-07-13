@@ -38,37 +38,5 @@ function Header({ label, navigation, }) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    BigImg: {
-        height: height * .15,
-        width: width * .22,
-        right: 10,
-        bottom: 10
-    },
-    MenueImg: {
-        width: 20,
-        height: 20,
 
-
-
-    },
-    wrap: {
-        position: 'absolute',
-        marginHorizontal: 30,
-        bottom: width * .06,
-        left: -5
-    },
-    Text: {
-        fontFamily: 'flatMedium',
-        color: Colors.IconBlack,
-        fontSize: width * .04,
-        textAlign: 'center',
-        top: width * .13,
-        flexWrap: 'wrap'
-    },
-})
 export default Header

@@ -31,6 +31,23 @@ import ActiveRequests from '../Components/DrawerComponent/Orders/ActiveRequests'
 import Completedrequests from '../Components/DrawerComponent/Orders/Completedrequests';
 import Rejectedrequests from '../Components/DrawerComponent/Orders/Rejectedrequests';
 import OrderDetailes from '../Components/DrawerComponent/Orders/OrderDetailes';
+import IncomingOrderDetailes from '../Components/DrawerComponent/Orders/IncomingOrderDetailes';
+import ActiveOrderDetailes from '../Components/DrawerComponent/Orders/ActiveOrderDetailes';
+import CompletedOrderDetailes from '../Components/DrawerComponent/Orders/CompletedOrderDetailes';
+import ProductDetailes from '../Components/DrawerComponent/Orders/ProductDetailes';
+import RejectedOrderDetailes from '../Components/DrawerComponent/Orders/RejectedOrderDetailes';
+import IncomingSpecialOrder from '../Components/DrawerComponent/SpecialOrders/IncomingSpecialOrder';
+import IcomingSpecialOrderDetailes from '../Components/DrawerComponent/SpecialOrders/IcomingSpecialOrderDetailes';
+import ActiveSpecialOrderDetailes from '../Components/DrawerComponent/SpecialOrders/ActiveSpecialOrderDetailes';
+import RejectedSpecialOrderDetailes from '../Components/DrawerComponent/SpecialOrders/RejectedSpecialOrderDetailes';
+import ProductSpecialOrderDetailes from '../Components/DrawerComponent/SpecialOrders/ProductSpecialOrderDetailes';
+import CompletedSpecialOrderDetailes from '../Components/DrawerComponent/SpecialOrders/CompletedSpecialOrderDetailes';
+import AddProduct from '../Components/DrawerComponent/Products/AddProduct';
+import SuccessAddition from '../Components/DrawerComponent/Products/SuccessAddition';
+import ProductDet from '../Components/DrawerComponent/Products/ProductDet';
+import AddOnotherProduct from '../Components/DrawerComponent/Products/AddOnotherProduct';
+import AddOffer from '../Components/DrawerComponent/Offers/AddOffer';
+import AddPices from '../Components/DrawerComponent/Offers/AddPices';
 
 
 const Stack = createStackNavigator();
@@ -73,6 +90,39 @@ export const DrawerNAv = () => {
             <Stack.Screen name="Completedrequests" component={Completedrequests} />
             <Stack.Screen name="Rejectedrequests" component={Rejectedrequests} />
             <Stack.Screen name="OrderDetailes" component={OrderDetailes} />
+            <Stack.Screen name="IncomingOrderDetailes" component={IncomingOrderDetailes} />
+            <Stack.Screen name="ActiveOrderDetailes" component={ActiveOrderDetailes} />
+            <Stack.Screen name="CompletedOrderDetailes" component={CompletedOrderDetailes} />
+            <Stack.Screen name="ProductDetailes" component={ProductDetailes} />
+            <Stack.Screen name="RejectedOrderDetailes" component={RejectedOrderDetailes} />
+            <Stack.Screen name="IncomingSpecialOrder" component={IncomingSpecialOrder} />
+            <Stack.Screen name="IcomingSpecialOrderDetailes" component={IcomingSpecialOrderDetailes} />
+            <Stack.Screen name="ActiveSpecialOrderDetailes" component={ActiveSpecialOrderDetailes} />
+            <Stack.Screen name="RejectedSpecialOrderDetailes" component={RejectedSpecialOrderDetailes} />
+            <Stack.Screen name="ProductSpecialOrderDetailes" component={ProductSpecialOrderDetailes} />
+            <Stack.Screen name="CompletedSpecialOrderDetailes" component={CompletedSpecialOrderDetailes} />
+            <Stack.Screen name="AddProduct" component={AddProduct} />
+            <Stack.Screen name="SuccessAddition" component={SuccessAddition} />
+            <Stack.Screen name="ProductDet" component={ProductDet} />
+            <Stack.Screen name="AddOnotherProduct" component={AddOnotherProduct} />
+            <Stack.Screen name="AddOffer" component={AddOffer} />
+            <Stack.Screen name="AddPices" component={AddPices} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         </Drawer.Navigator>

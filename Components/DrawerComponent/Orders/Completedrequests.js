@@ -7,6 +7,7 @@ function Completedrequests({ navigation }) {
         <AllOrders
             navigation={navigation}
             label={i18n.t('Completedrequests')}
+            onPress={() => navigation.navigate('CompletedOrderDetailes')}
         />
     )
 }

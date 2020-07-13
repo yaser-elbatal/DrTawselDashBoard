@@ -9,7 +9,7 @@ function IncomingRequests({ navigation }) {
         <AllOrders
             navigation={navigation}
             label={i18n.t('IncomingRequests')}
-            onPress={() => navigation.navigate('OrderDetailes')}
+            onPress={() => navigation.navigate('IncomingOrderDetailes')}
 
         />
     )
