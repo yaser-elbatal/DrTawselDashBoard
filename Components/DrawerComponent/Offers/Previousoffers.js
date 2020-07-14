@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManager, FlatList, ScrollView } from 'react-native';
+import { View, Text, Image, Dimensions, StyleSheet, FlatList, } from 'react-native';
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
@@ -8,29 +8,7 @@ import BTN from '../../../common/BTN';
 
 const { width } = Dimensions.get('window')
 
-function AddPices({ navigation }) {
-
-    const ImageData = [{
-        id: 'K0',
-        SImage: require('../../../assets/Images/Email_delete.png'),
-        BImage: require('../../../assets/Images/noun_Image.png'),
-    },
-    {
-        id: 'K1',
-        SImage: require('../../../assets/Images/Email_delete.png'),
-        BImage: require('../../../assets/Images/noun_Image.png'),
-    },
-    {
-        id: 'K2',
-        SImage: require('../../../assets/Images/Email_delete.png'),
-        BImage: require('../../../assets/Images/noun_Image.png'),
-    },
-    {
-        id: 'K3',
-        SImage: require('../../../assets/Images/Email_delete.png'),
-        BImage: require('../../../assets/Images/noun_Image.png'),
-    }
-    ]
+function Previousoffers({ navigation }) {
 
     const Orderdata = [{
         id: 'K0',
@@ -55,9 +33,42 @@ function AddPices({ navigation }) {
         ,
     ]
 
+    const OrderInfo = [{
+        id: 'K0',
+        Image: require('../../../assets/Images/imagefour.png'),
+        Date: '20/9/2020',
+        color: Colors.IconBlack,
+        label: `${i18n.t('Waitingapproval')}`,
+        number: 1
+    },
+    {
+        id: 'K1',
+        Image: require('../../../assets/Images/imagefour.png'),
+        Date: '20/9/2020',
+        color: Colors.GradianGreen,
+        label: `${i18n.t('Beenapproved')}`,
+        number: 2
+
+
+    },
+    {
+        id: 'K2',
+        Image: require('../../../assets/Images/imagefour.png'),
+        Date: '20/9/2020',
+        color: Colors.RedColor,
+        label: `${i18n.t('rejected1')}`,
+        number: 3
+
+
+    }
+
+
+        ,
+    ]
+
     return (
         <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('AddPices')} />
+            <Header navigation={navigation} label={i18n.t('Previousoffers')} />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <FlatList
                     horizontal
@@ -78,29 +89,37 @@ function AddPices({ navigation }) {
                         </LinearGradient>
 
                     )} />
-                <TouchableOpacity>
-                    <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30 }} />
-                </TouchableOpacity>
             </View>
+
             <FlatList
-                numColumns={2}
-                data={ImageData}
+                pagingEnabled={true}
+                data={OrderInfo}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item) => item.id}
                 renderItem={(item) => (
-                    <View style={{ height: width * .4, width: width * .4, backgroundColor: Colors.InputColor, borderRadius: 5, margin: 20, alignItems: 'center', marginHorizontal: '5%' }}>
-                        <TouchableOpacity style={{ alignSelf: 'flex-end', margin: 10 }}>
-                            <Image source={item.item.SImage} style={{ height: 18, width: 18, }} />
-                        </TouchableOpacity>
-                        <Image source={item.item.BImage} style={{ height: '25%', width: '30%', alignSelf: 'center', top: 15 }} resizeMode='contain' />
+
+                    <View style={styles.Card}>
+                        <View style={{ flexDirection: 'row', height: '100%', }}>
+                            <Image source={item.item.Image} style={{ height: '100%', width: '25%' }} />
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
+                                <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}{item.item.number}</Text>
+                                <View style={{ flexDirection: 'row', }}>
+                                    <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
+                                    <Text style={styles.CardText}>{item.item.Date}</Text>
+                                </View>
+
+                                <BTN title={item.item.label} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.item.color }} />
+
+
+                            </View>
+                        </View>
                     </View>
                 )}
             />
-            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('Previousoffers')} />
-
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     Linear: {
         borderTopStartRadius: 0,
@@ -111,7 +130,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginEnd: 5,
         height: 110,
-        width: width * .26,
+        width: width * .3,
         flex: 1
 
     },
@@ -121,14 +140,33 @@ const styles = StyleSheet.create({
         color: Colors.bg,
         textAlign: 'center'
     },
+    CardText: {
+        fontFamily: 'flatMedium',
+        fontSize: 13,
+        color: Colors.IconBlack,
+        marginVertical: 5
+    },
     LoginBtn: {
         marginVertical: 10,
         borderRadius: 5,
-        marginHorizontal: '5%',
-        marginTop: 10,
-        width: '90%'
+        marginHorizontal: 0,
+        width: '80%',
+        backgroundColor: Colors.InputColor
 
+    },
+    Card: {
+        height: 140,
+        shadowColor: Colors.bg,
+        margin: 10,
+        borderRadius: 10,
+        backgroundColor: Colors.bg,
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 1,
+        overflow: 'hidden',
     },
 
 })
-export default AddPices
+
+
+export default Previousoffers

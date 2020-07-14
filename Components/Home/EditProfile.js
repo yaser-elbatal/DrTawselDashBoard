@@ -76,7 +76,6 @@ function EditProfile({ navigation }) {
                             placeholder={i18n.t('usernamen')}
                             onChangeText={(e) => setNameEN(e)}
                             value={nameEN}
-                            secureTextEntry
                             styleCont={{ marginTop: 0 }}
                         />
 

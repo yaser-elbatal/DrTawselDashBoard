@@ -177,11 +177,11 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
         marginStart: 5,
+        marginTop: 10,
         marginEnd: 5,
-        height: 120,
-        width: width * .27,
+        height: 110,
+        width: width * .3,
         flex: 1
-
     },
     num: {
         alignSelf: 'center',

@@ -48,6 +48,16 @@ import ProductDet from '../Components/DrawerComponent/Products/ProductDet';
 import AddOnotherProduct from '../Components/DrawerComponent/Products/AddOnotherProduct';
 import AddOffer from '../Components/DrawerComponent/Offers/AddOffer';
 import AddPices from '../Components/DrawerComponent/Offers/AddPices';
+import Previousoffers from '../Components/DrawerComponent/Offers/Previousoffers';
+import ChangePassword from '../Components/DrawerComponent/Settings/ChangePassword';
+import RestaurantInfo from '../Components/DrawerComponent/Settings/RestaurantInfo';
+import Comments from '../Components/DrawerComponent/Comment/Comments';
+import Notifications from '../Components/DrawerComponent/notifications/Notifications';
+import Wallet from '../Components/DrawerComponent/Wallet/Wallet';
+import ContactUs from '../Components/DrawerComponent/Contact/ContactUs';
+import Banktransfer from '../Components/DrawerComponent/Wallet/Banktransfer';
+import ManageAccount from '../Components/DrawerComponent/ManageAccount/ManageAccount';
+import OrderDetMangeAcc from '../Components/DrawerComponent/ManageAccount/OrderDetMangeAcc';
 
 
 const Stack = createStackNavigator();
@@ -107,13 +117,16 @@ export const DrawerNAv = () => {
             <Stack.Screen name="AddOnotherProduct" component={AddOnotherProduct} />
             <Stack.Screen name="AddOffer" component={AddOffer} />
             <Stack.Screen name="AddPices" component={AddPices} />
-
-
-
-
-
-
-
+            <Stack.Screen name="Previousoffers" component={Previousoffers} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="RestaurantInfo" component={RestaurantInfo} />
+            <Stack.Screen name="Comments" component={Comments} />
+            <Stack.Screen name="Notifications" component={Notifications} />
+            <Stack.Screen name="Wallet" component={Wallet} />
+            <Stack.Screen name="ContactUs" component={ContactUs} />
+            <Stack.Screen name="Banktransfer" component={Banktransfer} />
+            <Stack.Screen name="ManageAccount" component={ManageAccount} />
+            <Stack.Screen name="OrderDetMangeAcc" component={OrderDetMangeAcc} />
 
 
 

@@ -77,7 +77,7 @@ const ar = {
   disAppear: 'اخفاء',
   CurrBallanc: 'رصيدك الحالي',
   rechargebalance: 'شحن رصيد',
-  Refund: 'استردار رصيد',
+  Refundmoney: 'استردار رصيد',
   REWallet: 'شحن المحفظه',
   Banktransfer: ' تحويل بنكي',
   Accname: 'اسم الحساب',
@@ -159,7 +159,7 @@ const ar = {
   deliverorder: 'سأوصل هذا الطلب',
   clientsComments: 'تعليقات العملاء',
   //Drawer
-  HomePage: 'الصفحه تفاصيل',
+  HomePage: 'الصفحه الرئيسيه',
   myProfile: 'الملف الشخصي',
   RestInfo: 'معلومات المطعم',
   myOrders: 'طلباتي',
@@ -186,7 +186,6 @@ const ar = {
   //ٌRestaurant
 
   RestDetiles: 'تفاصيل المطعم',
-  preparationTime: 'مده التجهيز',
   barbecue: 'مشويات',
   dessert: 'حلويات ',
   salads: 'سلطات',
@@ -504,6 +503,27 @@ const ar = {
   AddPices: 'اضافه صور العرض',
   AddPice: 'اضافه صور',
   Previousoffers: 'العروض السابقه',
+  Waitingapproval: 'انتظار الموافقه',
+  Beenapproved: 'تم الموافقه',
+  rejected1: 'تم الرفض',
+  Dateaddition: 'تاريخ الاضافه',
+  ResNameAr: 'اسم المطعم بالعربي',
+  ResNameEn: 'اسم المطعم بالانجليزي',
+  ResSite: 'موقع المطعم',
+  from: 'من',
+  to: 'الي',
+  ResState: 'حاله المطعم',
+  preparationTime: 'مده التجهيز',
+  RateNum: 'عدد التقيمات',
+  Refundmone: "هل انت متأكد من استرداد المبلغ؟",
+  RecoverWallet: 'سيتم استرداد المبلغ من المحفظه',
+  writeMsg: 'اكتب رساله',
+  Repaymentprice: 'سعر السداد',
+  Bankpicture: 'صوره الحواله البنكيه',
+  ManageAccs: 'أداره الحسابات',
+  Notsettled: 'لم يتم التسويه',
+  Adjusted: 'تم التسويه',
+  Commission: 'العموله',
 };
 
 export default ar;

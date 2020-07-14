@@ -33,7 +33,7 @@ function CustomDrawerMenue({ navigation }) {
                 </View>
             </View>
             <Text style={[styles.hellText, { marginVertical: 0, bottom: 80, paddingHorizontal: 20 }]}>{i18n.t('Hello')}</Text>
-            <ScrollView style={{ flex: 1, bottom: 50 }}>
+            <ScrollView style={{ flex: 1, bottom: 50, marginVertical: -20 }} showsVerticalScrollIndicator={false}>
                 <View style={{ flexDirection: 'column', }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
@@ -78,31 +78,34 @@ function CustomDrawerMenue({ navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(7)}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('Comments'); setClick(7) }}>
                         <View style={{ backgroundColor: Clicle === 7 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('Commentandratings')}</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(8)}>
-                        <View style={{ backgroundColor: Clicle === 8 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('Notifications'); setClick(8) }}>
+                        <View style={{ backgroundColor: Clicle === 8 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={styles.hellText}>{i18n.t('notifications')}</Text>
+                            <View style={{ backgroundColor: Colors.bg, height: 30, width: 40, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                                <Text style={{ color: Colors.sky, fontFamily: 'flatMedium', fontSize: 14 }}>2</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(9)}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('Wallet'); setClick(9) }}>
                         <View style={{ backgroundColor: Clicle === 9 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('wallet')}</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(10)}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('ContactUs'); setClick(10) }}>
                         <View style={{ backgroundColor: Clicle === 10 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('contactus')}</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(11)}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('ManageAccount'); setClick(11) }}>
                         <View style={{ backgroundColor: Clicle === 11 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('ManageAcc')}</Text>
                         </View>

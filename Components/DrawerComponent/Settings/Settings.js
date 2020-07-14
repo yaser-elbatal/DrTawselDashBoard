@@ -30,7 +30,7 @@ function Settings({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('RestaurantInfo')}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('RestInfo')}</Text>
                         {
@@ -45,7 +45,7 @@ function Settings({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('password')}</Text>
                         {

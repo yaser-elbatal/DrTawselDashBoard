@@ -27,7 +27,7 @@ function AddOffer({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Previousoffers')}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('Previousoffers')}</Text>
                         {
