@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Image, TouchableOpacity, StyleSheet, I18nManager } from 'react-native'
 import { width, height } from '../consts/HeightWidth'
 
 function BackBtn({ navigation }) {
@@ -7,7 +7,14 @@ function BackBtn({ navigation }) {
         <View style={styles.container}>
             <Image source={require('../assets/Images/bluBack.png')} style={styles.BGImage} resizeMode='contain' />
             <TouchableOpacity style={styles.Btn} onPress={() => navigation.goBack()}>
-                <Image source={require('../assets/Images/left.png')} style={styles.arrow} resizeMode='contain' />
+                {
+                    I18nManager.isRTL ?
+                        <Image source={require('../assets/Images/left.png')} style={styles.arrow} resizeMode='contain' />
+                        :
+                        <Image source={require('../assets/Images/arrowwhite.png')} style={styles.arrow} resizeMode='contain' />
+
+
+                }
             </TouchableOpacity>
         </View>
 

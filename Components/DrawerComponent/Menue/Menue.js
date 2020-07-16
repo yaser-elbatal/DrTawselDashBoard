@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     Linear: {
-        height: 120,
+        height: width * .32,
         justifyContent: 'center',
         borderTopStartRadius: 0,
         borderBottomRightRadius: 25,
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     LoginBtn: {
-        marginVertical: 5,
+        marginVertical: 15,
         borderRadius: 5,
         marginHorizontal: 15,
         marginTop: 0,
