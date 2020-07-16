@@ -58,6 +58,8 @@ import ContactUs from '../Components/DrawerComponent/Contact/ContactUs';
 import Banktransfer from '../Components/DrawerComponent/Wallet/Banktransfer';
 import ManageAccount from '../Components/DrawerComponent/ManageAccount/ManageAccount';
 import OrderDetMangeAcc from '../Components/DrawerComponent/ManageAccount/OrderDetMangeAcc';
+import OrderDetAdjust from '../Components/DrawerComponent/ManageAccount/OrderDetAdjust';
+import Report from '../Components/DrawerComponent/report/Report';
 
 
 const Stack = createStackNavigator();
@@ -127,6 +129,11 @@ export const DrawerNAv = () => {
             <Stack.Screen name="Banktransfer" component={Banktransfer} />
             <Stack.Screen name="ManageAccount" component={ManageAccount} />
             <Stack.Screen name="OrderDetMangeAcc" component={OrderDetMangeAcc} />
+            <Stack.Screen name="OrderDetAdjust" component={OrderDetAdjust} />
+            <Stack.Screen name="Report" component={Report} />
+
+
+
 
 
 

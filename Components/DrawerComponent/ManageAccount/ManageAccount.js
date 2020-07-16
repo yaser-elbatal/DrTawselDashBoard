@@ -70,24 +70,33 @@ function ManageAccount({ navigation }) {
 
                 <View style={styles.card}>
                     <View style={{ margin: 10 }}>
+
+
+
                         <Text style={styles.Text}>{i18n.t('num')} #1</Text>
-                        <View style={{ flexDirection: 'column' }}>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Text style={styles.sText}>{i18n.t('total')} : </Text>
+
+
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginEnd: 120, marginTop: 0 }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                <Text style={styles.sText}>{i18n.t('total')}  </Text>
+                                <Text style={styles.sText}>{i18n.t('OrderPrice')}</Text>
+                                <Text style={styles.sText}>{i18n.t('Commission')}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                <Text style={{ marginVertical: 5 }}>:</Text>
+                                <Text style={{ marginVertical: 5 }}>:</Text>
+                                <Text style={{ marginVertical: 5 }}>:</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                 <Text style={styles.sText}>{item.item.TotalPrice}{i18n.t('Rial')}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-
-                                <Text style={styles.sText}>{i18n.t('OrderPrice')} : </Text>
                                 <Text style={styles.sText}>{item.item.OrderPrice}{i18n.t('Rial')}</Text>
-
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Text style={styles.sText}>{i18n.t('Commission')} : </Text>
                                 <Text style={styles.sText}>{item.item.Commission}{i18n.t('Rial')}</Text>
                             </View>
-
                         </View>
+
+
+
                     </View>
                     <BTN title={i18n.t('confirm')} ContainerStyle={{ marginHorizontal: 20, marginTop: 0 }} onPress={() => navigation.navigate('OrderDetMangeAcc')} />
 
@@ -106,25 +115,25 @@ function ManageAccount({ navigation }) {
                 <View style={styles.card}>
                     <View style={{ margin: 10 }}>
                         <Text style={styles.Text}>{i18n.t('num')} #1</Text>
-                        <View style={{ flexDirection: 'column' }}>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Text style={styles.sText}>{i18n.t('total')} : </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginEnd: 120, marginTop: 0 }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                <Text style={styles.sText}>{i18n.t('total')}  </Text>
+                                <Text style={styles.sText}>{i18n.t('OrderPrice')}</Text>
+                                <Text style={styles.sText}>{i18n.t('Commission')}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                <Text style={{ marginVertical: 5 }}>:</Text>
+                                <Text style={{ marginVertical: 5 }}>:</Text>
+                                <Text style={{ marginVertical: 5 }}>:</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                 <Text style={styles.sText}>{item.item.TotalPrice}{i18n.t('Rial')}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-
-                                <Text style={styles.sText}>{i18n.t('OrderPrice')} : </Text>
                                 <Text style={styles.sText}>{item.item.OrderPrice}{i18n.t('Rial')}</Text>
-
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Text style={styles.sText}>{i18n.t('Commission')} : </Text>
                                 <Text style={styles.sText}>{item.item.Commission}{i18n.t('Rial')}</Text>
                             </View>
-
                         </View>
                     </View>
-                    <BTN title={i18n.t('Adjusted')} ContainerStyle={{ marginHorizontal: 20, marginTop: 0, backgroundColor: Colors.InputColor }} onPress={() => navigation.navigate('OrderDetMangeAcc')} />
+                    <BTN title={i18n.t('Adjusted')} ContainerStyle={{ marginHorizontal: 20, marginTop: 0, marginVertical: 10, backgroundColor: Colors.InputColor }} onPress={() => navigation.navigate('OrderDetAdjust')} />
 
 
                 </View>)} />
@@ -212,7 +221,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 1,
         marginVertical: 5,
-        height: height * .29,
+        height: width * .57,
         paddingTop: 10,
         paddingStart: 10,
         overflow: 'hidden',

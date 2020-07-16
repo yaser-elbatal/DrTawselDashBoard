@@ -4,12 +4,13 @@ import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
 import BTN from '../../../common/BTN'
+import { width } from '../../../consts/HeightWidth'
 
 function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, onPressDetailes }) {
-    const [click, setClick] = useState(false)
-    const [click1, setClick1] = useState(false)
-    const [click3, setClick3] = useState(false)
-    const [click4, setClick4] = useState(false)
+    const [click, setClick] = useState(true)
+    const [click1, setClick1] = useState(true)
+    const [click3, setClick3] = useState(true)
+    const [click4, setClick4] = useState(true)
 
 
     const Orderdata = [{
@@ -191,18 +192,18 @@ function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, o
 const styles = StyleSheet.create({
     nMenu: {
         fontFamily: 'flatMedium',
-        fontSize: 14,
+        fontSize: width * .03,
         marginHorizontal: 15,
         textAlign: 'center'
     },
     name: {
         fontFamily: 'flatMedium',
-        fontSize: 12,
+        fontSize: width * .03,
         color: Colors.fontNormal
     },
     sname: {
         fontFamily: 'flatMedium',
-        fontSize: 12,
+        fontSize: width * .03,
         color: Colors.IconBlack
     },
     LoginBtn: {

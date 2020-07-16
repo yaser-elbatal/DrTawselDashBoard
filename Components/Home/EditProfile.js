@@ -41,7 +41,10 @@ function EditProfile({ navigation }) {
         <View style={{ flex: 1, }}>
 
             <Image source={require('../../assets/Images/imagethree.png')} style={styles.ImgBackGround} />
-            <Image source={require('../../assets/Images/add_photo_white.png')} style={{ alignSelf: 'center', top: 150, position: 'absolute', width: 80, height: 80, }} />
+            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }}>
+                <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
+
+            </TouchableOpacity>
 
 
 

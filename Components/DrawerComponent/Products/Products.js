@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { CheckBox, Content } from 'native-base';
+import { Picker, CheckBox, Content } from "native-base";
 
 
 import HomeHeader from '../../../common/HomeHeader'
@@ -13,19 +12,22 @@ import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
 
 function Products({ navigation }) {
+
+
     const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
-    const [Operation, setOpeartion] = useState('uk');
-    const [Arange, setArange] = useState('new');
+    const [selected, setSelected] = useState("key0")
+    const [selected1, setSelected1] = useState("key0")
 
-    const Items = [
-        { label: 'حذف', value: 'uk', },
 
-    ]
-    const Arrangement = [
-        { label: 'الاحدث', value: 'new', },
+    const onValueChange1 = (value) => {
+        setSelected1(value)
+    }
 
-    ]
+    const onValueChange = (value) => {
+        setSelected(value)
+    }
+
 
     const Orderdata = [{
         id: 'K0',
@@ -79,7 +81,7 @@ function Products({ navigation }) {
             />
 
             <Content style={{ flex: 1 }}>
-                <View style={{ margin: 10, marginVertical: 0, alignItems: 'center' }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <FlatList
                         horizontal
                         pagingEnabled={true}
@@ -88,51 +90,57 @@ function Products({ navigation }) {
                         keyExtractor={(item) => item.id}
                         renderItem={(item) => (
 
-                            <View style={styles.wrab}>
-                                <LinearGradient
-                                    colors={item.item.color}
-                                    style={styles.Linear}>
-                                    <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-                                        <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                        <Text style={styles.Text}>{item.item.title}</Text>
-                                        <Text style={styles.Text}>{item.item.number}</Text>
-                                    </View>
-                                </LinearGradient>
-                            </View>
+                            <LinearGradient
+                                colors={item.item.color}
+                                style={styles.Linear}>
+                                <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
+                                    <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
+                                    <Text style={styles.Text}>{item.item.title}</Text>
+                                    <Text style={styles.Text}>{item.item.number}</Text>
+                                </View>
+                            </LinearGradient>
 
                         )} />
                 </View>
 
 
-                <View style={{ backgroundColor: '#DBDBDB', width: '90%', margin: 20, height: 60, flexDirection: 'row', alignItems: 'center', }}>
-                    <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection(!isSelected)} />
-                    <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 10, }}>{i18n.t('Select')}</Text>
-                    <DropDownPicker
-                        defaultValue={Operation}
-                        onChangeItem={(val) => setOpeartion(val.value)}
-                        containerStyle={{ width: 90, }}
-
-                        dropDownStyle={{
-                            backgroundColor: Colors.bg,
-                        }}
-                        style={{ backgroundColor: '#fafafa', margin: 10 }}
-                        itemStyle={{ justifyContent: 'flex-start', flexDirection: 'column', }}
-                        items={Items} />
-                    <Text style={{ fontFamily: 'flatMedium', fontSize: 10, }}>{i18n.t('filter')}</Text>
-
-                    <DropDownPicker
-                        defaultValue={Arange}
-                        items={Arrangement}
-                        onChangeItem={(val) => setArange(val.value)}
-                        containerStyle={{ width: 100, }}
-                        dropDownStyle={{
-                            backgroundColor: Colors.bg,
-                        }}
-                        style={{ backgroundColor: '#fafafa', margin: 10 }}
-                        itemStyle={{ justifyContent: 'center', flexDirection: 'column', }}
+                <View style={{ backgroundColor: '#DBDBDB', flex: 1, width: '90%', margin: 20, height: 80, flexDirection: 'row', alignItems: 'center', zIndex: 100, }}>
+                    <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection(!isSelected)} />
+                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('Select')}</Text>
 
 
-                    />
+                    <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2, overflow: 'hidden', }}>
+                        <Picker
+                            mode="dropdown"
+                            selectedValue={selected1}
+                            onValueChange={onValueChange1}
+                            style={{ marginStart: -15, marginEnd: 0, height: 20 }}
+
+                        >
+                            <Picker.Item label="delete" value="key0" />
+                            <Picker.Item label="تعديل" value="key1" />
+
+                        </Picker>
+                    </View>
+
+
+
+                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('filter')}</Text>
+                    <View style={{ margin: 30, backgroundColor: Colors.bg, marginHorizontal: 2, width: width * .27, overflow: 'hidden' }}>
+                        <Picker
+                            mode="dropdown"
+                            selectedValue={selected}
+                            onValueChange={onValueChange}
+                            style={{ marginStart: -15, height: 40, }}
+
+                        >
+                            <Picker.Item label="newest" value="key0" />
+                            <Picker.Item label="الاقدام" value="key1" />
+                            <Picker.Item label="الجديد" value="key2" />
+                            <Picker.Item label="القديم" value="key3" />
+                        </Picker>
+                    </View>
+
 
                 </View>
 
@@ -190,16 +198,16 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     Linear: {
-        height: 120,
-        justifyContent: 'center',
         borderTopStartRadius: 0,
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
-        flex: 1,
-        width: width * .27,
-        marginHorizontal: 5
-
+        marginStart: 5,
+        marginTop: 10,
+        marginEnd: 5,
+        height: height * .16,
+        width: width * .28,
+        flex: 1
     },
     Text: {
         fontFamily: 'flatMedium',
@@ -213,6 +221,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         marginTop: 0,
         width: '90%',
+        zIndex: 0
 
     },
     Card: {

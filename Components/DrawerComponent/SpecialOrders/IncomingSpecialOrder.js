@@ -6,26 +6,24 @@ import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
 import Header from '../../../common/Header';
 import { InputIcon } from '../../../common/InputText';
-import { CheckBox } from 'native-base';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Picker, CheckBox, Content } from "native-base";
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 function IncomingSpecialOrder({ navigation }) {
 
     const [isSelected, setSelection] = useState();
-    const [Operation, setOpeartion] = useState('uk');
-    const [Arange, setArange] = useState('new');
+    const [selected, setSelected] = useState("key0")
+    const [selected1, setSelected1] = useState("key0")
 
-    const Items = [
-        { label: 'حذف', value: 'uk', },
 
-    ]
-    const Arrangement = [
-        { label: 'الاحدث', value: 'new', },
-        { label: 'الاقرب', value: 'n', },
+    const onValueChange1 = (value) => {
+        setSelected1(value)
+    }
 
-    ]
+    const onValueChange = (value) => {
+        setSelected(value)
+    }
     const Orderdata = [{
         id: 'K0',
         title: `${i18n.t('IncomingRequests')}`,
@@ -76,7 +74,7 @@ function IncomingSpecialOrder({ navigation }) {
     ]
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <Header navigation={navigation} label={i18n.t('incom')} />
             <InputIcon
                 placeholder={i18n.t('search1')}
@@ -105,42 +103,47 @@ function IncomingSpecialOrder({ navigation }) {
 
                     )} />
             </View>
-            <View style={{ height: 100 }}>
-                <View style={{ backgroundColor: '#DBDBDB', flex: 1, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', }}>
-                    <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: 20, marginHorizontal: 2 }} onPress={() => setSelection(!isSelected)} />
-                    <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: width * .033, }}>{i18n.t('Select')}</Text>
-                    <DropDownPicker
-                        defaultValue={Operation}
-                        onChangeItem={(val) => setOpeartion(val.value)}
-                        containerStyle={{ width: width * .25, }}
 
-                        dropDownStyle={{
-                            backgroundColor: Colors.bg,
-                        }}
-                        style={{ backgroundColor: '#fafafa', margin: 8 }}
-                        itemStyle={{ justifyContent: 'flex-start', flexDirection: 'column', }}
-                        items={Items} />
-                    <Text style={{ fontFamily: 'flatMedium', fontSize: 10, }}>{i18n.t('filter')}</Text>
-
-                    <DropDownPicker
-                        defaultValue={Arange}
-                        items={Arrangement}
-                        onChangeItem={(val) => setArange(val.value)}
-                        containerStyle={{ width: width * .26, }}
-                        dropDownStyle={{
-                            backgroundColor: Colors.bg,
-                        }}
-                        style={{ backgroundColor: '#fafafa', margin: 7, }}
-                        itemStyle={{
-                            justifyContent: 'center', flexDirection: 'column',
-                        }}
+            <View style={{ backgroundColor: Colors.InputColor, width: '90%', margin: 20, marginVertical: 10, height: 50, flexDirection: 'row', alignItems: 'center', zIndex: 100, }}>
+                <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection(!isSelected)} />
+                <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('Select')}</Text>
 
 
-                    />
+                <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2, overflow: 'hidden', }}>
+                    <Picker
+                        mode="dropdown"
+                        selectedValue={selected1}
+                        onValueChange={onValueChange1}
+                        style={{ marginStart: -15, marginEnd: 0, height: 40 }}
+
+                    >
+                        <Picker.Item label="delete" value="key0" />
+                        <Picker.Item label="تعديل" value="key1" />
+
+                    </Picker>
+                </View>
+
+
+
+                <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('filter')}</Text>
+                <View style={{ margin: 30, backgroundColor: Colors.bg, marginHorizontal: 2, width: width * .27, overflow: 'hidden' }}>
+                    <Picker
+                        mode="dropdown"
+                        selectedValue={selected}
+                        onValueChange={onValueChange}
+                        style={{ marginStart: -15, height: 40, }}
+
+                    >
+                        <Picker.Item label="newest" value="key0" />
+                        <Picker.Item label="الاقدام" value="key1" />
+                        <Picker.Item label="الجديد" value="key2" />
+                        <Picker.Item label="القديم" value="key3" />
+                    </Picker>
                 </View>
 
 
             </View>
+
 
             <FlatList
                 pagingEnabled={true}
@@ -189,12 +192,11 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
         marginStart: 5,
+        marginTop: 10,
         marginEnd: 5,
-        height: 110,
-        width: 100,
-        flex: 1,
-
-
+        height: height * .18,
+        width: width * .28,
+        flex: 1
     },
 
     nText: {

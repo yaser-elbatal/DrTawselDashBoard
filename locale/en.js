@@ -531,6 +531,8 @@ const en = {
   Notsettled: 'Not Settled',
   Adjusted: 'Adjusted',
   Commission: 'Commission',
+  Createreport: 'Create Report',
+  Refundmoney: 'Refund money'
 };
 
 export default en;

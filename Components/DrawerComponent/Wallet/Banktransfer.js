@@ -42,7 +42,7 @@ function Banktransfer({ navigation }) {
             <Header navigation={navigation} label={i18n.t('Banktransfer')} />
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
 
-                <View style={{ height: height * .17, width: '90%', marginHorizontal: '5%', backgroundColor: '#F8F8F8', marginTop: 20, borderRadius: 25 }}>
+                <View style={{ height: height * .15, width: '90%', marginHorizontal: '5%', backgroundColor: '#F8F8F8', marginTop: 20, borderRadius: 25 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 20, alignItems: 'center' }}>
 
                         <View style={{ flexDirection: 'row' }}>
@@ -53,11 +53,11 @@ function Banktransfer({ navigation }) {
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', flex: 1, marginHorizontal: 20 }}>
-                            <Text style={{ fontSize: 14, color: Colors.RedColor, fontFamily: 'flatMedium' }}>مصرف الدكتور</Text>
-                            <Text style={{ fontSize: 14, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>الدكتور</Text>
+                            <Text style={{ fontSize: width * .025, color: Colors.RedColor, fontFamily: 'flatMedium' }}>مصرف الدكتور</Text>
+                            <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>الدكتور</Text>
                             <View style={{ flexDirection: 'row', }}>
-                                <Text style={{ fontSize: 14, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>  {i18n.t('Accnum')} :  </Text>
-                                <Text style={{ fontSize: 14, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>11111111111111</Text>
+                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>  {i18n.t('Accnum')} :  </Text>
+                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>11111111111111</Text>
 
 
                             </View>

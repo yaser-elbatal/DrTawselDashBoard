@@ -111,7 +111,7 @@ function CustomDrawerMenue({ navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setClick(12)}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('Report'); setClick(12) }}>
                         <View style={{ backgroundColor: Clicle === 12 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('reports')}</Text>
                         </View>

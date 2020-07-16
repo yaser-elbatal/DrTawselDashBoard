@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, Text, FlatList, } from 'react-native';
 import HomeHeader from '../../common/HomeHeader'
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../consts/Colors';
-import { width } from '../../consts/HeightWidth';
+import { width, height } from '../../consts/HeightWidth';
 import i18n from '../../locale/i18n'
 import { Content } from 'native-base';
 
@@ -126,7 +126,7 @@ function HomePage({ navigation }) {
                         <View style={styles.Card}>
                             <View style={{ flexDirection: 'column', flex: 1 }}>
                                 <Image source={item.item.Image} style={{ width: '100%', height: '70%', borderTopRightRadius: 10, borderTopLeftRadius: 10 }} />
-                                <View style={{ margin: 10, flex: 1 }}>
+                                <View style={{ margin: 10, flex: 1, height: '30%' }}>
                                     <Text style={styles.prod}>{item.item.title}</Text>
                                     <Text style={[styles.prod, { color: Colors.fontNormal }]}>{item.item.price}</Text>
                                 </View>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         marginStart: 5,
         marginTop: 10,
         marginEnd: 5,
-        height: 110,
+        height: height * .18,
         width: width * .3,
         flex: 1
     },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
     },
     SCard: {
-        height: 80,
+        height: height * .15,
         width: '90%',
         margin: 20,
         shadowColor: Colors.bg,
@@ -216,25 +216,25 @@ const styles = StyleSheet.create({
     },
     Text: {
         fontFamily: 'flatMedium',
-        fontSize: 12,
+        fontSize: width * .03,
         color: Colors.bg,
         textAlign: 'center'
     },
 
     ProdText: {
         fontFamily: 'flatMedium',
-        fontSize: 12,
+        fontSize: width * .03,
         color: Colors.IconBlack
     },
     prod: {
         fontFamily: 'flatMedium',
-        fontSize: 10
+        fontSize: width * .025
     },
     Card: {
         margin: 10,
         borderRadius: 15,
         width: width * .5,
-        height: width * .45,
+        height: height * .25,
         backgroundColor: Colors.bg,
         flex: 1
     },

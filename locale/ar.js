@@ -93,7 +93,7 @@ const ar = {
 
 
   order: 'طلب',
-  Quickreports: 'تقارير سريعه',
+  Quickreports: 'تقاير سريعه',
   Yourproducts: 'المنتجات الخاصه بك',
   Comm: 'التعليقات الخاص بالمتجر',
   Rate: 'التقييمات الخاص بالمتجر',
@@ -215,7 +215,7 @@ const ar = {
   save: 'حفظ',
   cancel: 'الغاء',
   edit: 'تعديل',
-  reports: 'تقاير',
+  reports: 'التقارير',
   ManageAcc: 'اداره الحساب',
   //specialOrder
   AddOffer: 'اضافه عرض',
@@ -524,6 +524,9 @@ const ar = {
   Notsettled: 'لم يتم التسويه',
   Adjusted: 'تم التسويه',
   Commission: 'العموله',
+  Createreport: 'انشاء تقرير',
+
+
 };
 
 export default ar;

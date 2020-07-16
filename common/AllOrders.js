@@ -103,17 +103,17 @@ function AllOrders({ navigation, label, onPress }) {
                                 <Text style={styles.nText}>{i18n.t('num')} # {item.item.num}</Text>
 
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginEnd: 150, marginVertical: 20, marginTop: 0 }}>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                         <Text style={[styles.name, { marginVertical: 5 }]}>{item.item.title}</Text>
                                         <Text style={[styles.name, { marginVertical: 5 }]}>{item.item.time}</Text>
                                         <Text style={[styles.name, { marginVertical: 5 }]}>{item.item.total}</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                         <Text style={{ marginVertical: 5, marginHorizontal: 5 }}>:</Text>
                                         <Text style={{ marginVertical: 5, marginHorizontal: 5 }}>:</Text>
                                         <Text style={{ marginVertical: 5, marginHorizontal: 5 }}>:</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                         <Text style={[styles.sname, { marginVertical: 5 }]}> {i18n.t('name')}</Text>
                                         <Text style={[styles.sname, { marginVertical: 5 }]}> 5 {i18n.t('minutes')}</Text>
                                         <Text style={[styles.sname, { color: Colors.sky, marginVertical: 5 }]}> 122</Text>
@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 25,
         borderTopRightRadius: 25,
         marginStart: 5,
+        marginTop: 10,
         marginEnd: 5,
-        height: 110,
-        width: 100,
+        height: 120,
+        width: width * .3,
         flex: 1
-
     },
 
     nText: {
@@ -161,16 +161,21 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'flatMedium',
-        fontSize: 10,
+        fontSize: width * .03,
         color: Colors.fontNormal
+    },
+    sname: {
+        fontFamily: 'flatMedium',
+        fontSize: width * .03,
+        color: Colors.IconBlack
     },
     Card: {
 
         flexDirection: 'column',
         justifyContent: 'space-between',
         height: 140,
-        width: '90%',
-        marginHorizontal: 20,
+        width: '92%',
+        marginHorizontal: '4%',
         shadowColor: Colors.bg,
         margin: 5,
         backgroundColor: Colors.bg,
@@ -178,6 +183,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 1,
         overflow: 'hidden',
+        borderRadius: 5
 
     },
     Contain: {
