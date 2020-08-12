@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, I18nManager, Platform } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
@@ -106,7 +106,9 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         color: Colors.fontBold,
         paddingVertical: 5,
-        fontSize: width * .026
+        fontSize: width * .026,
+        alignSelf: I18nManager.isRTL ? 'flex-start' : 'flex-end',
+        textAlign: I18nManager.isRTL ? 'right' : 'left'
     },
     activeDoted: {
         backgroundColor: Colors.sky,
@@ -115,18 +117,19 @@ const styles = StyleSheet.create({
         bottom: 40
     },
     Button: {
-        bottom:-25,        
+        bottom: Platform.OS === 'ios' ? -30 : -20,
         width,
         backgroundColor: Colors.sky,
         flex: 1,
         marginHorizontal: -16,
+        alignItems: 'center'
 
     },
     textBtn: {
         color: Colors.bg,
         fontFamily: 'flatMedium',
         textAlign: 'center',
-        padding: 10,
+        padding: 15,
         fontWeight: '200',
         fontSize: 18
     }

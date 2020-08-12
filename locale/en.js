@@ -533,7 +533,7 @@ const en = {
   Commission: 'Commission',
   Createreport: 'Create Report',
   Refundmoney: 'Refund money',
-  deb:'department'
+  deb: 'department'
 };
 
 export default en;

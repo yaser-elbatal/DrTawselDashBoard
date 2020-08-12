@@ -11,8 +11,10 @@ import Colors from '../../../consts/Colors';
 import { InputIcon } from '../../../common/InputText';
 import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
+import Card from '../../../common/Card';
 
 function Menue({ navigation }) {
+
     const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
     const [modalVisible, setModalVisible] = useState(false);
@@ -81,45 +83,23 @@ function Menue({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
-            <InputIcon
-                placeholder={i18n.t('search1')}
-                image={require('../../../assets/Images/search.png')}
-                styleCont={{ marginTop: -10, height: width * .18, }}
-                inputStyle={{ backgroundColor: '#DBDBDB' }}
-            />
-
             <ScrollView style={{ flex: 1 }}>
-                <View style={{ margin: 10, marginVertical: 0, alignItems: 'center' }}>
-                    <FlatList
-                        horizontal
-                        pagingEnabled={true}
-                        showsHorizontalScrollIndicator={false}
-                        data={Orderdata}
-                        keyExtractor={(item) => item.id}
-                        renderItem={(item) => (
 
-                            <View style={styles.wrab}>
-                                <LinearGradient
-                                    colors={item.item.color}
-                                    style={styles.Linear}>
-                                    <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-                                        <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                        <Text style={styles.Text}>{item.item.title}</Text>
-                                        <Text style={styles.Text}>{item.item.number}</Text>
-                                    </View>
-                                </LinearGradient>
-                            </View>
+                <InputIcon
+                    placeholder={i18n.t('search1')}
+                    image={require('../../../assets/Images/search.png')}
+                    styleCont={{ marginTop: 0, height: width * .18, }}
+                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                />
 
-                        )} />
-                </View>
-
+                <Card />
 
                 <View style={{ backgroundColor: '#DBDBDB', flex: 1, width: '90%', margin: 20, height: 80, flexDirection: 'row', alignItems: 'center', zIndex: 100, }}>
                     <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection(!isSelected)} />
                     <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('Select')}</Text>
 
 
-                    <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2 }}>
+                    <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2, overflow: 'hidden', height: 60 }}>
                         <Picker
                             mode="dropdown"
                             selectedValue={selected1}
@@ -127,7 +107,7 @@ function Menue({ navigation }) {
                             style={{ marginStart: -15, marginEnd: 0, height: 20 }}
 
                         >
-                            <Picker.Item label="delete" value="key0" />
+                            <Picker.Item label="حذف" value="key0" />
                             <Picker.Item label="تعديل" value="key1" />
 
                         </Picker>
@@ -144,7 +124,7 @@ function Menue({ navigation }) {
                             style={{ marginStart: -15, height: 40, }}
 
                         >
-                            <Picker.Item label="newest" value="key0" />
+                            <Picker.Item label="جديد" value="key0" />
                             <Picker.Item label="الاقدام" value="key1" />
                             <Picker.Item label="الجديد" value="key2" />
                             <Picker.Item label="القديم" value="key3" />
@@ -167,16 +147,18 @@ function Menue({ navigation }) {
                             <View style={styles.modalView}>
                                 <View style={{ margin: 20 }}>
                                     <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddMenue')} </Text>
+
                                     <InputIcon
                                         placeholder={i18n.t('menueAr')}
                                         inputStyle={{ textAlign: 'center', }}
-
                                     />
+
                                     <InputIcon
                                         placeholder={i18n.t('menueEn')}
                                         styleCont={{ marginTop: -5 }}
                                         inputStyle={{ textAlign: 'center', }}
                                     />
+
                                     <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
                                 </View>
                             </View>
