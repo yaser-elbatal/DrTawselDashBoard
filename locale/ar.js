@@ -525,7 +525,7 @@ const ar = {
   Adjusted: 'تم التسويه',
   Commission: 'العموله',
   Createreport: 'انشاء تقرير',
-
+  deb: 'القسم التابع ليه',
 
 };
 

@@ -1,39 +1,17 @@
 import React from 'react'
-import { View, StyleSheet, Image, Text, FlatList, } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, I18nManager, Platform, } from 'react-native';
 
 import HomeHeader from '../../common/HomeHeader'
-import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../consts/Colors';
 import { width, height } from '../../consts/HeightWidth';
 import i18n from '../../locale/i18n'
 import { Content } from 'native-base';
-
+import Card from '../../common/Card'
 
 
 function HomePage({ navigation }) {
 
-    const Orderdata = [{
-        id: 'K0',
-        title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianYellow, Colors.GradianYellow2]
-    },
-    {
-        id: 'K1',
-        title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianGreen, Colors.GradianGreen2]
-    },
-    {
-        id: 'K2',
-        title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianRed, Colors.GradianRed2]
-    }
 
-
-        ,
-    ]
 
 
     const ProductData = [{
@@ -88,32 +66,13 @@ function HomePage({ navigation }) {
         <View style={{ flex: 1, }}>
 
             <HomeHeader navigation={navigation} label={i18n.t('Hello')} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
-
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
-            </View>
-
-
-            <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
-
             <Content showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+
+
+                <Card />
+
+                <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
+
 
                 <FlatList
                     horizontal
@@ -172,16 +131,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     Linear: {
-        borderTopStartRadius: 0,
-        borderBottomRightRadius: 25,
-        borderBottomLeftRadius: 25,
-        borderTopRightRadius: 25,
-        marginStart: 5,
-        marginTop: 10,
-        marginEnd: 5,
-        height: height * .18,
-        width: width * .3,
-        flex: 1
+        flex: 1,
     },
     num: {
         alignSelf: 'center',

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager } from 'react-native'
 
 import { SText } from '../../common/SText';
 import BackBtn from '../../common/BackBtn'
@@ -50,14 +50,12 @@ function Login({ navigation }) {
     return (
         <View style={styles.container}>
             <BackBtn navigation={navigation} />
-            <View style={{ margin: 20, bottom: 30, }}>
+            <ScrollView style={{ flex: 1, bottom: 35 }}>
                 <View style={{ flexDirection: 'column' }}>
                     <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
                     <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
                 </View>
-            </View>
 
-            <ScrollView style={{ flex: 1, bottom: 30 }}>
                 <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
                 <InputIcon
                     label={i18n.t('phone')}
@@ -121,12 +119,11 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     FPass: {
-        textAlign: 'left',
+        alignSelf: I18nManager.isRTL ? 'flex-end' : 'flex-start',
         marginHorizontal: 15,
         fontSize: 14
     },
     LoginBtn: {
-        marginVertical: 0,
         borderRadius: 5,
         marginHorizontal: 20,
         width: '90%'
