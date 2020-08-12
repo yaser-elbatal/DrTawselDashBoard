@@ -45,16 +45,15 @@ function NewPassword({ navigation }) {
 
             <InputIcon
                 placeholder={i18n.t('password')}
-                inputStyle={{}}
+                styleCont={{bottom:30}}
                 value={password}
                 onChangeText={(e) => setPassword(e)}
             />
             <InputIcon
                 placeholder={i18n.t('confirmnewPass')}
-                inputStyle={{}}
+                styleCont={{bottom:30,marginTop:0}}
                 value={nPassword}
                 onChangeText={(e) => setnPassword(e)}
-                styleCont={{ marginTop: 0 }}
             />
             <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('Login')} />
 

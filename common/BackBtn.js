@@ -23,7 +23,7 @@ function BackBtn({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: -45,
+        marginTop: -55,
         alignItems: 'flex-end',
         marginRight: -5
 
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
     Btn: {
         position: 'absolute',
-        marginTop: width * .22,
+        marginTop: width * .25,
     },
     arrow: {
         width: width * .08,

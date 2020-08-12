@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, Platform } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         bottom: 40
     },
     Button: {
-        bottom: -20,
+        bottom:-25,        
         width,
         backgroundColor: Colors.sky,
         flex: 1,
