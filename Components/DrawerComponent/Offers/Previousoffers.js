@@ -5,6 +5,7 @@ import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import BTN from '../../../common/BTN';
+import Card from '../../../common/Card';
 
 const { width } = Dimensions.get('window')
 
@@ -69,27 +70,7 @@ function Previousoffers({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             <Header navigation={navigation} label={i18n.t('Previousoffers')} />
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
-
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
-            </View>
+            <Card />
 
             <FlatList
                 pagingEnabled={true}
@@ -107,10 +88,7 @@ function Previousoffers({ navigation }) {
                                     <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
                                     <Text style={styles.CardText}>{item.item.Date}</Text>
                                 </View>
-
                                 <BTN title={item.item.label} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.item.color }} />
-
-
                             </View>
                         </View>
                     </View>
@@ -157,13 +135,14 @@ const styles = StyleSheet.create({
     Card: {
         height: 140,
         shadowColor: Colors.bg,
-        margin: 10,
+        margin: '5%',
         borderRadius: 10,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 1,
         overflow: 'hidden',
+        marginTop: 5
     },
 
 })

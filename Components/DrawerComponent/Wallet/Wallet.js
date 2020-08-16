@@ -76,11 +76,9 @@ function Wallet({ navigation }) {
 }
 const styles = StyleSheet.create({
     SCard: {
-        borderTopEndRadius: 0,
-        borderBottomRightRadius: 25,
-        borderBottomLeftRadius: 25,
-        borderTopRightRadius: 25,
-        borderTopLeftRadius: 25,
+        borderRadius: 25,
+        borderTopStartRadius: 0,
+
         marginTop: 10,
         height: 80,
         width: width * .3,

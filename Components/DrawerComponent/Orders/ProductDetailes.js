@@ -5,8 +5,8 @@ import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
 
 function ProductDetailes({ navigation }) {
-    const [click1, setClick1] = useState(false)
-    const [click2, setClick2] = useState(false)
+    const [click1, setClick1] = useState(true)
+    const [click2, setClick2] = useState(true)
 
 
     return (

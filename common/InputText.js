@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         justifyContent: "flex-end",
-        height: 40,
         paddingHorizontal: 25,
         borderColor: '#E0E0E0',
         borderWidth: 1,

@@ -66,7 +66,7 @@ function ProductDet({ navigation }) {
                     </TouchableOpacity>
                     {
                         click1 ?
-                            <Text style={{ marginTop: 15 }}>
+                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 10, color: Colors.InputColor }}>
                                 هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
                                 هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
                                 هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه

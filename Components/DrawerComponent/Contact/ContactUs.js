@@ -3,7 +3,7 @@ import { View, Text, Image, Dimensions, StyleSheet, FlatList, ScrollView, } from
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
-import { LinearGradient } from 'expo-linear-gradient';
+import Card from '../../../common/Card';
 import BTN from '../../../common/BTN';
 import { InputIcon } from '../../../common/InputText';
 
@@ -40,27 +40,7 @@ function ContactUs({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <Header navigation={navigation} label={i18n.t('contactus')} />
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
-
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
-            </View>
+            <Card />
             <ScrollView style={{ flex: 1 }}>
                 <InputIcon
                     label={i18n.t('username')}
@@ -81,7 +61,6 @@ function ContactUs({ navigation }) {
                     placeholder={i18n.t('writeMsg')}
                     inputStyle={{ borderColor: '#eaeaea', textAlignVertical: 'top', paddingTop: 10, borderRadius: 5 }}
                     styleCont={{ height: width * .49, marginHorizontal: '5%', marginTop: 0 }}
-                    LabelStyle={{ bottom: width * .42, backgroundColor: 0, left: 10, color: Colors.IconBlack }}
                 />
                 <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={() => { }} />
 

@@ -84,7 +84,7 @@ function HomePage({ navigation }) {
 
                         <View style={styles.Card}>
                             <View style={{ flexDirection: 'column', flex: 1 }}>
-                                <Image source={item.item.Image} style={{ width: '100%', height: '70%', borderTopRightRadius: 10, borderTopLeftRadius: 10 }} />
+                                <Image source={item.item.Image} style={{ width: '100%', height: '70%', }} />
                                 <View style={{ margin: 10, flex: 1, height: '30%' }}>
                                     <Text style={styles.prod}>{item.item.title}</Text>
                                     <Text style={[styles.prod, { color: Colors.fontNormal }]}>{item.item.price}</Text>
@@ -182,11 +182,13 @@ const styles = StyleSheet.create({
     },
     Card: {
         margin: 10,
-        borderRadius: 15,
+        borderRadius: 20,
         width: width * .5,
         height: height * .25,
         backgroundColor: Colors.bg,
-        flex: 1
+        flex: 1,
+        borderTopStartRadius:0,
+        overflow:'hidden'
     },
     WrabText: {
         flexDirection: 'column',

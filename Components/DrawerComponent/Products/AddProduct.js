@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, ScrollView, Text, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
-import { Picker } from 'native-base';
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 import i18n from '../../../locale/i18n'
@@ -28,6 +28,12 @@ function AddProduct({ navigation }) {
     const onValueChange = (value) => {
         setSelection(value)
     }
+
+    const menue = [{
+        value: 'Food',
+    }, {
+        value: 'Drinkes',
+    },];
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <Header navigation={navigation} label={i18n.t('AddPro')} />
@@ -113,22 +119,16 @@ function AddProduct({ navigation }) {
                     image={require('../../../assets/Images/camera_gray.png')}
                     imgStyle={{ width: width * .055 }}
                 />
-                <View style={styles.DrbContain}>
-                    <Picker
-                        mode="dropdown"
-                        style={{ color: Colors.fontNormal, marginHorizontal: 5 }}
-                        placeholder={i18n.t('menueChoice')}
-                        placeholderStyle={{ color: Colors.IconBlack }}
-                        placeholderIconColor={Colors.IconBlack}
-                        selectedValue={isSelected}
-                        onValueChange={onValueChange}
-                    >
-                        <Picker.Item label='menue' value="key" />
-                        <Picker.Item label="tanta" value="key1" />
-                        <Picker.Item label="mansoura" value="key2" />
-                        <Picker.Item label="mahalla" value="key3" />
-                        <Picker.Item label="Dmam" value="key4" />
-                    </Picker>
+                <View style={{ borderWidth: .4, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                    <Dropdown
+                        placeholder={i18n.t('menue')}
+                        data={menue}
+                        fontSize={12}
+                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        lineWidth={0}
+                        containerStyle={{ width: '95%', paddingHorizontal: 5, bottom: 10, }}
+                        animationDuration={0}
+                    />
                 </View>
                 <InputIcon
                     placeholder={i18n.t('prodDetAr')}
@@ -149,7 +149,7 @@ function AddProduct({ navigation }) {
 
             </ScrollView>
 
-        </View>
+        </View >
     )
 }
 const styles = StyleSheet.create({

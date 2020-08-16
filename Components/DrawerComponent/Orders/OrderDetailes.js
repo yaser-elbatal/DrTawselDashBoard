@@ -36,10 +36,11 @@ function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, o
     return (
         <View style={{ flex: 1 }}>
             <Header navigation={navigation} label={i18n.t('orderDetailes') + '#1000'} />
+
             <ScrollView style={{ flex: 1 }}>
                 <TouchableOpacity onPress={() => setClick(!click)}>
                     <View style={{ width: '90%', margin: 20, backgroundColor: Colors.InputColor, height: 40, }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10, alignItems: 'center' }}>
                             <Text style={styles.nMenu}>{i18n.t('ClientInfo')}</Text>
                             {
                                 click ?
@@ -54,19 +55,29 @@ function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, o
                 </TouchableOpacity>
                 {
                     click ?
-                        <View style={{ flexDirection: 'column' }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
-                                <Text style={styles.name}>{i18n.t('rebresentativename')} :</Text>
-                                <Text style={styles.nMenu}>اوامر الشبكه</Text>
-                                <TouchableOpacity onPress={() => { }}>
-                                    <Image source={require('../../../assets/Images/whatsapp.png')} style={{ width: 20, height: 20, }} resizeMode='contain' />
-                                </TouchableOpacity>
+
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: '7%' }}>
+                            <View style={{ flexDirection: 'column', }}>
+                                <Text style={styles.name}>{i18n.t('rebresentativename')}</Text>
+                                <Text style={[styles.name, { marginVertical: 15 }]}>{i18n.t('phone')}</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-                                <Text style={styles.name}>{i18n.t('phone')}    :      </Text>
-                                <Text style={styles.nMenu}>1234567891           </Text>
+                            <View style={{ flexDirection: 'column', alignItems: 'center', }}>
+                                <Text style={{ marginHorizontal: 15 }}>:</Text>
+                                <Text style={{ marginHorizontal: 15, marginVertical: 15 }}>:</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                    <Text style={styles.sname}>اوامر الشبكه</Text>
+                                    <TouchableOpacity style={{ alignSelf: 'flex-end', alignItems: 'flex-end', left: width * .25 }}>
+                                        <Image source={require('../../../assets/Images/whatsapp.png')} style={{ width: 20, height: 20, }} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={[styles.sname, { marginVertical: 15 }]}>1234567891</Text>
                             </View>
                         </View>
+
+
                         : null
                 }
 
@@ -88,19 +99,18 @@ function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, o
                 {
                     click1 ?
                         <FlatList
-                            pagingEnabled={true}
                             showsVerticalScrollIndicator={false}
                             data={Orderdata}
                             keyExtractor={(item) => item.id}
                             renderItem={(item) => (
 
-                                <View style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, padding: 20, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
+                                <View style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
                                     <Text style={styles.name}>{item.item.title}</Text>
                                     <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
                                     <Text style={styles.name}>{item.item.number}</Text>
                                     <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
                                     <TouchableWithoutFeedback onPress={onPressDetailes}>
-                                        <Text style={[styles.name, { color: Colors.sky }]}>{i18n.t('detailes')}</Text>
+                                        <Text style={[styles.name, { color: Colors.sky, fontSize: 14, }]}>{i18n.t('detailes')}</Text>
                                     </TouchableWithoutFeedback>
 
                                 </View>
@@ -151,21 +161,21 @@ function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, o
 
                 {
                     click4 ?
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginEnd: 150, marginHorizontal: 40, marginVertical: 20, marginTop: 0 }}>
-                            <View style={{ flexDirection: 'column' }}>
+                        <View style={{ flexDirection: 'row', marginHorizontal: '7%' }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                 <Text style={styles.name}>{i18n.t('productPrice')}</Text>
-                                <Text style={[styles.name, { marginVertical: 5 }]}>{i18n.t('Deliveryprice')}</Text>
+                                <Text style={[styles.name, { paddingVertical: 10 }]}>{i18n.t('Deliveryprice')}</Text>
                                 <Text style={styles.name}>{i18n.t('total')}</Text>
                             </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Text>:</Text>
-                                <Text style={{ marginVertical: 5 }}>:</Text>
-                                <Text>:</Text>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                <Text style={{ marginHorizontal: 20 }}>:</Text>
+                                <Text style={{ marginHorizontal: 20, paddingVertical: 10 }}>:</Text>
+                                <Text style={{ marginHorizontal: 20 }}>:</Text>
                             </View>
-                            <View style={{ flexDirection: 'column' }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
                                 <Text style={styles.sname}>180 {i18n.t('Rial')}</Text>
-                                <Text style={[styles.sname, { marginVertical: 5 }]}>20{i18n.t('Rial')}</Text>
-                                <Text style={[styles.sname, { color: Colors.RedColor }]}> {i18n.t('Rial')}200</Text>
+                                <Text style={[styles.sname, { paddingVertical: 10 }]}>20{i18n.t('Rial')}</Text>
+                                <Text style={[styles.sname, { color: Colors.RedColor, }]}> {i18n.t('Rial')}200</Text>
                             </View>
                         </View>
                         : null

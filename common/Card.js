@@ -40,21 +40,20 @@ function Card() {
                 keyExtractor={(item) => item.id}
                 renderItem={(item) => (
                     <View style={{
-                        height: width * .36,
+                        height: width * .3,
                         width: width * .29,
                         marginStart: 5,
                         borderRadius: 25,
-                        borderTopEndRadius: I18nManager.isRTL ? 0 : 25,
-                        borderTopStartRadius: I18nManager.isRTL ? 25 : 0,
+                        borderTopStartRadius: 0,
                         flex: 1,
                         overflow: 'hidden'
                     }}>
                         <LinearGradient
                             colors={item.item.color}
-                            style={styles.Linear}                                >
+                            style={styles.Linear}  >
                             <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', }}>
                                 <Image source={require('../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
+                                <Text style={[styles.Text, { marginTop: 5, }]}>{item.item.title}</Text>
                                 <Text style={styles.Text}>{item.item.number}</Text>
                             </View>
                         </LinearGradient>
@@ -70,7 +69,7 @@ function Card() {
 const styles = StyleSheet.create({
     Text: {
         fontFamily: 'flatMedium',
-        fontSize: width * .03,
+        fontSize: width * .028,
         color: Colors.bg,
         textAlign: 'center'
     },

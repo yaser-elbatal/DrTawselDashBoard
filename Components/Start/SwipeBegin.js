@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         bottom: 40
     },
     Button: {
-        bottom: Platform.OS === 'ios' ? -30 : -20,
+        bottom: Platform.OS === 'ios' ? -25 : -20,
         width,
         backgroundColor: Colors.sky,
         flex: 1,

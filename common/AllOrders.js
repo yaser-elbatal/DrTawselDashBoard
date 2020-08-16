@@ -6,6 +6,7 @@ import { InputIcon } from './InputText'
 import i18n from '../locale/i18n'
 import Colors from '../consts/Colors';
 import Header from './Header';
+import Card from './Card';
 
 const { width } = Dimensions.get('window')
 
@@ -68,29 +69,8 @@ function AllOrders({ navigation, label, onPress }) {
                 styleCont={{ marginTop: 10, height: width * .18, }}
                 inputStyle={{ backgroundColor: '#DBDBDB' }}
             />
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
-
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
-            </View>
+            <Card />
             <FlatList
-                pagingEnabled={true}
                 showsVerticalScrollIndicator={false}
                 data={MeueCard}
                 keyExtractor={(item) => item.id}
@@ -116,7 +96,7 @@ function AllOrders({ navigation, label, onPress }) {
                                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                         <Text style={[styles.sname, { marginVertical: 5 }]}> {i18n.t('name')}</Text>
                                         <Text style={[styles.sname, { marginVertical: 5 }]}> 5 {i18n.t('minutes')}</Text>
-                                        <Text style={[styles.sname, { color: Colors.sky, marginVertical: 5 }]}> 122</Text>
+                                        <Text style={[styles.sname, { color: Colors.sky, marginTop: 10 }]}> 122</Text>
                                     </View>
                                 </View>
                             </View>

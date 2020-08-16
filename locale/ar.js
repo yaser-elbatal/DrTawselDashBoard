@@ -526,7 +526,11 @@ const ar = {
   Commission: 'العموله',
   Createreport: 'انشاء تقرير',
   deb: 'القسم التابع ليه',
-
+  delete: 'حذف',
+  edit: 'تعديل',
+  latest: 'الاحدث',
+  oldest: 'الاقدم',
+  select: 'تحديد'
 };
 
 export default ar;

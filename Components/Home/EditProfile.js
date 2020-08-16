@@ -4,8 +4,9 @@ import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { InputIcon } from '../../common/InputText'
 import { validateUserName, validatePhone, validatePassword, validateEmail, validateCode } from '../../common/Validation'
-import { Picker } from 'native-base';
+import { Dropdown } from 'react-native-material-dropdown';
 import BTN from '../../common/BTN'
+import { width } from '../../consts/HeightWidth'
 
 function EditProfile({ navigation }) {
 
@@ -19,6 +20,14 @@ function EditProfile({ navigation }) {
     const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState(undefined);
 
+    const data = [{
+        value: 'Ryad',
+    }, {
+        value: 'Mekka',
+    },
+    {
+        value: 'madina',
+    }];
 
     const _validate = () => {
         let nameErr = validateUserName(name)
@@ -94,22 +103,16 @@ function EditProfile({ navigation }) {
                             value='011111111111'
                             styleCont={{ marginTop: 0 }}
                         />
-                        <View style={styles.DrbContain}>
-                            <Picker
-                                mode="dropdown"
-                                style={{ width: '90%', color: Colors.fontNormal, marginHorizontal: 5 }}
+                        <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .13, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                            <Dropdown
                                 placeholder={i18n.t('city')}
-                                placeholderStyle={{ color: Colors.IconBlack }}
-                                placeholderIconColor={Colors.IconBlack}
-                                selectedValue={isSelected}
-                                onValueChange={onValueChange}
-                            >
-                                <Picker.Item label="cairo" value="key0" />
-                                <Picker.Item label="tanta" value="key1" />
-                                <Picker.Item label="mansoura" value="key2" />
-                                <Picker.Item label="mahalla" value="key3" />
-                                <Picker.Item label="Dmam" value="key4" />
-                            </Picker>
+                                data={data}
+                                fontSize={12}
+                                itemTextStyle={{ fontFamily: 'flatMedium' }}
+                                lineWidth={0}
+                                containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                                animationDuration={0}
+                            />
                         </View>
                         <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('MyProfile')} />
 

@@ -1,24 +1,22 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal } from 'react-native';
-import { Picker, CheckBox } from "native-base";
+import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native';
+import { CheckBox } from "native-base";
 
 
 
 import HomeHeader from '../../../common/HomeHeader'
 import i18n from '../../../locale/i18n'
-import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../../consts/Colors';
 import { InputIcon } from '../../../common/InputText';
 import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
 import Card from '../../../common/Card';
+import DrobDwn from '../../../common/DrobDwn';
 
 function Menue({ navigation }) {
 
-    const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
     const [modalVisible, setModalVisible] = useState(false);
-
 
 
 
@@ -83,7 +81,7 @@ function Menue({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
 
                 <InputIcon
                     placeholder={i18n.t('search1')}
@@ -94,45 +92,7 @@ function Menue({ navigation }) {
 
                 <Card />
 
-                <View style={{ backgroundColor: '#DBDBDB', flex: 1, width: '90%', margin: 20, height: 80, flexDirection: 'row', alignItems: 'center', zIndex: 100, }}>
-                    <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection(!isSelected)} />
-                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('Select')}</Text>
-
-
-                    <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2, overflow: 'hidden', height: 60 }}>
-                        <Picker
-                            mode="dropdown"
-                            selectedValue={selected1}
-                            onValueChange={onValueChange1}
-                            style={{ marginStart: -15, marginEnd: 0, height: 20 }}
-
-                        >
-                            <Picker.Item label="حذف" value="key0" />
-                            <Picker.Item label="تعديل" value="key1" />
-
-                        </Picker>
-                    </View>
-
-
-
-                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('filter')}</Text>
-                    <View style={{ margin: 30, backgroundColor: Colors.bg, marginHorizontal: 2, width: width * .27, overflow: 'hidden' }}>
-                        <Picker
-                            mode="dropdown"
-                            selectedValue={selected}
-                            onValueChange={onValueChange}
-                            style={{ marginStart: -15, height: 40, }}
-
-                        >
-                            <Picker.Item label="جديد" value="key0" />
-                            <Picker.Item label="الاقدام" value="key1" />
-                            <Picker.Item label="الجديد" value="key2" />
-                            <Picker.Item label="القديم" value="key3" />
-                        </Picker>
-                    </View>
-
-
-                </View>
+                <DrobDwn />
 
                 <BTN title={i18n.t('AddMenue')} ContainerStyle={[styles.LoginBtn, { marginHorizontal: 18, marginVertical: 10 }]} onPress={() => setModalVisible(true)} />
 

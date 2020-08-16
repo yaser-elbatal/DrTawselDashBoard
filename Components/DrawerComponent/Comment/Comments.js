@@ -4,7 +4,7 @@ import { View, StyleSheet, FlatList, Text, Image } from 'react-native';
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import { width } from '../../../consts/HeightWidth'
-import { LinearGradient } from 'expo-linear-gradient';
+import Card from '../../../common/Card';
 import Colors from '../../../consts/Colors'
 
 function Comments({ navigation }) {
@@ -71,26 +71,9 @@ function Comments({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             <Header navigation={navigation} label={i18n.t('comments')} />
+            <Card />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
 
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
                 <View style={{ backgroundColor: Colors.InputColor, height: 70, width: '95%', margin: 20, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', }}>
                     <Image source={require('../../../assets/Images/big_star_yellow.png')} style={{ width: '20%', height: '50%' }} resizeMode='contain' />
                     <Text style={[styles.Text, { color: Colors.IconBlack, fontSize: 16 }]}>{i18n.t('RateNum')} : (16)</Text>

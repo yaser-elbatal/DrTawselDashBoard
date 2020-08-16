@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Picker, CheckBox, Content } from "native-base";
+import { CheckBox, Content } from "native-base";
 
 
 import HomeHeader from '../../../common/HomeHeader'
@@ -10,6 +9,8 @@ import Colors from '../../../consts/Colors';
 import { InputIcon } from '../../../common/InputText';
 import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
+import DrobDwn from '../../../common/DrobDwn';
+import Card from '../../../common/Card';
 
 function Products({ navigation }) {
 
@@ -81,69 +82,8 @@ function Products({ navigation }) {
             />
 
             <Content style={{ flex: 1 }}>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <FlatList
-                        horizontal
-                        pagingEnabled={true}
-                        showsHorizontalScrollIndicator={false}
-                        data={Orderdata}
-                        keyExtractor={(item) => item.id}
-                        renderItem={(item) => (
-
-                            <LinearGradient
-                                colors={item.item.color}
-                                style={styles.Linear}>
-                                <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                    <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                    <Text style={styles.Text}>{item.item.title}</Text>
-                                    <Text style={styles.Text}>{item.item.number}</Text>
-                                </View>
-                            </LinearGradient>
-
-                        )} />
-                </View>
-
-
-                <View style={{ backgroundColor: '#DBDBDB', flex: 1, width: '90%', margin: 20, height: 80, flexDirection: 'row', alignItems: 'center', zIndex: 100, }}>
-                    <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection(!isSelected)} />
-                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('Select')}</Text>
-
-
-                    <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2, overflow: 'hidden', }}>
-                        <Picker
-                            mode="dropdown"
-                            selectedValue={selected1}
-                            onValueChange={onValueChange1}
-                            style={{ marginStart: -15, marginEnd: 0, height: 20 }}
-
-                        >
-                            <Picker.Item label="delete" value="key0" />
-                            <Picker.Item label="تعديل" value="key1" />
-
-                        </Picker>
-                    </View>
-
-
-
-                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('filter')}</Text>
-                    <View style={{ margin: 30, backgroundColor: Colors.bg, marginHorizontal: 2, width: width * .27, overflow: 'hidden' }}>
-                        <Picker
-                            mode="dropdown"
-                            selectedValue={selected}
-                            onValueChange={onValueChange}
-                            style={{ marginStart: -15, height: 40, }}
-
-                        >
-                            <Picker.Item label="newest" value="key0" />
-                            <Picker.Item label="الاقدام" value="key1" />
-                            <Picker.Item label="الجديد" value="key2" />
-                            <Picker.Item label="القديم" value="key3" />
-                        </Picker>
-                    </View>
-
-
-                </View>
-
+                <Card />
+                <DrobDwn />
                 <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('AddProduct')} />
 
 

@@ -7,6 +7,8 @@ import Colors from '../../../consts/Colors';
 import Header from '../../../common/Header';
 import { InputIcon } from '../../../common/InputText';
 import { Picker, CheckBox, Content } from "native-base";
+import Card from '../../../common/Card';
+import DrobDwn from '../../../common/DrobDwn';
 
 const { width, height } = Dimensions.get('window')
 
@@ -82,71 +84,16 @@ function IncomingSpecialOrder({ navigation }) {
                 styleCont={{ marginTop: 10, height: width * .18, }}
                 inputStyle={{ backgroundColor: '#DBDBDB' }}
             />
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
+            <Card />
 
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
-            </View>
-
-            <View style={{ backgroundColor: Colors.InputColor, width: '90%', margin: 20, marginVertical: 10, height: 50, flexDirection: 'row', alignItems: 'center', zIndex: 100, }}>
-                <CheckBox checked={isSelected} color={isSelected ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection(!isSelected)} />
-                <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('Select')}</Text>
-
-
-                <View style={{ width: width * .26, backgroundColor: Colors.bg, margin: 20, marginHorizontal: 2, overflow: 'hidden', }}>
-                    <Picker
-                        mode="dropdown"
-                        selectedValue={selected1}
-                        onValueChange={onValueChange1}
-                        style={{ marginStart: -15, marginEnd: 0, height: 40 }}
-
-                    >
-                        <Picker.Item label="delete" value="key0" />
-                        <Picker.Item label="تعديل" value="key1" />
-
-                    </Picker>
-                </View>
+            <DrobDwn />
 
 
 
-                <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, }}>{i18n.t('filter')}</Text>
-                <View style={{ margin: 30, backgroundColor: Colors.bg, marginHorizontal: 2, width: width * .27, overflow: 'hidden' }}>
-                    <Picker
-                        mode="dropdown"
-                        selectedValue={selected}
-                        onValueChange={onValueChange}
-                        style={{ marginStart: -15, height: 40, }}
 
-                    >
-                        <Picker.Item label="newest" value="key0" />
-                        <Picker.Item label="الاقدام" value="key1" />
-                        <Picker.Item label="الجديد" value="key2" />
-                        <Picker.Item label="القديم" value="key3" />
-                    </Picker>
-                </View>
-
-
-            </View>
 
 
             <FlatList
-                pagingEnabled={true}
                 showsVerticalScrollIndicator={false}
                 data={MeueCard}
                 keyExtractor={(item) => item.id}
@@ -158,18 +105,18 @@ function IncomingSpecialOrder({ navigation }) {
 
                                 <Text style={styles.nText}>{i18n.t('num')} # {item.item.num}</Text>
 
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginEnd: 150, marginVertical: 20, marginTop: 0 }}>
-                                    <View style={{ flexDirection: 'column' }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                         <Text style={styles.name}>{item.item.title}</Text>
                                         <Text style={[styles.name, { marginVertical: 5 }]}>{item.item.time}</Text>
                                         <Text style={styles.name}>{item.item.total}</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column' }}>
-                                        <Text>:</Text>
-                                        <Text style={{ marginVertical: 5 }}>:</Text>
-                                        <Text>:</Text>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                        <Text style={{ marginHorizontal: 20 }}>:</Text>
+                                        <Text style={{ marginVertical: 5, marginHorizontal: 20 }}>:</Text>
+                                        <Text style={{ marginHorizontal: 20 }}>:</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                         <Text style={styles.sname}> {i18n.t('name')}</Text>
                                         <Text style={[styles.sname, { marginVertical: 5 }]}> 5 {i18n.t('minutes')}</Text>
                                         <Text style={[styles.sname, { color: Colors.sky }]}> 122</Text>
@@ -235,7 +182,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 1,
-        marginTop: 0
+        marginTop: 0,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
 
     },
     name: {

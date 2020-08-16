@@ -3,7 +3,7 @@ import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManage
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
-import { LinearGradient } from 'expo-linear-gradient';
+import Card from '../../../common/Card';
 import BTN from '../../../common/BTN';
 
 const { width } = Dimensions.get('window')
@@ -58,26 +58,9 @@ function AddPices({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             <Header navigation={navigation} label={i18n.t('AddPices')} />
+            <Card />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    horizontal
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={Orderdata}
-                    keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
 
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', borderTopLeftRadius: 90 }}>
-                                <Image source={require('../../../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={styles.Text}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
-
-                    )} />
                 <TouchableOpacity>
                     <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30 }} />
                 </TouchableOpacity>
