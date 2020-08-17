@@ -162,19 +162,19 @@ function OrderDetailes({ navigation, labelBtn1, labelBtn2, onPress1, onPress2, o
                 {
                     click4 ?
                         <View style={{ flexDirection: 'row', marginHorizontal: '7%' }}>
-                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={styles.name}>{i18n.t('productPrice')}</Text>
-                                <Text style={[styles.name, { paddingVertical: 10 }]}>{i18n.t('Deliveryprice')}</Text>
+                                <Text style={[styles.name, { paddingVertical: 15 }]}>{i18n.t('Deliveryprice')}</Text>
                                 <Text style={styles.name}>{i18n.t('total')}</Text>
                             </View>
-                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ marginHorizontal: 20 }}>:</Text>
-                                <Text style={{ marginHorizontal: 20, paddingVertical: 10 }}>:</Text>
+                                <Text style={{ marginHorizontal: 20, paddingVertical: 11 }}>:</Text>
                                 <Text style={{ marginHorizontal: 20 }}>:</Text>
                             </View>
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={styles.sname}>180 {i18n.t('Rial')}</Text>
-                                <Text style={[styles.sname, { paddingVertical: 10 }]}>20{i18n.t('Rial')}</Text>
+                                <Text style={[styles.sname, { paddingVertical: 15 }]}>20{i18n.t('Rial')}</Text>
                                 <Text style={[styles.sname, { color: Colors.RedColor, }]}> {i18n.t('Rial')}200</Text>
                             </View>
                         </View>
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginHorizontal: 20,
         width: '90%',
-        marginTop: 0
+        marginTop: 10
     }
 })
 export default OrderDetailes

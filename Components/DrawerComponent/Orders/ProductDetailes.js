@@ -49,21 +49,21 @@ function ProductDetailes({ navigation }) {
                         </TouchableOpacity>
                         {
                             click1 ?
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 30, marginEnd: 80, marginVertical: 20, marginTop: 0 }}>
-                                    <View style={{ flexDirection: 'column', }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20 }}>
+                                    <View style={{ flexDirection: 'column', paddingHorizontal: 20 }}>
                                         <Text style={styles.name}>{i18n.t('menue')} </Text>
-                                        <Text style={[styles.name, { marginVertical: 5, }]}>{i18n.t('Prod')}</Text>
-                                        <Text style={styles.name}>{i18n.t('quatity')} </Text>
+                                        <Text style={[styles.name, {}]}>{i18n.t('Prod')}</Text>
+                                        <Text style={[styles.name, {}]}>{i18n.t('quatity')} </Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={{ flexDirection: 'column', alignItems: 'center', paddingHorizontal: 20 }}>
                                         <Text>:</Text>
-                                        <Text style={{ marginVertical: 5 }}>:</Text>
-                                        <Text>:</Text>
+                                        <Text >:</Text>
+                                        <Text style={{}}>:</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: 5 }}>
                                         <Text style={styles.sname}>متاجر</Text>
-                                        <Text style={[styles.sname, { marginVertical: 5 }]}>منتج ملابس</Text>
-                                        <Text style={[styles.sname, { color: Colors.sky }]}> 4</Text>
+                                        <Text style={[styles.sname, {}]}>منتج ملابس</Text>
+                                        <Text style={[styles.sname, { color: Colors.sky, }]}> 4</Text>
                                     </View>
                                 </View>
                                 : null
