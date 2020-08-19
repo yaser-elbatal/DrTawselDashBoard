@@ -538,7 +538,9 @@ const en = {
   edit: 'edit',
   latest: 'latest',
   oldest: 'oldest',
-  select: 'select'
+  select: 'select',
+  PhoneErr: 'Please enter a valid phone number',
+  passwordErr: 'Please enter a valid password'
 };
 
 export default en;

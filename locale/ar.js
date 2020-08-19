@@ -530,7 +530,9 @@ const ar = {
   edit: 'تعديل',
   latest: 'الاحدث',
   oldest: 'الاقدم',
-  select: 'تحديد'
+  select: 'تحديد',
+  PhoneErr: 'يرجى ادخال رقم هاتف صحيح',
+  passwordErr: 'كلمة المرور يجب ان تكون 6 أرقام او أكثر'
 };
 
 export default ar;

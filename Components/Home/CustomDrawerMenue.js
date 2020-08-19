@@ -15,6 +15,8 @@ function CustomDrawerMenue({ navigation }) {
         <View style={{ flex: 1, overflow: 'hidden' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', }} >
 
+
+
                 <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
                     <View style={{ marginTop: 50, marginHorizontal: 20 }}>
                         <Image source={require('../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
@@ -32,12 +34,13 @@ function CustomDrawerMenue({ navigation }) {
                     </ImageBackground>
                 </View>
             </View>
-            <Text style={[styles.hellText, { marginVertical: 0, bottom: 80, paddingHorizontal: 20 }]}>{i18n.t('Hello')}</Text>
-            <ScrollView style={{ flex: 1, bottom: 50, marginVertical: -20 }} showsVerticalScrollIndicator={false}>
-                <View style={{ flexDirection: 'column', }}>
+            <ScrollView style={{ flex: 1, bottom: 70, }} showsVerticalScrollIndicator={false}>
+                <Text style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')}</Text>
+
+                <View style={{ flexDirection: 'column', marginVertical: 20 }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
-                        <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, marginTop: 10, width: '95%' }}>
+                        <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('HomePage')}</Text>
                         </View>
                     </TouchableOpacity >
@@ -132,11 +135,12 @@ function CustomDrawerMenue({ navigation }) {
 }
 const styles = StyleSheet.create({
     hellText: {
-        paddingHorizontal: 80,
         fontFamily: 'flatMedium',
         fontSize: 18,
         color: Colors.bg,
-        padding: 5
+        padding: 5,
+        alignSelf: 'flex-start',
+        paddingHorizontal: 60
 
     }
 })

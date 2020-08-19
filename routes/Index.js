@@ -1,36 +1,26 @@
 import React, { useState } from 'react'
-import { UserProvider } from './UserContext';
 import MainStackNav, { DrawerNAv } from './AuthNavigator';
 import { NavigationContainer } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 function MainRoot() {
-    const [Token, setToken] = useState("");
-
-    const setLogin = () => {
-        setToken('yasser');
-
-    };
-    const setLogout = () => {
-        setToken("");
-    };
-
+    const auth = useSelector(state => state.auth);
     return (
-        <UserProvider value={{ setLogin, setLogout }}>
-            <NavigationContainer>
 
-                {
-                    Token ?
+        <NavigationContainer>
 
-
-                        <DrawerNAv />
-                        :
-                        <MainStackNav />
+            {
+                auth.user !== null ?
 
 
-                }
-            </NavigationContainer>
+                    <DrawerNAv />
+                    :
+                    <MainStackNav />
 
-        </UserProvider>
+
+            }
+        </NavigationContainer>
+
     )
 }
 

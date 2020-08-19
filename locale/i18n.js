@@ -11,11 +11,10 @@ export const getLocale = async () => {
 };
 
 getLocale()
-    .then((lan) => console.log(lan))
-    .catch((e) => console.log("no lang", e));
+// .then((lan) => console.log(lan))
+// .catch((e) => console.log("no lang", e));
 
 
 I18n.fallbacks = true;
 I18n.translations = { en, ar };
-I18n.locale = 'ar'
 export default I18n;

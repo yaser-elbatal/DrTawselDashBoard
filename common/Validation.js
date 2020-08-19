@@ -1,8 +1,10 @@
+import i18n from '../locale/i18n'
+
 export const validatePhone = (phone) =>
-    phone === '' ? "يرجى ادخال رقم هاتف صحيح" : phone.length < 9 ? "يرجى ادخال رقم هاتف صحيح" : null
+    phone === '' ? i18n.t('PhoneErr') : phone.length < 9 ? i18n.t('PhoneErr') : null
 
 export const validatePassword = (password) =>
-    password.length < 6 ? "كلمة المرور يجب ان تكون 6 أرقام او أكثر" : null;
+    password.length < 6 ? i18n.t('passwordErr') : null;
 
 export const validateTwoPasswords = (password, confirmPassword) => {
     return password != confirmPassword

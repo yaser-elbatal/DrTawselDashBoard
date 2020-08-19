@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage } from 'react-native'
 
 import { SText } from '../../common/SText';
 import BackBtn from '../../common/BackBtn'
@@ -8,21 +8,63 @@ import { InputIcon } from '../../common/InputText';
 import Colors from '../../consts/Colors';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
+import { Loader } from '../../common/Loader';
+
 import {
     validatePhone,
     validatePassword,
 } from "../../common/Validation";
 import i18n from '../../locale/i18n'
 import UserContext from '../../routes/UserContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { SignIn } from '../../store/action/AuthAction';
 
-
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo'
 
 function Login({ navigation }) {
-    const [phone, setPhone] = useState("98765432101111");
-    const [password, setPassword] = useState('000000000000');
-    const [isLoading, Setisloading] = useState(false);
 
-    const { setLogin } = useContext(UserContext);
+    const lang = useSelector(state => state.lang.language);
+    const auth = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    console.log('auth from Login' + auth);
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, Setisloading] = useState(false);
+    const [deviceId, setDeviceId] = useState('');
+    const [userId, setUserId] = useState(null);
+
+
+    const getDeviceId = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(
+            Permissions.NOTIFICATIONS
+        );
+
+        let finalStatus = existingStatus;
+
+        if (existingStatus !== 'granted') {
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+        }
+
+        if (finalStatus !== 'granted') {
+            return;
+        }
+
+        const deviceId = await Notifications.getExpoPushTokenAsync();
+        console.log(deviceId);
+        setDeviceId(deviceId);
+        setUserId(null);
+
+        AsyncStorage.setItem('deviceID', deviceId);
+    };
+
+    useEffect(() => {
+        getDeviceId()
+    }, []);
+
+
+
 
 
     const _validate = () => {
@@ -35,9 +77,8 @@ function Login({ navigation }) {
         const isVal = _validate();
 
         if (!isVal) {
-            setLogin()
-            Setisloading(true);
 
+            dispatch(SignIn(phone, password, deviceId, lang, navigation))
         }
         else {
             Toaster(_validate());
@@ -49,9 +90,11 @@ function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Loader loading={auth.loading} />
+
             <BackBtn navigation={navigation} />
             <ScrollView style={{ flex: 1, bottom: 35 }}>
-                <View style={{ flexDirection: 'column' ,marginHorizontal:20}}>
+                <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
                     <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
                     <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
                 </View>

@@ -22,7 +22,6 @@ export const changeLanguage = (lang, direction) => {
             dispatch({
                 type: chooseLang,
                 lang,
-                direction,
             }).then(await Updates.reload());
         } catch (e) {
             console.log("chang lang err", e);

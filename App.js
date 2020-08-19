@@ -4,20 +4,19 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import lang from './store/reducer/LangReducer';
+
 import MainRoot from './routes/Index';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistedStore } from './store/index';
+import './ReactotronConfig';
+import { Root } from 'native-base';
 
 export default function App() {
   const [isLoading, setisLoading] = useState(true);
 
 
-  const multiReducres = combineReducers({
-    lang,
-  });
 
-  const store = createStore(multiReducres, applyMiddleware(thunk))
+
 
   useEffect(() => {
     // I18nManager.forceRTL(true)
@@ -44,7 +43,11 @@ export default function App() {
     return (
 
       <Provider store={store}>
-        <MainRoot />
+        <PersistGate persistor={persistedStore}>
+          <Root>
+            <MainRoot />
+          </Root>
+        </PersistGate>
       </Provider>
     );
   }
