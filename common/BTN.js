@@ -7,10 +7,11 @@ function BTN({
     title,
     onPress,
     TextStyle,
-    ContainerStyle
+    ContainerStyle,
+    disabled
 }) {
     return (
-        <TouchableOpacity style={[styles.container, ContainerStyle]} onPress={onPress}>
+        <TouchableOpacity style={[styles.container, ContainerStyle]} onPress={onPress} disabled={disabled}>
             <Text style={[styles.sText, TextStyle]}>
                 {title}
             </Text>

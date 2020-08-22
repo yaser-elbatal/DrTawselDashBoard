@@ -540,7 +540,10 @@ const en = {
   oldest: 'oldest',
   select: 'select',
   PhoneErr: 'Please enter a valid phone number',
-  passwordErr: 'Please enter a valid password'
+  passwordErr: 'Please enter a valid password',
+  usernameErr: 'Username consists of 2 or more characters',
+  emailErr: 'please enter valid email',
+  CommRegister: 'The commercial register must be 10 numbers or more',
 };
 
 export default en;

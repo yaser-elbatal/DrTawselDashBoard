@@ -27,13 +27,24 @@ function Login({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
-    console.log('auth from Login' + auth);
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, Setisloading] = useState(false);
     const [deviceId, setDeviceId] = useState('');
     const [userId, setUserId] = useState(null);
+    const [phoneStatus, setPhoneStatus] = useState(0);
+    const [passwordStatus, setPasswordStatus] = useState(0);
 
+
+    function activeInput(type) {
+        if (type === 'phone' || phone !== '') setPhoneStatus(1);
+        if (type === 'password' || password !== '') setPasswordStatus(1);
+    }
+
+    function unActiveInput(type) {
+        if (type === 'phone' && phone === '') setPhoneStatus(0);
+        if (type === 'password' && password === '') setPasswordStatus(0);
+    }
 
     const getDeviceId = async () => {
         const { status: existingStatus } = await Permissions.getAsync(
@@ -52,7 +63,6 @@ function Login({ navigation }) {
         }
 
         const deviceId = await Notifications.getExpoPushTokenAsync();
-        console.log(deviceId);
         setDeviceId(deviceId);
         setUserId(null);
 
@@ -73,12 +83,12 @@ function Login({ navigation }) {
         return phoneErr || passwordErr;
     };
 
-    const SubmitLoginHandler = () => {
+    const SubmitLoginHandler = async () => {
         const isVal = _validate();
 
         if (!isVal) {
-
-            dispatch(SignIn(phone, password, deviceId, lang, navigation))
+            Setisloading(true)
+            await dispatch(SignIn(phone, password, deviceId, lang, navigation))
         }
         else {
             Toaster(_validate());
@@ -90,7 +100,6 @@ function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Loader loading={auth.loading} />
 
             <BackBtn navigation={navigation} />
             <ScrollView style={{ flex: 1, bottom: 35 }}>
@@ -101,32 +110,56 @@ function Login({ navigation }) {
 
                 <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
                 <InputIcon
-                    label={i18n.t('phone')}
+                    label={phoneStatus === 1 ? i18n.t('phone') : null}
+                    placeholder={phoneStatus === 1 ? null : i18n.t('phone')}
                     onChangeText={(e) => setPhone(e)}
                     value={phone}
-                    inputStyle={{ borderColor: Colors.sky }}
-                    LabelStyle={styles.label}
+                    inputStyle={{ borderColor: phoneStatus === 1 ? Colors.sky : Colors.InputColor }}
+                    LabelStyle={{
+                        color: phoneStatus === 1 ? Colors.sky : Colors.InputColor, paddingHorizontal: phoneStatus === 1 ? 10 : 0,
+                        fontSize: 15
+                    }}
+                    onBlur={() => unActiveInput('phone')}
+                    onFocus={() => activeInput('phone')}
                     keyboardType='numeric' />
 
                 <InputIcon
-                    placeholder={i18n.t('password')}
+                    label={passwordStatus === 1 ? i18n.t('password') : null}
+                    placeholder={passwordStatus === 1 ? null : i18n.t('password')}
                     onChangeText={(e) => setPassword(e)}
                     value={password}
+                    inputStyle={{ borderColor: passwordStatus === 1 ? Colors.sky : Colors.InputColor }}
+                    LabelStyle={{
+                        color: passwordStatus === 1 ? Colors.sky : Colors.InputColor, paddingHorizontal: passwordStatus === 1 ? 10 : 0,
+                        fontSize: 15
+                    }}
+                    onBlur={() => unActiveInput('password')}
+                    onFocus={() => activeInput('password')}
                     secureTextEntry
                     keyboardType='numeric'
                     styleCont={{ marginTop: 0 }}
                 />
 
                 <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('ForgetPass')} style={styles.FPass} />
-                {
-                    isLoading ?
-                        (
-                            <ActivityIndicator size="small" color="red" />
-                        )
-                        :
-                        (
-                            <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
-                        )}
+
+                {isLoading ? (
+                    <View style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 99999,
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                    }}>
+                        <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                    </View>
+                ) : (
+                        <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
+                    )}
                 <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Register')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 10 }} />
 
             </ScrollView>
@@ -155,12 +188,7 @@ const styles = StyleSheet.create({
         height: width * .7,
         alignSelf: 'center'
     },
-    label:
-    {
-        color: Colors.sky,
-        paddingHorizontal: 10,
-        fontSize: 15
-    },
+
     FPass: {
         alignSelf: I18nManager.isRTL ? 'flex-end' : 'flex-start',
         marginHorizontal: 15,

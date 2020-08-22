@@ -15,14 +15,17 @@ export const validateTwoPasswords = (password, confirmPassword) => {
 export const validateCode = (code) =>
     code === '' || code.length < 4 ? "يرجي التاكد من الكود واعاده المحاوله" : null;
 
+export const ValditeCommercialRegister = (CommercialRegister) =>
+    CommercialRegister === '' || CommercialRegister.length < 10 ? i18n.t('CommRegister') : null;
+
 export const validateEmail = email => {
     let mailReg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     return !mailReg.test(String(email).toLowerCase())
-        ? ' يرجى ادخال بريد الكتروني صحيح'
+        ? i18n.t('emailErr')
         : null;
 };
 export const validateUserName = userName =>
-    userName.length < 3 ? 'اسم المستخدم مكون من 3 احرف او اكثر' : null;
+    userName.length < 2 ? i18n.t('usernameErr') : null;
 
 export const validateAccountNum = (code) =>
     code === '' || code.length < 14 ? "رقم الحساب لا بد من ان يتألف من 14 رقم" : null;

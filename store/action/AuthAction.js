@@ -2,12 +2,15 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { Toast } from 'native-base'
 import CONST from '../../consts';
+import consts from '../../consts';
 
 export const Sign_In = 'Sign_In';
 export const LOGIN_IS_LOADING = 'LOGIN_IS_LOADING';
 export const login_success = 'login_success'
 export const login_failed = 'login_failed';
 export const temp_auth = 'temp_auth'
+export const Sign_up = 'Sign_up';
+
 
 const loginIsLoading = (bool) => {
     return {
@@ -27,10 +30,13 @@ export const SignIn = (phone, password, deviceId, lang, navigation) => {
     return (dispatch) => {
 
         dispatch(loginIsLoading(true));
-
         axios.post(CONST.url + 'sign-in',
-            { phone, password, lang, device_id: deviceId, user_type: 2 })
-            .then(res => handelLogin(dispatch, res.data, navigation))
+            { phone, password, lang, device_id: deviceId, user_type: 4 })
+            .then(res => {
+
+                dispatch(loginIsLoading(false));
+                handelLogin(dispatch, res.data, navigation)
+            })
             .catch(error => console.warn(error));
 
         dispatch({ type: Sign_In })
@@ -57,8 +63,35 @@ const handelLogin = (dispatch, data, navigation) => {
     });
 };
 
+export const SignUp = (data, navigation) => {
+    return (dispatch) => {
+        AsyncStorage.getItem('deviceID').then(deviceId => {
+            axios({
+                url: consts.url + 'sign-up',
 
+                method: 'POST',
+                data: {
+                    restaurant_name_ar: data.nameAR,
+                    restaurant_name_en: data.nameEN,
+                    password: data.password,
+                    phone: data.phone,
+                    email: data.email,
+                    commercial_register: data.CommercialRegister,
+                    city_id: data.city,
+                    category_id: data.department,
+                    lang: data.lang,
+                    name: 'yasser',
+                    device_id: deviceId,
+                    user_type: 4
+                }
+            }).then(res => {
+                console.log('res.data' + res.data);
+                dispatch({ type: Sign_up, payload: res.data })
+            })
+        })
+    }
 
+}
 
 
 const loginSuccess = (dispatch, data, navigation) => {
