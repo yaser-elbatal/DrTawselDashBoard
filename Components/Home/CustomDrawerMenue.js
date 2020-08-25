@@ -1,15 +1,24 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, ImageBackground, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, ImageBackground, TouchableOpacity, Image, StyleSheet, ScrollView, AsyncStorage } from 'react-native'
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
-import UserContext from '../../routes/UserContext';
+import { useDispatch, useSelector } from 'react-redux'
+import { Logout } from '../../store/action/AuthAction'
 
 
 
 function CustomDrawerMenue({ navigation }) {
     const [Clicle, setClick] = useState(0)
-    const { setLogout } = useContext(UserContext);
 
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.auth.user ? state.auth.user.data.token : null);
+    const user = useSelector(state => state.auth.user);
+
+
+
+    const logoutFunc = () => {
+        dispatch(Logout())
+    }
 
     return (
         <View style={{ flex: 1, overflow: 'hidden' }}>
@@ -120,7 +129,7 @@ function CustomDrawerMenue({ navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { setClick(13), setLogout() }}>
+                    <TouchableOpacity onPress={logoutFunc}>
                         <View style={{ backgroundColor: Clicle === 13 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('logout')}</Text>
                         </View>

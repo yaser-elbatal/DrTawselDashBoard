@@ -8,57 +8,54 @@ import Colors from '../../consts/Colors'
 import BTN from '../../common/BTN'
 import i18n from '../../locale/i18n'
 import { useDispatch, useSelector } from 'react-redux'
-import { ActivationCode } from '../../store/action/AuthAction'
 import {
-    validateCode,
-    validatePassword,
+    validatePhone,
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
+import { CheckPhone } from '../../store/action/AuthAction'
 
-
-
-
-function AccountConfirm({ navigation, route }) {
-    const [code, setCode] = useState('');
-    const [codeStatus, setCodeStatus] = useState(0);
+function PhoneCheck({ navigation }) {
+    const [Phone, setPhone] = useState('');
+    const [PhoneStatues, setPhoneStatues] = useState(0)
     const [spinner, setSpinner] = useState(false);
 
     const lang = useSelector(state => state.lang.language);
-    const { token } = route.params;
-    console.log('tokenFRomAcoount' + token);
-    const MyactivateCode = 1122;
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
 
     function activeInput(type) {
-        if (type === 'code' || code !== '') setCodeStatus(1);
+        if (type === 'Phone' || Phone !== '') setPhoneStatues(1);
     }
 
     function unActiveInput(type) {
-        if (type === 'code' && code === '') setCodeStatus(0);
+        if (type === 'Phone' && Phone === '') setPhoneStatues(0);
     }
-    useEffect(() => {
-        token
-    }, []);
 
     const _validate = () => {
-        let codeErr = validateCode(code);
+        let PhoenErr = validatePhone(Phone);
 
-        return codeErr
+        return PhoenErr
     }
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
 
-    const ActivateCode = () => {
-
-        const val = _validate();
-        if (MyactivateCode == code && !val) {
+    const ConFirmPhone = () => {
+        let Val = _validate();
+        if (!Val) {
             setSpinner(true)
-            dispatch(ActivationCode(code, token, lang))
+            dispatch(CheckPhone(lang, Phone, navigation))
+
         }
         else {
-            Toaster(_validate());
+            Toaster(_validate())
             setSpinner(false)
         }
     }
-
     return (
         <View style={styles.container}>
 
@@ -66,21 +63,21 @@ function AccountConfirm({ navigation, route }) {
             <View style={{ margin: 20, bottom: 30 }}>
                 <View style={{ flexDirection: 'column' }}>
                     <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                    <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
+                    <Text style={styles.UText}>{i18n.t('enterPhone')}</Text>
                 </View>
             </View>
 
             <InputIcon
-                label={codeStatus === 1 ? i18n.t('code') : null}
-                placeholder={codeStatus === 1 ? null : i18n.t('code')}
-                onChangeText={(e) => setCode(e)}
-                value={code}
+                label={PhoneStatues === 1 ? i18n.t('phone') : null}
+                placeholder={PhoneStatues === 1 ? null : i18n.t('phone')}
                 keyboardType='numeric'
 
-                onBlur={() => unActiveInput('code')}
-                onFocus={() => activeInput('code')}
-                inputStyle={{ borderColor: codeStatus === 1 ? Colors.sky : Colors.InputColor }}
-                LabelStyle={{ paddingHorizontal: codeStatus === 1 ? 10 : 0, color: codeStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                onChangeText={(e) => setPhone(e)}
+                value={Phone}
+                onBlur={() => unActiveInput('Phone')}
+                onFocus={() => activeInput('Phone')}
+                inputStyle={{ borderColor: PhoneStatues === 1 ? Colors.sky : Colors.InputColor }}
+                LabelStyle={{ paddingHorizontal: PhoneStatues === 1 ? 10 : 0, color: PhoneStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
             {
                 spinner ?
@@ -99,14 +96,13 @@ function AccountConfirm({ navigation, route }) {
                         <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
                     </View>
                     :
-                    < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
+                    < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConFirmPhone} />
 
             }
 
         </View>
     )
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: Colors.bg
@@ -121,12 +117,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         color: Colors.fontNormal
     },
-    wrapCheck: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: '8%',
-        marginTop: '10%'
-    },
+
     LoginBtn: {
         marginVertical: 5,
         borderRadius: 5,
@@ -134,4 +125,5 @@ const styles = StyleSheet.create({
         width: '90%',
     }
 })
-export default AccountConfirm
+
+export default PhoneCheck

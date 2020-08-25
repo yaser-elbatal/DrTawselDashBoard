@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Text, ScrollView, I18nManager } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Text, ScrollView, I18nManager, ActivityIndicator } from 'react-native'
 import BackBtn from '../../common/BackBtn'
 import { InputIcon } from '../../common/InputText'
 import Colors from '../../consts/Colors';
 import { CheckBox } from 'native-base';
-import { validateUserName, validatePhone, validatePassword, validateEmail, validateCode, validateTwoPasswords, ValditeCommercialRegister } from '../../common/Validation';
+import { validateUserName, validatePhone, validatePassword, validateEmail, validateCode, validateTwoPasswords, ValditeCommercialRegister, ValdiateCITyId, ValdiateDebId } from '../../common/Validation';
 import { Picker } from 'native-base';
 import BTN from '../../common/BTN';
 import i18n from '../../locale/i18n';
 import { Toaster } from '../../common/Toaster';
 import { useSelector, useDispatch } from 'react-redux';
 import { SignUp } from '../../store/action/AuthAction';
+import { getCititis, GetDepartment } from '../../store/action/CitiesAction';
+import { width } from '../../consts/HeightWidth';
 
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 function Register({ navigation }) {
@@ -25,12 +28,32 @@ function Register({ navigation }) {
 
 
 
-    const [isSelected, setSelection] = useState("key1");
-    const [select, setSelect] = useState(false);
-    const [city, setCity] = useState('')
-    const [department, setDepartment] = useState('')
+    const lang = useSelector(state => state.lang.language);
 
-    const [isSelected2, setSelection2] = useState("key1");
+    const cities = useSelector(state => state.cities.cities)
+    const Depatrmens = useSelector(state => state.cities.deparment)
+
+    let cityName = cities.map(city => ({ value: city.name }));
+    let DebName = Depatrmens.map(deb => ({ value: deb.name }))
+    const [city, setCity] = useState(null)
+    const [spinner, setSpinner] = useState(false);
+
+
+
+    const dispatch = useDispatch()
+
+
+
+    const valueExtractor = val => {
+        setCity(val)
+    };
+
+    const [select, setSelect] = useState(false);
+    const [department, setDepartment] = useState(null)
+
+
+    console.log('city=========' + city, 'department=========' + department);
+
 
     const [phoneStatus, setPhoneStatus] = useState(0);
     const [passwordStatus, setPasswordStatus] = useState(0);
@@ -41,9 +64,16 @@ function Register({ navigation }) {
     const [CommercialRegisterStatues, setCommercialRegisterstatues] = useState(0)
 
 
-    const lang = useSelector(state => state.lang.language);
-    const dispatch = useDispatch()
 
+
+
+
+
+
+    useEffect(() => {
+        dispatch(getCititis(lang));
+        dispatch(GetDepartment(lang))
+    }, [dispatch])
 
     function activeInput(type) {
         if (type === 'phone' || phone !== '') setPhoneStatus(1);
@@ -69,32 +99,52 @@ function Register({ navigation }) {
 
 
     const _validate = () => {
+
+
         let nameErr = validateUserName(nameAR)
         let nameEnErr = validateUserName(nameEN)
         let phoneErr = validatePhone(phone);
         let passwordErr = validatePassword(password);
         let emailErr = validateEmail(email)
+        let CityID = ValdiateCITyId(city)
+        let DebId = ValdiateDebId(department)
         let ValditeCommercialRegisterErr = ValditeCommercialRegister(CommercialRegister)
         let twoPass = validateTwoPasswords(password, confirmPassword)
-        return nameErr || nameEnErr || phoneErr || passwordErr || emailErr || ValditeCommercialRegisterErr || twoPass
+        return nameErr || nameEnErr || phoneErr || passwordErr || emailErr || ValditeCommercialRegisterErr || twoPass || CityID || DebId
     };
 
 
+
+
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
+
+
+
     const onValueChange = (value) => {
-        setSelection(value)
+        setCity(value)
     }
+
     const onValueChange2 = (value) => {
-        setSelection2(value)
+        setDepartment(value)
     }
 
     const SubmitRegister = () => {
         const val = _validate();
         if (!val) {
+            setSpinner(true)
             const data = { nameAR, nameEN, password, phone, email, CommercialRegister, city, department, lang };
             dispatch(SignUp(data, navigation))
 
         }
         else {
+            setSpinner(false);
             Toaster(_validate());
 
         }
@@ -173,56 +223,82 @@ function Register({ navigation }) {
 
                     styleCont={{ marginTop: 0 }}
                 />
-                <View style={styles.DrbContain}>
-                    <Picker
-                        mode="dropdown"
-                        style={{ width: '90%', color: Colors.fontNormal, marginHorizontal: 5 }}
-                        headerTitleStyle={{ color: Colors.InputColor, fontSize: 18, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}
-                        placeholder={i18n.t('city')}
-                        placeholderStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        placeholderIconColor={Colors.IconBlack}
-                        itemStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}
-                        itemTextStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}
-                        textStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}
-                        selectedValue={isSelected}
-                        onValueChange={onValueChange}
-                    >
-                        <Picker.Item label="egypt" value="key0" />
-                        <Picker.Item label="tanta" value="key1" />
-                        <Picker.Item label="mansoura" value="key2" />
-                        <Picker.Item label="mahalla" value="key3" />
-                        <Picker.Item label="رياض" value="key4" />
-                    </Picker>
-                </View>
 
-                <View style={[styles.DrbContain, { marginTop: 15 }]}>
+
+                <View style={[styles.DrbContain,]}>
                     <Picker
                         mode="dropdown"
                         style={{ width: '90%', color: Colors.fontNormal, marginHorizontal: 5 }}
-                        placeholder={i18n.t('deb')}
+                        placeholder={i18n.t('city')}
                         placeholderStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
                         placeholderIconColor={Colors.IconBlack}
                         itemStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
                         itemTextStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
                         textStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        selectedValue={isSelected2}
-                        onValueChange={onValueChange2}
+                        selectedValue={city}
+                        onValueChange={onValueChange}
                     >
-                        <Picker.Item label="cairo" value="key0" />
-                        <Picker.Item label="tanta" value="key1" />
-                        <Picker.Item label="منصوره" value="key2" />
-                        <Picker.Item label="mahalla" value="key3" />
-                        <Picker.Item label="Dmam" value="key4" />
+                        {
+                            cities ?
+                                cities.map((city) => {
+                                    return (
+                                        <Picker.Item label={city.name} value={city.id} key={city.id} />
+
+                                    )
+                                }) : []
+                        }
+
                     </Picker>
                 </View>
 
+                {/* <View style={[styles.DrbContain, { marginTop: 15 }]}>
+                    <Picker
+                        mode="dropdown"
+                        style={{ width: '90%', color: Colors.fontNormal, marginHorizontal: 5 }}
+                        headerTitleStyle={{ color: Colors.InputColor, fontSize: 18, fontFamily: 'flatMedium', }}
+                        placeholder={i18n.t('dep')}
+                        placeholderStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
+                        placeholderIconColor={Colors.IconBlack}
+                        itemStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', }}
+                        itemTextStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', }}
+                        textStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', }}
+                        selectedValue={department}
+                        onValueChange={onValueChange2}
+                    >
+                        {
+                            Depatrmens ?
+                                Depatrmens.map(dep => {
+                                    return (
+                                        <Picker.Item label={dep.name} value={dep.id} key={dep.id} />
+                                    )
+
+                                }) : []
+                        }
+
+
+                    </Picker>
+                </View> */}
+
+
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .13, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                    <Dropdown
+                        placeholder={i18n.t('dep')}
+                        data={DebName}
+                        fontSize={12}
+                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        lineWidth={0}
+                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                        animationDuration={0}
+                        onChangeText={(val) => setDepartment(val)}
+                    />
+                </View>
 
                 <InputIcon
                     label={passwordStatus === 1 ? i18n.t('password') : null}
                     placeholder={passwordStatus === 1 ? null : i18n.t('password')}
                     onChangeText={(e) => setPassword(e)}
                     value={password}
-                    keyboardType='numeric'
+
                     secureTextEntry
                     styleCont={{ marginTop: 15 }}
 
@@ -256,8 +332,25 @@ function Register({ navigation }) {
                         <Text style={styles.Prill}>{i18n.t('term')}</Text>
                     </View>
                 </View>
-                <BTN title={i18n.t('register')} ContainerStyle={styles.LoginBtn} onPress={SubmitRegister} disabled={select} />
-
+                {
+                    spinner ?
+                        <View style={{
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            width: '100%',
+                            height: '100%',
+                            zIndex: 99999,
+                            backgroundColor: "rgba(0,0,0,0.5)",
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}>
+                            <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                        </View>
+                        :
+                        <BTN title={i18n.t('register')} ContainerStyle={styles.LoginBtn} onPress={SubmitRegister} disabled={!select} />
+                }
             </ScrollView>
         </View>
     )

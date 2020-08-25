@@ -10,7 +10,8 @@ export const login_success = 'login_success'
 export const login_failed = 'login_failed';
 export const temp_auth = 'temp_auth'
 export const Sign_up = 'Sign_up';
-
+export const Activate_Code = 'Activate_Code'
+export const logout = 'logout'
 
 const loginIsLoading = (bool) => {
     return {
@@ -29,7 +30,6 @@ export const SignIn = (phone, password, deviceId, lang, navigation) => {
 
     return (dispatch) => {
 
-        dispatch(loginIsLoading(true));
         axios.post(CONST.url + 'sign-in',
             { phone, password, lang, device_id: deviceId, user_type: 4 })
             .then(res => {
@@ -53,7 +53,6 @@ const handelLogin = (dispatch, data, navigation) => {
 
     Toast.show({
         text: data.message,
-        useNativeDriver: true,
         type: data.success ? "success" : "danger",
         duration: 3000,
         textStyle: {
@@ -62,6 +61,25 @@ const handelLogin = (dispatch, data, navigation) => {
         }
     });
 };
+
+
+
+const loginSuccess = (dispatch, data, navigation) => {
+    AsyncStorage.setItem('token', JSON.stringify(data.data.token))
+        .then(() => dispatch({ type: login_success, data }));
+};
+
+const loginFailed = (dispatch, error, navigation) => {
+    if (!(error.data.active)) {
+        navigation.navigate('AccConfrm', {
+            CodeAct: error.data.code,
+
+        });
+    }
+    dispatch({ type: login_failed, error });
+};
+
+
 
 export const SignUp = (data, navigation) => {
     return (dispatch) => {
@@ -85,27 +103,152 @@ export const SignUp = (data, navigation) => {
                     user_type: 4
                 }
             }).then(res => {
-                console.log('res.data' + res.data);
                 dispatch({ type: Sign_up, payload: res.data })
+                if (res.data.success) {
+                    navigation.navigate('AccConfrm', { token: res.data.data.token })
+                }
+                console.log('message', res.data.message);
+
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
             })
+
+
         })
     }
 
 }
 
+export const ActivationCode = (code, token, lang) => {
+    return dispatch => {
+        axios({
+            url: consts.url + 'activate',
+            method: 'post',
+            data: { code },
+            headers: {
+                Authorization: 'Bearer ' + token,
+                lang: lang
+            }
+        }
+        ).then(res => {
+            dispatch({ type: Activate_Code, data: res.data })
 
-const loginSuccess = (dispatch, data, navigation) => {
-    AsyncStorage.setItem('token', JSON.stringify(data.data.token))
-        .then(() => dispatch({ type: login_success, data }));
-};
 
-const loginFailed = (dispatch, error, navigation) => {
+            Toast.show({
+                text: res.data.message,
+                type: res.data.success ? "success" : "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    fontFamily: 'flatMedium',
+                    textAlign: 'center'
+                }
+            })
+        }
+        )
 
-    if (error.data.code) {
-        navigation.navigate('AccConfrm', {
-            code: error.data.code,
-            userId: error.data.user_id,
-        });
+
     }
-    dispatch({ type: login_failed, error });
-};
+
+}
+
+export const CheckPhone = (lang, phone, navigation) => {
+    return dispatch => {
+        axios({
+            method: 'post',
+            url: consts.url + 'forget-password',
+            data: { lang, phone }
+        }).then(res => {
+            if (res.data.success) {
+                navigation.navigate('ForgetPass', { tokennn: res.data.data.token })
+            }
+            else {
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
+            }
+        })
+
+    }
+}
+export const ResendCode = (token, navigation) => {
+    return dispatch => {
+        axios({
+            method: 'GET',
+            url: consts.url + 'resend-code',
+            headers: {
+                Authorization: 'Bearer ' + token,
+
+            }
+
+        }).then(res => {
+            if (res.data.success) {
+                navigation.navigate('NewPass', { token: token })
+
+            }
+            else {
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
+            }
+        })
+    }
+}
+export const ResetPassword = (password, token, navigation) => {
+    return dispatch => {
+        axios({
+            method: 'POST',
+            url: consts.url + 'reset-password',
+            data: { password },
+            headers: {
+                Authorization: 'Bearer ' + token,
+
+            }
+        }).then(res => {
+            if (res.data.success) {
+                navigation.navigate('Login')
+            }
+            else {
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
+            }
+        })
+    }
+}
+
+export const Logout = () => {
+    return dispatch => {
+        AsyncStorage.multiRemove(['token', 'auth',]);
+        dispatch({ type: logout })
+    }
+}

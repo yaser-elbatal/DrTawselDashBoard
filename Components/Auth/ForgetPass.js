@@ -1,13 +1,65 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Text, } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Text, ActivityIndicator, } from 'react-native'
 import { InputIcon } from '../../common/InputText'
 import BackBtn from '../../common/BackBtn'
 import Colors from '../../consts/Colors'
 import BTN from '../../common/BTN'
 import i18n from '../../locale/i18n'
+import { Toaster } from '../../common/Toaster';
+import { validateCode } from '../../common/Validation'
+import { useSelector, useDispatch } from 'react-redux'
+import { ResendCode } from '../../store/action/AuthAction'
 
-function ForgetPass({ navigation }) {
-    const [code, setCode] = useState('00000')
+function ForgetPass({ navigation, route }) {
+    const [code, setCode] = useState('');
+    const [codeStatus, setCodeStatus] = useState(0);
+    const [spinner, setSpinner] = useState(false);
+
+    const lang = useSelector(state => state.lang.language);
+    const { tokennn } = route.params;
+
+    console.log('tokennn========' + tokennn);
+    const MyactivateCode = 1122;
+    const dispatch = useDispatch()
+
+    function activeInput(type) {
+        if (type === 'code' || code !== '') setCodeStatus(1);
+    }
+
+    function unActiveInput(type) {
+        if (type === 'code' && code === '') setCodeStatus(0);
+    }
+    useEffect(() => {
+        tokennn
+    }, []);
+
+    const _validate = () => {
+        let codeErr = validateCode(code);
+
+        return codeErr
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
+
+    const ActivateCode = () => {
+
+        const val = _validate();
+        if (MyactivateCode == code && !val) {
+            setSpinner(true)
+            dispatch(ResendCode(tokennn, navigation))
+        }
+        else {
+            Toaster(_validate());
+            setSpinner(false)
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -21,14 +73,37 @@ function ForgetPass({ navigation }) {
             </View>
 
             <InputIcon
-                label={i18n.t('code')}
-                inputStyle={{ borderColor: Colors.sky }}
-                value={code}
+                label={codeStatus === 1 ? i18n.t('code') : null}
+                placeholder={codeStatus === 1 ? null : i18n.t('code')}
                 onChangeText={(e) => setCode(e)}
-                LabelStyle={{ paddingHorizontal: 10, color: Colors.sky, fontSize: 15 }}
-            />
-            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('NewPass')} />
+                value={code}
+                keyboardType='numeric'
 
+                onBlur={() => unActiveInput('code')}
+                onFocus={() => activeInput('code')}
+                styleCont={{ marginTop: 0 }}
+                inputStyle={{ borderColor: codeStatus === 1 ? Colors.sky : Colors.InputColor }}
+                LabelStyle={{ paddingHorizontal: codeStatus === 1 ? 10 : 0, color: codeStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+            />
+            {
+                spinner ?
+                    <View style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 99999,
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                    }}>
+                        <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                    </View>
+                    :
+                    <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
+            }
         </View>
     )
 }
@@ -59,6 +134,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginHorizontal: 20,
         width: '90%',
+        marginTop: 0
     }
 })
 export default ForgetPass

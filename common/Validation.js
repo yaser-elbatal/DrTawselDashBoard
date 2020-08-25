@@ -13,7 +13,7 @@ export const validateTwoPasswords = (password, confirmPassword) => {
 };
 
 export const validateCode = (code) =>
-    code === '' || code.length < 4 ? "يرجي التاكد من الكود واعاده المحاوله" : null;
+    code === '' || code.length < 3 ? "يرجي التاكد من الكود واعاده المحاوله" : null;
 
 export const ValditeCommercialRegister = (CommercialRegister) =>
     CommercialRegister === '' || CommercialRegister.length < 10 ? i18n.t('CommRegister') : null;
@@ -24,6 +24,13 @@ export const validateEmail = email => {
         ? i18n.t('emailErr')
         : null;
 };
+
+export const ValdiateCITyId = (id) => {
+    id === null ? i18n.t('CityId') : null
+}
+export const ValdiateDebId = (id) => {
+    id === null ? i18n.t('DepId') : null
+}
 export const validateUserName = userName =>
     userName.length < 2 ? i18n.t('usernameErr') : null;
 

@@ -8,14 +8,12 @@ import { InputIcon } from '../../common/InputText';
 import Colors from '../../consts/Colors';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
-import { Loader } from '../../common/Loader';
 
 import {
     validatePhone,
     validatePassword,
 } from "../../common/Validation";
 import i18n from '../../locale/i18n'
-import UserContext from '../../routes/UserContext';
 import { useSelector, useDispatch } from 'react-redux';
 import { SignIn } from '../../store/action/AuthAction';
 
@@ -140,7 +138,7 @@ function Login({ navigation }) {
                     styleCont={{ marginTop: 0 }}
                 />
 
-                <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('ForgetPass')} style={styles.FPass} />
+                <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
 
                 {isLoading ? (
                     <View style={{

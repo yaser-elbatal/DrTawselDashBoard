@@ -544,6 +544,10 @@ const en = {
   usernameErr: 'Username consists of 2 or more characters',
   emailErr: 'please enter valid email',
   CommRegister: 'The commercial register must be 10 numbers or more',
+  CityId: 'choose city',
+  DepId: 'choose Debartment',
+  codeNotMatch: 'Wrong Code',
+  enterPhone: 'enter your phone number'
 };
 
 export default en;
