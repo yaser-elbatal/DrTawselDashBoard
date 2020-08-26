@@ -10,6 +10,7 @@ import { validatePassword, validateTwoPasswords } from '../../common/Validation'
 import i18n from '../../locale/i18n'
 import { useDispatch } from 'react-redux'
 import { ResetPassword } from '../../store/action/AuthAction'
+import { Toaster } from '../../common/Toaster'
 
 
 function NewPassword({ navigation, route }) {

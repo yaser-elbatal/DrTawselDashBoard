@@ -26,10 +26,10 @@ export const validateEmail = email => {
 };
 
 export const ValdiateCITyId = (id) => {
-    id === null ? i18n.t('CityId') : null
+    id === '' ? i18n.t('CityId') : id === null ? i18n.t('CityId') : null
 }
 export const ValdiateDebId = (id) => {
-    id === null ? i18n.t('DepId') : null
+    id === '' ? i18n.t('DepId') : id === null ? i18n.t('DepId') : null
 }
 export const validateUserName = userName =>
     userName.length < 2 ? i18n.t('usernameErr') : null;

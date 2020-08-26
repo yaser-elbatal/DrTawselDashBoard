@@ -32,6 +32,7 @@ function Login({ navigation }) {
     const [userId, setUserId] = useState(null);
     const [phoneStatus, setPhoneStatus] = useState(0);
     const [passwordStatus, setPasswordStatus] = useState(0);
+    const [spinner, setSpinner] = useState(false);
 
 
     function activeInput(type) {
@@ -85,11 +86,15 @@ function Login({ navigation }) {
         const isVal = _validate();
 
         if (!isVal) {
+            setSpinner(true)
+
             Setisloading(true)
             await dispatch(SignIn(phone, password, deviceId, lang, navigation))
         }
         else {
             Toaster(_validate());
+            setSpinner(false)
+
         }
         Setisloading(false);
 

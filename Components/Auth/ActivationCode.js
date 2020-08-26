@@ -8,24 +8,21 @@ import Colors from '../../consts/Colors'
 import BTN from '../../common/BTN'
 import i18n from '../../locale/i18n'
 import { useDispatch, useSelector } from 'react-redux'
-import { ActivationCode, ResendCode } from '../../store/action/AuthAction'
+import { ActivationCode } from '../../store/action/AuthAction'
 import {
     validateCode,
-    validatePassword,
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
 
 
-
-
-function AccountConfirm({ navigation, route }) {
+function ActivateCode({ navigation, route }) {
     const [code, setCode] = useState('');
     const [codeStatus, setCodeStatus] = useState(0);
     const [spinner, setSpinner] = useState(false);
 
     const lang = useSelector(state => state.lang.language);
     const { token } = route.params;
-    console.log('tokenFRomAcoount' + token);
+    console.log('tokenFRomActivtion' + token);
     const MyactivateCode = 1122;
     const dispatch = useDispatch()
 
@@ -40,7 +37,6 @@ function AccountConfirm({ navigation, route }) {
         token
     }, []);
 
-
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(false)
@@ -48,7 +44,6 @@ function AccountConfirm({ navigation, route }) {
         setSpinner(false)
         return unsubscribe;
     }, [navigation, spinner]);
-
 
     const _validate = () => {
         let codeErr = validateCode(code);
@@ -61,7 +56,7 @@ function AccountConfirm({ navigation, route }) {
         const val = _validate();
         if (MyactivateCode == code && !val) {
             setSpinner(true)
-            dispatch(ResendCode(token, navigation, lang))
+            dispatch(ActivationCode(code, token, lang))
         }
         else {
             Toaster(_validate());
@@ -144,4 +139,5 @@ const styles = StyleSheet.create({
         width: '90%',
     }
 })
-export default AccountConfirm
+
+export default ActivateCode

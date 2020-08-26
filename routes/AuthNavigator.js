@@ -61,6 +61,7 @@ import OrderDetMangeAcc from '../Components/DrawerComponent/ManageAccount/OrderD
 import OrderDetAdjust from '../Components/DrawerComponent/ManageAccount/OrderDetAdjust';
 import Report from '../Components/DrawerComponent/report/Report';
 import PhoneCheck from '../Components/Auth/PhoneCheck';
+import ActivateCode from '../Components/Auth/ActivationCode';
 
 
 const Stack = createStackNavigator();
@@ -74,6 +75,7 @@ export default function MainStackNav() {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="AccConfrm" component={AccountConfirm} />
             <Stack.Screen name="PhoneCheck" component={PhoneCheck} />
+            <Stack.Screen name="ActivateCode" component={ActivateCode} />
 
             <Stack.Screen name="ForgetPass" component={ForgetPass} />
             <Stack.Screen name="NewPass" component={NewPassword} />

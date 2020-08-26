@@ -25,34 +25,31 @@ function Register({ navigation }) {
     const [email, setemail] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('');
     const [CommercialRegister, setCommercialRegister] = useState('');
-
-
-
-    const lang = useSelector(state => state.lang.language);
-
-    const cities = useSelector(state => state.cities.cities)
-    const Depatrmens = useSelector(state => state.cities.deparment)
-
-    let cityName = cities.map(city => ({ value: city.name }));
-    let DebName = Depatrmens.map(deb => ({ value: deb.name }))
-    const [city, setCity] = useState(null)
     const [spinner, setSpinner] = useState(false);
 
 
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
+    const lang = useSelector(state => state.lang.language);
+    const Depatrmens = useSelector(state => state.cities.deparment)
+    const cities = useSelector(state => state.cities.cities)
 
-
-    const valueExtractor = val => {
-        setCity(val)
-    };
 
     const [select, setSelect] = useState(false);
     const [department, setDepartment] = useState(null)
+    const [city, setCity] = useState(null)
 
+
+    let cityName = cities.map(city => ({ label: city.name, value: city.id }));
+    let CityID = cities.map(city => ({ label: city.name, }));
+
+    let DebName = Depatrmens.map(deb => ({ label: deb.name, value: deb.id }))
+    let DebId = Depatrmens.map(deb => ({ label: deb.name }))
 
     console.log('city=========' + city, 'department=========' + department);
+
+
 
 
     const [phoneStatus, setPhoneStatus] = useState(0);
@@ -225,62 +222,26 @@ function Register({ navigation }) {
                 />
 
 
-                <View style={[styles.DrbContain,]}>
-                    <Picker
-                        mode="dropdown"
-                        style={{ width: '90%', color: Colors.fontNormal, marginHorizontal: 5 }}
+
+
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
+                    <Dropdown
                         placeholder={i18n.t('city')}
-                        placeholderStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        placeholderIconColor={Colors.IconBlack}
-                        itemStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        itemTextStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        textStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        selectedValue={city}
-                        onValueChange={onValueChange}
-                    >
-                        {
-                            cities ?
-                                cities.map((city) => {
-                                    return (
-                                        <Picker.Item label={city.name} value={city.id} key={city.id} />
+                        data={cityName}
+                        fontSize={12}
+                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        lineWidth={0}
+                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                        animationDuration={0}
+                        onChangeText={val => setCity(val)}
 
-                                    )
-                                }) : []
-                        }
-
-                    </Picker>
+                        value={CityID.label}
+                    />
                 </View>
 
-                {/* <View style={[styles.DrbContain, { marginTop: 15 }]}>
-                    <Picker
-                        mode="dropdown"
-                        style={{ width: '90%', color: Colors.fontNormal, marginHorizontal: 5 }}
-                        headerTitleStyle={{ color: Colors.InputColor, fontSize: 18, fontFamily: 'flatMedium', }}
-                        placeholder={i18n.t('dep')}
-                        placeholderStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium' }}
-                        placeholderIconColor={Colors.IconBlack}
-                        itemStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', }}
-                        itemTextStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', }}
-                        textStyle={{ color: Colors.InputColor, fontFamily: 'flatMedium', }}
-                        selectedValue={department}
-                        onValueChange={onValueChange2}
-                    >
-                        {
-                            Depatrmens ?
-                                Depatrmens.map(dep => {
-                                    return (
-                                        <Picker.Item label={dep.name} value={dep.id} key={dep.id} />
-                                    )
-
-                                }) : []
-                        }
 
 
-                    </Picker>
-                </View> */}
-
-
-                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .13, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
                     <Dropdown
                         placeholder={i18n.t('dep')}
                         data={DebName}
@@ -289,7 +250,8 @@ function Register({ navigation }) {
                         lineWidth={0}
                         containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
                         animationDuration={0}
-                        onChangeText={(val) => setDepartment(val)}
+                        onChangeText={val => setDepartment(val)}
+                        value={DebId.label}
                     />
                 </View>
 

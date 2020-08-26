@@ -13,12 +13,7 @@ export const Sign_up = 'Sign_up';
 export const Activate_Code = 'Activate_Code'
 export const logout = 'logout'
 
-const loginIsLoading = (bool) => {
-    return {
-        type: LOGIN_IS_LOADING,
-        isLoading: bool
-    }
-};
+
 
 export const tempAuth = () => {
     return (dispatch) => {
@@ -34,8 +29,9 @@ export const SignIn = (phone, password, deviceId, lang, navigation) => {
             { phone, password, lang, device_id: deviceId, user_type: 4 })
             .then(res => {
 
-                dispatch(loginIsLoading(false));
                 handelLogin(dispatch, res.data, navigation)
+
+
             })
             .catch(error => console.warn(error));
 
@@ -65,18 +61,26 @@ const handelLogin = (dispatch, data, navigation) => {
 
 
 const loginSuccess = (dispatch, data, navigation) => {
-    AsyncStorage.setItem('token', JSON.stringify(data.data.token))
-        .then(() => dispatch({ type: login_success, data }));
+    if (!data.data.active) {
+        navigation.navigate('ActivateCode', { token: data.data.token, })
+
+    }
+    else {
+        AsyncStorage.setItem('token', JSON.stringify(data.data.token))
+            .then(() => dispatch({ type: login_success, data }));
+    }
+
 };
 
 const loginFailed = (dispatch, error, navigation) => {
-    if (!(error.data.active)) {
-        navigation.navigate('AccConfrm', {
-            CodeAct: error.data.code,
+    if (!(error.success)) {
+        //     navigation.navigate('ActivateCode', {
+        //         token: error.data.token,
 
-        });
+        //     });
+        // }
+        dispatch({ type: login_failed, error });
     }
-    dispatch({ type: login_failed, error });
 };
 
 
@@ -105,7 +109,7 @@ export const SignUp = (data, navigation) => {
             }).then(res => {
                 dispatch({ type: Sign_up, payload: res.data })
                 if (res.data.success) {
-                    navigation.navigate('AccConfrm', { token: res.data.data.token })
+                    navigation.navigate('ActivateCode', { token: res.data.data.token })
                 }
                 console.log('message', res.data.message);
 
@@ -127,7 +131,7 @@ export const SignUp = (data, navigation) => {
 
 }
 
-export const ActivationCode = (code, token, lang) => {
+export const ActivationCode = (code, token, lang, navigation) => {
     return dispatch => {
         axios({
             url: consts.url + 'activate',
@@ -139,6 +143,7 @@ export const ActivationCode = (code, token, lang) => {
             }
         }
         ).then(res => {
+
             dispatch({ type: Activate_Code, data: res.data })
 
 
@@ -168,7 +173,7 @@ export const CheckPhone = (lang, phone, navigation) => {
             data: { lang, phone }
         }).then(res => {
             if (res.data.success) {
-                navigation.navigate('ForgetPass', { tokennn: res.data.data.token })
+                navigation.navigate('AccConfrm', { token: res.data.data.token })
             }
             else {
                 Toast.show({
@@ -186,14 +191,15 @@ export const CheckPhone = (lang, phone, navigation) => {
 
     }
 }
-export const ResendCode = (token, navigation) => {
+
+export const ResendCode = (token, navigation, lang) => {
     return dispatch => {
         axios({
             method: 'GET',
             url: consts.url + 'resend-code',
             headers: {
                 Authorization: 'Bearer ' + token,
-
+                lang, lang
             }
 
         }).then(res => {
@@ -216,6 +222,7 @@ export const ResendCode = (token, navigation) => {
         })
     }
 }
+
 export const ResetPassword = (password, token, navigation) => {
     return dispatch => {
         axios({
