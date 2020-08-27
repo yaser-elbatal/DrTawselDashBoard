@@ -1,58 +1,124 @@
-import React, { useState } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager, ActivityIndicator } from 'react-native'
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { InputIcon } from '../../common/InputText'
-import { validateUserName, validatePhone, validatePassword, validateEmail, validateCode } from '../../common/Validation'
+import { validateUserName, validateEmail, ValdiateCITyId } from '../../common/Validation'
 import { Dropdown } from 'react-native-material-dropdown';
 import BTN from '../../common/BTN'
 import { width } from '../../consts/HeightWidth'
+import { useSelector, useDispatch } from 'react-redux'
+import { getCititis } from '../../store/action/CitiesAction'
+import { UpdateProfile } from '../../store/action/ProfileAction'
+import { Toaster } from '../../common/Toaster'
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 function EditProfile({ navigation }) {
 
 
-    const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('')
-    const [password, setPassword] = useState('');
+    const [email, setemail] = useState('')
+    const [city, setCity] = useState(null)
     const [phone, setPhone] = useState("");
-    const [email, setemail] = useState('info@gamil.com')
+    const [base64, setBase64] = useState('');
 
-    const [isSelected, setSelection] = useState();
-    const [isSelected2, setSelection2] = useState(undefined);
+    const [spinner, setSpinner] = useState(false);
 
-    const data = [{
-        value: 'Ryad',
-    }, {
-        value: 'Mekka',
-    },
-    {
-        value: 'madina',
-    }];
+    const cities = useSelector(state => state.cities.cities)
+    const lang = useSelector(state => state.lang.language);
+    const token = useSelector(state => state.auth.user.data.token);
+
+    const [nameENStatus, setNameENStatus] = useState(0)
+    const [emailStatues, setemailStatues] = useState(0)
+    const [phoneStatus, setPhoneStatus] = useState(0);
+
+
+    let cityName = cities.map(city => ({ label: city.name, value: city.id }));
+    let CityID = cities.map(city => ({ label: city.name, }));
+
+    const dispatch = useDispatch();
+
+    const askPermissionsAsync = async () => {
+        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    };
+
+    const _pickImage = async () => {
+
+        askPermissionsAsync();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            base64: true
+        });
+
+        if (!result.cancelled) {
+            setUserImage(result.uri);
+            setBase64(result.base64);
+        }
+    };
 
     const _validate = () => {
-        let nameErr = validateUserName(name)
-        let phoneErr = validatePhone(phone);
-        let passwordErr = validatePassword(password);
+        let nameErr = validateUserName(nameEN)
+        let CityID = ValdiateCITyId(city)
         let emailErr = validateEmail(email)
-        let licenseErr = validateCode(License);
 
-        return nameErr || phoneErr || passwordErr || emailErr || licenseErr || carnumErr
+        return nameErr || CityID || emailErr
     };
 
 
-    const onValueChange = (value) => {
-        setSelection(value)
+
+    useEffect(() => {
+        dispatch(getCititis(lang));
     }
-    const onValueChange2 = (value) => {
-        setSelection2(value)
+        , [])
+
+    function activeInput(type) {
+
+        if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
+        if (type === 'email' || email !== '') setemailStatues(1);
+        if (type === 'phone' || phone !== '') setPhoneStatus(1);
+
     }
+
+
+    function unActiveInput(type) {
+        if (type === 'nameEN' || nameEN !== '') setNameENStatus(0);
+        if (type === 'email' || email !== '') setemailStatues(0);
+        if (type === 'phone' && phone === '') setPhoneStatus(0);
+
+    }
+
+    const UpdateData = () => {
+        let val = _validate();
+        if (!val) {
+            setSpinner(true)
+            dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation))
+        }
+        else {
+            setSpinner(false)
+            Toaster(_validate());
+
+        }
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
+
     return (
         <View style={{ flex: 1, }}>
 
             <Image source={require('../../assets/Images/imagethree.png')} style={styles.ImgBackGround} />
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }}>
+            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
                 <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
-
             </TouchableOpacity>
 
 
@@ -77,44 +143,79 @@ function EditProfile({ navigation }) {
                     <View style={{ margin: 20, marginTop: 0 }}>
 
                         <InputIcon
-                            label={i18n.t('username')}
-                            placeholder={i18n.t('username')}
-                            inputStyle={{ borderColor: Colors.sky }}
-                            onChangeText={(e) => setNameAr(e)}
-                            value={nameAR}
-                            LabelStyle={{ paddingHorizontal: 10, color: Colors.sky, fontSize: 14 }}
-                        />
-                        <InputIcon
-                            placeholder={i18n.t('usernamen')}
+                            label={nameENStatus === 1 ? i18n.t('usernamen') : null}
+                            placeholder={nameENStatus === 1 ? null : i18n.t('usernamen')}
+                            onBlur={() => unActiveInput('nameEN')}
+                            onFocus={() => activeInput('nameEN')}
+                            inputStyle={{ borderColor: nameENStatus === 1 ? Colors.sky : Colors.InputColor }}
                             onChangeText={(e) => setNameEN(e)}
                             value={nameEN}
+                            styleCont={{ marginTop: 0 }}
+                            LabelStyle={{ paddingHorizontal: nameENStatus === 1 ? 10 : 0, color: nameENStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+
+                        />
+
+
+                        <InputIcon
+                            label={emailStatues === 1 ? i18n.t('email') : null}
+                            placeholder={emailStatues === 1 ? null : i18n.t('email')}
+                            onChangeText={(e) => setemail(e)}
+                            value={email}
+                            inputStyle={{ borderColor: emailStatues === 1 ? Colors.sky : Colors.InputColor }}
+                            LabelStyle={{ paddingHorizontal: emailStatues === 1 ? 10 : 0, color: emailStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                            onBlur={() => unActiveInput('email')}
+                            onFocus={() => activeInput('email')}
+                            keyboardType='email-address'
                             styleCont={{ marginTop: 0 }}
                         />
 
                         <InputIcon
-                            placeholder={i18n.t('email')}
-                            onChangeText={(e) => setemail(e)}
-                            value={email}
-                            keyboardType='email-address'
+                            label={phoneStatus === 1 ? i18n.t('phone') : null}
+                            placeholder={phoneStatus === 1 ? null : i18n.t('phone')}
+                            onChangeText={(e) => setPhone(e)}
+                            value={phone}
+                            onBlur={() => unActiveInput('phone')}
+                            onFocus={() => activeInput('phone')}
+                            inputStyle={{ borderColor: phoneStatus === 1 ? Colors.sky : Colors.InputColor }}
+                            LabelStyle={{ paddingHorizontal: phoneStatus === 1 ? 10 : 0, color: phoneStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                            keyboardType='numeric'
                             styleCont={{ marginTop: 0 }}
                         />
-                        <InputIcon
-                            placeholder={i18n.t('CommercialRegister')}
-                            value='011111111111'
-                            styleCont={{ marginTop: 0 }}
-                        />
-                        <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .13, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+
+                        <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
                             <Dropdown
                                 placeholder={i18n.t('city')}
-                                data={data}
+                                data={cityName}
                                 fontSize={12}
                                 itemTextStyle={{ fontFamily: 'flatMedium' }}
                                 lineWidth={0}
                                 containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
                                 animationDuration={0}
+                                onChangeText={val => setCity(val)}
+
+                                value={CityID.label}
                             />
                         </View>
-                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('MyProfile')} />
+                        {
+                            spinner ?
+                                <View style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    zIndex: 99999,
+                                    backgroundColor: "rgba(0,0,0,0.5)",
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+                                }}>
+                                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                                </View>
+                                :
+                                <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateData} />
+
+                        }
 
                     </View>
 

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, ScrollView, I18nManager, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native'
 import BackBtn from '../../common/BackBtn'
 import { InputIcon } from '../../common/InputText'
 import Colors from '../../consts/Colors';
 import { CheckBox } from 'native-base';
 import { validateUserName, validatePhone, validatePassword, validateEmail, validateCode, validateTwoPasswords, ValditeCommercialRegister, ValdiateCITyId, ValdiateDebId } from '../../common/Validation';
-import { Picker } from 'native-base';
 import BTN from '../../common/BTN';
 import i18n from '../../locale/i18n';
 import { Toaster } from '../../common/Toaster';
@@ -124,13 +123,6 @@ function Register({ navigation }) {
 
 
 
-    const onValueChange = (value) => {
-        setCity(value)
-    }
-
-    const onValueChange2 = (value) => {
-        setDepartment(value)
-    }
 
     const SubmitRegister = () => {
         const val = _validate();

@@ -86,7 +86,7 @@ const ar = {
   AccountUser: 'اسم صاحب الحساب',
   moneyPaied: 'المبلغ المطلوب سداده',
   Commentandratings: 'التعليقات والتقيمات',
-  Hello: 'اهلا ياسر!',
+  Hello: 'اهلا',
   Dash: 'اهلا بك في لوحه التحكم الخاص من جديد',
   newProduct: 'احدث المنتجات',
 

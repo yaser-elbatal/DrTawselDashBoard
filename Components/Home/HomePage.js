@@ -7,12 +7,14 @@ import { width, height } from '../../consts/HeightWidth';
 import i18n from '../../locale/i18n'
 import { Content } from 'native-base';
 import Card from '../../common/Card'
+import { useSelector } from 'react-redux';
 
 
 function HomePage({ navigation }) {
 
+    const user = useSelector(state => state.auth.user.data)
 
-
+    console.log(user.avatar);
 
     const ProductData = [{
         id: 'K0',
@@ -65,7 +67,7 @@ function HomePage({ navigation }) {
     return (
         <View style={{ flex: 1, }}>
 
-            <HomeHeader navigation={navigation} label={i18n.t('Hello')} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
+            <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
             <Content showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
 
 
@@ -187,8 +189,8 @@ const styles = StyleSheet.create({
         height: height * .25,
         backgroundColor: Colors.bg,
         flex: 1,
-        borderTopStartRadius:0,
-        overflow:'hidden'
+        borderTopStartRadius: 0,
+        overflow: 'hidden'
     },
     WrabText: {
         flexDirection: 'column',

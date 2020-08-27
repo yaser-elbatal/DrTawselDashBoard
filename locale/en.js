@@ -2,6 +2,7 @@
 const en = {
   start: "Start",
   login: "Login",
+
   entry: 'Login',
   loginInf: 'Login to see Your data',
   loginText: "Please login to be able to browse the application",
@@ -20,7 +21,7 @@ const en = {
   usernamen: 'user Name in english',
   CommercialRegister: 'Commercial Register',
   RestInfo: 'Restaurant Info',
-  Hello: 'Hello yasser!',
+  Hello: 'Hello ',
   Dash: 'Welcome to the Dashboard again',
   newProduct: 'Latest products',
   IncomingRequests: 'Incoming Requests',
