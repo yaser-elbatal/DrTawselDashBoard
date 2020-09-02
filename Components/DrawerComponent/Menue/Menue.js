@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native';
 import { CheckBox } from "native-base";
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 
@@ -11,73 +12,117 @@ import { InputIcon } from '../../../common/InputText';
 import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
 import Card from '../../../common/Card';
-import DrobDwn from '../../../common/DrobDwn';
+import { useDispatch, useSelector } from 'react-redux';
+import { MenueInfo, AddMenue, DeleteMenue, UpdateMenue } from '../../../store/action/MenueAction';
+import { Toaster } from '../../..//common/Toaster';
+import { validateUserName } from '../../../common/Validation';
 
 function Menue({ navigation }) {
 
-    const [isSelected2, setSelection2] = useState();
+
+
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+    const [MenueData, setMenueData] = useState({ name: '', id: null })
+    const Menue = useSelector(state => state.menue.menue);
+
+    const [nameAR, setNameAr] = useState('');
+    const [nameEN, setNameEN] = useState('')
+    const [nameAREdit, setNameArEdit] = useState(MenueData.name);
+    const [nameENEdit, setNameENEdit] = useState(MenueData.name);
+    const [nameARStatusEdit, setnameARStatusEdit] = useState(0);
+    const [nameENStatusEdit, setNameENStatusEdit] = useState(0)
+
+    const [isSelected2, setSelection2] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [EditMaodVisible, setEditMaodVisible] = useState(false);
+    const [nameARStatus, setnameARStatus] = useState(0);
+    const [nameENStatus, setNameENStatus] = useState(0)
 
 
 
-    const [selected, setSelected] = useState("key0")
-    const [selected1, setSelected1] = useState("key0")
 
+    function activeInput(type) {
 
-    const onValueChange1 = (value) => {
-        setSelected1(value)
+        if (type === 'nameAR' || nameAR !== '') setnameARStatus(1);
+        if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
+        if (type === 'nameAREdit' || nameAREdit !== '') setnameARStatusEdit(1);
+        if (type === 'nameENEdit' || nameENEdit !== '') setNameENStatusEdit(1);
+
+    }
+    function unActiveInput(type) {
+
+        if (type === 'nameAR' && nameAR == '') setnameARStatus(0);
+        if (type === 'nameEN' && nameEN == '') setNameENStatus(0);
+        if (type === 'nameAREdit' && nameAREdit == '') setnameARStatusEdit(0);
+        if (type === 'nameENEdit' && nameENEdit == '') setNameENStatusEdit(0);
+
     }
 
-    const onValueChange = (value) => {
-        setSelected(value)
+
+
+
+    const data = [{
+        value: i18n.t('delete'),
+    }, {
+        value: i18n.t('edit'),
+    },];
+    const data2 = [{
+        value: i18n.t('latest'),
+    }, {
+        value: i18n.t('oldest'),
+    },];
+    const _validate = () => {
+
+
+        let nameErr = validateUserName(nameAR)
+        let nameEnErr = validateUserName(nameEN)
+        return nameErr || nameEnErr
     }
 
+    const dispatch = useDispatch();
 
+    const Add_menue = async () => {
+        let val = _validate()
+        if (!val) {
+            await dispatch(AddMenue(token, lang, nameAR, nameEN))
+            dispatch(MenueInfo(lang, token))
+            setModalVisible(false)
+            setNameAr('');
+            setNameEN('')
+        }
+        else {
+            Toaster(_validate());
 
-
-
-    const Orderdata = [{
-        id: 'K0',
-        title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianYellow, Colors.GradianYellow2]
-    },
-    {
-        id: 'K1',
-        title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianGreen, Colors.GradianGreen2]
-    },
-    {
-        id: 'K2',
-        title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianRed, Colors.GradianRed2]
+        }
     }
-        ,
-
-
-    ]
-
-
-    const MeueCard = [{
-        id: 'K0',
-        num: 1,
-        title: 'اسم المنيو',
-    },
-    {
-        id: 'K1',
-        num: 2,
-        title: 'اسم المنيو',
-    },
-    {
-        id: 'K2',
-        num: 3,
-        title: 'اسم المنيو',
+    console.log(Menue);
+    const edit = async (item) => {
+        await setMenueData({ name: item.name, id: item.id })
+        setEditMaodVisible(true)
     }
-        ,
 
-    ]
+    const DeleteMeueIteM = async (id) => {
+        await dispatch(DeleteMenue(token, id))
+        dispatch(MenueInfo(lang, token))
+
+    }
+    const EditMEnue = () => {
+        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData.id))
+        dispatch(MenueInfo(lang, token))
+        setEditMaodVisible(false)
+    }
+    const fetchdata = async () => {
+        await dispatch(MenueInfo(lang, token))
+        await Menue.data
+
+    }
+
+    useEffect(() => {
+        fetchdata()
+        Menue
+    }, [dispatch]);
+
     return (
         <View style={{ flex: 1 }}>
             <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
@@ -92,7 +137,37 @@ function Menue({ navigation }) {
 
                 <Card />
 
-                <DrobDwn />
+                <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: Colors.InputColor, }}>
+                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection2(!isSelected2)} />
+                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('Select')}</Text>
+                    <View style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                        <Dropdown
+                            placeholder={i18n.t('select')}
+                            data={data}
+                            fontSize={12}
+                            itemTextStyle={{ fontFamily: 'flatMedium' }}
+                            lineWidth={0}
+                            containerStyle={{ width: width * .22, paddingHorizontal: 5, bottom: 10 }}
+                            animationDuration={0}
+                        />
+                    </View>
+
+
+
+                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('filter')}</Text>
+                    <View style={{ borderWidth: .4, alignItems: 'center', justifyContent: 'center', height: width * .09, backgroundColor: Colors.bg, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                        <Dropdown
+                            placeholder={i18n.t('select')}
+                            data={data2}
+                            fontSize={12}
+                            itemTextStyle={{ fontFamily: 'flatMedium' }}
+                            lineWidth={0}
+                            containerStyle={{ width: width * .22, paddingHorizontal: 5, bottom: 10 }}
+                        />
+                    </View>
+
+                </View>
+
 
                 <BTN title={i18n.t('AddMenue')} ContainerStyle={[styles.LoginBtn, { marginHorizontal: 18, marginVertical: 10 }]} onPress={() => setModalVisible(true)} />
 
@@ -101,25 +176,39 @@ function Menue({ navigation }) {
                     <Modal
                         animationType="slide"
                         transparent={true}
+                        style={{ backgroundColor: Colors.bg, }}
                         visible={modalVisible} >
 
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                                <View style={{ margin: 20 }}>
+                                <View style={{ margin: 20, backgroundColor: Colors.bg }}>
                                     <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddMenue')} </Text>
 
                                     <InputIcon
-                                        placeholder={i18n.t('menueAr')}
-                                        inputStyle={{ textAlign: 'center', }}
+
+                                        label={nameARStatus === 1 ? i18n.t('menueAr') : null}
+                                        placeholder={nameARStatus === 1 ? null : i18n.t('menueAr')}
+                                        onBlur={() => unActiveInput('nameAR')}
+                                        onFocus={() => activeInput('nameAR')}
+                                        inputStyle={{ borderColor: nameARStatus === 1 ? Colors.sky : Colors.InputColor, textAlign: 'center', }}
+                                        onChangeText={(e) => setNameAr(e)}
+                                        value={nameAR}
+                                        LabelStyle={{ paddingHorizontal: nameARStatus === 1 ? 10 : 0, color: nameARStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                                     />
 
                                     <InputIcon
-                                        placeholder={i18n.t('menueEn')}
+                                        label={nameENStatus === 1 ? i18n.t('menueEn') : null}
+                                        placeholder={nameENStatus === 1 ? null : i18n.t('menueEn')}
+                                        onBlur={() => unActiveInput('nameEN')}
+                                        onFocus={() => activeInput('nameEN')}
+                                        inputStyle={{ borderColor: nameENStatus === 1 ? Colors.sky : Colors.InputColor, textAlign: 'center', }}
+                                        onChangeText={(e) => setNameEN(e)}
+                                        value={nameEN}
                                         styleCont={{ marginTop: -5 }}
-                                        inputStyle={{ textAlign: 'center', }}
+                                        LabelStyle={{ paddingHorizontal: nameENStatus === 1 ? 10 : 0, color: nameENStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                                     />
 
-                                    <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
+                                    <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={Add_menue} />
                                 </View>
                             </View>
                         </View>
@@ -131,37 +220,78 @@ function Menue({ navigation }) {
                 <FlatList
                     pagingEnabled={true}
                     showsVerticalScrollIndicator={false}
-                    data={MeueCard}
+                    data={Menue.data}
+                    extraData={modalVisible}
                     keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
+                    renderItem={({ item, index }) =>
 
-                        <View style={styles.Card}>
-                            <View style={styles.FWrab}>
-                                <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
-                                <Text style={styles.nText}>{i18n.t('num')} # {item.item.num}</Text>
-                                <View style={{ flexDirection: 'row', marginStart: 5, alignItems: 'center' }}>
-                                    <Text style={styles.nMenu}>{i18n.t('name')} :   </Text>
-                                    <Text style={styles.name}>{item.item.title}</Text>
+
+                        (
+                            <View style={styles.Card}>
+                                <View style={styles.FWrab}>
+                                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
+                                    <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                    <View style={{ flexDirection: 'row', marginStart: 5, alignItems: 'center' }}>
+                                        <Text style={styles.nMenu}>{i18n.t('name')} :   </Text>
+                                        <Text style={styles.name}>{item.name}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={styles.SWarb}>
-                                <View style={styles.Edit}>
-                                    <TouchableOpacity>
+                                <View style={styles.SWarb}>
+                                    <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
                                         <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
                                     </TouchableOpacity>
-                                </View>
 
-                                <View style={styles.Delete}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
                                         <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
                                     </TouchableOpacity>
+
                                 </View>
 
                             </View>
+                        )
+                    } />
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        style={{ backgroundColor: Colors.bg, }}
+                        visible={EditMaodVisible} >
 
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <View style={{ margin: 20, backgroundColor: Colors.bg }}>
+                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('edit')} </Text>
+
+                                    <InputIcon
+
+                                        label={nameARStatusEdit === 1 ? i18n.t('menueAr') : null}
+                                        placeholder={nameARStatusEdit === 1 ? null : i18n.t('menueAr')}
+                                        onBlur={() => unActiveInput('nameAREdit')}
+                                        onFocus={() => activeInput('nameAREdit')}
+                                        inputStyle={{ borderColor: nameARStatusEdit === 1 ? Colors.sky : Colors.InputColor, textAlign: 'center', }}
+                                        onChangeText={(e) => setNameArEdit(e)}
+                                        value={nameAREdit}
+                                        LabelStyle={{ paddingHorizontal: nameARStatusEdit === 1 ? 10 : 0, color: nameARStatusEdit === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                                    />
+
+                                    <InputIcon
+                                        label={nameENStatusEdit === 1 ? i18n.t('menueEn') : null}
+                                        placeholder={nameENStatusEdit === 1 ? null : i18n.t('menueEn')}
+                                        onBlur={() => unActiveInput('nameENEdit')}
+                                        onFocus={() => activeInput('nameENEdit')}
+                                        inputStyle={{ borderColor: nameENStatusEdit === 1 ? Colors.sky : Colors.InputColor, textAlign: 'center', }}
+                                        onChangeText={(e) => setNameENEdit(e)}
+                                        value={nameENEdit}
+                                        styleCont={{ marginTop: -5 }}
+                                        LabelStyle={{ paddingHorizontal: nameENStatusEdit === 1 ? 10 : 0, color: nameENStatusEdit === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                                    />
+
+                                    <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={EditMEnue} />
+                                </View>
+                            </View>
                         </View>
-                    )} />
-
+                    </Modal>
+                </View>
             </ScrollView>
 
         </View >

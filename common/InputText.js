@@ -26,7 +26,8 @@ const InputIcon = ({
 
     return (
 
-        <View style={[styles.containerTableTextOverInput, styleCont]}>
+        <View onPress={onPress} style={[styles.containerTableTextOverInput, styleCont]}>
+
             <Text style={[styles.labelText, LabelStyle]}  >
                 {label}
             </Text>
@@ -42,6 +43,7 @@ const InputIcon = ({
             />
             <TouchableOpacity onPress={onPress}>
                 <Image source={image} style={[styles.image, imgStyle]} />
+
             </TouchableOpacity>
         </View>
 

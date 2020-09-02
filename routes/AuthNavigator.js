@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import * as React from 'react'
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
@@ -62,6 +61,7 @@ import OrderDetAdjust from '../Components/DrawerComponent/ManageAccount/OrderDet
 import Report from '../Components/DrawerComponent/report/Report';
 import PhoneCheck from '../Components/Auth/PhoneCheck';
 import ActivateCode from '../Components/Auth/ActivationCode';
+import EditMenue from '../Components/DrawerComponent/Menue/EditMenue';
 
 
 const Stack = createStackNavigator();
@@ -99,6 +99,8 @@ export const DrawerNAv = () => {
             <Stack.Screen name="MyProfile" component={myProfil} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="Menue" component={Menue} />
+            <Stack.Screen name="EditMenue" component={EditMenue} />
+
             <Stack.Screen name="Products" component={Products} />
             <Stack.Screen name="Orders" component={Orders} />
             <Stack.Screen name="SpecialOrders" component={SpecialOrders} />

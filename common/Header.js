@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Image, TouchableOpacity, StyleSheet, Dimensions, Text, ImageBackground, I18nManager } from 'react-native'
 
 import Colors from '../consts/Colors';
+import { useSelector } from 'react-redux';
 
 
 
@@ -9,6 +10,8 @@ const { width } = Dimensions.get('window')
 const { height } = Dimensions.get('window')
 
 function Header({ label, navigation, }) {
+    const user = useSelector(state => state.auth.user.data);
+
     return (
         <>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -28,7 +31,7 @@ function Header({ label, navigation, }) {
                 <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
                     <View style={{ marginTop: 45, marginHorizontal: 20 }}>
                         <Image source={require('../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                        <Image source={require('../assets/Images/yass.jpg')} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
                     </View>
                 </TouchableOpacity>
 

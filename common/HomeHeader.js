@@ -1,8 +1,11 @@
 import React from 'react'
 import Colors from '../consts/Colors'
 import { View, TouchableOpacity, Image, ImageBackground, Text } from 'react-native'
+import { useSelector } from 'react-redux';
 
-function HomeHeader({ label, title, navigation, onPress, image }) {
+function HomeHeader({ label, title, navigation, onPress, }) {
+    const user = useSelector(state => state.auth.user.data);
+
     return (
         <View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
@@ -16,7 +19,7 @@ function HomeHeader({ label, title, navigation, onPress, image }) {
                 <TouchableOpacity onPress={onPress} style={{ margin: 20, top: 25 }}>
                     <View style={{}}>
                         <Image source={require('../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                        <Image source={{ uri: image }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
                     </View>
                 </TouchableOpacity>
 

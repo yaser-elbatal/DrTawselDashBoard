@@ -85,11 +85,11 @@ function Register({ navigation }) {
     function unActiveInput(type) {
         if (type === 'phone' && phone === '') setPhoneStatus(0);
         if (type === 'password' && password === '') setPasswordStatus(0);
-        if (type === 'nameAR' || nameAR !== '') setnameARStatus(0);
-        if (type === 'nameEN' || nameEN !== '') setNameENStatus(0);
-        if (type === 'email' || email !== '') setemailStatues(0);
-        if (type === 'confirmPassword' || confirmPassword !== '') setenPasswordStatus(0);
-        if (type === 'CommercialRegister' || CommercialRegister !== '') setCommercialRegisterstatues(0);
+        if (type === 'nameAR' && nameAR !== '') setnameARStatus(0);
+        if (type === 'nameEN' && nameEN !== '') setNameENStatus(0);
+        if (type === 'email' && email !== '') setemailStatues(0);
+        if (type === 'confirmPassword' && confirmPassword !== '') setenPasswordStatus(0);
+        if (type === 'CommercialRegister' && CommercialRegister !== '') setCommercialRegisterstatues(0);
 
     }
 

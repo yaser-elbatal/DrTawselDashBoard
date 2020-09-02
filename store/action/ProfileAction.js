@@ -6,11 +6,12 @@ import { Toast } from "native-base";
 export const profile_data = 'profile_data'
 export const Update_Profile = 'Update_Profile'
 
-export const GetProfile = (token) => {
+export const GetProfile = (token, lang) => {
     return dispatch => {
         axios({
             url: consts.url + 'profile',
             method: 'GET',
+            data: { lang },
             headers: { Authorization: 'Bearer ' + token, },
 
         }).then(response => {
@@ -35,18 +36,18 @@ export const UpdateProfile = (token, lang, name, phone, email, cityId, avatar, n
                 dispatch({ type: Update_Profile, data: res.data })
 
             }
+            Toast.show({
+                text: res.data.message,
+                type: res.data.success ? "success" : "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
         }
         )
 
-        Toast.show({
-            text: res.data.message,
-            type: res.data.success ? "success" : "danger",
-            duration: 3000,
-            textStyle: {
-                color: "white",
-                fontFamily: 'cairo',
-                textAlign: 'center'
-            }
-        });
+
     }
 }

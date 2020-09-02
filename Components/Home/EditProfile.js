@@ -9,33 +9,37 @@ import BTN from '../../common/BTN'
 import { width } from '../../consts/HeightWidth'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCititis } from '../../store/action/CitiesAction'
-import { UpdateProfile } from '../../store/action/ProfileAction'
+import { UpdateProfile, GetProfile } from '../../store/action/ProfileAction'
 import { Toaster } from '../../common/Toaster'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 function EditProfile({ navigation }) {
 
+    const user = useSelector(state => state.auth.user.data)
 
-    const [nameEN, setNameEN] = useState('')
-    const [email, setemail] = useState('')
-    const [city, setCity] = useState(null)
-    const [phone, setPhone] = useState("");
-    const [base64, setBase64] = useState('');
+    const [nameEN, setNameEN] = useState(user.name)
+    const [email, setemail] = useState(user.email)
+    const [city, setCity] = useState(user.provider.city)
+    const [phone, setPhone] = useState(user.phone)
+    const [base64, setBase64] = useState(user.avatar);
+    const [userImage, setUserImage] = useState(null);
 
     const [spinner, setSpinner] = useState(false);
 
     const cities = useSelector(state => state.cities.cities)
     const lang = useSelector(state => state.lang.language);
     const token = useSelector(state => state.auth.user.data.token);
+    const myProf = useSelector(state => state.profile.user.data);
 
     const [nameENStatus, setNameENStatus] = useState(0)
     const [emailStatues, setemailStatues] = useState(0)
     const [phoneStatus, setPhoneStatus] = useState(0);
+    let image = userImage;
 
 
     let cityName = cities.map(city => ({ label: city.name, value: city.id }));
-    let CityID = cities.map(city => ({ label: city.name, }));
+    // let CityID = cities.map(city => ({ label: city.name, }));
 
     const dispatch = useDispatch();
 
@@ -71,10 +75,7 @@ function EditProfile({ navigation }) {
 
 
 
-    useEffect(() => {
-        dispatch(getCititis(lang));
-    }
-        , [])
+
 
     function activeInput(type) {
 
@@ -86,17 +87,22 @@ function EditProfile({ navigation }) {
 
 
     function unActiveInput(type) {
-        if (type === 'nameEN' || nameEN !== '') setNameENStatus(0);
-        if (type === 'email' || email !== '') setemailStatues(0);
+        if (type === 'nameEN' && nameEN == '') setNameENStatus(0);
+        if (type === 'email' && email == '') setemailStatues(0);
         if (type === 'phone' && phone === '') setPhoneStatus(0);
 
     }
 
+
+
     const UpdateData = () => {
         let val = _validate();
+
         if (!val) {
-            setSpinner(true)
+
             dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation))
+            setSpinner(true)
+
         }
         else {
             setSpinner(false)
@@ -106,17 +112,20 @@ function EditProfile({ navigation }) {
     }
 
     useEffect(() => {
+        dispatch(getCititis(lang));
+        dispatch(GetProfile(token, lang))
+
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(false)
         });
         setSpinner(false)
         return unsubscribe;
-    }, [navigation, spinner]);
+    }, [navigation, spinner, dispatch]);
 
     return (
         <View style={{ flex: 1, }}>
 
-            <Image source={require('../../assets/Images/imagethree.png')} style={styles.ImgBackGround} />
+            <Image source={image != null ? { uri: image } : { uri: user.avatar }} style={styles.ImgBackGround} />
             <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
                 <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
             </TouchableOpacity>
@@ -136,9 +145,10 @@ function EditProfile({ navigation }) {
             </ImageBackground>
 
             <View style={styles.ScrolContainer}>
-                <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
-
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+
+                    <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
+
 
                     <View style={{ margin: 20, marginTop: 0 }}>
 
@@ -193,23 +203,12 @@ function EditProfile({ navigation }) {
                                 animationDuration={0}
                                 onChangeText={val => setCity(val)}
 
-                                value={CityID.label}
+                                value={city}
                             />
                         </View>
                         {
                             spinner ?
-                                <View style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    zIndex: 99999,
-                                    backgroundColor: "rgba(0,0,0,0.5)",
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    alignSelf: 'center',
-                                }}>
+                                <View style={[{ justifyContent: 'center', alignItems: 'center', marginTop: 25 },]}>
                                     <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
                                 </View>
                                 :

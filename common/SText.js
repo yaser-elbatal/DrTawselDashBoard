@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, StyleSheet, I18nManager } from "react-native";
+import { Text, StyleSheet, I18nManager, TouchableOpacity } from "react-native";
 import Colors from "../consts/Colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SText = ({ title, style, onPress, ...rest }) => (
     <TouchableOpacity onPress={onPress} >

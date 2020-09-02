@@ -12,7 +12,12 @@
     },
     "android": {
       "package": "com.Awmer.DashboardDrTawsel",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBQu-aDY--uY14s4U3ok-XwwqhsnhLFe5Q"
+        }
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0

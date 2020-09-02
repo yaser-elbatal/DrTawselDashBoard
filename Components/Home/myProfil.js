@@ -1,15 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { GetProfile } from '../../store/action/ProfileAction'
+import { width } from '../../consts/HeightWidth'
 
 function myProfil({ navigation }) {
 
     const token = useSelector(state => state.auth.user.data.token)
     const user = useSelector(state => state.auth.user.data)
+    const lang = useSelector(state => state.lang.language);
+    const myProf = useSelector(state => state.profile.user.data);
+    console.log('myProf' + myProf);
+    const dispatch = useDispatch();
 
 
+    function fetchData() {
+        dispatch(GetProfile(token));
+    }
+
+    useEffect(() => {
+        myProf;
+        fetchData()
+    }, [])
 
     return (
         <View style={{ flex: 1 }}>
@@ -17,7 +31,7 @@ function myProfil({ navigation }) {
             <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} resizeMode='contain' />
 
             <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
                     {
                         I18nManager.isRTL ?
                             <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
@@ -62,7 +76,7 @@ function myProfil({ navigation }) {
 
                         <View style={styles.Wrab}>
                             <Text style={styles.user}>{user.email}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile', { MyProfile: myProf })}>
                                 <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
                             </TouchableOpacity>
                         </View>
@@ -100,9 +114,8 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '110%',
-        height: '100%',
-        bottom: 170,
-        right: 3
+        height: '42%',
+        right: 18
     },
     Line: {
         height: 1,
@@ -115,7 +128,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         backgroundColor: Colors.bg,
-        bottom: 0, height: '52%',
+        bottom: 0, height: '60%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
     }

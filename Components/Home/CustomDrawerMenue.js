@@ -12,7 +12,7 @@ function CustomDrawerMenue({ navigation }) {
 
     const dispatch = useDispatch();
     const token = useSelector(state => state.auth.user ? state.auth.user.data.token : null);
-    const user = useSelector(state => state.auth.user);
+    const user = useSelector(state => state.auth.user.data);
 
 
 
@@ -29,7 +29,7 @@ function CustomDrawerMenue({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
                     <View style={{ marginTop: 50, marginHorizontal: 20 }}>
                         <Image source={require('../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                        <Image source={require('../../assets/Images/yass.jpg')} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
                     </View>
                 </TouchableOpacity>
 

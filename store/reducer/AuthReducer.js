@@ -1,4 +1,6 @@
 import { Sign_In, LOGIN_IS_LOADING, login_success, login_failed, Sign_up, Activate_Code, logout } from "../action/AuthAction";
+import { Update_Profile, profile_data } from "../action/ProfileAction";
+import { Update_provider } from "../action/ProviderAction";
 
 const initial_State = { user: null, loading: false, message: '', success: false }
 
@@ -18,8 +20,15 @@ export default (state = initial_State, action) => {
             return { ...state, message: action.payload.message, }
         case Activate_Code:
             return { ...state, user: action.data, message: action.data.message, success: action.data.success }
+        case Update_Profile:
+            return ({ ...state, user: action.data, message: action.data.message, success: action.data.success });
+        case profile_data:
+            return { ...state, user: action.data, message: action.data.message, success: action.data.success };
+        case Update_provider:
+            return { ...state, user: action.data, message: action.data.message, success: action.data.success }
         case logout:
             return { user: null }
+
         default:
             return state;
     }
