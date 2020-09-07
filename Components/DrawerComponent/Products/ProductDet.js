@@ -1,18 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
 
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
+import { useDispatch, useSelector } from 'react-redux';
+import { ProductDetailes } from '../../../store/action/ProductAction';
 
 
-function ProductDet({ navigation }) {
+function ProductDet({ navigation, route }) {
+
+    const Products = useSelector(state => state.product.product.data);
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+
+    console.log('ProductsDet' + Products);
+    const { prdouctId, index } = route.params;
+
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        dispatch(ProductDetailes(token, lang, prdouctId))
+        Products
+    }, [navigation]);
+
+
     const [click1, setClick1] = useState(true)
     const [click2, setClick2] = useState(true)
     const [Select, setSelect] = useState(true)
 
     return (
         <View style={{ flex: 1 }}>
-            <Image source={require('../../../assets/Images/imageone.png')} style={styles.ImgBackGround} />
+            <Image source={{ uri: Products.image }} style={styles.ImgBackGround} />
             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     {
@@ -30,22 +49,27 @@ function ProductDet({ navigation }) {
 
                     <View style={styles.Wrab}>
                         <Text style={styles.text}>{i18n.t('ProductDetailes')}</Text>
-                        <TouchableOpacity onPress={() => setSelect(!Select)}>
+                        <TouchableOpacity >
                             {
-                                Select ?
-                                    <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-                                    :
+                                Products.available == 0 ?
                                     <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+
 
                             }
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                        <Text style={styles.num}>{i18n.t('num')}#1</Text>
-                        <Text style={[styles.num, { color: Colors.fontNormal }]}>{i18n.t('menue')}</Text>
-                        <Text style={[styles.num, { color: Colors.IconBlack }]}>{i18n.t('Prod')}</Text>
-                        <Text style={styles.num}>122{i18n.t('Rial')}</Text>
+                        {/* <Text style={styles.num}>{i18n.t('num')}#{index + 1}</Text> */}
+                        <Text style={[styles.num, { color: Colors.fontNormal }]}>{Products.menu}</Text>
+                        <Text style={[styles.num, { color: Colors.IconBlack }]}>{Products.name}</Text>
+                        <Text style={styles.num}>{Products.price}{i18n.t('Rial')}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.num}>{Products.price}</Text>
+                            <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{Products.price - Products.discount}</Text>
 
+                        </View>
 
                     </View>
 
@@ -67,14 +91,10 @@ function ProductDet({ navigation }) {
                     {
                         click1 ?
                             <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 10, color: Colors.InputColor }}>
-                                هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
-                                هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
-                                هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
-                                هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
-                                هذا النص هو مثال لنص يمكن ان يستبدل ف نفس المساحه
+                                {Products.details}
 
 
-                        </Text>
+                            </Text>
                             :
                             null
                     }
@@ -96,9 +116,14 @@ function ProductDet({ navigation }) {
                     {
                         click2 ?
                             <View style={{ flexDirection: 'column', marginHorizontal: 40 }}>
+                                {
+                                    Products.extras.map(size => (
+                                        <Text style={styles.name} key={size.id}> -   {size.name} </Text>
 
-                                <Text style={styles.name}> -   كولا </Text>
-                                <Text style={styles.name}>-    بيبسي </Text>
+                                    )
+
+                                    )
+                                }
                             </View>
 
                             : null

@@ -8,12 +8,12 @@ export const Update_Menue = 'Update_Menue';
 export const Delete_menue = 'Delete_menue'
 
 export const MenueInfo = (lang, token) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'GET',
             url: consts.url + 'menus',
-            data: { lang },
             headers: { Authorization: 'Bearer ' + token, },
+            params: { lang }
 
         }).then(res => {
             if (res.data.success) {
@@ -35,14 +35,15 @@ export const AddMenue = (token, lang, nameAr, nameEn,) => {
             if (res.data.success) {
                 dispatch({ type: Add_menue, data: res.data })
             }
+
         })
     }
 
 }
 
 export const UpdateMenue = (token, lang, nameAr, nameEn, id) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'PUT',
             url: consts.url + 'update-menu',
             data: { lang, name_ar: nameAr, name_en: nameEn, id },
@@ -50,6 +51,7 @@ export const UpdateMenue = (token, lang, nameAr, nameEn, id) => {
 
         }).then(res => {
             if (res.data.success) {
+                MenueInfo(lang, token)
                 dispatch({ type: Update_Menue, data: res.data })
             }
             Toast.show({

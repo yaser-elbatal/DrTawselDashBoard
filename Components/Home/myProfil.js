@@ -11,17 +11,16 @@ function myProfil({ navigation }) {
     const token = useSelector(state => state.auth.user.data.token)
     const user = useSelector(state => state.auth.user.data)
     const lang = useSelector(state => state.lang.language);
-    const myProf = useSelector(state => state.profile.user.data);
-    console.log('myProf' + myProf);
+    // const myProf = useSelector(state => state.profile.user.data);
+    // console.log('myProf' + myProf);
     const dispatch = useDispatch();
 
 
     function fetchData() {
-        dispatch(GetProfile(token));
+        dispatch(GetProfile(token, lang));
     }
 
     useEffect(() => {
-        myProf;
         fetchData()
     }, [])
 
@@ -76,7 +75,7 @@ function myProfil({ navigation }) {
 
                         <View style={styles.Wrab}>
                             <Text style={styles.user}>{user.email}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile', { MyProfile: myProf })}>
+                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
                                 <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
                             </TouchableOpacity>
                         </View>

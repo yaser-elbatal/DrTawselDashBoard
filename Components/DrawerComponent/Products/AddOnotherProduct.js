@@ -11,6 +11,10 @@ function AddOnotherProduct({ navigation }) {
 
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('');
+    const [price, setPrice] = useState('');
+
+
+
 
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>

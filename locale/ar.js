@@ -24,7 +24,8 @@ const ar = {
   CommercialRegister: 'السجل التجاري',
   city: 'المدينه',
   dep: 'القسم التابه له',
-
+  priceSize: 'سعر الحجم',
+  quantity: 'كميه',
   createAcc: 'أنشاء حساب',
   Activity: 'سجل نشاطك الان',
   newpass: "كلمه مرور جديده",
@@ -540,6 +541,10 @@ const ar = {
   DepId: 'اختر القسم',
   codeNotMatch: 'الكود غير صحيح',
   enterPhone: 'ادخل دقم الهاتف ',
+  SmallPrice: 'سعر الحجم الصغير',
+  MidlePrice: 'سعر الحجم الوسط',
+  BigPrice: 'سعر الحجم الكبير',
+
 };
 
 export default ar;

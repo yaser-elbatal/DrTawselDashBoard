@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, } from 'react-native';
 import { CheckBox, Content } from "native-base";
 
 
@@ -11,77 +11,50 @@ import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
 import DrobDwn from '../../../common/DrobDwn';
 import Card from '../../../common/Card';
+import { useSelector, useDispatch } from 'react-redux';
+import { GetProducts, DeleteProduct, ProductDetailes } from '../../../store/action/ProductAction';
 
 function Products({ navigation }) {
+    const dispatch = useDispatch();
 
 
     const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
-    const [selected, setSelected] = useState("key0")
-    const [selected1, setSelected1] = useState("key0")
 
 
-    const onValueChange1 = (value) => {
-        setSelected1(value)
+    const Products = useSelector(state => state.product.products);
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+
+    // setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
+
+
+    useEffect(() => {
+        dispatch(GetProducts(token, lang))
+        Products
+    }, [dispatch]);
+
+    const DeletProduct = async (id) => {
+        await dispatch(DeleteProduct(token, lang, id))
+        dispatch(GetProducts(token, lang))
+
+
     }
 
-    const onValueChange = (value) => {
-        setSelected(value)
-    }
 
-
-    const Orderdata = [{
-        id: 'K0',
-        title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianYellow, Colors.GradianYellow2]
-    },
-    {
-        id: 'K1',
-        title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianGreen, Colors.GradianGreen2]
-    },
-    {
-        id: 'K2',
-        title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianRed, Colors.GradianRed2]
-    }
-        ,
-
-    ]
-
-
-    const MeueCard = [{
-        id: 'K0',
-        num: 1,
-        title: 'اسم المنيو',
-    },
-    {
-        id: 'K1',
-        num: 2,
-        title: 'اسم المنيو',
-    },
-    {
-        id: 'K2',
-        num: 3,
-        title: 'اسم المنيو',
-    }
-        ,
-
-    ]
     return (
         <View style={{ flex: 1 }}>
-            <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
-            <InputIcon
-                placeholder={i18n.t('search1')}
-                image={require('../../../assets/Images/search.png')}
-                styleCont={{ marginTop: -10, height: width * .18, }}
-                inputStyle={{ backgroundColor: '#DBDBDB' }}
-            />
+            <ScrollView style={{ flex: 1 }}>
 
-            <Content style={{ flex: 1 }}>
+                <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
+
+                <InputIcon
+                    placeholder={i18n.t('search1')}
+                    image={require('../../../assets/Images/search.png')}
+                    styleCont={{ marginTop: -10, height: width * .18, }}
+                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                />
+
                 <Card />
                 <DrobDwn />
                 <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('AddProduct')} />
@@ -90,36 +63,40 @@ function Products({ navigation }) {
                 <FlatList
                     pagingEnabled={true}
                     showsVerticalScrollIndicator={false}
-                    data={MeueCard}
+                    data={Products}
+                    extraData={Products}
                     keyExtractor={(item) => item.id}
-                    renderItem={(item) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('ProductDet')}>
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('ProductDet', { prdouctId: item.id, index: index }); setTimeout(() => { dispatch(ProductDetailes(token, lang, item.id)) }, 1000)
+                        }}>
                             <View style={styles.Card}>
                                 <View style={{ flexDirection: 'row', flex: .75 }}>
-                                    <Image source={require('../../../assets/Images/imagesix.png')} style={{ height: '100%', width: '25%' }} />
+                                    <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
                                     <View style={styles.FWrab}>
                                         <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
-                                        <Text style={styles.nText}>{i18n.t('num')} # {item.item.num}</Text>
-                                        <Text style={styles.name}>{item.item.title}</Text>
-                                        <Text style={styles.nMenu}>{i18n.t('Prod')}</Text>
-                                        <Text style={styles.nText}>122</Text>
+                                        <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                        <Text style={styles.name}>{item.menu}</Text>
+                                        <Text style={styles.nMenu}>{item.name}</Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={styles.nText}>{item.price}</Text>
+                                            <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
+
+                                        </View>
 
 
                                     </View>
                                 </View>
 
                                 <View style={styles.SWarb}>
-                                    <View style={styles.Edit}>
-                                        <TouchableOpacity>
-                                            <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                        </TouchableOpacity>
-                                    </View>
 
-                                    <View style={styles.Delete}>
-                                        <TouchableOpacity>
-                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                        </TouchableOpacity>
-                                    </View>
+                                    <TouchableOpacity style={styles.Edit}>
+                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
+                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
 
                                 </View>
 
@@ -128,7 +105,7 @@ function Products({ navigation }) {
 
                     )} />
 
-            </Content>
+            </ScrollView>
 
         </View >
     )

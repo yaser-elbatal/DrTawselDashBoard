@@ -1,5 +1,6 @@
 import { I18nManager, AsyncStorage } from "react-native";
 import Expo, { Updates } from "expo";
+import i18n from '../../locale/i18n'
 
 export const chooseLang = "choose_Lang";
 
@@ -18,6 +19,7 @@ export const changeLanguage = (lang, direction) => {
                 }
             });
 
+            i18n.locale = lang;
 
             dispatch({
                 type: chooseLang,

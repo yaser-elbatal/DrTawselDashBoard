@@ -17,6 +17,7 @@ const en = {
   PassReco: "Password recovery",
   Activity: 'Register your activity now',
   send: "Send",
+  priceSize: 'Price of Size',
   username: 'user Name in arabic',
   usernamen: 'user Name in english',
   CommercialRegister: 'Commercial Register',
@@ -28,6 +29,7 @@ const en = {
   ActiveRequests: 'Active Requests',
   Completedrequests: 'Completed ٌequests',
   order: 'Order',
+  quantity: 'quantity',
   Quickreports: 'Quick Reports',
   Yourproducts: 'Your Products',
   AddMenue: '+ Add Menue',
@@ -548,7 +550,10 @@ const en = {
   CityId: 'choose city',
   DepId: 'choose Debartment',
   codeNotMatch: 'Wrong Code',
-  enterPhone: 'enter your phone number'
+  enterPhone: 'enter your phone number',
+  SmallPrice: 'price of small size',
+  MidlePrice: 'price of middlle size',
+  BigPrice: 'price of big size',
 };
 
 export default en;

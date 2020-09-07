@@ -5,7 +5,9 @@ import cities from './CitiesReducer';
 import profile from './ProfileReducer';
 import provider from './ProviderReducer';
 import menue from './MenueReducer';
+import product from './ProductReducer';
 
+import size from './SizesReducer';
 
 
 
@@ -15,5 +17,7 @@ export default multiReducres = combineReducers({
     cities,
     profile,
     provider,
-    menue
+    menue,
+    product,
+    size
 });

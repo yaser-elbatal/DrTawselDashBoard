@@ -21,12 +21,13 @@ export const tempAuth = () => {
     };
 };
 
-export const SignIn = (phone, password, deviceId, lang, navigation) => {
+export const SignIn = (phone, password, device_id, lang, navigation) => {
 
     return (dispatch) => {
 
         axios.post(CONST.url + 'sign-in',
-            { phone, password, lang, device_id: deviceId, user_type: 4 })
+            { phone, password, device_id, lang, user_type: 4 })
+
             .then(res => {
 
                 handelLogin(dispatch, res.data, navigation)

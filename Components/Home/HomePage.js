@@ -13,7 +13,6 @@ import { useSelector } from 'react-redux';
 function HomePage({ navigation }) {
 
     const user = useSelector(state => state.auth.user.data)
-
     console.log(user.avatar);
 
     const ProductData = [{

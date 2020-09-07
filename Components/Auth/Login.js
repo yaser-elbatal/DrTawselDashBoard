@@ -74,7 +74,7 @@ function Login({ navigation }) {
 
 
 
-
+    console.log(deviceId);
 
     const _validate = () => {
         let phoneErr = validatePhone(phone);
