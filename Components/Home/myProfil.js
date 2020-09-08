@@ -14,10 +14,10 @@ function myProfil({ navigation }) {
     // const myProf = useSelector(state => state.profile.user.data);
     // console.log('myProf' + myProf);
     const dispatch = useDispatch();
+    console.log(token);
 
-
-    function fetchData() {
-        dispatch(GetProfile(token, lang));
+    const fetchData = async () => {
+        await dispatch(GetProfile(token, lang));
     }
 
     useEffect(() => {

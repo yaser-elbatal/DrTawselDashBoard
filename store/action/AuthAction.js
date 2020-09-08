@@ -25,15 +25,17 @@ export const SignIn = (phone, password, device_id, lang, navigation) => {
 
     return (dispatch) => {
 
-        axios.post(CONST.url + 'sign-in',
-            { phone, password, device_id, lang, user_type: 4 })
+        axios({
+            method: 'POST',
+            url: CONST.url + 'sign-in',
+            data: { phone, password, device_id, lang, user_type: 4 },
+            params: { lang }
+        })
 
             .then(res => {
-
                 handelLogin(dispatch, res.data, navigation)
-
-
             })
+
             .catch(error => console.warn(error));
 
         dispatch({ type: Sign_In })
@@ -89,11 +91,13 @@ const loginFailed = (dispatch, error, navigation) => {
 export const SignUp = (data, navigation) => {
     return (dispatch) => {
         AsyncStorage.getItem('deviceID').then(deviceId => {
+            console.log(deviceId);
             axios({
                 url: consts.url + 'sign-up',
 
                 method: 'POST',
                 data: {
+                    name: data.name,
                     restaurant_name_ar: data.nameAR,
                     restaurant_name_en: data.nameEN,
                     password: data.password,
@@ -102,17 +106,18 @@ export const SignUp = (data, navigation) => {
                     commercial_register: data.CommercialRegister,
                     city_id: data.city,
                     category_id: data.department,
-                    lang: data.lang,
-                    name: 'yasser',
                     device_id: deviceId,
-                    user_type: 4
+                    user_type: 4,
+
+                }
+                , params: {
+                    lang: data.lang,
                 }
             }).then(res => {
                 dispatch({ type: Sign_up, payload: res.data })
                 if (res.data.success) {
                     navigation.navigate('ActivateCode', { token: res.data.data.token })
                 }
-                console.log('message', res.data.message);
 
                 Toast.show({
                     text: res.data.message,
@@ -135,19 +140,21 @@ export const SignUp = (data, navigation) => {
 export const ActivationCode = (code, token, lang, navigation) => {
     return dispatch => {
         axios({
+            method: 'POST',
             url: consts.url + 'activate',
-            method: 'post',
             data: { code },
+            params: { lang },
             headers: {
                 Authorization: 'Bearer ' + token,
-                lang: lang
+
             }
+
         }
         ).then(res => {
+            if (res.data.success) {
+                dispatch({ type: Activate_Code, data: res.data })
 
-            dispatch({ type: Activate_Code, data: res.data })
-
-
+            }
             Toast.show({
                 text: res.data.message,
                 type: res.data.success ? "success" : "danger",

@@ -62,6 +62,7 @@ import Report from '../Components/DrawerComponent/report/Report';
 import PhoneCheck from '../Components/Auth/PhoneCheck';
 import ActivateCode from '../Components/Auth/ActivationCode';
 import EditMenue from '../Components/DrawerComponent/Menue/EditMenue';
+import EditProduct from '../Components/DrawerComponent/Products/EditProduct';
 
 
 const Stack = createStackNavigator();
@@ -102,6 +103,8 @@ export const DrawerNAv = () => {
             <Stack.Screen name="EditMenue" component={EditMenue} />
 
             <Stack.Screen name="Products" component={Products} />
+            <Stack.Screen name="EditProducts" component={EditProduct} />
+
             <Stack.Screen name="Orders" component={Orders} />
             <Stack.Screen name="SpecialOrders" component={SpecialOrders} />
             <Stack.Screen name="IncomingRequests" component={IncomingRequests} />

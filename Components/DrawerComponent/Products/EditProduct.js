@@ -15,22 +15,21 @@ import { GetSizes } from '../../../store/action/SizesAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { Add_Products, GetProducts } from '../../../store/action/ProductAction';
 import { MenueInfo } from '../../../store/action/MenueAction';
-import { apisAreAvailable } from 'expo';
 
 
 const { width } = Dimensions.get('window')
-function AddProduct({ navigation }) {
+function EditProduct({ navigation, route }) {
 
     const Sizes = useSelector(state => state.size.size.data);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
 
-
-
-    const [nameAR, setNameAr] = useState('');
-    const [nameEN, setNameEN] = useState('')
-    const [price, setPrice] = useState('');
+    const { Product } = route.params
+    console.log('+++=======' + Product);
+    const [nameAR, setNameAr] = useState(Product.name);
+    const [nameEN, setNameEN] = useState(Product.name)
+    const [price, setPrice] = useState(`${Product.price}`);
     const [small_price, setsmall_price] = useState('');
     const [mid_price, setmid_price] = useState('');
     const [large_price, setlarge_price] = useState('');
@@ -38,6 +37,7 @@ function AddProduct({ navigation }) {
     const [spinner, setSpinner] = useState(false);
 
 
+    console.log(Product);
 
 
     const [SizePriceId, SetSizePriceId] = useState([{
@@ -57,15 +57,14 @@ function AddProduct({ navigation }) {
 
 
 
-    console.log(SizePriceId);
-    const [availableKilos, setavailableKilos] = useState('');
-    const [Discount, setDiscount] = useState('');
-    const [quantity, setQuantity] = useState('')
-    const [detailesAr, setDetailesAr] = useState('')
-    const [detailesEn, setDetailesEn] = useState('')
-    const [MenueId, setMenue] = useState('')
+    const [availableKilos, setavailableKilos] = useState(`${Product.available_kilos}`);
+    const [Discount, setDiscount] = useState(`${Product.discount}`);
+    const [quantity, setQuantity] = useState(`${Product.quantity}`)
+    const [detailesAr, setDetailesAr] = useState(Product.details)
+    const [detailesEn, setDetailesEn] = useState(Product.details)
+    const [MenueId, setMenue] = useState()
 
-    const [base64, setBase64] = useState();
+    const [base64, setBase64] = useState(Product.image);
     const [userImage, setUserImage] = useState(null);
 
     const [nameArStatues, setnameArStatues] = useState(0)
@@ -84,11 +83,10 @@ function AddProduct({ navigation }) {
 
 
     let MenueData = Menue.map(menue => ({ label: menue.name, value: menue.id }));
-    let MenueName = Menue.map(menue => ({ label: menue.name, }));
+    // let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
 
 
-    console.log(SizePriceId);
     function activeInput(type) {
         if (type === 'nameAr' || nameAR !== '') setnameArStatues(1);
         if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
@@ -168,7 +166,6 @@ function AddProduct({ navigation }) {
 
     useEffect(() => {
         FetchData()
-        Sizes
     }, []);
 
     useEffect(() => {
@@ -230,7 +227,6 @@ function AddProduct({ navigation }) {
         let array = SizePriceId;
         let ID = array.findIndex(id => id.size_id === IdSelect);
         array[ID].price = e
-        console.log(array);
 
         SetSizePriceId(array)
 
@@ -430,7 +426,7 @@ function AddProduct({ navigation }) {
                     animationDuration={0}
                     onChangeText={val => setMenue(val)}
 
-                    value={MenueName.label}
+                    value={Product.menu}
                 />
             </View>
             <InputIcon
@@ -496,4 +492,4 @@ const styles = StyleSheet.create({
 
     },
 })
-export default AddProduct
+export default EditProduct

@@ -6,8 +6,7 @@ import { AsyncStorage } from 'react-native';
 
 function MainRoot() {
     const auth = useSelector(state => state.auth);
-    const token = useSelector(state => state.auth.user ? state.auth.user.data.token : null);
-    AsyncStorage.setItem('tokenn', token)
+    console.log(auth);
     return (
 
         <NavigationContainer>

@@ -6,6 +6,8 @@ export const Get_Products = 'Get_Products';
 export const Add_product = 'Get_Products';
 export const Product_Detailes = 'Product_Detailes';
 export const Delete_Product = 'Delete_Product';
+export const Edit_Product = 'Edit_Product';
+
 
 
 
@@ -45,7 +47,8 @@ export const ProductDetailes = (token, lang, id) => {
 
 
 
-        })
+        }).catch(err => console.warn(err))
+
     }
 }
 
@@ -85,12 +88,31 @@ export const AddExtraPrdoduc = (token, lang, name_ar, name_en, price) => {
 
 
 
-export const Add_Products = (token, lang, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, navigation, extras_name_ar, extras_name_en, extras_price,) => {
+
+export const EditProduct = (token, lang, id, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, navigation) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'POST',
+            url: `${consts.url}update-product`,
+            data: { id, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image },
+            headers: { Authorization: 'Bearer ' + token, },
+            params: { lang }
+        }).then(res => {
+            if (res.data.success) {
+                dispatch({ type: Edit_Product, data: res.data })
+                navigation.navigate('Products')
+            }
+        })
+
+    }
+}
+
+export const Add_Products = (token, lang, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, sizes, menue_id, image, navigation, extras_name_ar, extras_name_en, extras_price,) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}add-product`,
-            data: { name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, extras_name_ar, extras_name_en, extras_price, },
+            data: { name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, sizes, menue_id, image, extras_name_ar, extras_name_en, extras_price, },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
 

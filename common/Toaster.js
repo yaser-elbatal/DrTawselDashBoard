@@ -9,16 +9,16 @@ const Toaster = (message) => {
     return Toast.show(message, {
         position: Toast.position.CENTER,
         containerStyle: {
-            backgroundColor: "rgba(220,220,221,.85)",
+            backgroundColor: Colors.IconBlack,
             paddingHorizontal: width * 0.05,
-            borderRadius: 20,
+            borderRadius: 5,
         },
-        textColor: Colors.fontNormal,
+        textColor: Colors.bg,
         textStyle: {
             fontFamily: "flatMedium",
             fontSize: width * 0.04,
         },
-        duration: 2000,
+        duration: 3000,
     });
 };
 

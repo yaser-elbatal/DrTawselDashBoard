@@ -1,16 +1,15 @@
-import { chooseLang } from "../action/LangAction";
+import { Get_intro } from "../action/IntroAction";
 
 const initalstate = {
-    language: null,
+    intro: [],
 };
 export default (state = initalstate, action) => {
 
     switch (action.type) {
-        case chooseLang:
-            return { ...state, language: action.lang };
+        case Get_intro:
+            return { ...state, intro: action.data };
 
         default:
             return state;
     }
 };
-

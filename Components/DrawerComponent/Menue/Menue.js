@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal, Platform, ActivityIndicator } from 'react-native';
 import { CheckBox } from "native-base";
 import { Dropdown } from 'react-native-material-dropdown';
 
@@ -28,6 +28,7 @@ function Menue({ navigation }) {
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('')
     const [MenueData, setMenueData] = useState()
+    const [spinner, setSpinner] = useState(false);
 
     const [nameAREdit, setNameArEdit] = useState();
     const [nameENEdit, setNameENEdit] = useState();
@@ -40,8 +41,13 @@ function Menue({ navigation }) {
     const [nameARStatus, setnameARStatus] = useState(0);
     const [nameENStatus, setNameENStatus] = useState(0)
 
-
-
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
 
     function activeInput(type) {
 
@@ -86,8 +92,10 @@ function Menue({ navigation }) {
     const Add_menue = async () => {
         let val = _validate()
         if (!val) {
+            setSpinner(true)
             await dispatch(AddMenue(token, lang, nameAR, nameEN))
             dispatch(MenueInfo(lang, token))
+            setTimeout(() => dispatch(MenueInfo(lang, token)), 1000)
             setModalVisible(false)
             setNameAr('');
             setNameEN('')
@@ -108,31 +116,59 @@ function Menue({ navigation }) {
     }
 
     const DeleteMeueIteM = async (id) => {
+        setSpinner(true);
         await dispatch(DeleteMenue(token, id))
         dispatch(MenueInfo(lang, token))
 
     }
 
     const EditMEnue = () => {
+        setSpinner(true);
+
         dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData))
         dispatch(MenueInfo(lang, token))
-        setTimeout(() => { dispatch(MenueInfo(lang, token)) }, 1000)
+        setTimeout(() => dispatch(MenueInfo(lang, token)), 1000)
 
         setEditMaodVisible(false)
     }
 
     const fetchdata = async () => {
+        setSpinner(true);
         await dispatch(MenueInfo(lang, token))
         await Menue.data
     }
 
     useEffect(() => {
         fetchdata()
+        setSpinner(true);
 
     }, [dispatch]);
 
+
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 99999,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                </View>
+            );
+        }
+    }
+
     return (
         <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
+            {renderLoader()}
             <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
 
             <InputIcon

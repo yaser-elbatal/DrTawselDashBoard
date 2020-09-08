@@ -56,7 +56,7 @@ function ActivateCode({ navigation, route }) {
         const val = _validate();
         if (MyactivateCode == code && !val) {
             setSpinner(true)
-            dispatch(ActivationCode(code, token, lang))
+            dispatch(ActivationCode(code, token, lang, navigation))
         }
         else {
             Toaster(_validate());

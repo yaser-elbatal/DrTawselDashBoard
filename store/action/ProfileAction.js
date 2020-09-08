@@ -11,23 +11,14 @@ export const GetProfile = (token, lang) => {
         axios({
             url: consts.url + 'profile',
             method: 'GET',
-            data: { lang },
+            params: { lang },
             headers: { Authorization: 'Bearer ' + token, },
 
         }).then(response => {
             if (response.data.success) {
-                const data = response.data;
-                dispatch({ type: profile_data, data })
+                dispatch({ type: profile_data, data: response.data })
             }
-            Toast.show({
-                text: response.data.message,
-                type: response.data.success ? "success" : "danger",
-                duration: 3000,
-                textStyle: {
-                    color: "white",
-                    textAlign: 'center'
-                }
-            });
+
 
         })
     }

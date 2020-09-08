@@ -10,8 +10,10 @@ export const Get_Debartmets = 'Get_Departments';
 
 export const getCititis = (lang) => {
     return (dispatch) => {
-        axios.get(`${consts.url}cities`, {
-            lang: lang,
+        axios({
+            method: 'GET',
+            url: `${consts.url}cities`,
+            params: { lang }
         }).then((response) => {
 
             dispatch({ type: Get_Cities, payload: response.data });
@@ -24,8 +26,10 @@ export const getCititis = (lang) => {
 
 export const GetDepartment = (lang) => {
     return (dispatch) => {
-        axios.get(`${consts.url}categories`, {
-            lang: lang,
+        axios({
+            method: 'POST',
+            url: `${consts.url}categories`,
+            params: { lang }
         }).then((response) => {
 
             dispatch({ type: Get_Debartmets, payload: response.data });

@@ -17,6 +17,8 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 
 function Register({ navigation }) {
+    const [name, setName] = useState('');
+
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('')
     const [password, setPassword] = useState('');
@@ -55,6 +57,8 @@ function Register({ navigation }) {
     const [passwordStatus, setPasswordStatus] = useState(0);
     const [nameARStatus, setnameARStatus] = useState(0);
     const [nameENStatus, setNameENStatus] = useState(0)
+    const [nameStatus, setNameStatus] = useState(0)
+
     const [enpasswordStatus, setenPasswordStatus] = useState(0);
     const [emailStatues, setemailStatues] = useState(0)
     const [CommercialRegisterStatues, setCommercialRegisterstatues] = useState(0)
@@ -75,6 +79,8 @@ function Register({ navigation }) {
         if (type === 'phone' || phone !== '') setPhoneStatus(1);
         if (type === 'password' || password !== '') setPasswordStatus(1);
         if (type === 'nameAR' || nameAR !== '') setnameARStatus(1);
+        if (type === 'name' || name !== '') setNameStatus(1);
+
         if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
         if (type === 'email' || email !== '') setemailStatues(1);
         if (type === 'confirmPassword' || confirmPassword !== '') setenPasswordStatus(1);
@@ -87,6 +93,8 @@ function Register({ navigation }) {
         if (type === 'password' && password === '') setPasswordStatus(0);
         if (type === 'nameAR' && nameAR !== '') setnameARStatus(0);
         if (type === 'nameEN' && nameEN !== '') setNameENStatus(0);
+        if (type === 'name' && name == '') setNameStatus(1);
+
         if (type === 'email' && email !== '') setemailStatues(0);
         if (type === 'confirmPassword' && confirmPassword !== '') setenPasswordStatus(0);
         if (type === 'CommercialRegister' && CommercialRegister !== '') setCommercialRegisterstatues(0);
@@ -98,6 +106,8 @@ function Register({ navigation }) {
 
 
         let nameErr = validateUserName(nameAR)
+        let nameA = validateUserName(name)
+
         let nameEnErr = validateUserName(nameEN)
         let phoneErr = validatePhone(phone);
         let passwordErr = validatePassword(password);
@@ -106,7 +116,7 @@ function Register({ navigation }) {
         let DebId = ValdiateDebId(department)
         let ValditeCommercialRegisterErr = ValditeCommercialRegister(CommercialRegister)
         let twoPass = validateTwoPasswords(password, confirmPassword)
-        return nameErr || nameEnErr || phoneErr || passwordErr || emailErr || ValditeCommercialRegisterErr || twoPass || CityID || DebId
+        return nameA || nameErr || nameEnErr || phoneErr || passwordErr || emailErr || ValditeCommercialRegisterErr || twoPass || CityID || DebId
     };
 
 
@@ -128,7 +138,7 @@ function Register({ navigation }) {
         const val = _validate();
         if (!val) {
             setSpinner(true)
-            const data = { nameAR, nameEN, password, phone, email, CommercialRegister, city, department, lang };
+            const data = { name, nameAR, nameEN, password, phone, email, CommercialRegister, city, department, lang };
             dispatch(SignUp(data, navigation))
 
         }
@@ -153,6 +163,16 @@ function Register({ navigation }) {
 
             <ScrollView style={{ flex: 1, bottom: 30 }} showsVerticalScrollIndicator={false} >
                 <InputIcon
+                    label={nameStatus === 1 ? i18n.t('name') : null}
+                    placeholder={nameStatus === 1 ? null : i18n.t('name')}
+                    onBlur={() => unActiveInput('name')}
+                    onFocus={() => activeInput('name')}
+                    inputStyle={{ borderColor: nameStatus === 1 ? Colors.sky : Colors.InputColor }}
+                    onChangeText={(e) => setName(e)}
+                    value={name}
+                    LabelStyle={{ paddingHorizontal: nameStatus === 1 ? 10 : 0, color: nameStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                />
+                <InputIcon
                     label={nameARStatus === 1 ? i18n.t('username') : null}
                     placeholder={nameARStatus === 1 ? null : i18n.t('username')}
                     onBlur={() => unActiveInput('nameAR')}
@@ -160,6 +180,7 @@ function Register({ navigation }) {
                     inputStyle={{ borderColor: nameARStatus === 1 ? Colors.sky : Colors.InputColor }}
                     onChangeText={(e) => setNameAr(e)}
                     value={nameAR}
+                    styleCont={{ marginTop: 0 }}
                     LabelStyle={{ paddingHorizontal: nameARStatus === 1 ? 10 : 0, color: nameARStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                 />
                 <InputIcon

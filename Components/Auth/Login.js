@@ -62,6 +62,7 @@ function Login({ navigation }) {
         }
 
         const deviceId = await Notifications.getExpoPushTokenAsync();
+
         setDeviceId(deviceId);
         setUserId(null);
 
@@ -70,11 +71,9 @@ function Login({ navigation }) {
 
     useEffect(() => {
         getDeviceId()
+        deviceId
     }, []);
 
-
-
-    console.log(deviceId);
 
     const _validate = () => {
         let phoneErr = validatePhone(phone);
@@ -100,12 +99,14 @@ function Login({ navigation }) {
 
     }
 
-
+    useEffect(() => {
+        getDeviceId()
+    }, []);
     return (
         <View style={styles.container}>
 
             <BackBtn navigation={navigation} />
-            <ScrollView style={{ flex: 1, bottom: 35 }}>
+            <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
                 <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
                     <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
                     <Text style={styles.UText}>{i18n.t('loginInf')}</Text>

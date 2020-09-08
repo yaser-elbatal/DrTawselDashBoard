@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, } from 'react-native';
 import { CheckBox, Content } from "native-base";
 
 
@@ -20,94 +20,127 @@ function Products({ navigation }) {
 
     const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
+    const [spinner, setSpinner] = useState(false);
 
 
     const Products = useSelector(state => state.product.products);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
 
-    // setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
 
 
     useEffect(() => {
         dispatch(GetProducts(token, lang))
+        setSpinner(true)
         Products
     }, [dispatch]);
+
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
+
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
+
 
     const DeletProduct = async (id) => {
         await dispatch(DeleteProduct(token, lang, id))
         dispatch(GetProducts(token, lang))
+        setSpinner(true)
 
 
     }
 
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 99999,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                </View>
+            );
+        }
+    }
 
     return (
-        <View style={{ flex: 1 }}>
-            <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
+            {renderLoader()}
+            <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
 
-                <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
+            <InputIcon
+                placeholder={i18n.t('search1')}
+                image={require('../../../assets/Images/search.png')}
+                styleCont={{ marginTop: -10, height: width * .18, }}
+                inputStyle={{ backgroundColor: '#DBDBDB' }}
+            />
 
-                <InputIcon
-                    placeholder={i18n.t('search1')}
-                    image={require('../../../assets/Images/search.png')}
-                    styleCont={{ marginTop: -10, height: width * .18, }}
-                    inputStyle={{ backgroundColor: '#DBDBDB' }}
-                />
-
-                <Card />
-                <DrobDwn />
-                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('AddProduct')} />
+            <Card />
+            <DrobDwn />
+            <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('AddProduct')} />
 
 
-                <FlatList
-                    pagingEnabled={true}
-                    showsVerticalScrollIndicator={false}
-                    data={Products}
-                    extraData={Products}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('ProductDet', { prdouctId: item.id, index: index }); setTimeout(() => { dispatch(ProductDetailes(token, lang, item.id)) }, 1000)
-                        }}>
-                            <View style={styles.Card}>
-                                <View style={{ flexDirection: 'row', flex: .75 }}>
-                                    <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
-                                    <View style={styles.FWrab}>
-                                        <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
-                                        <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                        <Text style={styles.name}>{item.menu}</Text>
-                                        <Text style={styles.nMenu}>{item.name}</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={styles.nText}>{item.price}</Text>
-                                            <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
-
-                                        </View>
-
+            <FlatList
+                pagingEnabled={true}
+                showsVerticalScrollIndicator={false}
+                data={Products}
+                extraData={Products}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item, index }) => (
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('ProductDet', { Products: item, index: index }); setTimeout(() => { dispatch(ProductDetailes(token, lang, item.id)) }, 1000)
+                    }}>
+                        <View style={styles.Card}>
+                            <View style={{ flexDirection: 'row', flex: .75 }}>
+                                <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                <View style={styles.FWrab}>
+                                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
+                                    <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                    <Text style={styles.name}>{item.menu}</Text>
+                                    <Text style={styles.nMenu}>{item.name}</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={styles.nText}>{item.price}</Text>
+                                        <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
 
                                     </View>
-                                </View>
 
-                                <View style={styles.SWarb}>
-
-                                    <TouchableOpacity style={styles.Edit}>
-                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
-                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                    </TouchableOpacity>
 
                                 </View>
+                            </View>
+
+
+                            <View style={styles.SWarb}>
+
+                                <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { Product: item })}>
+                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
+                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                </TouchableOpacity>
 
                             </View>
-                        </TouchableOpacity>
 
-                    )} />
+                        </View>
+                    </TouchableOpacity>
 
-            </ScrollView>
+                )} />
 
-        </View >
+        </ScrollView>
+
     )
 }
 const styles = StyleSheet.create({
@@ -164,11 +197,14 @@ const styles = StyleSheet.create({
     nText: {
         color: Colors.sky,
         fontFamily: 'flatMedium',
+        marginVertical: 3
 
     },
     nMenu: {
         fontFamily: 'flatMedium',
         fontSize: 12,
+        marginVertical: 5
+
     },
     name: {
         fontFamily: 'flatMedium',

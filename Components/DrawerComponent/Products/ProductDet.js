@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager, ActivityIndicator } from 'react-native'
 
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
@@ -9,28 +9,65 @@ import { ProductDetailes } from '../../../store/action/ProductAction';
 
 function ProductDet({ navigation, route }) {
 
-    const Products = useSelector(state => state.product.product.data);
+    const { Products } = route.params;
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
+    const [spinner, setSpinner] = useState(false);
 
-    console.log('ProductsDet' + Products);
     const { prdouctId, index } = route.params;
-
     const dispatch = useDispatch();
 
 
+    console.log(Products);
+    const FetchData = async () => {
+        await dispatch(ProductDetailes(token, lang, Products.id))
+        setSpinner(true)
+        await Products
+    }
+
     useEffect(() => {
-        dispatch(ProductDetailes(token, lang, prdouctId))
+        FetchData();
         Products
-    }, [navigation]);
+    }, [navigation, dispatch])
+    useEffect(() => {
 
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
 
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
     const [click1, setClick1] = useState(true)
     const [click2, setClick2] = useState(true)
     const [Select, setSelect] = useState(true)
 
+
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 99999,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                </View>
+            );
+        }
+    }
+
     return (
         <View style={{ flex: 1 }}>
+            {renderLoader()}
+
             <Image source={{ uri: Products.image }} style={styles.ImgBackGround} />
             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -132,6 +169,7 @@ function ProductDet({ navigation, route }) {
             </View>
 
         </View>
+
     )
 }
 const styles = StyleSheet.create({

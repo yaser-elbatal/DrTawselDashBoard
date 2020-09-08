@@ -1,39 +1,95 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, I18nManager, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, I18nManager, Platform, AsyncStorage, ActivityIndicator } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
+import { useSelector, useDispatch } from 'react-redux';
+import { IntroService } from '../../store/action/IntroAction';
 
 
 const { width } = Dimensions.get('window')
 const { height } = Dimensions.get('window')
 
 const Slider = ({ navigation }) => {
-    const [showRealApp, setshowRealApp] = useState(false)
-    const slides = [
-        {
-            key: 'one',
-            title: 'عنوان النص',
-            text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
-            image: require('../../assets/Images/stawseel.png'),
-            backgroundColor: Colors.bg,
-        },
-        {
-            key: 'two',
-            title: 'عنوان النص',
-            text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
-            image: require('../../assets/Images/ftawseel.png'),
-            backgroundColor: Colors.bg,
-        },
-        {
-            key: 'three',
-            title: 'عنوان النص',
-            text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
-            image: require('../../assets/Images/ttawseel.png'),
-            backgroundColor: Colors.bg,
 
+    const Intro = useSelector(state => state.intro.intro.data)
+    const lang = useSelector(state => state.lang.language);
+    const [spinner, setSpinner] = useState(false);
+
+    const dispatch = useDispatch()
+    console.log(Intro);
+
+    const FetchData = async () => {
+        await dispatch(IntroService(lang))
+        setSpinner(true)
+        Intro
+    }
+    useEffect(() => {
+        FetchData()
+
+        const direction = AsyncStorage.getItem("direction");
+        if (direction) {
+            navigation.navigate("Login");
         }
-    ];
+    }, [navigation]);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(false)
+        });
+        setSpinner(false)
+        return unsubscribe;
+    }, [navigation, spinner]);
+
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 99999,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                </View>
+            );
+        }
+    }
+
+    const slides = Intro.map(int => ({ key: int.id, title: int.title, text: int.details, image: { uri: int.url.image }, }))
+    // const slides = [
+    //     {
+    //         key: 'one',
+    //         title: 'عنوان النص',
+    //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
+    //         image: require('../../assets/Images/stawseel.png'),
+    //         backgroundColor: Colors.bg,
+    //     },
+    //     {
+    //         key: 'two',
+    //         title: 'عنوان النص',
+    //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
+    //         image: require('../../assets/Images/ftawseel.png'),
+    //         backgroundColor: Colors.bg,
+    //     },
+    //     {
+    //         key: 'three',
+    //         title: 'عنوان النص',
+    //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
+    //         image: require('../../assets/Images/ttawseel.png'),
+    //         backgroundColor: Colors.bg,
+
+    //     }
+    // ];
+
+
+
 
     const renderItem = ({ item }) => {
         return (
@@ -58,15 +114,18 @@ const Slider = ({ navigation }) => {
         );
     };
     return (
-        <AppIntroSlider
-            renderItem={renderItem}
-            data={slides} dotClickEnabled={true}
-            dotStyle={styles.Dotted}
-            activeDotStyle={styles.activeDoted}
-            doneLabel={i18n.t('start')}
-            renderDoneButton={renderDoneButton}
+        <>
+            {renderLoader()}
+            <AppIntroSlider
+                renderItem={renderItem}
+                data={slides} dotClickEnabled={true}
+                dotStyle={styles.Dotted}
+                activeDotStyle={styles.activeDoted}
+                doneLabel={i18n.t('start')}
+                renderDoneButton={renderDoneButton}
 
-        />
+            />
+        </>
     )
 }
 
