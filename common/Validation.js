@@ -31,6 +31,10 @@ export const ValdiateCITyId = (id) => {
 export const ValdiateDebId = (id) => {
     id === '' ? i18n.t('DepId') : id === null ? i18n.t('DepId') : null
 }
+
+export const ValdiateSelect = (id) => {
+    id === null ? i18n.t('SelectYN') : undefined
+}
 export const validateUserName = userName =>
     userName.length < 2 ? i18n.t('usernameErr') : null;
 

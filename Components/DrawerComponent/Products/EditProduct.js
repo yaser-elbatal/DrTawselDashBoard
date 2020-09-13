@@ -13,7 +13,7 @@ import { SText } from '../../../common/SText';
 import Header from '../../../common/Header';
 import { GetSizes } from '../../../store/action/SizesAction';
 import { useSelector, useDispatch } from 'react-redux';
-import { Add_Products, GetProducts } from '../../../store/action/ProductAction';
+import { EditProducts, GetProducts } from '../../../store/action/ProductAction';
 import { MenueInfo } from '../../../store/action/MenueAction';
 
 
@@ -24,9 +24,9 @@ function EditProduct({ navigation, route }) {
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
+    const Products = useSelector(state => state.product.products);
 
     const { Product } = route.params
-    console.log('+++=======' + Product);
     const [nameAR, setNameAr] = useState(Product.name);
     const [nameEN, setNameEN] = useState(Product.name)
     const [price, setPrice] = useState(`${Product.price}`);
@@ -37,7 +37,6 @@ function EditProduct({ navigation, route }) {
     const [spinner, setSpinner] = useState(false);
 
 
-    console.log(Product);
 
 
     const [SizePriceId, SetSizePriceId] = useState([{
@@ -129,22 +128,12 @@ function EditProduct({ navigation, route }) {
 
 
 
-    const Add_Product = () => {
-        dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, small_price, mid_price, large_price, SizePriceId, MenueId, base64, navigation))
-        setTimeout(() => { dispatch(GetProducts(token, lang)); }, 1000)
-        setSpinner(true)
+    const Edit_product = () => {
+        dispatch(EditProducts(token, lang, Product.id, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, navigation))
+        setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
         dispatch(GetProducts(token, lang))
-        setNameAr('');
-        setNameEN('');
-        setsmall_price('');
-        setmid_price('');
-        setlarge_price('');
-        setDiscount('');
-        setPrice('');
-        setavailableKilos('');
-        setQuantity('');
-        setDetailesAr('');
-        setDetailesEn('')
+        setSpinner(true)
+
 
     }
 
@@ -459,7 +448,7 @@ function EditProduct({ navigation, route }) {
             />
             <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => navigation.navigate('AddOnotherProduct')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
 
-            <BTN title={`+ ${i18n.t('Add')}`} ContainerStyle={styles.LoginBtn} onPress={Add_Product} />
+            <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={Edit_product} />
 
         </ScrollView>
 

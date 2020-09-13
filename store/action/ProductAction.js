@@ -7,6 +7,7 @@ export const Add_product = 'Get_Products';
 export const Product_Detailes = 'Product_Detailes';
 export const Delete_Product = 'Delete_Product';
 export const Edit_Product = 'Edit_Product';
+export const Add_Extra_Products = 'Add_Extra_Products';
 
 
 
@@ -37,7 +38,6 @@ export const ProductDetailes = (token, lang, id) => {
         await axios({
             method: 'GET',
             url: `${consts.url}product?id=${id}`,
-            data: { id },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
 
@@ -57,7 +57,8 @@ export const DeleteProduct = (token, lang, id) => {
         await axios({
             method: 'DELETE',
             url: `${consts.url}delete-product`,
-            data: { lang, id },
+            data: { id },
+            params: { lang },
             headers: { Authorization: 'Bearer ' + token, },
 
         }).then(res => {
@@ -82,14 +83,12 @@ export const DeleteProduct = (token, lang, id) => {
 
 }
 
-export const AddExtraPrdoduc = (token, lang, name_ar, name_en, price) => {
-
-}
 
 
 
 
-export const EditProduct = (token, lang, id, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, navigation) => {
+
+export const EditProducts = (token, lang, id, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, navigation) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
@@ -102,17 +101,17 @@ export const EditProduct = (token, lang, id, name_ar, name_en, price, details_ar
                 dispatch({ type: Edit_Product, data: res.data })
                 navigation.navigate('Products')
             }
-        })
+        }).catch(err => console.warn(err))
 
     }
 }
 
-export const Add_Products = (token, lang, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, sizes, menue_id, image, navigation, extras_name_ar, extras_name_en, extras_price,) => {
+export const Add_Products = (token, lang, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, navigation, extras,) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}add-product`,
-            data: { name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, sizes, menue_id, image, extras_name_ar, extras_name_en, extras_price, },
+            data: { name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, extras, },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
 
@@ -139,4 +138,13 @@ export const Add_Products = (token, lang, name_ar, name_en, price, details_ar, d
         })
     }
 
+}
+
+
+
+
+export const AddExtraProducts = () => {
+    return dispatch => {
+        dispatch({ type: Add_Extra_Products, })
+    }
 }

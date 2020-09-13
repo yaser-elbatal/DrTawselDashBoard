@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -15,21 +15,29 @@ import { GetSizes } from '../../../store/action/SizesAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { Add_Products, GetProducts } from '../../../store/action/ProductAction';
 import { MenueInfo } from '../../../store/action/MenueAction';
-import { apisAreAvailable } from 'expo';
+import { width, height } from '../../../consts/HeightWidth';
+import { GetExtraProduct, add_extra_ProductsService, edit_extra_ProductsService, delete_extra_ProductsService } from '../../../store/action/ExtraProductAction';
 
 
-const { width } = Dimensions.get('window')
 function AddProduct({ navigation }) {
 
     const Sizes = useSelector(state => state.size.size.data);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
+    const ExtraProduct = useSelector(state => state.ExtraProduct.ExtraProduct);
 
 
 
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('')
+
+    const [ProductnameExtraAR, setProductnameExtraAR] = useState('');
+    const [ProductnameExtraEn, setProductnameExtraEn] = useState('')
+    const [priceProductExtra, setPricePrdouctExtra] = useState('');
+    const [ExProdId, setExProdId] = useState(0);
+
+
     const [price, setPrice] = useState('');
     const [small_price, setsmall_price] = useState('');
     const [mid_price, setmid_price] = useState('');
@@ -57,7 +65,6 @@ function AddProduct({ navigation }) {
 
 
 
-    console.log(SizePriceId);
     const [availableKilos, setavailableKilos] = useState('');
     const [Discount, setDiscount] = useState('');
     const [quantity, setQuantity] = useState('')
@@ -67,6 +74,7 @@ function AddProduct({ navigation }) {
 
     const [base64, setBase64] = useState();
     const [userImage, setUserImage] = useState(null);
+    const [EditMaodVisible, setEditMaodVisible] = useState(false);
 
     const [nameArStatues, setnameArStatues] = useState(0)
     const [nameENStatus, setNameENStatus] = useState(0)
@@ -81,14 +89,16 @@ function AddProduct({ navigation }) {
     const [SmallSizeStatues, setSmallSizeStatues] = useState(0);
     const [MiddleStatues, setMiddleStatues] = useState(0);
     const [BigStatues, setBigStatues] = useState(0);
+    const [ProductNameArStatues, setProductNameArStatues] = useState(0);
+    const [ProductNameEnStatues, setProductNameEnStatues] = useState(0);
+    const [ProductExtraPriceStatues, setProductExtraPrieceStatues] = useState(0);
 
 
-    let MenueData = Menue.map(menue => ({ label: menue.name, value: menue.id }));
+    let MenueData = Menue.length ? Menue.map(menue => ({ label: menue.name, value: menue.id })) : null
     let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
 
 
-    console.log(SizePriceId);
     function activeInput(type) {
         if (type === 'nameAr' || nameAR !== '') setnameArStatues(1);
         if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
@@ -104,7 +114,9 @@ function AddProduct({ navigation }) {
         if (type === 'mid_price' || mid_price !== '') setMiddleStatues(1);
         if (type === 'large_price' || large_price !== '') setBigStatues(1);
 
-
+        if (type === 'ProductnameExtraAR' || ProductnameExtraAR !== '') setProductNameArStatues(1);
+        if (type === 'ProductnameExtraEn' || ProductnameExtraEn !== '') setProductNameEnStatues(1);
+        if (type === 'priceProductExtra' || priceProductExtra !== '') setProductExtraPrieceStatues(1);
     }
 
 
@@ -122,6 +134,10 @@ function AddProduct({ navigation }) {
         if (type === 'mid_price' && mid_price == '') setMiddleStatues(0);
         if (type === 'large_price' && large_price == '') setBigStatues(0);
 
+        if (type === 'ProductnameExtraAR' && ProductnameExtraAR == '') setProductNameArStatues(0);
+        if (type === 'ProductnameExtraEn' && ProductnameExtraEn == '') setProductNameEnStatues(0);
+        if (type === 'priceProductExtra' && priceProductExtra == '') setProductExtraPrieceStatues(0);
+
     }
 
 
@@ -132,21 +148,20 @@ function AddProduct({ navigation }) {
 
 
     const Add_Product = () => {
-        dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, small_price, mid_price, large_price, SizePriceId, MenueId, base64, navigation))
-        setTimeout(() => { dispatch(GetProducts(token, lang)); }, 1000)
+        dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
+        setTimeout(() => dispatch(GetProducts(token, lang)), 1000)
         setSpinner(true)
-        dispatch(GetProducts(token, lang))
-        setNameAr('');
-        setNameEN('');
-        setsmall_price('');
-        setmid_price('');
-        setlarge_price('');
-        setDiscount('');
-        setPrice('');
-        setavailableKilos('');
-        setQuantity('');
-        setDetailesAr('');
-        setDetailesEn('')
+        // setNameAr('');
+        // setNameEN('');
+        // setsmall_price('');
+        // setmid_price('');
+        // setlarge_price('');
+        // setDiscount('');
+        // setPrice('');
+        // setavailableKilos('');
+        // setQuantity('');
+        // setDetailesAr('');
+        // setDetailesEn('')
 
     }
 
@@ -169,6 +184,7 @@ function AddProduct({ navigation }) {
     useEffect(() => {
         FetchData()
         Sizes
+        GetExtraProduct()
     }, []);
 
     useEffect(() => {
@@ -237,6 +253,59 @@ function AddProduct({ navigation }) {
     }
 
 
+
+    const submitData = () => {
+        if (ProductnameExtraAR && ProductnameExtraEn && !ExProdId) {
+            const newEmployee = {
+                id: Math.floor(Math.random() * (999 - 100 + 1) + 100),
+                ProductnameExtraAR: ProductnameExtraAR,
+                ProductnameExtraEn: ProductnameExtraEn,
+                priceProductExtra: priceProductExtra
+            };
+
+            dispatch(add_extra_ProductsService(newEmployee));
+        } else if (ProductnameExtraAR && ProductnameExtraEn && ExProdId) {
+            const updatedDetails = {
+                id: ExProdId,
+                ProductnameExtraAR: ProductnameExtraAR,
+                ProductnameExtraEn: ProductnameExtraEn,
+                priceProductExtra: priceProductExtra
+            };
+            dispatch(add_extra_ProductsService(updatedDetails));
+        } else {
+            alert('Enter Extra Data.');
+        }
+        setEditMaodVisible(false)
+
+        clearData();
+    }
+
+    const editDetails = (data) => {
+        setExProdId(data.id);
+        setPricePrdouctExtra(data.priceProductExtra)
+        setProductnameExtraAR(data.ProductnameExtraAR)
+        setProductnameExtraEn(data.ProductnameExtraEn)
+
+    }
+
+    const deleteExtraProduct = (id) => {
+        clearData();
+
+        dispatch(delete_extra_ProductsService(id));
+
+    }
+
+
+
+    const clearData = () => {
+        setExProdId('');
+        setPricePrdouctExtra('')
+        setProductnameExtraAR('')
+        setProductnameExtraEn('')
+    }
+
+
+
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             {renderLoader()}
@@ -268,8 +337,8 @@ function AddProduct({ navigation }) {
                 LabelStyle={{ paddingHorizontal: nameENStatus === 1 ? 10 : 0, color: nameENStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
 
-            <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text>
-            <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
+            {/* <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text> */}
+            {/* <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
 
                 {
                     Sizes.map((size, index) => {
@@ -310,52 +379,49 @@ function AddProduct({ navigation }) {
 
                 }
 
-            </View>
+            </View> */}
 
-            {
-                selectedRadion === 1 ?
 
-                    <InputIcon
-                        styleCont={{ marginTop: 20 }}
-                        label={BigStatues === 1 ? i18n.t('BigPrice') : null}
-                        placeholder={BigStatues === 1 ? null : i18n.t('BigPrice')}
-                        onBlur={() => unActiveInput('large_price')}
-                        onFocus={() => activeInput('large_price')}
-                        inputStyle={{ borderColor: BigStatues === 1 ? Colors.sky : Colors.InputColor }}
-                        onChangeText={(e) => { setlarge_price(e); handaleChange(e, 1) }}
-                        keyboardType='numeric'
-                        value={large_price}
-                        LabelStyle={{ paddingHorizontal: BigStatues === 1 ? 10 : 0, color: BigStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                    />
-                    : selectedRadion === 2 ?
-                        <InputIcon
-                            styleCont={{ marginTop: 20 }}
-                            label={SmallSizeStatues === 1 ? i18n.t('SmallPrice') : null}
-                            placeholder={SmallSizeStatues === 1 ? null : i18n.t('SmallPrice')}
-                            onBlur={() => unActiveInput('small_price')}
-                            onFocus={() => activeInput('small_price')}
-                            inputStyle={{ borderColor: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor }}
-                            onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}
-                            value={small_price}
-                            keyboardType='numeric'
-                            LabelStyle={{ paddingHorizontal: SmallSizeStatues === 1 ? 10 : 0, color: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                        />
 
-                        : selectedRadion === 3 ?
-                            <InputIcon
-                                styleCont={{ marginTop: 20 }}
-                                label={MiddleStatues === 1 ? i18n.t('MidlePrice') : null}
-                                placeholder={MiddleStatues === 1 ? null : i18n.t('MidlePrice')}
-                                onBlur={() => unActiveInput('mid_price')}
-                                onFocus={() => activeInput('mid_price')}
-                                inputStyle={{ borderColor: MiddleStatues === 1 ? Colors.sky : Colors.InputColor }}
-                                onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
-                                value={mid_price}
-                                keyboardType='numeric'
-                                LabelStyle={{ paddingHorizontal: MiddleStatues === 1 ? 10 : 0, color: MiddleStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                            />
-                            : null
-            }
+            <InputIcon
+                styleCont={{ marginTop: 0 }}
+                label={BigStatues === 1 ? i18n.t('BigPrice') : null}
+                placeholder={BigStatues === 1 ? null : i18n.t('BigPrice')}
+                onBlur={() => unActiveInput('large_price')}
+                onFocus={() => activeInput('large_price')}
+                inputStyle={{ borderColor: BigStatues === 1 ? Colors.sky : Colors.InputColor }}
+                onChangeText={(e) => { setlarge_price(e); handaleChange(e, 1) }}
+                keyboardType='numeric'
+                value={large_price}
+                LabelStyle={{ paddingHorizontal: BigStatues === 1 ? 10 : 0, color: BigStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+            />
+            <InputIcon
+                styleCont={{ marginTop: 0 }}
+                label={SmallSizeStatues === 1 ? i18n.t('SmallPrice') : null}
+                placeholder={SmallSizeStatues === 1 ? null : i18n.t('SmallPrice')}
+                onBlur={() => unActiveInput('small_price')}
+                onFocus={() => activeInput('small_price')}
+                inputStyle={{ borderColor: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor }}
+                onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}
+                value={small_price}
+                keyboardType='numeric'
+                LabelStyle={{ paddingHorizontal: SmallSizeStatues === 1 ? 10 : 0, color: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+            />
+
+            <InputIcon
+                styleCont={{ marginTop: 0 }}
+                label={MiddleStatues === 1 ? i18n.t('MidlePrice') : null}
+                placeholder={MiddleStatues === 1 ? null : i18n.t('MidlePrice')}
+                onBlur={() => unActiveInput('mid_price')}
+                onFocus={() => activeInput('mid_price')}
+                inputStyle={{ borderColor: MiddleStatues === 1 ? Colors.sky : Colors.InputColor }}
+                onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
+                value={mid_price}
+                keyboardType='numeric'
+                LabelStyle={{ paddingHorizontal: MiddleStatues === 1 ? 10 : 0, color: MiddleStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+            />
+
+
 
 
 
@@ -412,6 +478,8 @@ function AddProduct({ navigation }) {
                 LabelStyle={{ paddingHorizontal: quantityStatues === 1 ? 10 : 0, color: quantityStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
 
+
+
             <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
                 <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
                 <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
@@ -450,7 +518,6 @@ function AddProduct({ navigation }) {
 
 
             <InputIcon
-                placeholder={i18n.t('prodDetAr')}
                 styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 0 }}
                 label={detailesEnStatues === 1 ? i18n.t('prodDetEn') : null}
                 placeholder={detailesEnStatues === 1 ? null : i18n.t('prodDetEn')}
@@ -461,9 +528,86 @@ function AddProduct({ navigation }) {
                 value={detailesEn}
                 LabelStyle={{ paddingHorizontal: detailesEnStatues === 1 ? 10 : 0, color: detailesEnStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, bottom: width * .32, }}
             />
-            <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => navigation.navigate('AddOnotherProduct')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
+
+
+            {
+                ExtraProduct.length ?
+                    ExtraProduct.map((proExtra, index) =>
+                        (
+                            <>
+                                <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
+                                    <View style={{ flexDirection: 'row', paddingStart: 10 }}>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.ProductnameExtraEn}</Text>
+                                        <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.ProductnameExtraAR}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.priceProductExtra}{i18n.t('Rial')}</Text>
+                                    </View>
+                                    <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => deleteExtraProduct(proExtra.id)}>
+                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
+                            </>
+                        )
+                    ) : null
+            }
+
+            <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
 
             <BTN title={`+ ${i18n.t('Add')}`} ContainerStyle={styles.LoginBtn} onPress={Add_Product} />
+            <View style={styles.centeredView}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    style={{ backgroundColor: Colors.bg, }}
+                    visible={EditMaodVisible} >
+
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
+                                <InputIcon
+                                    styleCont={{ marginTop: 10 }}
+                                    label={ProductNameArStatues === 1 ? i18n.t('prodDetEn') : null}
+                                    placeholder={ProductNameArStatues === 1 ? null : i18n.t('prodDetEn')}
+                                    onBlur={() => unActiveInput('ProductnameExtraAR')}
+                                    onFocus={() => activeInput('ProductnameExtraAR')}
+                                    inputStyle={{ borderColor: ProductNameArStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                    onChangeText={(e) => setProductnameExtraAR(e)}
+                                    value={ProductnameExtraAR}
+                                    LabelStyle={{ paddingHorizontal: ProductNameArStatues === 1 ? 10 : 0, color: ProductNameArStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, }}
+
+                                />
+                                <InputIcon
+
+                                    styleCont={{ marginTop: 0 }}
+                                    label={ProductNameEnStatues === 1 ? i18n.t('AddEn') : null}
+                                    placeholder={ProductNameEnStatues === 1 ? null : i18n.t('AddEn')}
+                                    onBlur={() => unActiveInput('ProductnameExtraEn')}
+                                    onFocus={() => activeInput('ProductnameExtraEn')}
+                                    inputStyle={{ borderColor: ProductNameEnStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                    onChangeText={(e) => setProductnameExtraEn(e)}
+                                    value={ProductnameExtraEn}
+                                    LabelStyle={{ paddingHorizontal: ProductNameEnStatues === 1 ? 10 : 0, color: ProductNameEnStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, }}
+
+                                />
+
+                                <InputIcon
+                                    styleCont={{ marginTop: 0 }}
+                                    label={ProductExtraPriceStatues === 1 ? i18n.t('price') : null}
+                                    placeholder={ProductExtraPriceStatues === 1 ? null : i18n.t('price')}
+                                    onBlur={() => unActiveInput('priceProductExtra')}
+                                    onFocus={() => activeInput('priceProductExtra')}
+                                    inputStyle={{ borderColor: ProductExtraPriceStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                    onChangeText={(e) => setPricePrdouctExtra(e)}
+                                    value={priceProductExtra}
+                                    LabelStyle={{ paddingHorizontal: ProductExtraPriceStatues === 1 ? 10 : 0, color: ProductExtraPriceStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, }}
+                                />
+
+                                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={submitData} />
+                            </ScrollView>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
 
         </ScrollView>
 
@@ -494,6 +638,39 @@ const styles = StyleSheet.create({
         width: '90%',
         marginVertical: 5
 
+    },
+    Img: {
+        height: 50,
+        width: 20,
+        alignSelf: 'center'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+        backgroundColor: '#737373',
+        opacity: .95,
+
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderTopRightRadius: 25,
+        borderTopLeftRadius: 25,
+        width: width,
+        height: height * .49,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    Delete: {
+        backgroundColor: Colors.RedColor,
+        justifyContent: 'flex-end', width: 30,
+        alignSelf: 'flex-end'
     },
 })
 export default AddProduct

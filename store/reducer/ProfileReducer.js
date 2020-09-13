@@ -1,4 +1,4 @@
-import { profile_data, Update_Profile } from "../action/ProfileAction";
+import { profile_data, Update_Profile, logout } from "../action/ProfileAction";
 
 const initial_state = { user: null }
 export default (state = initial_state, action) => {
@@ -7,7 +7,8 @@ export default (state = initial_state, action) => {
             return { ...state, user: action.data }
         case Update_Profile:
             return { ...state, user: action.data }
-
+        case logout:
+            return { user: null }
         default:
             return state;
     }

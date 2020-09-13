@@ -9,26 +9,22 @@ import { ProductDetailes } from '../../../store/action/ProductAction';
 
 function ProductDet({ navigation, route }) {
 
-    const { Products } = route.params;
+    const { Products, index } = route.params;
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const [spinner, setSpinner] = useState(false);
 
-    const { prdouctId, index } = route.params;
     const dispatch = useDispatch();
 
 
     console.log(Products);
-    const FetchData = async () => {
-        await dispatch(ProductDetailes(token, lang, Products.id))
-        setSpinner(true)
-        await Products
-    }
 
     useEffect(() => {
-        FetchData();
+        dispatch(ProductDetailes(token, lang, Products.id))
+        setSpinner(true)
         Products
-    }, [navigation, dispatch])
+    }, [dispatch])
+
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
@@ -85,7 +81,7 @@ function ProductDet({ navigation, route }) {
 
 
                     <View style={styles.Wrab}>
-                        <Text style={styles.text}>{i18n.t('ProductDetailes')}</Text>
+                        <Text style={styles.text}>{Products.name}</Text>
                         <TouchableOpacity >
                             {
                                 Products.available == 0 ?
@@ -98,13 +94,14 @@ function ProductDet({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                        {/* <Text style={styles.num}>{i18n.t('num')}#{index + 1}</Text> */}
+                        <Text style={styles.num}>{i18n.t('num')}#{index + 1}</Text>
                         <Text style={[styles.num, { color: Colors.fontNormal }]}>{Products.menu}</Text>
                         <Text style={[styles.num, { color: Colors.IconBlack }]}>{Products.name}</Text>
                         <Text style={styles.num}>{Products.price}{i18n.t('Rial')}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.num}>{Products.price}</Text>
-                            <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{Products.price - Products.discount}</Text>
+                            <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 15, fontSize: 10 }]}>{Products.price - Products.discount}</Text>
+                            <Text style={[styles.num, { color: Colors.InputColor }]}>({i18n.t('Availablekilos') + Products.available_kilos})</Text>
 
                         </View>
 

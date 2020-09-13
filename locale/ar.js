@@ -526,7 +526,7 @@ const ar = {
   Adjusted: 'تم التسويه',
   Commission: 'العموله',
   Createreport: 'انشاء تقرير',
-  deb: 'القسم التابع ليه',
+  deb: 'مجال',
   delete: 'حذف',
   edit: 'تعديل',
   latest: 'الاحدث',
@@ -544,6 +544,20 @@ const ar = {
   SmallPrice: 'سعر الحجم الصغير',
   MidlePrice: 'سعر الحجم الوسط',
   BigPrice: 'سعر الحجم الكبير',
+  CompInfo: 'معلومات الشركه',
+  owner: 'هل انت المالك ؟',
+  yes: 'نعم',
+  no: 'لا',
+  continue: 'اكمال',
+  storeInfo: ' معلومات المتجر',
+  branchNum: 'عدد الفدوع',
+  connectInfo: 'معلومات التواصل',
+  webUrl: 'رابط الموقع',
+  Franch: 'هل انت جزء من امتياز تجاري ؟',
+  DeliveryServ: 'عندك خدمه توصيل',
+  SelectYN: 'يجب اختيار نعم ام لا ',
+
+
 
 };
 

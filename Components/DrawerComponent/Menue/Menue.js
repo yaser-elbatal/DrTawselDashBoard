@@ -118,7 +118,7 @@ function Menue({ navigation }) {
     const DeleteMeueIteM = async (id) => {
         setSpinner(true);
         await dispatch(DeleteMenue(token, id))
-        dispatch(MenueInfo(lang, token))
+        setTimeout(() => dispatch(MenueInfo(lang, token)), 1000)
 
     }
 
@@ -132,14 +132,12 @@ function Menue({ navigation }) {
         setEditMaodVisible(false)
     }
 
-    const fetchdata = async () => {
-        setSpinner(true);
-        await dispatch(MenueInfo(lang, token))
-        await Menue.data
-    }
+
 
     useEffect(() => {
-        fetchdata()
+        setSpinner(true);
+        dispatch(MenueInfo(lang, token))
+        Menue.data
         setSpinner(true);
 
     }, [dispatch]);

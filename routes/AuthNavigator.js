@@ -63,11 +63,14 @@ import PhoneCheck from '../Components/Auth/PhoneCheck';
 import ActivateCode from '../Components/Auth/ActivationCode';
 import EditMenue from '../Components/DrawerComponent/Menue/EditMenue';
 import EditProduct from '../Components/DrawerComponent/Products/EditProduct';
+import Fregister from '../Components/Auth/Fregister';
+import SRegister from '../Components/Auth/SRegister';
+import TRegister from '../Components/Auth/TRegister';
 
 
 const Stack = createStackNavigator();
 
-export default function MainStackNav() {
+export const MainStackNav = () => {
 
     return (
         <Stack.Navigator initialRouteName="Home" headerMode='none'>
@@ -77,6 +80,9 @@ export default function MainStackNav() {
             <Stack.Screen name="AccConfrm" component={AccountConfirm} />
             <Stack.Screen name="PhoneCheck" component={PhoneCheck} />
             <Stack.Screen name="ActivateCode" component={ActivateCode} />
+            <Stack.Screen name="Fregister" component={Fregister} />
+            <Stack.Screen name="SRegister" component={SRegister} />
+            <Stack.Screen name="TRegister" component={TRegister} />
 
             <Stack.Screen name="ForgetPass" component={ForgetPass} />
             <Stack.Screen name="NewPass" component={NewPassword} />

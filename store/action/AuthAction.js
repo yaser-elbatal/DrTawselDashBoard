@@ -261,9 +261,21 @@ export const ResetPassword = (password, token, navigation) => {
     }
 }
 
-export const Logout = () => {
+export const Logout = (token) => {
     return dispatch => {
-        AsyncStorage.multiRemove(['token', 'auth',]);
-        dispatch({ type: logout })
+        axios({
+            method: 'GET',
+            url: consts.url + 'logout',
+            headers: {
+                Authorization: 'Bearer ' + token,
+
+            }
+        }).then(res => {
+            AsyncStorage.removeItem('token')
+            dispatch({ type: logout })
+
+
+        })
     }
 }
+

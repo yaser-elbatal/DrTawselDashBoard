@@ -554,6 +554,18 @@ const en = {
   SmallPrice: 'price of small size',
   MidlePrice: 'price of middlle size',
   BigPrice: 'price of big size',
+  CompInfo: 'Company Information',
+  owner: 'Are you Owner ?',
+  yes: 'yes',
+  no: 'No',
+  continue: 'continue',
+  storeInfo: 'Store Information',
+  branchNum: 'Branch Number',
+  connectInfo: 'Connection information',
+  webUrl: 'Website Url',
+  Franch: 'Are you part of a franchise?',
+  DeliveryServ: 'have Delivery Service ?',
+  SelectYN: 'Must Be choice Yes or No',
 };
 
 export default en;

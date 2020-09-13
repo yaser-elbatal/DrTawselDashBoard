@@ -149,9 +149,9 @@ function RestaurantInfo({ navigation }) {
 
 
     function unActiveInput(type) {
-        if (type === 'nameAr' && nameAR !== '') setnameARStatus(0);
-        if (type === 'nameEN' && nameEN !== '') setNameENStatus(0);
-        if (type === 'To' && to !== '') setToStatus(0);
+        if (type === 'nameAr' && nameAR === '') setnameARStatus(0);
+        if (type === 'nameEN' && nameEN === '') setNameENStatus(0);
+        if (type === 'To' && to === '') setToStatus(0);
         if (type === 'From' && from === '') setfromStatues(0);
 
 

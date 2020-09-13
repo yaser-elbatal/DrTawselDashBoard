@@ -69,10 +69,7 @@ function Login({ navigation }) {
         AsyncStorage.setItem('deviceID', deviceId);
     };
 
-    useEffect(() => {
-        getDeviceId()
-        deviceId
-    }, []);
+
 
 
     const _validate = () => {
@@ -98,9 +95,9 @@ function Login({ navigation }) {
         Setisloading(false);
 
     }
-
     useEffect(() => {
         getDeviceId()
+
     }, []);
     return (
         <View style={styles.container}>
@@ -164,7 +161,7 @@ function Login({ navigation }) {
                 ) : (
                         <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
                     )}
-                <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Register')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 10 }} />
+                <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 10 }} />
 
             </ScrollView>
         </View>

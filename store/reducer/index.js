@@ -9,6 +9,7 @@ import product from './ProductReducer';
 
 import size from './SizesReducer';
 import intro from './IntroReducer';
+import ExtraProduct from './ExtraProductReducer';
 
 
 
@@ -21,5 +22,6 @@ export default multiReducres = combineReducers({
     menue,
     product,
     size,
-    intro
+    intro,
+    ExtraProduct
 });

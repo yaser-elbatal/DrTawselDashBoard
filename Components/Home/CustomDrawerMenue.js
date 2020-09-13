@@ -11,13 +11,13 @@ function CustomDrawerMenue({ navigation }) {
     const [Clicle, setClick] = useState(0)
 
     const dispatch = useDispatch();
-    const token = useSelector(state => state.auth.user ? state.auth.user.data.token : null);
+    const token = useSelector(state => state.auth.user.data.token);
     const user = useSelector(state => state.auth.user.data);
 
 
 
     const logoutFunc = () => {
-        dispatch(Logout())
+        dispatch(Logout(token))
     }
 
     return (

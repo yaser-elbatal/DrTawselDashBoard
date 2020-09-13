@@ -17,13 +17,13 @@ const Slider = ({ navigation }) => {
     const [spinner, setSpinner] = useState(false);
 
     const dispatch = useDispatch()
-    console.log(Intro);
 
-    const FetchData = async () => {
-        await dispatch(IntroService(lang))
+    const FetchData = () => {
+        dispatch(IntroService(lang))
         setSpinner(true)
         Intro
     }
+
     useEffect(() => {
         FetchData()
 
@@ -31,9 +31,7 @@ const Slider = ({ navigation }) => {
         if (direction) {
             navigation.navigate("Login");
         }
-    }, [navigation]);
 
-    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(false)
         });
@@ -62,7 +60,7 @@ const Slider = ({ navigation }) => {
         }
     }
 
-    const slides = Intro.map(int => ({ key: int.id, title: int.title, text: int.details, image: { uri: int.url.image }, }))
+    const slides = Intro.map(int => ({ key: int.id, title: int.title, text: int.details, image: { uri: int.image }, }))
     // const slides = [
     //     {
     //         key: 'one',

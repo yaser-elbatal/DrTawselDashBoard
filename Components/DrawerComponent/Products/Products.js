@@ -26,13 +26,15 @@ function Products({ navigation }) {
     const Products = useSelector(state => state.product.products);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
+    const Menue = useSelector(state => state.menue.menue.data);
+
 
 
 
     useEffect(() => {
         dispatch(GetProducts(token, lang))
         setSpinner(true)
-        Products
+        setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
     }, [dispatch]);
 
 
@@ -49,7 +51,7 @@ function Products({ navigation }) {
 
     const DeletProduct = async (id) => {
         await dispatch(DeleteProduct(token, lang, id))
-        dispatch(GetProducts(token, lang))
+        await dispatch(GetProducts(token, lang))
         setSpinner(true)
 
 
@@ -90,7 +92,8 @@ function Products({ navigation }) {
 
             <Card />
             <DrobDwn />
-            <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('AddProduct')} />
+
+            <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={Menue.length ? () => navigation.navigate('AddProduct') : () => navigation.navigate('Menue')} />
 
 
             <FlatList

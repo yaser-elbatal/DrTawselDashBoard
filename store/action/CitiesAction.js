@@ -27,7 +27,7 @@ export const getCititis = (lang) => {
 export const GetDepartment = (lang) => {
     return (dispatch) => {
         axios({
-            method: 'POST',
+            method: 'GET',
             url: `${consts.url}categories`,
             params: { lang }
         }).then((response) => {
