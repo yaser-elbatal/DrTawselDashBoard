@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
-import { MainStackNav } from './AuthNavigator';
+import { MainStackNav, DrawerNAv } from './AuthNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { AsyncStorage } from 'react-native';
 
 function MainRoot() {
-    // const auth = useSelector(state => state.auth);
-    // console.log(auth);
+    const auth = useSelector(state => state.auth);
     return (
 
         <NavigationContainer>
-            <MainStackNav />
+            {
+                auth.user !== null ?
+                    <DrawerNAv />
+                    :
+                    <MainStackNav />
+
+            }
         </NavigationContainer>
 
     )

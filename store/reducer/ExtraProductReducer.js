@@ -2,7 +2,7 @@ import { Get_Extra_Product, Add_Extra_Product, Edit_Extra_Product, Delete_Extra_
 
 const initialstate = {
     ExtraProduct: [
-        { id: '', ProductnameExtraAR: '', ProductnameExtraEn: " ", priceProductExtra: '' },
+        { id: '', name_ar: '', name_en: " ", price: '' },
     ]
 };
 
@@ -19,7 +19,7 @@ export default (state = initialstate, action) => {
             return {
                 ...state,
                 ExtraProduct: state.ExtraProduct.map(
-                    (content, i) => content.id === action.payload.id ? { ...content, ProductnameExtraAR: action.payload.ProductnameExtraAR, ProductnameExtraEn: action.payload.ProductnameExtraEn, priceProductExtra: action.payload.priceProductExtra }
+                    (content, i) => content.id === action.payload.id ? { ...content, name_ar: action.payload.ProductnameExtraAR, name_en: action.payload.ProductnameExtraEn, price: action.payload.priceProductExtra }
                         : content)
             };
         case Delete_Extra_Product:

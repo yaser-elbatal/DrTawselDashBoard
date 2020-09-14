@@ -140,7 +140,7 @@ const en = {
   Add: 'Add',
 
   //basket
-  search1: 'search',
+  search: 'search',
   basket: 'shopping basket',
   prducts: 'Products',
   detailes: 'detailes',
@@ -223,7 +223,7 @@ const en = {
   setRequiredQuatity: 'Set Required Quantity',
   orederNow: 'Order Now',
 
-
+  Url: 'www.DrTawseel.com',
   //SaveLocation
   saveLocation: 'save Location',
   place: 'Place name',
@@ -516,7 +516,7 @@ const en = {
   Previousoffers: 'Previous Offers',
   Waitingapproval: 'Waiting for Approval',
   Beenapproved: 'Been Approved',
-  rejected1: 'Rejected',
+  rejected: 'Rejected',
   Dateaddition: 'Date of Addition',
   ResNameAr: 'Restaurant Name Ar ',
   ResNameEn: 'Restaurant Name En',
@@ -546,7 +546,7 @@ const en = {
   passwordErr: 'Please enter a valid password',
   usernameErr: 'Username consists of 2 or more characters',
   emailErr: 'please enter valid email',
-  CommRegister: 'The commercial register must be 10 numbers or more',
+  CommRegister: 'The commercial register must be 0 numbers or more',
   CityId: 'choose city',
   DepId: 'choose Debartment',
   codeNotMatch: 'Wrong Code',
@@ -566,6 +566,11 @@ const en = {
   Franch: 'Are you part of a franchise?',
   DeliveryServ: 'have Delivery Service ?',
   SelectYN: 'Must Be choice Yes or No',
+  ValdiateBranch: 'please enter number of branch',
+  large: 'Large',
+  mid: 'Middle',
+  small: 'Small',
+  available: 'available?',
 };
 
 export default en;

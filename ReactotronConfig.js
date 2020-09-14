@@ -7,7 +7,13 @@ const reactotron = Reactotron.configure({ name: 'DashboardDrTawsel', host: '127.
     .use(reactotronRedux()).useReactNative()
     .connect();
 
+
+
 export default reactotron
+
+
+
+
 
 
 

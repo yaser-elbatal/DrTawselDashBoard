@@ -12,16 +12,18 @@ import axios from "axios";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import { validateUserName } from '../../common/Validation';
+import { validateUserName, ValdiateDebId, ValdiateCITyId, ValditeCommercialRegister, ValdiateBranch } from '../../common/Validation';
 import BTN from '../../common/BTN';
+import { Toaster } from '../../common/Toaster';
 
 const isIOS = Platform.OS === 'ios';
 const latitudeDelta = 0.0922;
 const longitudeDelta = 0.0421;
 
 
-function SRegister({ navigation }) {
+function SRegister({ navigation, route }) {
     const dispatch = useDispatch()
+
 
     const Depatrmens = useSelector(state => state.cities.deparment);
     const lang = useSelector(state => state.lang.language);
@@ -33,14 +35,14 @@ function SRegister({ navigation }) {
     let cityName = cities.map(city => ({ label: city.name, value: city.id }));
     let CityID = cities.map(city => ({ label: city.name, }));
 
-    let mapRef = useRef(null);
-    const [city, setCity] = useState('');
+    const [city, setCity] = useState(null);
+    const [MyLocation, setLocation] = useState('');
+
     const [department, setDepartment] = useState(null)
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('');
     const [BranchNum, setBranchNum] = useState('');
     const [CommercialRegister, setCommercialRegister] = useState('');
-
     const [isopened, setisopened] = useState(false)
     const [mapRegion, setMapRegion] = useState({
         latitude: null,
@@ -49,7 +51,6 @@ function SRegister({ navigation }) {
         longitudeDelta
     });
 
-    const [spinner, setSpinner] = useState(false);
 
 
     const [nameARStatus, setnameARStatus] = useState(0);
@@ -74,15 +75,21 @@ function SRegister({ navigation }) {
 
 
     }
-
+    console.log(department, city);
     const _validate = () => {
 
         let nameErr = validateUserName(nameAR)
         let nameEnErr = validateUserName(nameEN)
-        return nameErr || nameEnErr
+        let CityID = city === null ? i18n.t('CityId') : null
+        let DebId = department === null ? i18n.t('DepId') : null
+
+        let ValditeCommercialRegisterErr = ValditeCommercialRegister(CommercialRegister)
+        let BranchErr = ValdiateBranch(BranchNum)
+        return nameErr || nameEnErr || CityID || DebId || ValditeCommercialRegisterErr || BranchErr
     }
     useEffect(() => {
-    }, [city, mapRegion]);
+        MyLocation
+    }, [MyLocation, mapRegion]);
 
 
 
@@ -98,9 +105,9 @@ function SRegister({ navigation }) {
 
         try {
             const { data } = await axios.get(getCity);
-            setCity(data.results[0].formatted_address)
+            setLocation(data.results[0].formatted_address)
             console.log("city2  ", data.results[0].formatted_address)
-            console.log("city2 ", city)
+            console.log("city2 ", MyLocation)
 
         } catch (e) {
             console.log(e);
@@ -114,14 +121,15 @@ function SRegister({ navigation }) {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         } else {
             const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, });
+
             if (latitude) {
                 userLocation = { latitude: latitude, longitude: latitude, latitudeDelta, longitudeDelta };
             } else {
                 userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
-
+                // setMapRegion(userLocation);
             }
             setMapRegion(userLocation);
-            isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
+            // isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
 
         }
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
@@ -130,7 +138,7 @@ function SRegister({ navigation }) {
         console.log('MapRegion======' + mapRegion.latitude);
         try {
             const { data } = await axios.get(getCity);
-            setCity(data.results[0].formatted_address)
+            setLocation(data.results[0].formatted_address)
 
         } catch (e) {
             console.log(e);
@@ -146,13 +154,31 @@ function SRegister({ navigation }) {
 
     }, [])
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
-        });
-        setSpinner(false)
-        return unsubscribe;
-    }, [navigation, spinner]);
+    const NavigateToNextLocation = () => {
+        let val = _validate()
+        if (!val) {
+            navigation.navigate('TRegister', {
+                name: route.params.name,
+                phone: route.params.phone,
+                email: route.params.email,
+                isowner: route.params.isowner,
+                password: route.params.password,
+                department: department,
+                nameAR: nameAR,
+                nameEN: nameEN,
+                city: city,
+                BranchNum: BranchNum,
+                CommercialRegister: CommercialRegister,
+                MyLocation: MyLocation,
+                latitude: mapRegion.latitude,
+                longitude: mapRegion.longitude
+            })
+        }
+        else {
+            Toaster(_validate());
+
+        }
+    }
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
@@ -177,8 +203,8 @@ function SRegister({ navigation }) {
             </View>
 
             <InputIcon
-                label={nameARStatus === 1 ? i18n.t('username') : null}
-                placeholder={nameARStatus === 1 ? null : i18n.t('username')}
+                label={nameARStatus === 1 ? i18n.t('ResNameAr') : null}
+                placeholder={nameARStatus === 1 ? null : i18n.t('ResNameAr')}
                 onBlur={() => unActiveInput('nameAR')}
                 onFocus={() => activeInput('nameAR')}
                 inputStyle={{ borderColor: nameARStatus === 1 ? Colors.sky : Colors.InputColor }}
@@ -188,8 +214,8 @@ function SRegister({ navigation }) {
                 LabelStyle={{ paddingHorizontal: nameARStatus === 1 ? 10 : 0, color: nameARStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
             <InputIcon
-                label={nameENStatus === 1 ? i18n.t('usernamen') : null}
-                placeholder={nameENStatus === 1 ? null : i18n.t('usernamen')}
+                label={nameENStatus === 1 ? i18n.t('ResNameEn') : null}
+                placeholder={nameENStatus === 1 ? null : i18n.t('ResNameEn')}
                 onBlur={() => unActiveInput('nameEN')}
                 onFocus={() => activeInput('nameEN')}
                 inputStyle={{ borderColor: nameENStatus === 1 ? Colors.sky : Colors.InputColor }}
@@ -200,7 +226,7 @@ function SRegister({ navigation }) {
 
             />
             <TouchableOpacity onPress={() => setisopened(!isopened)} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{city}</Text>
+                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{MyLocation}</Text>
                 <Image source={require('../../assets/Images/location_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
             </TouchableOpacity>
 
@@ -217,7 +243,6 @@ function SRegister({ navigation }) {
                                     {
                                         mapRegion.latitude != null ? (
                                             <MapView
-                                                ref={mapRef}
                                                 style={{ flex: 1, width: '100%' }}
                                                 region={mapRegion}
                                                 onRegionChangeComplete={region => setMapRegion(region)}
@@ -270,6 +295,8 @@ function SRegister({ navigation }) {
                 placeholder={BranchStatues === 1 ? null : i18n.t('branchNum')}
                 onBlur={() => unActiveInput('branch')}
                 onFocus={() => activeInput('branch')}
+                keyboardType='numeric'
+
                 inputStyle={{ borderColor: BranchStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setBranchNum(e)}
                 value={BranchNum}
@@ -282,6 +309,8 @@ function SRegister({ navigation }) {
                 placeholder={CommercialRegisterStatues === 1 ? null : i18n.t('CommercialRegister')}
                 onBlur={() => unActiveInput('CommercialRegister')}
                 onFocus={() => activeInput('CommercialRegister')}
+                keyboardType='numeric'
+
                 inputStyle={{ borderColor: CommercialRegisterStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setCommercialRegister(e)}
                 value={CommercialRegister}
@@ -289,7 +318,7 @@ function SRegister({ navigation }) {
                 LabelStyle={{ paddingHorizontal: CommercialRegisterStatues === 1 ? 10 : 0, color: CommercialRegisterStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
 
             />
-            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('TRegister')} />
+            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
 
         </ScrollView>
     )

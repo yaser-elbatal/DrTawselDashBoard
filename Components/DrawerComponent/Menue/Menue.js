@@ -94,7 +94,7 @@ function Menue({ navigation }) {
         if (!val) {
             setSpinner(true)
             await dispatch(AddMenue(token, lang, nameAR, nameEN))
-            dispatch(MenueInfo(lang, token))
+            await dispatch(MenueInfo(lang, token))
             setTimeout(() => dispatch(MenueInfo(lang, token)), 1000)
             setModalVisible(false)
             setNameAr('');
@@ -112,7 +112,6 @@ function Menue({ navigation }) {
         setNameENEdit(item.name);
         setMenueData(item.id);
 
-        console.log('M' + MenueData);
     }
 
     const DeleteMeueIteM = async (id) => {

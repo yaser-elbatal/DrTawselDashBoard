@@ -4,7 +4,7 @@ import BackBtn from '../../common/BackBtn'
 import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
 import { InputIcon } from '../../common/InputText';
-import { validateUserName, ValdiateSelect, validatePhone, validateEmail } from '../../common/Validation';
+import { validateUserName, ValdiateSelect, validatePhone, validateEmail, validatePassword, validateTwoPasswords } from '../../common/Validation';
 import { useDispatch } from 'react-redux';
 import { width } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
@@ -15,32 +15,41 @@ function Fregister({ navigation }) {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState("");
     const [email, setemail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [selectedRadion, setSelectedRadio] = useState(null)
 
     const [data, setData] = useState([
-        { id: 1, title: `${i18n.t("yes")}` },
-        { id: 0, title: `${i18n.t("no")}` }
-    ])
-    const [spinner, setSpinner] = useState(false);
 
-    const dispatch = useDispatch();
+        { id: 0, title: `${i18n.t("no")}` },
+        { id: 1, title: `${i18n.t("yes")}` },
+
+    ])
+
 
 
     const [phoneStatus, setPhoneStatus] = useState(0);
     const [nameStatus, setNameStatus] = useState(0)
     const [emailStatues, setemailStatues] = useState(0)
+    const [passwordStatus, setPasswordStatus] = useState(0);
+    const [enpasswordStatus, setenPasswordStatus] = useState(0);
 
     function activeInput(type) {
         if (type === 'phone' || phone !== '') setPhoneStatus(1);
         if (type === 'name' || name !== '') setNameStatus(1);
         if (type === 'email' || email !== '') setemailStatues(1);
+        if (type === 'password' || password !== '') setPasswordStatus(1);
+        if (type === 'confirmPassword' || confirmPassword !== '') setenPasswordStatus(1);
 
     }
 
     function unActiveInput(type) {
         if (type === 'phone' && phone === '') setPhoneStatus(0);
         if (type === 'name' && name == '') setNameStatus(1);
-        if (type === 'email' && email !== '') setemailStatues(0);
+        if (type === 'email' && email == '') setemailStatues(0);
+        if (type === 'password' && password === '') setPasswordStatus(0);
+        if (type === 'confirmPassword' && confirmPassword !== '') setenPasswordStatus(0);
 
     }
 
@@ -50,8 +59,11 @@ function Fregister({ navigation }) {
         let nameA = validateUserName(name)
         let phoneErr = validatePhone(phone);
         let emailErr = validateEmail(email)
-        let SelectChoice = selectedRadion === null ? i18n.t('SelectYN') : SelectChoice
-        return nameA || phoneErr || emailErr || SelectChoice
+        let passwordErr = validatePassword(password);
+        let twoPass = validateTwoPasswords(password, confirmPassword)
+        let SelectChoice = selectedRadion === null ? i18n.t('SelectYN') : SelectChoice;
+
+        return nameA || phoneErr || emailErr || passwordErr || twoPass || SelectChoice
     };
 
 
@@ -59,23 +71,16 @@ function Fregister({ navigation }) {
     const NavigateToNext = () => {
         let Val = _validate();
         if (!Val) {
-            navigation.navigate('SRegister')
+            navigation.navigate('SRegister', { name: name, phone: phone, email: email, isowner: selectedRadion, password: password })
         }
         else {
-            setSpinner(false);
             Toaster(_validate());
 
         }
     }
 
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
-        });
-        setSpinner(false)
-        return unsubscribe;
-    }, [navigation, spinner]);
+
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
@@ -121,6 +126,38 @@ function Fregister({ navigation }) {
                 onBlur={() => unActiveInput('email')}
                 onFocus={() => activeInput('email')}
                 keyboardType='email-address'
+                styleCont={{ marginTop: 0 }}
+            />
+
+            <InputIcon
+                label={passwordStatus === 1 ? i18n.t('password') : null}
+                placeholder={passwordStatus === 1 ? null : i18n.t('password')}
+                onChangeText={(e) => setPassword(e)}
+                value={password}
+
+                secureTextEntry
+                styleCont={{ marginTop: 0 }}
+
+                inputStyle={{ borderColor: passwordStatus === 1 ? Colors.sky : Colors.InputColor }}
+                LabelStyle={{ paddingHorizontal: passwordStatus === 1 ? 10 : 0, color: passwordStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                onBlur={() => unActiveInput('password')}
+                onFocus={() => activeInput('password')}
+                keyboardType='numeric'
+
+
+
+            />
+            <InputIcon
+                label={enpasswordStatus === 1 ? i18n.t('confirmPass') : null}
+                placeholder={enpasswordStatus === 1 ? null : i18n.t('confirmPass')}
+                onChangeText={(e) => setConfirmPassword(e)}
+                value={confirmPassword}
+                secureTextEntry
+                keyboardType='numeric'
+                onBlur={() => unActiveInput('confirmPassword')}
+                onFocus={() => activeInput('confirmPassword')}
+                inputStyle={{ borderColor: enpasswordStatus === 1 ? Colors.sky : Colors.InputColor }}
+                LabelStyle={{ paddingHorizontal: enpasswordStatus === 1 ? 10 : 0, color: enpasswordStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                 styleCont={{ marginTop: 0 }}
             />
 

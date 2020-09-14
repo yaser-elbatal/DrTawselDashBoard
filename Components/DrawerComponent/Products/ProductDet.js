@@ -13,11 +13,11 @@ function ProductDet({ navigation, route }) {
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const [spinner, setSpinner] = useState(false);
-
+    const ProductDet = useSelector(state => state.product.product.data);
+    console.log(ProductDet);
     const dispatch = useDispatch();
 
 
-    console.log(Products);
 
     useEffect(() => {
         dispatch(ProductDetailes(token, lang, Products.id))
@@ -62,9 +62,8 @@ function ProductDet({ navigation, route }) {
 
     return (
         <View style={{ flex: 1 }}>
-            {renderLoader()}
 
-            <Image source={{ uri: Products.image }} style={styles.ImgBackGround} />
+            <Image source={{ uri: ProductDet.image }} style={styles.ImgBackGround} />
             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     {
@@ -78,13 +77,14 @@ function ProductDet({ navigation, route }) {
             </ImageBackground>
             <View style={styles.ScrolContainer}>
                 <ScrollView style={{ flex: 1, marginStart: 20, marginEnd: 20 }} showsVerticalScrollIndicator={false}>
+                    {renderLoader()}
 
 
                     <View style={styles.Wrab}>
-                        <Text style={styles.text}>{Products.name}</Text>
+                        <Text style={styles.text}>{ProductDet.name}</Text>
                         <TouchableOpacity >
                             {
-                                Products.available == 0 ?
+                                ProductDet.available == 0 ?
                                     <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
                                     :
                                     <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
@@ -95,13 +95,13 @@ function ProductDet({ navigation, route }) {
                     </View>
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                         <Text style={styles.num}>{i18n.t('num')}#{index + 1}</Text>
-                        <Text style={[styles.num, { color: Colors.fontNormal }]}>{Products.menu}</Text>
-                        <Text style={[styles.num, { color: Colors.IconBlack }]}>{Products.name}</Text>
-                        <Text style={styles.num}>{Products.price}{i18n.t('Rial')}</Text>
+                        <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDet.menu}</Text>
+                        <Text style={[styles.num, { color: Colors.IconBlack }]}>{ProductDet.name}</Text>
+                        <Text style={styles.num}>{ProductDet.price}{i18n.t('Rial')}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={styles.num}>{Products.price}</Text>
+                            <Text style={styles.num}>{ProductDet.price}</Text>
                             <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 15, fontSize: 10 }]}>{Products.price - Products.discount}</Text>
-                            <Text style={[styles.num, { color: Colors.InputColor }]}>({i18n.t('Availablekilos') + Products.available_kilos})</Text>
+                            <Text style={[styles.num, { color: Colors.InputColor }]}>({i18n.t('Availablekilos') + ProductDet.available_kilos})</Text>
 
                         </View>
 
@@ -125,7 +125,7 @@ function ProductDet({ navigation, route }) {
                     {
                         click1 ?
                             <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 10, color: Colors.InputColor }}>
-                                {Products.details}
+                                {ProductDet.details}
 
 
                             </Text>
@@ -149,16 +149,18 @@ function ProductDet({ navigation, route }) {
                     </TouchableOpacity>
                     {
                         click2 ?
-                            <View style={{ flexDirection: 'column', marginHorizontal: 40 }}>
-                                {
-                                    Products.extras.map(size => (
-                                        <Text style={styles.name} key={size.id}> -   {size.name} </Text>
 
-                                    )
+                            ProductDet.extras && ProductDet.extras.map((size, index) => (
+                                <View style={{ flexDirection: 'row', marginHorizontal: 40, alignItems: 'center' }} key={index + 1}>
+                                    <Text style={styles.name} key={size.id}> -   {size.name} </Text>
+                                    <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15 }]}>{size.price}{i18n.t('Rial')}</Text>
 
-                                    )
-                                }
-                            </View>
+                                </View>
+
+
+
+                            ))
+
 
                             : null
                     }

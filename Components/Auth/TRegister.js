@@ -6,31 +6,61 @@ import i18n from '../../locale/i18n';
 import { InputIcon } from '../../common/InputText';
 import { width, height } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
+import { useSelector, useDispatch } from 'react-redux';
+import { Toaster } from '../../common/Toaster';
+import { SignUp } from '../../store/action/AuthAction';
 
-function TRegister({ navigation }) {
+function TRegister({ navigation, route }) {
+
+    const lang = useSelector(state => state.lang.language);
+    const dispatch = useDispatch();
+
+
     const [WebUrl, setWebUrl] = useState('');
     const [selecCommerical, setselecCommerical] = useState(null);
     const [SelectDelivery, setSelectDelivery] = useState(null)
-
+    const { name, phone, email, password, isowner, department, nameAR, nameEN, city, BranchNum, CommercialRegister, MyLocation, latitude, longitude } = route.params
 
     const [EbUrlStatues, setEbUrlStatues] = useState(0)
 
     const [data, setData] = useState([
-        { id: 1, title: `${i18n.t("yes")}` },
         { id: 0, title: `${i18n.t("no")}` }
+        ,
+        { id: 1, title: `${i18n.t("yes")}` },
     ])
     function activeInput(type) {
         if (type === 'WebUrl' || WebUrl !== '') setEbUrlStatues(1);
-
-
 
     }
     function unActiveInput(type) {
         if (type === 'WebUrl' && WebUrl === '') setEbUrlStatues(0);
 
+    }
 
+    const _validate = () => {
+
+        let UrlErr = WebUrl === '' ? i18n.t('webUrl') : null
+        let SelectDeliveryErr = SelectDelivery === null ? i18n.t('SelectYN') : null;
+        let selecCommericalErr = selecCommerical === null ? i18n.t('SelectYN') : null;
+
+        return UrlErr || SelectDeliveryErr || selecCommericalErr
 
     }
+
+
+    const ConfirmSignUp = () => {
+        let val = _validate();
+        if (!val) {
+            const data = { name, nameAR, nameEN, password, phone, email, CommercialRegister, city, department, isowner, BranchNum, MyLocation, latitude, longitude, WebUrl, selecCommerical, SelectDelivery, lang };
+            dispatch(SignUp(data, navigation))
+
+        }
+        else {
+            Toaster(_validate());
+
+        }
+    }
+
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             <BackBtn navigation={navigation} />
@@ -42,9 +72,11 @@ function TRegister({ navigation }) {
 
             <InputIcon
                 label={EbUrlStatues === 1 ? i18n.t('webUrl') : null}
-                placeholder={EbUrlStatues === 1 ? null : i18n.t('webUrl')}
+                placeholder={EbUrlStatues === 1 ? null : i18n.t('Url')}
                 onBlur={() => unActiveInput('WebUrl')}
                 onFocus={() => activeInput('WebUrl')}
+                dataDetectorTypes={'link'}
+                multiline={true}
                 inputStyle={{ borderColor: EbUrlStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setWebUrl(e)}
                 value={WebUrl}
@@ -128,7 +160,7 @@ function TRegister({ navigation }) {
                 }
 
             </View>
-            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={() => { }} />
+            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConfirmSignUp} />
         </ScrollView>
     )
 }

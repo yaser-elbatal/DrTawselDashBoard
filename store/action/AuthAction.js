@@ -50,15 +50,7 @@ const handelLogin = (dispatch, data, navigation) => {
         loginSuccess(dispatch, data, navigation)
     }
 
-    Toast.show({
-        text: data.message,
-        type: data.success ? "success" : "danger",
-        duration: 3000,
-        textStyle: {
-            color: "white",
-            textAlign: 'center'
-        }
-    });
+
 };
 
 
@@ -106,6 +98,14 @@ export const SignUp = (data, navigation) => {
                     commercial_register: data.CommercialRegister,
                     city_id: data.city,
                     category_id: data.department,
+                    is_owner: data.isowner,
+                    num_of_branches: data.BranchNum,
+                    address: data.MyLocation,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    website_url: data.WebUrl,
+                    authorization_commercial: data.selecCommerical,
+                    available_delivery: data.SelectDelivery,
                     device_id: deviceId,
                     user_type: 4,
 
@@ -271,7 +271,7 @@ export const Logout = (token) => {
 
             }
         }).then(res => {
-            AsyncStorage.removeItem('token')
+            AsyncStorage.removeItem('deviceID')
             dispatch({ type: logout })
 
 

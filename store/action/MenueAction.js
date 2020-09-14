@@ -28,8 +28,9 @@ export const AddMenue = (token, lang, nameAr, nameEn,) => {
         axios({
             method: 'POST',
             url: consts.url + 'add-menu',
-            data: { lang, name_ar: nameAr, name_en: nameEn },
+            data: { name_ar: nameAr, name_en: nameEn },
             headers: { Authorization: 'Bearer ' + token, },
+            params: { lang, }
 
         }).then(res => {
             if (res.data.success) {
@@ -46,8 +47,9 @@ export const UpdateMenue = (token, lang, nameAr, nameEn, id) => {
         await axios({
             method: 'PUT',
             url: consts.url + 'update-menu',
-            data: { lang, name_ar: nameAr, name_en: nameEn, id },
+            data: { name_ar: nameAr, name_en: nameEn, id },
             headers: { Authorization: 'Bearer ' + token, },
+            params: { lang, }
 
         }).then(res => {
             if (res.data.success) {

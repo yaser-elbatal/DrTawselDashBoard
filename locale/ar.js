@@ -556,7 +556,12 @@ const ar = {
   Franch: 'هل انت جزء من امتياز تجاري ؟',
   DeliveryServ: 'عندك خدمه توصيل',
   SelectYN: 'يجب اختيار نعم ام لا ',
-
+  ValdiateBranch: 'يرجي ادخال عدد الفروع',
+  Url: 'www.DrTawseel.com',
+  large: 'كبير',
+  mid: 'وسط',
+  small: 'صغير',
+  available: 'متاح؟',
 
 
 };

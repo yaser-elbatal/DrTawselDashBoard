@@ -38,6 +38,7 @@ const InputIcon = ({
                 onChangeText={onChangeText}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
+
                 {...props}
                 placeholder={placeholder}
             />

@@ -21,7 +21,7 @@ import { GetExtraProduct, add_extra_ProductsService, edit_extra_ProductsService,
 
 function AddProduct({ navigation }) {
 
-    const Sizes = useSelector(state => state.size.size.data);
+    // const Sizes = useSelector(state => state.size.size.data);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
@@ -31,7 +31,11 @@ function AddProduct({ navigation }) {
 
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('')
-
+    const [Sizes, setSizes] = useState([
+        { id: 1, name: `${i18n.t('large')}` },
+        { id: 2, name: `${i18n.t('mid')}` },
+        { id: 3, name: `${i18n.t('small')}` }
+    ])
     const [ProductnameExtraAR, setProductnameExtraAR] = useState('');
     const [ProductnameExtraEn, setProductnameExtraEn] = useState('')
     const [priceProductExtra, setPricePrdouctExtra] = useState('');
@@ -71,6 +75,7 @@ function AddProduct({ navigation }) {
     const [detailesAr, setDetailesAr] = useState('')
     const [detailesEn, setDetailesEn] = useState('')
     const [MenueId, setMenue] = useState('')
+    const [available, setavailable] = useState(0);
 
     const [base64, setBase64] = useState();
     const [userImage, setUserImage] = useState(null);
@@ -96,6 +101,13 @@ function AddProduct({ navigation }) {
 
     let MenueData = Menue.length ? Menue.map(menue => ({ label: menue.name, value: menue.id })) : null
     let MenueName = Menue.map(menue => ({ label: menue.name, }));
+
+    const [data, setData] = useState([
+
+        { id: 0, title: `${i18n.t("no")}` },
+        { id: 1, title: `${i18n.t("yes")}` },
+
+    ])
 
 
 
@@ -147,30 +159,31 @@ function AddProduct({ navigation }) {
 
 
 
-    const Add_Product = () => {
-        dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
+    const Add_Product = async () => {
+        await dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
         setTimeout(() => dispatch(GetProducts(token, lang)), 1000)
+        await dispatch(GetProducts(token, lang))
         setSpinner(true)
-        // setNameAr('');
-        // setNameEN('');
-        // setsmall_price('');
-        // setmid_price('');
-        // setlarge_price('');
-        // setDiscount('');
-        // setPrice('');
-        // setavailableKilos('');
-        // setQuantity('');
-        // setDetailesAr('');
-        // setDetailesEn('')
+        setNameAr('');
+        setNameEN('');
+        setsmall_price('');
+        setmid_price('');
+        setlarge_price('');
+        setDiscount('');
+        setPrice('');
+        setavailableKilos('');
+        setQuantity('');
+        setDetailesAr('');
+        setDetailesEn('');
+
+
 
     }
 
     const FetchData = async () => {
-        await dispatch(GetSizes(token))
         setSpinner(true)
         await dispatch(MenueInfo(lang, token))
         await Menue
-        await Sizes
         await MenueData
     }
     // setTimeout(() => {
@@ -183,7 +196,7 @@ function AddProduct({ navigation }) {
 
     useEffect(() => {
         FetchData()
-        Sizes
+
         GetExtraProduct()
     }, []);
 
@@ -258,39 +271,35 @@ function AddProduct({ navigation }) {
         if (ProductnameExtraAR && ProductnameExtraEn && !ExProdId) {
             const newEmployee = {
                 id: Math.floor(Math.random() * (999 - 100 + 1) + 100),
-                ProductnameExtraAR: ProductnameExtraAR,
-                ProductnameExtraEn: ProductnameExtraEn,
-                priceProductExtra: priceProductExtra
+                name_ar: ProductnameExtraAR,
+                name_en: ProductnameExtraEn,
+                price: priceProductExtra
             };
 
             dispatch(add_extra_ProductsService(newEmployee));
         } else if (ProductnameExtraAR && ProductnameExtraEn && ExProdId) {
             const updatedDetails = {
                 id: ExProdId,
-                ProductnameExtraAR: ProductnameExtraAR,
-                ProductnameExtraEn: ProductnameExtraEn,
-                priceProductExtra: priceProductExtra
+                name_ar: ProductnameExtraAR,
+                name_en: ProductnameExtraEn,
+                price: priceProductExtra
             };
             dispatch(add_extra_ProductsService(updatedDetails));
         } else {
             alert('Enter Extra Data.');
         }
         setEditMaodVisible(false)
+        setPricePrdouctExtra('');
+        setProductnameExtraAR('');
+        setProductnameExtraEn('');
 
         clearData();
     }
 
-    const editDetails = (data) => {
-        setExProdId(data.id);
-        setPricePrdouctExtra(data.priceProductExtra)
-        setProductnameExtraAR(data.ProductnameExtraAR)
-        setProductnameExtraEn(data.ProductnameExtraEn)
 
-    }
 
     const deleteExtraProduct = (id) => {
         clearData();
-
         dispatch(delete_extra_ProductsService(id));
 
     }
@@ -337,14 +346,14 @@ function AddProduct({ navigation }) {
                 LabelStyle={{ paddingHorizontal: nameENStatus === 1 ? 10 : 0, color: nameENStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
 
-            {/* <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text> */}
-            {/* <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
+            <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text>
+            <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
 
                 {
                     Sizes.map((size, index) => {
                         return (
 
-                            <View key={size.id} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
+                            <View key={index + 1} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
                                 <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
                                     <View style={{
                                         height: 15,
@@ -379,47 +388,58 @@ function AddProduct({ navigation }) {
 
                 }
 
-            </View> */}
+            </View>
+
+            {
+                selectedRadion === 1 ?
+                    <InputIcon
+                        styleCont={{ marginTop: 20 }}
+                        label={BigStatues === 1 ? i18n.t('BigPrice') : null}
+                        placeholder={BigStatues === 1 ? null : i18n.t('BigPrice')}
+                        onBlur={() => unActiveInput('large_price')}
+                        onFocus={() => activeInput('large_price')}
+                        inputStyle={{ borderColor: BigStatues === 1 ? Colors.sky : Colors.InputColor }}
+                        onChangeText={(e) => { setlarge_price(e); handaleChange(e, 1) }}
+                        keyboardType='numeric'
+                        value={large_price}
+                        LabelStyle={{ paddingHorizontal: BigStatues === 1 ? 10 : 0, color: BigStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                    />
+                    :
+                    selectedRadion === 2 ?
+                        <InputIcon
+                            styleCont={{ marginTop: 20 }}
+                            label={MiddleStatues === 1 ? i18n.t('MidlePrice') : null}
+                            placeholder={MiddleStatues === 1 ? null : i18n.t('MidlePrice')}
+                            onBlur={() => unActiveInput('mid_price')}
+                            onFocus={() => activeInput('mid_price')}
+                            inputStyle={{ borderColor: MiddleStatues === 1 ? Colors.sky : Colors.InputColor }}
+                            onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
+                            value={mid_price}
+                            keyboardType='numeric'
+                            LabelStyle={{ paddingHorizontal: MiddleStatues === 1 ? 10 : 0, color: MiddleStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                        />
+                        :
+                        selectedRadion === 3 ?
+                            <InputIcon
+                                styleCont={{ marginTop: 20 }}
+                                label={SmallSizeStatues === 1 ? i18n.t('SmallPrice') : null}
+                                placeholder={SmallSizeStatues === 1 ? null : i18n.t('SmallPrice')}
+                                onBlur={() => unActiveInput('small_price')}
+                                onFocus={() => activeInput('small_price')}
+                                inputStyle={{ borderColor: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}
+                                value={small_price}
+                                keyboardType='numeric'
+                                LabelStyle={{ paddingHorizontal: SmallSizeStatues === 1 ? 10 : 0, color: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                            />
+                            : null
+
+            }
 
 
 
-            <InputIcon
-                styleCont={{ marginTop: 0 }}
-                label={BigStatues === 1 ? i18n.t('BigPrice') : null}
-                placeholder={BigStatues === 1 ? null : i18n.t('BigPrice')}
-                onBlur={() => unActiveInput('large_price')}
-                onFocus={() => activeInput('large_price')}
-                inputStyle={{ borderColor: BigStatues === 1 ? Colors.sky : Colors.InputColor }}
-                onChangeText={(e) => { setlarge_price(e); handaleChange(e, 1) }}
-                keyboardType='numeric'
-                value={large_price}
-                LabelStyle={{ paddingHorizontal: BigStatues === 1 ? 10 : 0, color: BigStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-            />
-            <InputIcon
-                styleCont={{ marginTop: 0 }}
-                label={SmallSizeStatues === 1 ? i18n.t('SmallPrice') : null}
-                placeholder={SmallSizeStatues === 1 ? null : i18n.t('SmallPrice')}
-                onBlur={() => unActiveInput('small_price')}
-                onFocus={() => activeInput('small_price')}
-                inputStyle={{ borderColor: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor }}
-                onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}
-                value={small_price}
-                keyboardType='numeric'
-                LabelStyle={{ paddingHorizontal: SmallSizeStatues === 1 ? 10 : 0, color: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-            />
 
-            <InputIcon
-                styleCont={{ marginTop: 0 }}
-                label={MiddleStatues === 1 ? i18n.t('MidlePrice') : null}
-                placeholder={MiddleStatues === 1 ? null : i18n.t('MidlePrice')}
-                onBlur={() => unActiveInput('mid_price')}
-                onFocus={() => activeInput('mid_price')}
-                inputStyle={{ borderColor: MiddleStatues === 1 ? Colors.sky : Colors.InputColor }}
-                onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
-                value={mid_price}
-                keyboardType='numeric'
-                LabelStyle={{ paddingHorizontal: MiddleStatues === 1 ? 10 : 0, color: MiddleStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-            />
+
 
 
 
@@ -478,9 +498,49 @@ function AddProduct({ navigation }) {
                 LabelStyle={{ paddingHorizontal: quantityStatues === 1 ? 10 : 0, color: quantityStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
 
+            <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                <View style={{ paddingEnd: 120, fontFamily: 'flatMedium', paddingStart: 10 }}>
+                    <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('available')}</Text>
+                </View>
+                {
+                    data.map((item, index) => {
+                        return (
+                            <TouchableOpacity onPress={() => { setavailable(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <View style={{
+                                    height: 15,
+                                    width: 15,
+                                    borderRadius: 12,
+                                    borderWidth: 2,
+                                    borderColor: available === index ? Colors.sky : Colors.fontNormal,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+
+                                }}>
+                                    {
+                                        available === index ?
+                                            <View style={{
+                                                height: 6,
+                                                width: 6,
+                                                borderRadius: 6,
+                                                backgroundColor: Colors.sky,
+                                            }} />
+                                            : null
+                                    }
+                                </View>
+                                <Text style={[styles.sText, { color: available === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+
+                            </TouchableOpacity>
 
 
-            <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+
+                        )
+                    })
+                }
+
+            </View>
+
+            <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, marginTop: 20 }}>
                 <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
                 <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
             </TouchableOpacity>
@@ -537,9 +597,9 @@ function AddProduct({ navigation }) {
                             <>
                                 <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
                                     <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.ProductnameExtraEn}</Text>
-                                        <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.ProductnameExtraAR}</Text>
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.priceProductExtra}{i18n.t('Rial')}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                        <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}{i18n.t('Rial')}</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => deleteExtraProduct(proExtra.id)}>
                                         <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />

@@ -18,7 +18,6 @@ function Products({ navigation }) {
     const dispatch = useDispatch();
 
 
-    const [isSelected, setSelection] = useState();
     const [isSelected2, setSelection2] = useState();
     const [spinner, setSpinner] = useState(false);
 
@@ -61,7 +60,6 @@ function Products({ navigation }) {
         if (spinner) {
             return (
                 <View style={{
-                    position: 'absolute',
                     top: 0,
                     right: 0,
                     width: '100%',
@@ -104,7 +102,7 @@ function Products({ navigation }) {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity onPress={() => {
-                        navigation.navigate('ProductDet', { Products: item, index: index }); setTimeout(() => { dispatch(ProductDetailes(token, lang, item.id)) }, 1000)
+                        navigation.navigate('ProductDet', { Products: item, index: index }); setTimeout(() => dispatch(ProductDetailes(token, lang, item.id)), 1000)
                     }}>
                         <View style={styles.Card}>
                             <View style={{ flexDirection: 'row', flex: .75 }}>
@@ -127,7 +125,7 @@ function Products({ navigation }) {
 
                             <View style={styles.SWarb}>
 
-                                <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { Product: item })}>
+                                <TouchableOpacity style={styles.Edit} onPress={() => { navigation.navigate('EditProducts', { Product: item }); setTimeout(() => dispatch(ProductDetailes(token, lang, item.id)), 1000) }}>
                                     <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
                                 </TouchableOpacity>
 

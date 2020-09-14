@@ -13,9 +13,9 @@ import { UpdateProfile, GetProfile } from '../../store/action/ProfileAction'
 import { Toaster } from '../../common/Toaster'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { ProductDetailes } from '../../store/action/ProductAction'
 
 function EditProfile({ navigation }) {
-
     const user = useSelector(state => state.auth.user.data)
 
     const [nameEN, setNameEN] = useState(user.name)
@@ -99,9 +99,8 @@ function EditProfile({ navigation }) {
         let val = _validate();
 
         if (!val) {
-
-            dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation))
             setSpinner(true)
+            dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation))
 
         }
         else {
@@ -112,6 +111,7 @@ function EditProfile({ navigation }) {
     }
 
     useEffect(() => {
+        dispatch(ProductDetailes(token, lang, item.id))
         dispatch(getCititis(lang));
         dispatch(GetProfile(token, lang))
 
@@ -122,9 +122,29 @@ function EditProfile({ navigation }) {
         return unsubscribe;
     }, [navigation, spinner, dispatch]);
 
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 99999,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                </View>
+            );
+        }
+    }
     return (
         <View style={{ flex: 1, }}>
-
+            {renderLoader()}
             <Image source={image != null ? { uri: image } : { uri: user.avatar }} style={styles.ImgBackGround} />
             <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
                 <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
@@ -206,15 +226,10 @@ function EditProfile({ navigation }) {
                                 value={city}
                             />
                         </View>
-                        {
-                            spinner ?
-                                <View style={[{ justifyContent: 'center', alignItems: 'center', marginTop: 25 },]}>
-                                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                                </View>
-                                :
-                                <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateData} />
 
-                        }
+                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateData} />
+
+
 
                     </View>
 

@@ -26,10 +26,10 @@ export const validateEmail = email => {
 };
 
 export const ValdiateCITyId = (id) => {
-    id === '' ? i18n.t('CityId') : id === null ? i18n.t('CityId') : null
+    id === null ? i18n.t('CityId') : null
 }
 export const ValdiateDebId = (id) => {
-    id === '' ? i18n.t('DepId') : id === null ? i18n.t('DepId') : null
+    id === null ? i18n.t('DepId') : null
 }
 
 export const ValdiateSelect = (id) => {
@@ -43,3 +43,6 @@ export const validateAccountNum = (code) =>
 
 export const valdiateMoney = (code) =>
     code === '' || code.length <= 0 ? "برجاء اضافه مبلغ صحيح" : null;
+
+export const ValdiateBranch = (code) =>
+    code === '' || code.length <= 0 ? i18n.t('ValdiateBranch') : null;
