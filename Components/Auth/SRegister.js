@@ -62,7 +62,7 @@ function SRegister({ navigation, route }) {
     function activeInput(type) {
         if (type === 'nameAR' || nameAR !== '') setnameARStatus(1);
         if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
-        if (type === 'branch' || nameEN !== '') setBranchStatues(1);
+        if (type === 'branch' || BranchNum !== '') setBranchStatues(1);
         if (type === 'CommercialRegister' || CommercialRegister !== '') setCommercialRegisterstatues(1);
 
 

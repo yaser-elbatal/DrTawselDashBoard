@@ -571,6 +571,9 @@ const en = {
   mid: 'Middle',
   small: 'Small',
   available: 'available?',
+  AddBanner: 'Add Banner',
+  OldPassword: 'Old Password',
+  NewPassword: 'New Password'
 };
 
 export default en;

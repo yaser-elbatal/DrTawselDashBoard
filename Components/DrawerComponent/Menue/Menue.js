@@ -258,10 +258,9 @@ function Menue({ navigation }) {
 
 
             <FlatList
-                pagingEnabled={true}
                 showsVerticalScrollIndicator={false}
                 data={Menue.data}
-                extraData={dispatch}
+                extraData={modalVisible}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item, index }) =>
 
@@ -270,7 +269,7 @@ function Menue({ navigation }) {
                         <View style={styles.Card}>
                             <View style={styles.FWrab}>
                                 <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
-                                <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                <Text style={styles.nText}>{i18n.t('num')} # {index.toString() + 1}</Text>
                                 <View style={{ flexDirection: 'row', marginStart: 5, alignItems: 'center' }}>
                                     <Text style={styles.nMenu}>{i18n.t('name')} :   </Text>
                                     <Text style={styles.name}>{item.name}</Text>

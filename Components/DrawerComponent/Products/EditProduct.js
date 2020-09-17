@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, ActivityIndicator, Modal, Alert } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -11,32 +11,118 @@ import Colors from '../../../consts/Colors'
 import BTN from '../../../common/BTN';
 import { SText } from '../../../common/SText';
 import Header from '../../../common/Header';
-import { GetSizes } from '../../../store/action/SizesAction';
 import { useSelector, useDispatch } from 'react-redux';
-import { EditProducts, GetProducts } from '../../../store/action/ProductAction';
-import { MenueInfo } from '../../../store/action/MenueAction';
+import { EditProducts, GetProducts, ProductDetailes, GetProductExtrasFromEdit, AddExtraProductsFromEdit, DeleteProductExtrasFromEdit } from '../../../store/action/ProductAction';
+import { useIsFocused } from "@react-navigation/native";
 
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 function EditProduct({ navigation, route }) {
 
-    const Sizes = useSelector(state => state.size.size.data);
+    const isFocused = useIsFocused();
+
+    const ProductDet = useSelector(state => state.product.product);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
-    const Products = useSelector(state => state.product.products);
+    const ProductsExtras = useSelector(state => state.product.ExtraProduct.data);
+    const { ProductID } = route.params
+    const dispatch = useDispatch();
 
-    const { Product } = route.params
-    const [nameAR, setNameAr] = useState(Product.name);
-    const [nameEN, setNameEN] = useState(Product.name)
-    const [price, setPrice] = useState(`${Product.price}`);
-    const [small_price, setsmall_price] = useState('');
-    const [mid_price, setmid_price] = useState('');
-    const [large_price, setlarge_price] = useState('');
+    console.log(ProductDet);
+
+    const [nameAR, setNameAr] = useState(ProductDet.data.name_ar);
+    const [nameEN, setNameEN] = useState(ProductDet.data.name_en)
+    const [price, setPrice] = useState(`${ProductDet.data.price}`);
+    const [small_price, setsmall_price] = useState(`${ProductDet.data.small_price}`);
+    const [mid_price, setmid_price] = useState(`${ProductDet.data.mid_price}`);
+    const [large_price, setlarge_price] = useState(`${ProductDet.data.large_price}`);
     const [selectedRadion, setSelectedRadio] = useState(0)
     const [spinner, setSpinner] = useState(false);
 
+    const [ProductnameExtraAR, setProductnameExtraAR] = useState('');
+    const [ProductnameExtraEn, setProductnameExtraEn] = useState('')
+    const [priceProductExtra, setPricePrdouctExtra] = useState('');
 
+    const [availableKilos, setavailableKilos] = useState(`${ProductDet.data.available_kilos}`);
+    const [Discount, setDiscount] = useState(`${ProductDet.data.discount}`);
+    const [quantity, setQuantity] = useState(`${ProductDet.data.quantity}`)
+    const [detailesAr, setDetailesAr] = useState(ProductDet.data.details_ar)
+    const [detailesEn, setDetailesEn] = useState(ProductDet.data.details_en)
+    const [available, setavailable] = useState(ProductDet.data.available);
+    const LoaderOrder = useSelector(state => state.product.loader);
+
+
+    function fetchData() {
+        setSpinner(true)
+        setTimeout(() => {
+            dispatch(ProductDetailes(token, lang, ProductID));
+        }, 1000);
+        ProductDet
+    }
+
+    useEffect(() => {
+        fetchData();
+        setSpinner(true)
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData();
+            setSpinner(false)
+
+        });
+        setSpinner(false)
+
+        return unsubscribe;
+    }, [navigation, LoaderOrder, spinner]);
+
+
+
+
+
+
+
+
+
+
+
+    const [MenueId, setMenue] = useState()
+    const [EditMaodVisible, setEditMaodVisible] = useState(false);
+
+    const [base64, setBase64] = useState(ProductDet.data.image);
+    const [userImage, setUserImage] = useState(null);
+
+    const [nameArStatues, setnameArStatues] = useState(0)
+    const [nameENStatus, setNameENStatus] = useState(0)
+    const [priceStatues, setepriceStatues] = useState(0)
+    const [availableKilosStatus, setavailableKilosStatues] = useState(0);
+    const [discountStatues, setDiscountStatues] = useState(0);
+    const [quantityStatues, setquantityStatues] = useState(0);
+    const [detailesArStatues, setdetailesArStatues] = useState(0);
+    const [detailesEnStatues, setdetailesEnStatues] = useState(0);
+    const [ProductNameArStatues, setProductNameArStatues] = useState(0);
+    const [ProductNameEnStatues, setProductNameEnStatues] = useState(0);
+    const [ProductExtraPriceStatues, setProductExtraPrieceStatues] = useState(0);
+
+
+    const [SmallSizeStatues, setSmallSizeStatues] = useState(0);
+    const [MiddleStatues, setMiddleStatues] = useState(0);
+    const [BigStatues, setBigStatues] = useState(0);
+
+
+
+    const [Sizes, setSizes] = useState([
+        { id: 1, name: `${i18n.t('large')}` },
+        { id: 2, name: `${i18n.t('mid')}` },
+        { id: 3, name: `${i18n.t('small')}` }
+    ]);
+
+
+    const [data, setData] = useState([
+
+        { id: 0, title: `${i18n.t("no")}` },
+        { id: 1, title: `${i18n.t("yes")}` },
+
+    ])
 
 
     const [SizePriceId, SetSizePriceId] = useState([{
@@ -56,34 +142,21 @@ function EditProduct({ navigation, route }) {
 
 
 
-    const [availableKilos, setavailableKilos] = useState(`${Product.available_kilos}`);
-    const [Discount, setDiscount] = useState(`${Product.discount}`);
-    const [quantity, setQuantity] = useState(`${Product.quantity}`)
-    const [detailesAr, setDetailesAr] = useState(Product.details)
-    const [detailesEn, setDetailesEn] = useState(Product.details)
-    const [MenueId, setMenue] = useState()
-
-    const [base64, setBase64] = useState(Product.image);
-    const [userImage, setUserImage] = useState(null);
-
-    const [nameArStatues, setnameArStatues] = useState(0)
-    const [nameENStatus, setNameENStatus] = useState(0)
-    const [priceStatues, setepriceStatues] = useState(0)
-    const [availableKilosStatus, setavailableKilosStatues] = useState(0);
-    const [discountStatues, setDiscountStatues] = useState(0);
-    const [quantityStatues, setquantityStatues] = useState(0);
-    const [detailesArStatues, setdetailesArStatues] = useState(0);
-    const [detailesEnStatues, setdetailesEnStatues] = useState(0);
 
 
-    const [SmallSizeStatues, setSmallSizeStatues] = useState(0);
-    const [MiddleStatues, setMiddleStatues] = useState(0);
-    const [BigStatues, setBigStatues] = useState(0);
+
+
+
 
 
     let MenueData = Menue.map(menue => ({ label: menue.name, value: menue.id }));
     // let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
+
+
+
+
+    console.log('naame__', nameAR);
 
 
     function activeInput(type) {
@@ -101,7 +174,9 @@ function EditProduct({ navigation, route }) {
         if (type === 'mid_price' || mid_price !== '') setMiddleStatues(1);
         if (type === 'large_price' || large_price !== '') setBigStatues(1);
 
-
+        if (type === 'ProductnameExtraAR' || ProductnameExtraAR !== '') setProductNameArStatues(1);
+        if (type === 'ProductnameExtraEn' || ProductnameExtraEn !== '') setProductNameEnStatues(1);
+        if (type === 'priceProductExtra' || priceProductExtra !== '') setProductExtraPrieceStatues(1);
     }
 
 
@@ -118,52 +193,30 @@ function EditProduct({ navigation, route }) {
         if (type === 'small_price' && small_price == '') setSmallSizeStatues(0);
         if (type === 'mid_price' && mid_price == '') setMiddleStatues(0);
         if (type === 'large_price' && large_price == '') setBigStatues(0);
+        if (type === 'ProductnameExtraAR' && ProductnameExtraAR == '') setProductNameArStatues(0);
+        if (type === 'ProductnameExtraEn' && ProductnameExtraEn == '') setProductNameEnStatues(0);
+        if (type === 'priceProductExtra' && priceProductExtra == '') setProductExtraPrieceStatues(0);
 
     }
 
 
 
-    const dispatch = useDispatch();
 
 
 
 
     const Edit_product = () => {
-        dispatch(EditProducts(token, lang, Product.id, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, navigation))
+        setSpinner(true)
+        dispatch(EditProducts(token, lang, ProductID, nameAR, nameEN, price, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, ProductsExtras, navigation,))
         setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
         dispatch(GetProducts(token, lang))
-        setSpinner(true)
 
 
     }
 
-    const FetchData = async () => {
-        await dispatch(GetSizes(token))
-        setSpinner(true)
-        await dispatch(MenueInfo(lang, token))
-        await Menue
-        await Sizes
-        await MenueData
-    }
-    // setTimeout(() => {
-    //     dispatch(MenueInfo(lang, token));
-    //     dispatch(GetSizes(token, lang))
-    //     Menue
-    //     Sizes
-    // }, 1000)
 
 
-    useEffect(() => {
-        FetchData()
-    }, []);
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
-        });
-        setSpinner(false)
-        return unsubscribe;
-    }, [navigation, spinner]);
 
 
 
@@ -189,6 +242,32 @@ function EditProduct({ navigation, route }) {
     };
 
 
+    const AddProductExras = () => {
+        setSpinner(true)
+        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductDet.data.id, token, lang));
+        dispatch(GetProductExtrasFromEdit(ProductDet.data.id, token, lang))
+
+        setEditMaodVisible(false)
+    }
+
+
+    const DeleteExtraOneProduct = (id) => {
+        dispatch(DeleteProductExtrasFromEdit(id, token))
+        dispatch(GetProductExtrasFromEdit(ProductDet.data.id, token, lang))
+
+    }
+
+
+    const handaleChange = (e, IdSelect) => {
+        let array = SizePriceId;
+        let ID = array.findIndex(id => id.size_id === IdSelect);
+        array[ID].price = e
+
+        SetSizePriceId(array)
+
+    }
+
+
     function renderLoader() {
         if (spinner) {
             return (
@@ -212,20 +291,13 @@ function EditProduct({ navigation, route }) {
 
 
 
-    const handaleChange = (e, IdSelect) => {
-        let array = SizePriceId;
-        let ID = array.findIndex(id => id.size_id === IdSelect);
-        array[ID].price = e
-
-        SetSizePriceId(array)
-
-    }
 
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             {renderLoader()}
             <Header navigation={navigation} label={i18n.t('AddPro')} />
+            {renderLoader()}
 
             <InputIcon
 
@@ -312,7 +384,7 @@ function EditProduct({ navigation, route }) {
                         value={large_price}
                         LabelStyle={{ paddingHorizontal: BigStatues === 1 ? 10 : 0, color: BigStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                     />
-                    : selectedRadion === 2 ?
+                    : selectedRadion === 3 ?
                         <InputIcon
                             styleCont={{ marginTop: 20 }}
                             label={SmallSizeStatues === 1 ? i18n.t('SmallPrice') : null}
@@ -326,7 +398,7 @@ function EditProduct({ navigation, route }) {
                             LabelStyle={{ paddingHorizontal: SmallSizeStatues === 1 ? 10 : 0, color: SmallSizeStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                         />
 
-                        : selectedRadion === 3 ?
+                        : selectedRadion === 2 ?
                             <InputIcon
                                 styleCont={{ marginTop: 20 }}
                                 label={MiddleStatues === 1 ? i18n.t('MidlePrice') : null}
@@ -397,7 +469,50 @@ function EditProduct({ navigation, route }) {
                 LabelStyle={{ paddingHorizontal: quantityStatues === 1 ? 10 : 0, color: quantityStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
 
-            <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+
+            <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                <View style={{ paddingEnd: 120, fontFamily: 'flatMedium', paddingStart: 10 }}>
+                    <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('available')}</Text>
+                </View>
+                {
+                    data.map((item, index) => {
+                        return (
+                            <TouchableOpacity onPress={() => { setavailable(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <View style={{
+                                    height: 15,
+                                    width: 15,
+                                    borderRadius: 12,
+                                    borderWidth: 2,
+                                    borderColor: available === index ? Colors.sky : Colors.fontNormal,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+
+                                }}>
+                                    {
+                                        available === index ?
+                                            <View style={{
+                                                height: 6,
+                                                width: 6,
+                                                borderRadius: 6,
+                                                backgroundColor: Colors.sky,
+                                            }} />
+                                            : null
+                                    }
+                                </View>
+                                <Text style={[styles.sText, { color: available === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+
+                            </TouchableOpacity>
+
+
+
+                        )
+                    })
+                }
+
+            </View>
+
+            <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", marginTop: 15, borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
                 <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
                 <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
             </TouchableOpacity>
@@ -415,7 +530,7 @@ function EditProduct({ navigation, route }) {
                     animationDuration={0}
                     onChangeText={val => setMenue(val)}
 
-                    value={Product.menu}
+                    value={ProductDet.data.menu}
                 />
             </View>
             <InputIcon
@@ -433,22 +548,103 @@ function EditProduct({ navigation, route }) {
                 LabelStyle={{ paddingHorizontal: detailesArStatues === 1 ? 10 : 0, color: detailesArStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, bottom: width * .32 }}
             />
 
-
             <InputIcon
-                placeholder={i18n.t('prodDetAr')}
-                styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 0 }}
+
+                placeholder={i18n.t('prodDetEn')}
+                styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 20 }}
                 label={detailesEnStatues === 1 ? i18n.t('prodDetEn') : null}
-                placeholder={detailesEnStatues === 1 ? null : i18n.t('prodDetEn')}
+                placeholder={detailesEnStatues === 1 ? null : i18n.t('prodDetAr')}
                 onBlur={() => unActiveInput('detailesEn')}
                 onFocus={() => activeInput('detailesEn')}
                 inputStyle={{ borderColor: detailesEnStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setDetailesEn(e)}
                 value={detailesEn}
-                LabelStyle={{ paddingHorizontal: detailesEnStatues === 1 ? 10 : 0, color: detailesEnStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, bottom: width * .32, }}
+                LabelStyle={{ paddingHorizontal: detailesEnStatues === 1 ? 10 : 0, color: detailesEnStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, bottom: width * .32 }}
             />
-            <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => navigation.navigate('AddOnotherProduct')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
+
+            {
+                ProductsExtras.length ?
+                    ProductsExtras.map((proExtra, index) =>
+                        (
+                            <>
+                                <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
+                                    <View style={{ flexDirection: 'row', paddingStart: 10 }}>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                                    </View>
+                                    <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
+                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
+                            </>
+                        )
+                    ) : null
+            }
+
+
+
+
+            <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
 
             <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={Edit_product} />
+
+
+            <View style={styles.centeredView}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    style={{ backgroundColor: Colors.bg, }}
+                    visible={EditMaodVisible} >
+
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
+                                <InputIcon
+                                    styleCont={{ marginTop: 10 }}
+                                    label={ProductNameArStatues === 1 ? i18n.t('prodDetEn') : null}
+                                    placeholder={ProductNameArStatues === 1 ? null : i18n.t('prodDetEn')}
+                                    onBlur={() => unActiveInput('ProductnameExtraAR')}
+                                    onFocus={() => activeInput('ProductnameExtraAR')}
+                                    inputStyle={{ borderColor: ProductNameArStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                    onChangeText={(e) => setProductnameExtraAR(e)}
+                                    value={ProductnameExtraAR}
+                                    LabelStyle={{ paddingHorizontal: ProductNameArStatues === 1 ? 10 : 0, color: ProductNameArStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, }}
+
+                                />
+                                <InputIcon
+
+                                    styleCont={{ marginTop: 0 }}
+                                    label={ProductNameEnStatues === 1 ? i18n.t('AddEn') : null}
+                                    placeholder={ProductNameEnStatues === 1 ? null : i18n.t('AddEn')}
+                                    onBlur={() => unActiveInput('ProductnameExtraEn')}
+                                    onFocus={() => activeInput('ProductnameExtraEn')}
+                                    inputStyle={{ borderColor: ProductNameEnStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                    onChangeText={(e) => setProductnameExtraEn(e)}
+                                    value={ProductnameExtraEn}
+                                    LabelStyle={{ paddingHorizontal: ProductNameEnStatues === 1 ? 10 : 0, color: ProductNameEnStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, }}
+
+                                />
+
+                                <InputIcon
+                                    styleCont={{ marginTop: 0 }}
+                                    label={ProductExtraPriceStatues === 1 ? i18n.t('price') : null}
+                                    placeholder={ProductExtraPriceStatues === 1 ? null : i18n.t('price')}
+                                    onBlur={() => unActiveInput('priceProductExtra')}
+                                    onFocus={() => activeInput('priceProductExtra')}
+                                    inputStyle={{ borderColor: ProductExtraPriceStatues === 1 ? Colors.sky : Colors.InputColor }}
+                                    onChangeText={(e) => setPricePrdouctExtra(e)}
+                                    value={priceProductExtra}
+                                    LabelStyle={{ paddingHorizontal: ProductExtraPriceStatues === 1 ? 10 : 0, color: ProductExtraPriceStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14, }}
+                                />
+
+                                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={AddProductExras} />
+                            </ScrollView>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+
 
         </ScrollView>
 
@@ -479,6 +675,40 @@ const styles = StyleSheet.create({
         width: '90%',
         marginVertical: 5
 
+    },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+        backgroundColor: '#737373',
+        opacity: .95,
+
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderTopRightRadius: 25,
+        borderTopLeftRadius: 25,
+        width: width,
+        height: height * .49,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    Delete: {
+        backgroundColor: Colors.RedColor,
+        justifyContent: 'flex-end', width: 30,
+        alignSelf: 'flex-end'
+    },
+    Img: {
+        height: 50,
+        width: 20,
+        alignSelf: 'center'
     },
 })
 export default EditProduct

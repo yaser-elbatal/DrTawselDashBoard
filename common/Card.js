@@ -1,28 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Image, Text, FlatList, I18nManager, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../consts/Colors';
 import { width, height } from '../consts/HeightWidth';
 import i18n from '../locale/i18n'
+import { GetQuickReborts } from '../store/action/HomeAction';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Card() {
+function Card({ navigation }) {
+
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language.data);
+    const Reports = useSelector(state => state.home.reports.data);
+
+    const [spinner, setSpinner] = useState(false);
+    // console.log(Reports);
+    const dispatch = useDispatch();
+
+    const FetchData = () => {
+
+    }
+
+
+    useEffect(() => {
+        dispatch(GetQuickReborts(token, lang));
+    }, [])
 
     const Orderdata = [{
         id: 'K0',
         title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
+        number: `${Reports.waiting} ${i18n.t('order')}`,
         color: [Colors.GradianYellow, Colors.GradianYellow2]
     },
     {
         id: 'K1',
         title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
+        number: `${Reports.running} ${i18n.t('order')}`,
         color: [Colors.GradianGreen, Colors.GradianGreen2]
     },
     {
         id: 'K2',
         title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
+        number: `${Reports.delivered} ${i18n.t('order')}`,
         color: [Colors.GradianRed, Colors.GradianRed2]
     }
 

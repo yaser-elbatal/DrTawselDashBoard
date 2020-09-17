@@ -562,6 +562,9 @@ const ar = {
   mid: 'وسط',
   small: 'صغير',
   available: 'متاح؟',
+  AddBanner: 'اضافه بانر',
+  OldPassword: 'كلمه المرور القديمه',
+  NewPassword: 'كلمه المرور الجديده',
 
 
 };

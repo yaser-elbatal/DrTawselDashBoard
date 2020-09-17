@@ -20,9 +20,9 @@ function Header({ label, navigation, }) {
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             {
                                 I18nManager.isRTL ?
-                                    <Image source={require('../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                                    <Image source={require('../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
                                     :
-                                    <Image source={require('../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                                    <Image source={require('../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
 
                             }
                         </TouchableOpacity>

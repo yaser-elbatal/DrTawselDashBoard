@@ -55,13 +55,17 @@ function AddPices({ navigation }) {
         ,
     ]
 
+
+
+
+
     return (
         <View style={{ flex: 1 }}>
             <Header navigation={navigation} label={i18n.t('AddPices')} />
             <Card />
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
-                <TouchableOpacity>
+                <TouchableOpacity >
                     <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30 }} />
                 </TouchableOpacity>
             </View>

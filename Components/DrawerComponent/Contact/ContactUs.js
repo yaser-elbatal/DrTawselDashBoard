@@ -12,55 +12,66 @@ const { width } = Dimensions.get('window')
 
 function ContactUs({ navigation }) {
     const [nameAR, setNameAr] = useState('');
-    const [email, setemail] = useState('')
+    const [email, setemail] = useState('');
+    const [Message, setMessage] = useState(false);
 
-    const Orderdata = [{
-        id: 'K0',
-        title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianYellow, Colors.GradianYellow2]
-    },
-    {
-        id: 'K1',
-        title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianGreen, Colors.GradianGreen2]
-    },
-    {
-        id: 'K2',
-        title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianRed, Colors.GradianRed2]
+    const [nameARStatus, setnameARStatus] = useState(0);
+    const [emailStatues, setemailStatues] = useState('');
+    const [MessageStatus, setMessageStatus] = useState(0);
+
+    function activeInput(type) {
+        if (type === 'nameAR' || nameAR !== '') setnameARStatus(1);
+        if (type === 'email' || email !== '') setemailStatues(1);
+        if (type === 'Message' || Message !== '') setMessageStatus(1);
     }
 
 
-        ,
-    ]
 
+    function unActiveInput(type) {
+        if (type === 'nameAR' && nameAR == '') setnameARStatus(0);
+        if (type === 'email' && email == '') setemailStatues(0);
+        if (type === 'Message' && Message == '') setMessageStatus(0);
+
+
+    }
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <Header navigation={navigation} label={i18n.t('contactus')} />
             <Card />
             <ScrollView style={{ flex: 1 }}>
                 <InputIcon
-                    label={i18n.t('username')}
-                    placeholder={i18n.t('username')}
-                    inputStyle={{ borderColor: Colors.sky }}
+                    label={nameARStatus === 1 ? i18n.t('username') : null}
+                    placeholder={nameARStatus === 1 ? null : i18n.t('username')}
+                    onBlur={() => unActiveInput('nameAR')}
+                    onFocus={() => activeInput('nameAR')}
+                    inputStyle={{ borderColor: nameARStatus === 1 ? Colors.sky : Colors.InputColor }}
                     onChangeText={(e) => setNameAr(e)}
                     value={nameAR}
-                    LabelStyle={{ paddingHorizontal: 10, color: Colors.sky, fontSize: 14 }}
+                    styleCont={{ marginTop: 0 }}
+                    LabelStyle={{ paddingHorizontal: nameARStatus === 1 ? 10 : 0, color: nameARStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
                 />
                 <InputIcon
-                    placeholder={i18n.t('email')}
+                    label={emailStatues === 1 ? i18n.t('email') : null}
+                    placeholder={emailStatues === 1 ? null : i18n.t('email')}
                     onChangeText={(e) => setemail(e)}
                     value={email}
+                    inputStyle={{ borderColor: emailStatues === 1 ? Colors.sky : Colors.InputColor }}
+                    LabelStyle={{ paddingHorizontal: emailStatues === 1 ? 10 : 0, color: emailStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                    onBlur={() => unActiveInput('email')}
+                    onFocus={() => activeInput('email')}
                     keyboardType='email-address'
                     styleCont={{ marginTop: 0 }}
                 />
                 <InputIcon
-                    placeholder={i18n.t('writeMsg')}
-                    inputStyle={{ borderColor: '#eaeaea', textAlignVertical: 'top', paddingTop: 10, borderRadius: 5 }}
-                    styleCont={{ height: width * .49, marginHorizontal: '5%', marginTop: 0 }}
+                    label={MessageStatus === 1 ? i18n.t('email') : null}
+                    placeholder={MessageStatus === 1 ? null : i18n.t('email')}
+                    onChangeText={(e) => setMessage(e)}
+                    value={Message}
+                    inputStyle={{ borderColor: MessageStatus === 1 ? Colors.sky : Colors.InputColor }}
+                    LabelStyle={{ paddingHorizontal: MessageStatus === 1 ? 10 : 0, color: MessageStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                    onBlur={() => unActiveInput('Message')}
+                    onFocus={() => activeInput('Message')}
+                    styleCont={{ marginTop: 0 }}
                 />
                 <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={() => { }} />
 

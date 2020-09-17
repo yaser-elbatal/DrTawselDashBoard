@@ -1,99 +1,145 @@
-import React from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, FlatList, } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { View, Text, Image, Dimensions, StyleSheet, FlatList, TouchableOpacity, Modal, Platform, ScrollView } from 'react-native';
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
-import { LinearGradient } from 'expo-linear-gradient';
 import BTN from '../../../common/BTN';
 import Card from '../../../common/Card';
+import { GetBanners, DeleteBanners, AddBanners } from '../../../store/action/OffersAction';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 function Previousoffers({ navigation }) {
 
-    const Orderdata = [{
-        id: 'K0',
-        title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianYellow, Colors.GradianYellow2]
-    },
-    {
-        id: 'K1',
-        title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianGreen, Colors.GradianGreen2]
-    },
-    {
-        id: 'K2',
-        title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianRed, Colors.GradianRed2]
-    }
+    const dispatch = useDispatch();
+    const Banners = useSelector(state => state.Banner.Banners.data)
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language.data);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [base64, setBase64] = useState('');
+    const [userImage, setUserImage] = useState(null);
+    console.log(Banners);
+    useEffect(() => {
+
+        dispatch(GetBanners(token, lang))
+
+    }, [])
 
 
-        ,
-    ]
-
-    const OrderInfo = [{
-        id: 'K0',
-        Image: require('../../../assets/Images/imagefour.png'),
-        Date: '20/9/2020',
-        color: Colors.IconBlack,
-        label: `${i18n.t('Waitingapproval')}`,
-        number: 1
-    },
-    {
-        id: 'K1',
-        Image: require('../../../assets/Images/imagefour.png'),
-        Date: '20/9/2020',
-        color: Colors.GradianGreen,
-        label: `${i18n.t('Beenapproved')}`,
-        number: 2
-
-
-    },
-    {
-        id: 'K2',
-        Image: require('../../../assets/Images/imagefour.png'),
-        Date: '20/9/2020',
-        color: Colors.RedColor,
-        label: `${i18n.t('rejected1')}`,
-        number: 3
-
+    const DeleteCardBanners = async (id) => {
+        await dispatch(DeleteBanners(token, id))
+        await dispatch(GetBanners(token, lang))
+        setTimeout(() => {
+            dispatch(GetBanners(token, lang));
+        }, 1000);
 
     }
 
+    const askPermissionsAsync = async () => {
+        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-        ,
-    ]
+    };
+    const _pickImage = async () => {
+
+        askPermissionsAsync();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            base64: true
+        });
+
+        if (!result.cancelled) {
+            setUserImage(result.uri);
+            setBase64(result.base64);
+        }
+    };
+
+    const Add_menue = async () => {
+        await dispatch(AddBanners(token, base64, lang))
+        dispatch(GetBanners(token, lang))
+
+        setTimeout(() => {
+            dispatch(GetBanners(token, lang));
+
+        }, 1000);
+        setModalVisible(false)
+
+
+    }
+
 
     return (
         <View style={{ flex: 1 }}>
             <Header navigation={navigation} label={i18n.t('Previousoffers')} />
             <Card />
+            <BTN title={i18n.t('AddBanner')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 15 }} onPress={() => setModalVisible(true)} />
 
-            <FlatList
-                pagingEnabled={true}
-                data={OrderInfo}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                renderItem={(item) => (
 
-                    <View style={styles.Card}>
-                        <View style={{ flexDirection: 'row', height: '100%', }}>
-                            <Image source={item.item.Image} style={{ height: '100%', width: '25%' }} />
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
-                                <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}{item.item.number}</Text>
-                                <View style={{ flexDirection: 'row', }}>
-                                    <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
-                                    <Text style={styles.CardText}>{item.item.Date}</Text>
+
+
+            <ScrollView style={{ flex: 1 }}>
+                {
+                    Banners.length > 0 ?
+                        Banners.map((item, index) => (
+
+
+
+                            <View style={styles.Card}>
+                                <View style={{ flexDirection: 'row', height: '100%', }}>
+                                    <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
+
+                                            <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}:{index + 1}</Text>
+
+
+                                            <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
+                                                <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 15, width: 15, }} />
+                                            </TouchableOpacity>
+
+                                        </View>
+                                        <View style={{ flexDirection: 'row', }}>
+                                            <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
+                                            <Text style={styles.CardText}>{item.date}</Text>
+                                        </View>
+                                        <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
+                                    </View>
                                 </View>
-                                <BTN title={item.item.label} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.item.color }} />
+                            </View>
+
+                        )) : null
+                }
+
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible} >
+
+                        <View style={[styles.centeredView, { backgroundColor: Colors.bg, opacity: Platform.OS == 'ios' ? .98 : .89 }]}>
+                            <View style={styles.modalView}>
+                                <View style={{ margin: 20, }}>
+                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddBanner')} </Text>
+
+
+                                    <TouchableOpacity onPress={_pickImage}>
+                                        <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+                                    </TouchableOpacity>
+                                    <BTN title={i18n.t('AddBanner')} ContainerStyle={styles.LoginBtn1} onPress={Add_menue} />
+                                </View>
                             </View>
                         </View>
-                    </View>
-                )}
-            />
+                    </Modal>
+                </View>
+            </ScrollView>
+
+
+
+
+
         </View>
     )
 }
@@ -135,7 +181,7 @@ const styles = StyleSheet.create({
     Card: {
         height: 140,
         shadowColor: Colors.bg,
-        margin: '5%',
+        marginHorizontal: '5%',
         borderRadius: 10,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
@@ -144,7 +190,35 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         marginTop: 5
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+        opacity: Platform.OS ? .98 : .9,
 
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderTopRightRadius: 25,
+        borderTopLeftRadius: 25,
+        width: width,
+        height: height * .4,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+
+    LoginBtn1: {
+        marginVertical: 15,
+        borderRadius: 5,
+        marginHorizontal: 15,
+        width: '91%',
+    },
 })
 
 

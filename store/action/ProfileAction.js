@@ -30,13 +30,44 @@ export const UpdateProfile = (token, lang, name, phone, email, cityId, avatar, n
         axios({
             url: consts.url + 'edit-profile',
             method: 'POST',
-            data: { lang, name, phone, email, cityId, avatar },
+            data: { name, phone, email, cityId, avatar },
             headers: { Authorization: 'Bearer ' + token, },
+            params: { lang, }
 
         }).then(res => {
             if (res.data.success) {
                 navigation.navigate('MyProfile')
                 dispatch({ type: Update_Profile, data: res.data })
+
+            }
+            Toast.show({
+                text: res.data.message,
+                type: res.data.success ? "success" : "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
+        }
+        )
+
+
+    }
+}
+
+export const EditPasswordSettingsProfile = (token, old_password, current_password, lang, navigation) => {
+    return dispatch => {
+        axios({
+            url: consts.url + 'edit-password',
+            method: 'POST',
+            data: { old_password, current_password },
+            headers: { Authorization: 'Bearer ' + token, },
+            params: { lang, }
+
+        }).then(res => {
+            if (res.data.success) {
+                navigation.navigate('MyProfile')
 
             }
             Toast.show({

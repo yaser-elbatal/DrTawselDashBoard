@@ -26,7 +26,7 @@ const InputIcon = ({
 
     return (
 
-        <View onPress={onPress} style={[styles.containerTableTextOverInput, styleCont]}>
+        <View style={[styles.containerTableTextOverInput, styleCont]}>
 
             <Text style={[styles.labelText, LabelStyle]}  >
                 {label}
@@ -42,7 +42,10 @@ const InputIcon = ({
                 {...props}
                 placeholder={placeholder}
             />
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={onPress} style={{
+                left: width * .8,
+                bottom: width * .09
+            }}>
                 <Image source={image} style={[styles.image, imgStyle]} />
 
             </TouchableOpacity>
@@ -94,7 +97,6 @@ const styles = StyleSheet.create({
         height: width * 0.06,
         maxHeight: width * 0.12,
         resizeMode: "contain",
-        left: width * .8,
-        bottom: width * .09
+
     },
 });

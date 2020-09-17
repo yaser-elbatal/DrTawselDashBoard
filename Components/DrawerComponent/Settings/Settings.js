@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     wrap: {
         flexDirection: 'column',
         marginTop: 25,
-        backgroundColor: '#E3E3E3',
+        backgroundColor: '#F1F1F1',
     },
     Container: {
         flexDirection: 'row',

@@ -14,7 +14,7 @@ function Orders({ navigation }) {
             <Header navigation={navigation} />
             <View style={styles.wrap}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('IncomingRequests')}>
+                <TouchableOpacity onPress={() => navigation.navigate('IncomingRequests', { WAITING: 'WAITING' })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('IncomingRequests')}</Text>
                         {
@@ -29,7 +29,7 @@ function Orders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('ActiveRequests')}>
+                <TouchableOpacity onPress={() => navigation.navigate('ActiveRequests', { RUNNING: 'RUNNING' })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('ActiveRequests')}</Text>
                         {
@@ -44,7 +44,7 @@ function Orders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Completedrequests')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Completedrequests', { DELIVERED: 'DELIVERED' })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('Completedrequests')}</Text>
                         {
@@ -59,7 +59,7 @@ function Orders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Rejectedrequests')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Rejectedrequests', { CANCELED: 'CANCELED' })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('Rejectedrequests')}</Text>
                         {

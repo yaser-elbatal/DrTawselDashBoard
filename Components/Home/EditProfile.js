@@ -111,7 +111,6 @@ function EditProfile({ navigation }) {
     }
 
     useEffect(() => {
-        dispatch(ProductDetailes(token, lang, item.id))
         dispatch(getCititis(lang));
         dispatch(GetProfile(token, lang))
 

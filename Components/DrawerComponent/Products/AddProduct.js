@@ -186,12 +186,7 @@ function AddProduct({ navigation }) {
         await Menue
         await MenueData
     }
-    // setTimeout(() => {
-    //     dispatch(MenueInfo(lang, token));
-    //     dispatch(GetSizes(token, lang))
-    //     Menue
-    //     Sizes
-    // }, 1000)
+
 
 
     useEffect(() => {

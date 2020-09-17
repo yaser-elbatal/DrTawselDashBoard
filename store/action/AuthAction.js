@@ -75,6 +75,18 @@ const loginFailed = (dispatch, error, navigation) => {
         //     });
         // }
         dispatch({ type: login_failed, error });
+
+        Toast.show({
+            text: error.message,
+            type: "danger",
+            duration: 3000,
+            textStyle: {
+                color: "white",
+                fontFamily: 'flatMedium',
+                textAlign: 'center'
+            }
+        });
+
     }
 };
 

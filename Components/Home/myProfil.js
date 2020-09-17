@@ -42,6 +42,9 @@ function myProfil({ navigation }) {
             </ImageBackground>
 
             <View style={styles.ScrolContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
+                    <Image source={require('../../assets/Images/Icon_edit.png')} style={{ width: 30, height: 30 }} />
+                </TouchableOpacity>
                 <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -50,16 +53,12 @@ function myProfil({ navigation }) {
 
                         <View style={styles.Wrab}>
                             <Text style={styles.user}>{user.name}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                                <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
-                            </TouchableOpacity>
+
                         </View>
                         <View style={styles.Line}></View>
                         <View style={styles.Wrab}>
                             <Text style={styles.user}>{user.phone}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                                <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
-                            </TouchableOpacity>
+
                         </View>
                         <View style={styles.Line}></View>
 
@@ -67,17 +66,13 @@ function myProfil({ navigation }) {
 
                         <View style={styles.Wrab}>
                             <Text style={styles.user}>{user.provider.city}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                                <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
-                            </TouchableOpacity>
+
                         </View>
                         <View style={styles.Line}></View>
 
                         <View style={styles.Wrab}>
                             <Text style={styles.user}>{user.email}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                                <Image source={require('../../assets/Images/Icon_edit.png')} style={styles.EditImg} />
-                            </TouchableOpacity>
+
                         </View>
                         <View style={styles.Line}></View>
 

@@ -6,26 +6,59 @@ import { InputIcon } from '../../../common/InputText'
 import { validatePassword, validateTwoPasswords } from '../../../common/Validation'
 import { Toaster } from '../../../common/Toaster'
 import BTN from '../../../common/BTN'
+import { useSelector, useDispatch } from 'react-redux'
+import { EditPasswordSettingsProfile } from '../../../store/action/ProfileAction'
 
 
 function ChangePassword({ navigation }) {
 
+    const dispatch = useDispatch()
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language.data);
 
     const [password, setPassword] = useState('');
-    const [nPassword, setnPassword] = useState('')
+    const [Newpassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
+    const user = useSelector(state => state.auth.user.data)
+
+
+    const [passwordStatus, setPasswordStatus] = useState(0);
+    const [newPasswordStatus, seteneWPasswordStatus] = useState(0);
+    const [confirmPasswordStatues, setConfirmPasswordStatues] = useState(0);
+
+    function activeInput(type) {
+
+        if (type === 'password' || password !== '') setPasswordStatus(1);
+        if (type === 'Newpassword' || Newpassword !== '') seteneWPasswordStatus(1);
+        if (type === 'confirmPassword' || confirmPassword !== '') setConfirmPasswordStatues(1);
+
+
+    }
+
+    function unActiveInput(type) {
+        if (type === 'password' && password === '') setPasswordStatus(0);
+        if (type === 'Newpassword' && Newpassword === '') seteneWPasswordStatus(0);
+        if (type === 'confirmPassword' && confirmPassword === '') setConfirmPasswordStatues(0);
+
+
+
+    }
     const _validate = () => {
 
-        let passwordErr = validatePassword(password);
-        let passConfirmErr = validateTwoPasswords(password, nPassword)
+        let passwordErr = password == '' ? i18n.t('passwordErr') : null;
+        let passConfirmErr = validateTwoPasswords(Newpassword, confirmPassword)
 
-        return codeErr || passwordErr || passConfirmErr;
+        return passwordErr || passConfirmErr;
     };
 
     const SubmitLoginHandler = () => {
         const isVal = _validate();
         if (!isVal) {
-            navigation.navigate('MyProfile')
+            dispatch(EditPasswordSettingsProfile(token, password, Newpassword, lang, navigation))
+            setPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
 
         }
         else {
@@ -36,7 +69,7 @@ function ChangePassword({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
 
-            <Image source={require('../../../assets/Images/imagethree.png')} style={styles.ImgBackGround} />
+            <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
 
             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -51,23 +84,53 @@ function ChangePassword({ navigation }) {
             </ImageBackground>
 
             <View style={styles.ScrolContainer}>
-                <Text style={styles.MainText}>{i18n.t('cnagePass')}</Text>
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                    <Text style={styles.MainText}>{i18n.t('cnagePass')}</Text>
 
                     <View style={{ margin: 20, marginTop: 0 }}>
                         <InputIcon
-                            placeholder={i18n.t('password')}
-                            value={password}
+                            label={passwordStatus === 1 ? i18n.t('password') : null}
+                            placeholder={passwordStatus === 1 ? null : i18n.t('password')}
                             onChangeText={(e) => setPassword(e)}
+                            value={password}
+                            secureTextEntry
+                            styleCont={{ marginTop: 0 }}
+                            inputStyle={{ borderColor: passwordStatus === 1 ? Colors.sky : Colors.InputColor }}
+                            LabelStyle={{ paddingHorizontal: passwordStatus === 1 ? 10 : 0, color: passwordStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                            onBlur={() => unActiveInput('password')}
+                            onFocus={() => activeInput('password')}
+                            keyboardType='numeric'
+
                         />
                         <InputIcon
-                            placeholder={i18n.t('confirmnewPass')}
-                            value={nPassword}
-                            onChangeText={(e) => setnPassword(e)}
+                            label={newPasswordStatus === 1 ? i18n.t('NewPassword') : null}
+                            placeholder={newPasswordStatus === 1 ? null : i18n.t('NewPassword')}
+                            onChangeText={(e) => setNewPassword(e)}
+                            value={Newpassword}
+                            secureTextEntry
                             styleCont={{ marginTop: 0 }}
+                            inputStyle={{ borderColor: newPasswordStatus === 1 ? Colors.sky : Colors.InputColor }}
+                            LabelStyle={{ paddingHorizontal: newPasswordStatus === 1 ? 10 : 0, color: newPasswordStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                            onBlur={() => unActiveInput('Newpassword')}
+                            onFocus={() => activeInput('Newpassword')}
+                            keyboardType='numeric'
+
                         />
-                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={() => navigation.navigate('MyProfile')} />
+                        <InputIcon
+                            label={confirmPasswordStatues === 1 ? i18n.t('confirmPass') : null}
+                            placeholder={confirmPasswordStatues === 1 ? null : i18n.t('confirmPass')}
+                            onChangeText={(e) => setConfirmPassword(e)}
+                            value={confirmPassword}
+                            secureTextEntry
+                            styleCont={{ marginTop: 0 }}
+                            inputStyle={{ borderColor: confirmPasswordStatues === 1 ? Colors.sky : Colors.InputColor }}
+                            LabelStyle={{ paddingHorizontal: confirmPasswordStatues === 1 ? 10 : 0, color: confirmPasswordStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                            onBlur={() => unActiveInput('confirmPassword')}
+                            onFocus={() => activeInput('confirmPassword')}
+                            keyboardType='numeric'
+                        />
+                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
                     </View>
                 </ScrollView>
             </View>

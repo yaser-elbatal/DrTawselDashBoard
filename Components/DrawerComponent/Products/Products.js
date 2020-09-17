@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, Alert, } from 'react-native';
 import { CheckBox, Content } from "native-base";
 
 
@@ -13,9 +13,11 @@ import DrobDwn from '../../../common/DrobDwn';
 import Card from '../../../common/Card';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetProducts, DeleteProduct, ProductDetailes } from '../../../store/action/ProductAction';
+import { useIsFocused } from "@react-navigation/native";
 
 function Products({ navigation }) {
     const dispatch = useDispatch();
+    const isFocused = useIsFocused();
 
 
     const [isSelected2, setSelection2] = useState();
@@ -27,21 +29,27 @@ function Products({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
 
+    const ProductDet = useSelector(state => state.product.product);
 
 
 
     useEffect(() => {
-        dispatch(GetProducts(token, lang))
-        setSpinner(true)
-        setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
-    }, [dispatch]);
+
+        if (isFocused) {
+            dispatch(GetProducts(token, lang))
+            setSpinner(true)
+
+        }
+
+
+    }, [isFocused]);
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(false)
         });
-        setTimeout(() => { dispatch(GetProducts(token, lang)); Products }, 1000)
+
 
         setSpinner(false)
         return unsubscribe;
@@ -60,6 +68,7 @@ function Products({ navigation }) {
         if (spinner) {
             return (
                 <View style={{
+                    position: 'absolute',
                     top: 0,
                     right: 0,
                     width: '100%',
@@ -125,7 +134,11 @@ function Products({ navigation }) {
 
                             <View style={styles.SWarb}>
 
-                                <TouchableOpacity style={styles.Edit} onPress={() => { navigation.navigate('EditProducts', { Product: item }); setTimeout(() => dispatch(ProductDetailes(token, lang, item.id)), 1000) }}>
+                                <TouchableOpacity style={styles.Edit} onPress={() => {
+                                    navigation.navigate('EditProducts', { ProductID: item.id }); setTimeout(() => {
+                                        dispatch(ProductDetailes(token, lang, item.id));
+                                    }, 1000);
+                                }}>
                                     <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
                                 </TouchableOpacity>
 

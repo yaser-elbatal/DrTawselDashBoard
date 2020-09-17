@@ -5,25 +5,30 @@ import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductDetailes } from '../../../store/action/ProductAction';
+import { useIsFocused } from "@react-navigation/native";
 
 
 function ProductDet({ navigation, route }) {
 
     const { Products, index } = route.params;
+    const isFocused = useIsFocused();
+
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const [spinner, setSpinner] = useState(false);
     const ProductDet = useSelector(state => state.product.product.data);
-    console.log(ProductDet);
+
+
     const dispatch = useDispatch();
 
 
 
     useEffect(() => {
-        dispatch(ProductDetailes(token, lang, Products.id))
-        setSpinner(true)
-        Products
-    }, [dispatch])
+        if (isFocused) {
+            dispatch(ProductDetailes(token, lang, Products.id))
+            setSpinner(true)
+        }
+    }, [isFocused])
 
     useEffect(() => {
 
@@ -62,6 +67,7 @@ function ProductDet({ navigation, route }) {
 
     return (
         <View style={{ flex: 1 }}>
+            {renderLoader()}
 
             <Image source={{ uri: ProductDet.image }} style={styles.ImgBackGround} />
             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
@@ -81,7 +87,12 @@ function ProductDet({ navigation, route }) {
 
 
                     <View style={styles.Wrab}>
-                        <Text style={styles.text}>{ProductDet.name}</Text>
+                        <View style={{ flexDirection: 'row', paddingHorizontal: 5 }}>
+                            <Text style={styles.text}>{ProductDet.name_ar}</Text>
+                            <Text style={[styles.text, { paddingHorizontal: 10 }]}>{ProductDet.name_en}</Text>
+
+                        </View>
+
                         <TouchableOpacity >
                             {
                                 ProductDet.available == 0 ?
@@ -96,7 +107,6 @@ function ProductDet({ navigation, route }) {
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                         <Text style={styles.num}>{i18n.t('num')}#{index + 1}</Text>
                         <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDet.menu}</Text>
-                        <Text style={[styles.num, { color: Colors.IconBlack }]}>{ProductDet.name}</Text>
                         <Text style={styles.num}>{ProductDet.price}{i18n.t('Rial')}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.num}>{ProductDet.price}</Text>

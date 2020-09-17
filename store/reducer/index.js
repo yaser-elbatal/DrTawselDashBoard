@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import lang from './LangReducer';
 import auth from './AuthReducer';
 import cities from './CitiesReducer';
@@ -6,11 +7,12 @@ import profile from './ProfileReducer';
 import provider from './ProviderReducer';
 import menue from './MenueReducer';
 import product from './ProductReducer';
-
 import size from './SizesReducer';
 import intro from './IntroReducer';
 import ExtraProduct from './ExtraProductReducer';
-
+import home from './HomeReducer';
+import Banner from './OffersReducer';
+import Orders from './OrdersReducer';
 
 
 export default multiReducres = combineReducers({
@@ -23,5 +25,8 @@ export default multiReducres = combineReducers({
     product,
     size,
     intro,
-    ExtraProduct
+    ExtraProduct,
+    home,
+    Banner,
+    Orders
 });
