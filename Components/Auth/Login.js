@@ -19,6 +19,7 @@ import { SignIn } from '../../store/action/AuthAction';
 
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo'
+import Container from '../../common/Container';
 
 function Login({ navigation }) {
 
@@ -30,20 +31,10 @@ function Login({ navigation }) {
     const [isLoading, Setisloading] = useState(false);
     const [deviceId, setDeviceId] = useState('');
     const [userId, setUserId] = useState(null);
-    const [phoneStatus, setPhoneStatus] = useState(0);
-    const [passwordStatus, setPasswordStatus] = useState(0);
-    const [spinner, setSpinner] = useState(false);
+
+    const [spinner, setSpinner] = useState(true);
 
 
-    function activeInput(type) {
-        if (type === 'phone' || phone !== '') setPhoneStatus(1);
-        if (type === 'password' || password !== '') setPasswordStatus(1);
-    }
-
-    function unActiveInput(type) {
-        if (type === 'phone' && phone === '') setPhoneStatus(0);
-        if (type === 'password' && password === '') setPasswordStatus(0);
-    }
 
     const getDeviceId = async () => {
         const { status: existingStatus } = await Permissions.getAsync(
@@ -78,93 +69,65 @@ function Login({ navigation }) {
         return phoneErr || passwordErr;
     };
 
-    const SubmitLoginHandler = async () => {
+    const SubmitLoginHandler = () => {
         const isVal = _validate();
 
         if (!isVal) {
             setSpinner(true)
 
-            Setisloading(true)
-            await dispatch(SignIn(phone, password, deviceId, lang, navigation))
+            dispatch(SignIn(phone, password, deviceId, lang, navigation)).then(() => setSpinner(false))
         }
         else {
             Toaster(_validate());
             setSpinner(false)
 
         }
-        Setisloading(false);
 
     }
     useEffect(() => {
-        getDeviceId()
+        getDeviceId().then(() => setSpinner(false))
 
     }, []);
     return (
-        <View style={styles.container}>
+        <Container loading={spinner}>
 
-            <BackBtn navigation={navigation} />
-            <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
-                <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
-                    <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
-                    <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
-                </View>
+            <View style={styles.container}>
 
-                <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
-                <InputIcon
-                    label={phoneStatus === 1 ? i18n.t('phone') : null}
-                    placeholder={phoneStatus === 1 ? null : i18n.t('phone')}
-                    onChangeText={(e) => setPhone(e)}
-                    value={phone}
-                    inputStyle={{ borderColor: phoneStatus === 1 ? Colors.sky : Colors.InputColor }}
-                    LabelStyle={{
-                        color: phoneStatus === 1 ? Colors.sky : Colors.InputColor, paddingHorizontal: phoneStatus === 1 ? 10 : 0,
-                        fontSize: 15
-                    }}
-                    onBlur={() => unActiveInput('phone')}
-                    onFocus={() => activeInput('phone')}
-                    keyboardType='numeric' />
-
-                <InputIcon
-                    label={passwordStatus === 1 ? i18n.t('password') : null}
-                    placeholder={passwordStatus === 1 ? null : i18n.t('password')}
-                    onChangeText={(e) => setPassword(e)}
-                    value={password}
-                    inputStyle={{ borderColor: passwordStatus === 1 ? Colors.sky : Colors.InputColor }}
-                    LabelStyle={{
-                        color: passwordStatus === 1 ? Colors.sky : Colors.InputColor, paddingHorizontal: passwordStatus === 1 ? 10 : 0,
-                        fontSize: 15
-                    }}
-                    onBlur={() => unActiveInput('password')}
-                    onFocus={() => activeInput('password')}
-                    secureTextEntry
-                    keyboardType='numeric'
-                    styleCont={{ marginTop: 0 }}
-                />
-
-                <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
-
-                {isLoading ? (
-                    <View style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        width: '100%',
-                        height: '100%',
-                        zIndex: 99999,
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                    }}>
-                        <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                <BackBtn navigation={navigation} />
+                <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
+                    <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
+                        <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
+                        <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
                     </View>
-                ) : (
-                        <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
-                    )}
-                <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 10 }} />
 
-            </ScrollView>
-        </View>
+                    <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
+                    <InputIcon
+                        label={i18n.t('phone')}
+                        placeholder={i18n.t('phone')}
+                        onChangeText={(e) => setPhone(e)}
+                        value={phone}
+                        keyboardType='numeric' />
+
+                    <InputIcon
+                        label={i18n.t('password')}
+                        placeholder={i18n.t('password')}
+                        onChangeText={(e) => setPassword(e)}
+                        value={password}
+                        secureTextEntry
+                        keyboardType='numeric'
+                        styleCont={{ marginTop: 0 }}
+                    />
+
+                    <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
+
+
+                    <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
+
+                    <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 10 }} />
+
+                </ScrollView>
+            </View>
+        </Container>
     )
 }
 const styles = StyleSheet.create({

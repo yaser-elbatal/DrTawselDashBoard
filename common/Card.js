@@ -6,24 +6,22 @@ import { width, height } from '../consts/HeightWidth';
 import i18n from '../locale/i18n'
 import { GetQuickReborts } from '../store/action/HomeAction';
 import { useDispatch, useSelector } from 'react-redux';
+import Container from './Container';
 
 function Card({ navigation }) {
 
     const token = useSelector(state => state.auth.user.data.token)
-    const lang = useSelector(state => state.lang.language.data);
-    const Reports = useSelector(state => state.home.reports.data);
+    const lang = useSelector(state => state.lang.language);
+    const Reports = useSelector(state => state.home.reports);
 
-    const [spinner, setSpinner] = useState(false);
-    // console.log(Reports);
+    const [spinner, setSpinner] = useState(true);
     const dispatch = useDispatch();
 
-    const FetchData = () => {
 
-    }
 
 
     useEffect(() => {
-        dispatch(GetQuickReborts(token, lang));
+        dispatch(GetQuickReborts(token, lang)).then(() => setSpinner(false))
     }, [])
 
     const Orderdata = [{
@@ -50,39 +48,42 @@ function Card({ navigation }) {
     ]
 
     return (
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <FlatList
-                horizontal
-                pagingEnabled={true}
-                showsHorizontalScrollIndicator={false}
-                data={Orderdata}
-                keyExtractor={(item) => item.id}
-                renderItem={(item) => (
-                    <View style={{
-                        height: width * .3,
-                        width: width * .29,
-                        marginStart: 5,
-                        borderRadius: 25,
-                        borderTopStartRadius: 0,
-                        flex: 1,
-                        overflow: 'hidden'
-                    }}>
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}  >
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', }}>
-                                <Image source={require('../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={[styles.Text, { marginTop: 5, }]}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
+        <Container loading={spinner}>
 
-                    </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <FlatList
+                    horizontal
+                    pagingEnabled={true}
+                    showsHorizontalScrollIndicator={false}
+                    data={Orderdata}
+                    keyExtractor={(item) => item.id}
+                    renderItem={(item) => (
+                        <View style={{
+                            height: width * .3,
+                            width: width * .29,
+                            marginStart: 5,
+                            borderRadius: 25,
+                            borderTopStartRadius: 0,
+                            flex: 1,
+                            overflow: 'hidden'
+                        }}>
+                            <LinearGradient
+                                colors={item.item.color}
+                                style={styles.Linear}  >
+                                <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', }}>
+                                    <Image source={require('../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
+                                    <Text style={[styles.Text, { marginTop: 5, }]}>{item.item.title}</Text>
+                                    <Text style={styles.Text}>{item.item.number}</Text>
+                                </View>
+                            </LinearGradient>
+
+                        </View>
 
 
 
-                )} />
-        </View>
+                    )} />
+            </View>
+        </Container>
     )
 }
 const styles = StyleSheet.create({

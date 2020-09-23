@@ -6,8 +6,8 @@ export const Get_RePorts = 'Get_RePorts';
 export const Get_Extra_Reborts = 'Get_Extra_Reborts'
 
 export const GetQuickReborts = (token, lang) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'GET',
             url: consts.url + 'quick-reports',
             headers: { Authorization: 'Bearer ' + token, },

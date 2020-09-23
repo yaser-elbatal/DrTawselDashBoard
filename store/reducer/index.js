@@ -13,7 +13,7 @@ import ExtraProduct from './ExtraProductReducer';
 import home from './HomeReducer';
 import Banner from './OffersReducer';
 import Orders from './OrdersReducer';
-
+import Comments from './CommentsReducer'
 
 export default multiReducres = combineReducers({
     lang,
@@ -28,5 +28,6 @@ export default multiReducres = combineReducers({
     ExtraProduct,
     home,
     Banner,
-    Orders
+    Orders,
+    Comments
 });

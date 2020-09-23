@@ -573,7 +573,14 @@ const en = {
   available: 'available?',
   AddBanner: 'Add Banner',
   OldPassword: 'Old Password',
-  NewPassword: 'New Password'
+  NewPassword: 'New Password',
+
+  AcceptedOrders: 'Accepted Orders',
+  RunningPrbareOrder: 'Processing Request',
+  AcceptOrders: 'Deliver Orders to Deligate',
+  findDelegate: 'Searching for Delegate',
+  close: 'Close',
+
 };
 
 export default en;

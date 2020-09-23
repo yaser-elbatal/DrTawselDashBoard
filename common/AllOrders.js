@@ -9,11 +9,12 @@ import Card from './Card';
 import { GetOrders, Order_Detailes } from '../store/action/OrdersAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
+import Container from './Container';
 
 const { width } = Dimensions.get('window')
 
-function AllOrders({ navigation, label, statues }) {
-
+function AllOrders({ navigation, route }) {
+    const { statues, label } = route.params
 
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
@@ -26,104 +27,79 @@ function AllOrders({ navigation, label, statues }) {
 
 
 
-    async function fetchData() {
-        setSpinner(true)
-        await dispatch(GetOrders(token, statues, lang))
-
-    }
     useEffect(() => {
-        fetchData();
-        setSpinner(true)
-
         const unsubscribe = navigation.addListener('focus', () => {
-            fetchData();
-            setSpinner(false)
-
+            setSpinner(true)
+            dispatch(GetOrders(token, statues, lang)).then(() => setSpinner(false))
         });
-        setSpinner(false)
 
         return unsubscribe;
-    }, [navigation, LoaderOrder, spinner]);
+    }, [navigation])
 
 
 
-    function renderLoader() {
-        if (spinner) {
 
-            return (
-                <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 99999,
-                    backgroundColor: Colors.bg,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                }}>
-                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                </View>
-            );
-        }
-    }
+
 
     return (
-        <View style={{ flex: 1 }}>
-            {renderLoader()}
+        <Container loading={spinner}>
+            <View style={{ flex: 1 }}>
+                <Header navigation={navigation} label={label} />
+                <InputIcon
+                    placeholder={i18n.t('search1')}
+                    image={require('../assets/Images/search.png')}
+                    styleCont={{ marginTop: 10, height: width * .18, }}
+                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                />
+                <Card />
 
-            <Header navigation={navigation} label={label} />
-            <InputIcon
-                placeholder={i18n.t('search1')}
-                image={require('../assets/Images/search.png')}
-                styleCont={{ marginTop: 10, height: width * .18, }}
-                inputStyle={{ backgroundColor: '#DBDBDB' }}
-            />
-            <Card />
-            {
-                OrderRequest && OrderRequest.data.length ?
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={OrderRequest.data}
+                    extraData={OrderRequest}
+                    keyExtractor={(item) => `${item.id}`}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('OrderDetailes', { OrderId: item.id })}>
+                            <View style={styles.Card}>
 
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        data={OrderRequest.data}
-                        extraData={OrderRequest}
-                        keyExtractor={(item) => `${item.id}`}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity onPress={() => { navigation.navigate('OrderDetailes', { OrderId: item.id }); setTimeout(() => dispatch(Order_Detailes(token, item.id, lang)), 1000) }}>
-                                <View style={styles.Card}>
+                                <View style={{ margin: 10, justifyContent: 'center' }}>
 
-                                    <View style={{ margin: 10, justifyContent: 'center' }}>
+                                    <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
 
-                                        <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
+                                    <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+                                        <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                            <Text style={[styles.name, {}]}>{i18n.t('rebresentativename')}</Text>
+                                            <Text style={[styles.name, { paddingVertical: 15 }]}>{i18n.t('time')}</Text>
+                                            <Text style={[styles.name, { paddingTop: 5 }]}>{i18n.t('totaly')}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}>
+                                            <Text style={{ paddingHorizontal: 15 }}>:</Text>
+                                            <Text style={{ paddingVertical: 15, paddingHorizontal: 15 }}>:</Text>
+                                            <Text style={{ paddingHorizontal: 15 }}>:</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                            <Text style={[styles.sname,]}> {item.name}</Text>
+                                            <Text style={[styles.sname, { paddingVertical: 15 }]}> {item.date} {i18n.t('minutes')}</Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 5 }}>
+                                                <Text style={[styles.sname, { color: Colors.sky, }]}> {item.total}</Text>
+                                                <Text style={[styles.sname, { color: Colors.fontNormal, }]}> {i18n.t('Rial')}</Text>
 
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginEnd: 150, marginVertical: 20, marginTop: 0 }}>
-                                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                                <Text style={[styles.name, { marginVertical: 5 }]}>{i18n.t('rebresentativename')}</Text>
-                                                <Text style={[styles.name, { marginVertical: 5 }]}>{i18n.t('time')}</Text>
-                                                <Text style={[styles.name, { marginVertical: 5 }]}>{i18n.t('totaly')}</Text>
-                                            </View>
-                                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                                <Text style={{ marginVertical: 5, marginHorizontal: 5 }}>:</Text>
-                                                <Text style={{ marginVertical: 5, marginHorizontal: 5 }}>:</Text>
-                                                <Text style={{ marginVertical: 5, marginHorizontal: 5 }}>:</Text>
-                                            </View>
-                                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                                <Text style={[styles.sname, { marginVertical: 5 }]}> {item.name}</Text>
-                                                <Text style={[styles.sname, { marginVertical: 5 }]}> {item.date} {i18n.t('minutes')}</Text>
-                                                <Text style={[styles.sname, { color: Colors.sky, marginTop: 10 }]}> {item.total}</Text>
                                             </View>
                                         </View>
                                     </View>
                                 </View>
-                            </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
 
-                        )} />
-                    : null
-            }
+                    )} />
 
-        </View>
+
+
+            </View>
+        </Container>
     )
+
+
 }
 const styles = StyleSheet.create({
     Linear: {

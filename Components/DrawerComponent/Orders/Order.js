@@ -14,7 +14,7 @@ function Orders({ navigation }) {
             <Header navigation={navigation} />
             <View style={styles.wrap}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('IncomingRequests', { WAITING: 'WAITING' })}>
+                <TouchableOpacity onPress={() => navigation.navigate('AllOrders', { statues: 'WAITING', label: i18n.t('IncomingRequests') })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('IncomingRequests')}</Text>
                         {
@@ -29,7 +29,7 @@ function Orders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('ActiveRequests', { RUNNING: 'RUNNING' })}>
+                <TouchableOpacity onPress={() => navigation.navigate('AllOrders', { statues: 'RUNNING', label: i18n.t('ActiveRequests') })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('ActiveRequests')}</Text>
                         {
@@ -44,7 +44,7 @@ function Orders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Completedrequests', { DELIVERED: 'DELIVERED' })}>
+                <TouchableOpacity onPress={() => navigation.navigate('AllOrders', { statues: 'DELIVERED', label: i18n.t('Completedrequests') })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('Completedrequests')}</Text>
                         {
@@ -59,7 +59,7 @@ function Orders({ navigation }) {
 
                 <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Rejectedrequests', { CANCELED: 'CANCELED' })}>
+                <TouchableOpacity onPress={() => navigation.navigate('AllOrders', { statues: 'CANCELED', label: i18n.t('Completedrequests') })}>
                     <View style={styles.Container}>
                         <Text style={styles.text}>{i18n.t('Rejectedrequests')}</Text>
                         {

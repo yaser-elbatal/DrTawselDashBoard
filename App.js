@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, I18nManager } from 'react-native';
+import { StyleSheet, View, I18nManager, Text } from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Provider } from 'react-redux';
+import I18n from "i18n-js";
 
 import MainRoot from './routes/Index';
 import { PersistGate } from 'redux-persist/integration/react';

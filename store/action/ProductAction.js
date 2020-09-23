@@ -21,20 +21,17 @@ export const GetProducts = (token, lang) => {
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
 
-        }).then(res => {
-            if (res.data.success) {
-                dispatch({ type: Get_Products, data: res.data })
-            }
+        }).then(res => dispatch({ type: Get_Products, data: res.data })
 
 
-        })
+
+        )
     }
 }
 
 
 
 export const ProductDetailes = (token, lang, id) => {
-
     return async (dispatch) => {
         await axios({
             method: 'GET',
@@ -43,11 +40,8 @@ export const ProductDetailes = (token, lang, id) => {
             params: { lang }
 
         }).then(res => {
-
+            console.log('ddd' + res.data);
             dispatch({ type: Product_Detailes, data: res.data })
-
-
-
         }).catch(err => console.warn(err))
 
     }
@@ -89,12 +83,12 @@ export const DeleteProduct = (token, lang, id) => {
 
 
 
-export const EditProducts = (token, lang, id, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, ExtraProduct, navigation,) => {
+export const EditProducts = (token, lang, id, name_ar, name_en, price, available, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, ExtraProduct, navigation) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}update-product`,
-            data: { id, name_ar, name_en, price, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, extras: ExtraProduct },
+            data: { id, name_ar, name_en, price, available, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, extras: ExtraProduct },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
         }).then(res => {
@@ -102,6 +96,17 @@ export const EditProducts = (token, lang, id, name_ar, name_en, price, details_a
                 dispatch({ type: Edit_Product, data: res.data })
                 navigation.navigate('Products')
             }
+            Toast.show({
+                text: res.data.message,
+                type: res.data.success ? "success" : "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
+
+
         }).catch(err => console.warn(err))
 
     }

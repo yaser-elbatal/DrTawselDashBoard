@@ -1,12 +1,12 @@
 import { Get_RePorts, Get_Extra_Reborts } from "../action/HomeAction";
 
-const initialState = { reports: {}, product: [] }
+const initialState = { reports: {}, product: [], extra: {} }
 export default (state = initialState, action) => {
     switch (action.type) {
         case Get_RePorts:
-            return { ...state, reports: action.data }
+            return { ...state, reports: action.data.data, }
         case Get_Extra_Reborts:
-            return { ...state, product: action.data }
+            return { ...state, product: action.data.data, extra: action.data.extra }
         default:
             return state;
     }

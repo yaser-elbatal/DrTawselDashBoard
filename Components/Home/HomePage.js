@@ -9,116 +9,90 @@ import { Content } from 'native-base';
 import Card from '../../common/Card'
 import { useSelector, useDispatch } from 'react-redux';
 import { GetQuickReborts, GetHomeProducts } from '../../store/action/HomeAction';
+import Container from '../../common/Container';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 function HomePage({ navigation }) {
 
     const user = useSelector(state => state.auth.user.data);
     const token = useSelector(state => state.auth.user.data.token)
-    const [spinner, setSpinner] = useState(false);
+    const [spinner, setSpinner] = useState(true);
 
-    const lang = useSelector(state => state.lang.language.data);
-    const Reports = useSelector(state => state.home.reports);
+    const lang = useSelector(state => state.lang.language);
     const HomeProduct = useSelector(state => state.home.product);
-
+    const QuickRebort = useSelector(state => state.home.extra);
     const dispatch = useDispatch();
 
 
+    console.log(lang);
 
-
-
-    useEffect(() => {
-        dispatch(GetHomeProducts(token, lang))
-        setSpinner(true)
-    }, [])
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
+            setSpinner(true)
+            dispatch(GetHomeProducts(token, lang)).then(() => setSpinner(false))
+            console.log('11111');
         });
-        setSpinner(false)
+
         return unsubscribe;
-    }, [navigation, spinner]);
-
-
-
-
-
-
-    function renderLoader() {
-        if (spinner) {
-            return (
-                <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 99999,
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                }}>
-                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                </View>
-            );
-        }
-    }
+    }, [navigation])
 
 
 
 
     return (
-        <Content showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-            {renderLoader()}
+        <Container loading={spinner}>
+            <Content showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
 
-            <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
+                <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
+                <Card />
+
+                <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
+                <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {
+                        HomeProduct &&
+                            HomeProduct ?
+                            HomeProduct.map((item, index) => (
+
+                                <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                                    <View style={{ flexDirection: 'column', flex: 1 }}>
+                                        <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%', }} />
+                                        <View style={{ margin: 10, flex: 1, height: '30%', flexDirection: 'column' }}>
+                                            <Text style={styles.prod}>{item.name}</Text>
+                                            <Text style={[styles.prod, { color: Colors.fontNormal, paddingVertical: 5 }]}>{item.price}{i18n.t('RS')}</Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                            ) : null
 
 
-            <Card />
+                    }
+                </ScrollView>
 
-            <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
-            <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
-                    HomeProduct ? HomeProduct.data.map(item => (
-
-                        <View style={styles.Card} key={item.id}>
-                            <View style={{ flexDirection: 'column', flex: 1 }}>
-                                <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%', }} />
-                                <View style={{ margin: 10, flex: 1, height: '30%' }}>
-                                    <Text style={styles.prod}>{item.name}</Text>
-                                    <Text style={[styles.prod, { color: Colors.fontNormal, paddingVertical: 5 }]}>{item.price}{i18n.t('RS')}</Text>
+                    QuickRebort && QuickRebort.reports ?
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
                                 </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{QuickRebort.reports.products}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{QuickRebort.reports.comments}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
                             </View>
-                        </View>
-                    )
-                    ) : null
-
-
+                        </View> : null
                 }
-            </ScrollView>
 
-            <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
-            {
-                HomeProduct && HomeProduct.extra ?
-                    <View style={styles.SCard}>
-                        <View style={{ flexDirection: 'row', height: '100%', }}>
-                            <View style={styles.ImgWrab}>
-                                <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
-                            </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                <View style={styles.WrabText}>
-                                    <Text style={styles.ProdText}>{HomeProduct.extra.reports.products}</Text>
-                                    <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{HomeProduct.extra.reports.comments}</Text>
-                                </View>
-                            </View>
-                            <Text style={styles.num}>{HomeProduct.extra.reports.rates}</Text>
-                        </View>
-                    </View> : null
-            }
+            </Content>
 
-        </Content>
+        </Container>
 
 
     )

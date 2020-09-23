@@ -72,11 +72,11 @@ function CustomDrawerMenue({ navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { setClick(4); navigation.navigate('SpecialOrders') }}>
+                    {/* <TouchableOpacity onPress={() => { setClick(4); navigation.navigate('SpecialOrders') }}>
                         <View style={{ backgroundColor: Clicle === 4 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('specialOrder')}</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <TouchableOpacity onPress={() => { setClick(5); navigation.navigate('AddOffer') }}>
                         <View style={{ backgroundColor: Clicle === 5 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>

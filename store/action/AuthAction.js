@@ -23,9 +23,9 @@ export const tempAuth = () => {
 
 export const SignIn = (phone, password, device_id, lang, navigation) => {
 
-    return (dispatch) => {
+    return async (dispatch) => {
 
-        axios({
+        await axios({
             method: 'POST',
             url: CONST.url + 'sign-in',
             data: { phone, password, device_id, lang, user_type: 4 },
@@ -283,7 +283,6 @@ export const Logout = (token) => {
 
             }
         }).then(res => {
-            AsyncStorage.removeItem('deviceID')
             dispatch({ type: logout })
 
 

@@ -1,77 +1,146 @@
-import React, { useState } from 'react'
-import { View, Image, StyleSheet, Text, TouchableOpacity, I18nManager, Modal } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Image, StyleSheet, Text, TouchableOpacity, I18nManager, Modal, Platform } from 'react-native'
 
 import i18n from '../../../locale/i18n'
 import Header from '../../../common/Header'
 import { width, height } from '../../../consts/HeightWidth'
 import Colors from '../../../consts/Colors'
 import BTN from '../../../common/BTN'
+import { useSelector, useDispatch } from 'react-redux'
+import { GetWallet, Withdrawwallet } from '../../../store/action/CommentsAction'
+import Container from '../../../common/Container'
+import { InputIcon } from '../../../common/InputText'
+import { validateAccountNum } from '../../../common/Validation'
+import { Toaster } from '../../../common/Toaster'
 
 function Wallet({ navigation }) {
+
+
+    const [accountnum, setAccountnum] = useState('');
+
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+    const TotalWallet = useSelector(state => state.Comments.wallet)
+    const [spinner, setSpinner] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
+    const dispatch = useDispatch();
+
+
+    const _validate = () => {
+
+        let accountnumErr = validateAccountNum(accountnum)
+
+
+        return accountnumErr
+    };
+
+
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            dispatch(GetWallet(token, lang)).then(() => setSpinner(false))
+        });
+
+        return unsubscribe;
+    }, [navigation])
+
+    const WithdrawwalletConfirm = () => {
+        let val = _validate();
+        if (!val) {
+            setSpinner(true)
+            dispatch(Withdrawwallet(token, accountnum)).then(() => setSpinner(false))
+            setAccountnum('')
+            setModalVisible(false)
+        }
+        else {
+            setSpinner(false)
+            Toaster(_validate());
+        }
+    }
+
 
     return (
-        <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('wallet')} />
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Image source={require('../../../assets/Images/undraw_wallet.png')} style={{ width: width * .5, height: width * .4 }} resizeMode='contain' />
-                <View style={styles.SCard}>
-                    <Text style={styles.Text}>{i18n.t('CurrBallanc')}</Text>
-                    <Text style={styles.Text}>100 {i18n.t('Rial')}</Text>
+        <Container loading={spinner}>
+
+            <View style={{ flex: 1 }}>
+                <Header navigation={navigation} label={i18n.t('wallet')} />
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('../../../assets/Images/undraw_wallet.png')} style={{ width: width * .5, height: width * .4 }} resizeMode='contain' />
+                    <View style={styles.SCard}>
+                        <Text style={styles.Text}>{i18n.t('CurrBallanc')}</Text>
+                        {
+                            TotalWallet === undefined ? null :
+                                <Text style={styles.Text}>{TotalWallet.amount} {i18n.t('Rial')}</Text>
+
+                        }
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.wrap}>
+                <View style={styles.wrap}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Banktransfer')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('rechargebalance')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+                    <TouchableOpacity onPress={() => navigation.navigate('Banktransfer')}>
+                        <View style={styles.Container}>
+                            <Text style={styles.text}>{i18n.t('rechargebalance')}</Text>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
 
-                        }
-                    </View>
-                </TouchableOpacity>
+                            }
+                        </View>
+                    </TouchableOpacity>
 
-                <View style={styles.Line}></View>
+                    <View style={styles.Line}></View>
 
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('Refundmoney')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <View style={styles.Container}>
+                            <Text style={styles.text}>{i18n.t('Refundmoney')}</Text>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
 
-                        }
+                            }
 
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible} >
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible} >
 
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <View style={{ margin: 20, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, color: Colors.IconBlack }}>{i18n.t('Refundmone')} </Text>
-                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 12, marginVertical: 5, color: Colors.fontNormal }}>{i18n.t('RecoverWallet')} </Text>
+                            <View style={[styles.centeredView, { backgroundColor: Colors.bg }]}>
+                                <View style={styles.modalView}>
 
-                                    <BTN title={i18n.t('agree')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
+                                    <View style={{ margin: 20, alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text style={{ fontFamily: 'flatMedium', fontSize: 12, marginVertical: 5, color: Colors.fontNormal }}>{i18n.t('RecoverWallet')} </Text>
+                                        <InputIcon
+                                            label={i18n.t("Accnum")}
+                                            placeholder={i18n.t("Accnum")}
+                                            value={accountnum}
+                                            onChangeText={(e) => setAccountnum(e)}
+                                            styleCont={{ marginTop: 10, width, }}
+                                            inputStyle={{ borderRadius: 25, marginHorizontal: '3%' }}
+                                            keyboardType='numeric'
+
+
+                                        />
+                                        <BTN title={i18n.t('agree')} ContainerStyle={styles.LoginBtn} onPress={WithdrawwalletConfirm} />
+                                        <BTN title={i18n.t('close')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.inputTextMainColor }]} onPress={() => setModalVisible(false)} />
+
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </Modal>
+                        </Modal>
+                    </View>
                 </View>
-            </View>
 
-        </View>
+            </View>
+        </Container>
     )
 }
 const styles = StyleSheet.create({
@@ -128,7 +197,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "center",
         backgroundColor: '#737373',
-        opacity: .9,
+        opacity: Platform.OS = 'ios' ? .95 : .9,
 
     },
     modalView: {
@@ -136,7 +205,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         borderTopLeftRadius: 25,
         width: width,
-        height: height * .25,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

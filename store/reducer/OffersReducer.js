@@ -4,9 +4,9 @@ const initialState = { Banners: [] }
 export default (state = initialState, action) => {
     switch (action.type) {
         case Get_banners:
-            return { ...state, Banners: action.data }
+            return { ...state, Banners: action.data.data }
         case Add_banners:
-            return { ...state, Banners: action.data }
+            return { ...state, Banners: action.data.data }
 
         case Delete_Banners:
             return { ...state, Banners: action.data }

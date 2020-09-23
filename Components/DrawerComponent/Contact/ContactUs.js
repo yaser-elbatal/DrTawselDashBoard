@@ -6,77 +6,82 @@ import Colors from '../../../consts/Colors';
 import Card from '../../../common/Card';
 import BTN from '../../../common/BTN';
 import { InputIcon } from '../../../common/InputText';
+import { validateUserName, validateEmail } from '../../../common/Validation';
+import Container from '../../../common/Container';
+import { SendComplaiment } from '../../../store/action/CommentsAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { Toaster } from '../../../common/Toaster';
 
 const { width } = Dimensions.get('window')
 
 
 function ContactUs({ navigation }) {
-    const [nameAR, setNameAr] = useState('');
+    const [name, setName] = useState('');
     const [email, setemail] = useState('');
-    const [Message, setMessage] = useState(false);
+    const [Message, setMessage] = useState('');
+    const token = useSelector(state => state.auth.user.data.token)
+    const [spinner, setSpinner] = useState(true);
 
-    const [nameARStatus, setnameARStatus] = useState(0);
-    const [emailStatues, setemailStatues] = useState('');
-    const [MessageStatus, setMessageStatus] = useState(0);
+    const dispatch = useDispatch();
 
-    function activeInput(type) {
-        if (type === 'nameAR' || nameAR !== '') setnameARStatus(1);
-        if (type === 'email' || email !== '') setemailStatues(1);
-        if (type === 'Message' || Message !== '') setMessageStatus(1);
+    const _validate = () => {
+
+
+        let nameA = validateUserName(name)
+        let emailErr = validateEmail(email);
+
+        return nameA || emailErr
     }
 
+    const SendComplaimentation = () => {
+        let val = _validate()
+        if (!val) {
+            setSpinner(true)
+            dispatch(SendComplaiment(token, name, email, Message, navigation)).then(() => setSpinner(false))
 
+        }
+        else {
+            Toaster(_validate());
 
-    function unActiveInput(type) {
-        if (type === 'nameAR' && nameAR == '') setnameARStatus(0);
-        if (type === 'email' && email == '') setemailStatues(0);
-        if (type === 'Message' && Message == '') setMessageStatus(0);
-
-
+        }
     }
+
     return (
-        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('contactus')} />
-            <Card />
-            <ScrollView style={{ flex: 1 }}>
+        <Container>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <Header navigation={navigation} label={i18n.t('contactus')} />
+                <Card />
                 <InputIcon
-                    label={nameARStatus === 1 ? i18n.t('username') : null}
-                    placeholder={nameARStatus === 1 ? null : i18n.t('username')}
-                    onBlur={() => unActiveInput('nameAR')}
-                    onFocus={() => activeInput('nameAR')}
-                    inputStyle={{ borderColor: nameARStatus === 1 ? Colors.sky : Colors.InputColor }}
-                    onChangeText={(e) => setNameAr(e)}
-                    value={nameAR}
-                    styleCont={{ marginTop: 0 }}
-                    LabelStyle={{ paddingHorizontal: nameARStatus === 1 ? 10 : 0, color: nameARStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+                    label={i18n.t('username')}
+                    placeholder={i18n.t('username')}
+                    onChangeText={(e) => setName(e)}
+                    value={name}
+                    styleCont={{ marginTop: 20 }}
                 />
                 <InputIcon
-                    label={emailStatues === 1 ? i18n.t('email') : null}
-                    placeholder={emailStatues === 1 ? null : i18n.t('email')}
+                    label={i18n.t('email')}
+                    placeholder={i18n.t('email')}
                     onChangeText={(e) => setemail(e)}
                     value={email}
-                    inputStyle={{ borderColor: emailStatues === 1 ? Colors.sky : Colors.InputColor }}
-                    LabelStyle={{ paddingHorizontal: emailStatues === 1 ? 10 : 0, color: emailStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                    onBlur={() => unActiveInput('email')}
-                    onFocus={() => activeInput('email')}
                     keyboardType='email-address'
                     styleCont={{ marginTop: 0 }}
                 />
                 <InputIcon
-                    label={MessageStatus === 1 ? i18n.t('email') : null}
-                    placeholder={MessageStatus === 1 ? null : i18n.t('email')}
+                    placeholder={i18n.t('message')}
+                    styleCont={{ height: width * .32, marginHorizontal: '5%', marginTop: 20 }}
+                    placeholder={i18n.t('prodDetAr')}
                     onChangeText={(e) => setMessage(e)}
                     value={Message}
-                    inputStyle={{ borderColor: MessageStatus === 1 ? Colors.sky : Colors.InputColor }}
-                    LabelStyle={{ paddingHorizontal: MessageStatus === 1 ? 10 : 0, color: MessageStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                    onBlur={() => unActiveInput('Message')}
-                    onFocus={() => activeInput('Message')}
-                    styleCont={{ marginTop: 0 }}
+                    LabelStyle={{ bottom: width * .35 }}
+
                 />
-                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={() => { }} />
+
+
+                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={SendComplaimentation} />
 
             </ScrollView>
-        </View>
+        </Container>
+
     )
 }
 

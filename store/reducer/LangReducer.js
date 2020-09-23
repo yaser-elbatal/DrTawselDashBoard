@@ -1,7 +1,7 @@
 import { chooseLang } from "../action/LangAction";
 
 const initalstate = {
-    language: null,
+    language: 'ar',
 };
 export default (state = initalstate, action) => {
 

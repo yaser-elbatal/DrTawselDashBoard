@@ -28,14 +28,7 @@ function TRegister({ navigation, route }) {
         ,
         { id: 1, title: `${i18n.t("yes")}` },
     ])
-    function activeInput(type) {
-        if (type === 'WebUrl' || WebUrl !== '') setEbUrlStatues(1);
 
-    }
-    function unActiveInput(type) {
-        if (type === 'WebUrl' && WebUrl === '') setEbUrlStatues(0);
-
-    }
 
     const _validate = () => {
 
@@ -71,17 +64,14 @@ function TRegister({ navigation, route }) {
             </View>
 
             <InputIcon
-                label={EbUrlStatues === 1 ? i18n.t('webUrl') : null}
-                placeholder={EbUrlStatues === 1 ? null : i18n.t('Url')}
-                onBlur={() => unActiveInput('WebUrl')}
-                onFocus={() => activeInput('WebUrl')}
+                label={i18n.t('webUrl')}
+                placeholder={i18n.t('Url')}
+
                 dataDetectorTypes={'link'}
                 multiline={true}
-                inputStyle={{ borderColor: EbUrlStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setWebUrl(e)}
                 value={WebUrl}
                 styleCont={{ marginTop: 20 }}
-                LabelStyle={{ paddingHorizontal: EbUrlStatues === 1 ? 10 : 0, color: EbUrlStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
 
             <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>

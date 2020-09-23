@@ -53,28 +53,6 @@ function SRegister({ navigation, route }) {
 
 
 
-    const [nameARStatus, setnameARStatus] = useState(0);
-    const [nameENStatus, setNameENStatus] = useState(0);
-    const [BranchStatues, setBranchStatues] = useState(0);
-    const [CommercialRegisterStatues, setCommercialRegisterstatues] = useState(0)
-
-
-    function activeInput(type) {
-        if (type === 'nameAR' || nameAR !== '') setnameARStatus(1);
-        if (type === 'nameEN' || nameEN !== '') setNameENStatus(1);
-        if (type === 'branch' || BranchNum !== '') setBranchStatues(1);
-        if (type === 'CommercialRegister' || CommercialRegister !== '') setCommercialRegisterstatues(1);
-
-
-    }
-    function unActiveInput(type) {
-        if (type === 'nameAR' && nameAR === '') setnameARStatus(0);
-        if (type === 'nameEN' && nameEN === '') setNameENStatus(0);
-        if (type === 'branch' && BranchNum === '') setBranchStatues(0);
-        if (type === 'CommercialRegister' && CommercialRegister === '') setCommercialRegisterstatues(0);
-
-
-    }
     console.log(department, city);
     const _validate = () => {
 
@@ -203,26 +181,20 @@ function SRegister({ navigation, route }) {
             </View>
 
             <InputIcon
-                label={nameARStatus === 1 ? i18n.t('ResNameAr') : null}
-                placeholder={nameARStatus === 1 ? null : i18n.t('ResNameAr')}
-                onBlur={() => unActiveInput('nameAR')}
-                onFocus={() => activeInput('nameAR')}
-                inputStyle={{ borderColor: nameARStatus === 1 ? Colors.sky : Colors.InputColor }}
+                label={i18n.t('ResNameAr')}
+                placeholder={i18n.t('ResNameAr')}
+
                 onChangeText={(e) => setNameAr(e)}
                 value={nameAR}
                 styleCont={{ marginTop: 20 }}
-                LabelStyle={{ paddingHorizontal: nameARStatus === 1 ? 10 : 0, color: nameARStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
             />
             <InputIcon
-                label={nameENStatus === 1 ? i18n.t('ResNameEn') : null}
-                placeholder={nameENStatus === 1 ? null : i18n.t('ResNameEn')}
-                onBlur={() => unActiveInput('nameEN')}
-                onFocus={() => activeInput('nameEN')}
-                inputStyle={{ borderColor: nameENStatus === 1 ? Colors.sky : Colors.InputColor }}
+                label={i18n.t('ResNameEn')}
+                placeholder={i18n.t('ResNameEn')}
+
                 onChangeText={(e) => setNameEN(e)}
                 value={nameEN}
                 styleCont={{ marginTop: 0 }}
-                LabelStyle={{ paddingHorizontal: nameENStatus === 1 ? 10 : 0, color: nameENStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
 
             />
             <TouchableOpacity onPress={() => setisopened(!isopened)} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
@@ -291,31 +263,21 @@ function SRegister({ navigation, route }) {
             </View>
 
             <InputIcon
-                label={BranchStatues === 1 ? i18n.t('branchNum') : null}
-                placeholder={BranchStatues === 1 ? null : i18n.t('branchNum')}
-                onBlur={() => unActiveInput('branch')}
-                onFocus={() => activeInput('branch')}
+                label={i18n.t('branchNum')}
+                placeholder={i18n.t('branchNum')}
                 keyboardType='numeric'
-
-                inputStyle={{ borderColor: BranchStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setBranchNum(e)}
                 value={BranchNum}
                 styleCont={{ marginTop: 20 }}
-                LabelStyle={{ paddingHorizontal: BranchStatues === 1 ? 10 : 0, color: BranchStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
 
             />
             <InputIcon
-                label={CommercialRegisterStatues === 1 ? i18n.t('CommercialRegister') : null}
-                placeholder={CommercialRegisterStatues === 1 ? null : i18n.t('CommercialRegister')}
-                onBlur={() => unActiveInput('CommercialRegister')}
-                onFocus={() => activeInput('CommercialRegister')}
+                label={i18n.t('CommercialRegister')}
+                placeholder={i18n.t('CommercialRegister')}
                 keyboardType='numeric'
-
-                inputStyle={{ borderColor: CommercialRegisterStatues === 1 ? Colors.sky : Colors.InputColor }}
                 onChangeText={(e) => setCommercialRegister(e)}
                 value={CommercialRegister}
                 styleCont={{ marginTop: 0 }}
-                LabelStyle={{ paddingHorizontal: CommercialRegisterStatues === 1 ? 10 : 0, color: CommercialRegisterStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
 
             />
             <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />

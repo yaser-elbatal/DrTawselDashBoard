@@ -9,30 +9,37 @@ import { GetBanners, DeleteBanners, AddBanners } from '../../../store/action/Off
 import { useDispatch, useSelector } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import Container from '../../../common/Container';
 
 const { width, height } = Dimensions.get('window')
 
 function Previousoffers({ navigation }) {
 
     const dispatch = useDispatch();
-    const Banners = useSelector(state => state.Banner.Banners.data)
+    const Banners = useSelector(state => state.Banner.Banners)
     const token = useSelector(state => state.auth.user.data.token)
-    const lang = useSelector(state => state.lang.language.data);
+    const lang = useSelector(state => state.lang.language);
     const [modalVisible, setModalVisible] = useState(false);
     const [base64, setBase64] = useState('');
     const [userImage, setUserImage] = useState(null);
+    const [spinner, setSpinner] = useState(true);
+
+
+
     console.log(Banners);
     useEffect(() => {
-        dispatch(GetBanners(token, lang))
+        setSpinner(true)
+        dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+
 
     }, [])
 
 
-    const DeleteCardBanners = async (id) => {
-        await dispatch(DeleteBanners(token, id))
-        setTimeout(() => {
-            dispatch(GetBanners(token, lang));
-        }, 1000);
+    const DeleteCardBanners = (id) => {
+        setSpinner(true)
+        dispatch(DeleteBanners(token, id))
+        dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+
     }
 
     const askPermissionsAsync = async () => {
@@ -55,13 +62,10 @@ function Previousoffers({ navigation }) {
             setBase64(result.base64);
         }
     };
-    const Add_menue = async () => {
-        await dispatch(AddBanners(token, base64, lang))
-        await dispatch(GetBanners(token, lang))
-
-        setTimeout(() => {
-            dispatch(GetBanners(token, lang)); Banners
-        }, 1000);
+    const Add_menue = () => {
+        setSpinner(true)
+        dispatch(AddBanners(token, base64, lang))
+        dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
         setModalVisible(false)
 
 
@@ -69,15 +73,17 @@ function Previousoffers({ navigation }) {
 
 
     return (
-        <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('Previousoffers')} />
-            <Card />
-            <BTN title={i18n.t('AddBanner')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 15 }} onPress={() => setModalVisible(true)} />
 
-
-
+        <Container loading={spinner}>
 
             <ScrollView style={{ flex: 1 }}>
+                <Header navigation={navigation} label={i18n.t('Previousoffers')} />
+                <Card />
+                <BTN title={i18n.t('AddBanner')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 15 }} onPress={() => setModalVisible(true)} />
+
+
+
+
                 {
                     Banners.length > 0 ?
                         Banners.map((item, index) => (
@@ -137,7 +143,7 @@ function Previousoffers({ navigation }) {
 
 
 
-        </View>
+        </Container>
     )
 }
 

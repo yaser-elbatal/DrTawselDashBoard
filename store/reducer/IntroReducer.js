@@ -7,7 +7,9 @@ export default (state = initalstate, action) => {
 
     switch (action.type) {
         case Get_intro:
-            return { ...state, intro: action.data };
+            return {
+                intro: action.data.data
+            };
 
         default:
             return state;

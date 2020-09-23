@@ -6,6 +6,7 @@ const ar = {
   loginText: "رجاء تسجيل الدخول وذلك حتي تتمكن من تصفح التطبيق",
   phone: "رقم الجوال",
   entry: 'دخول',
+  close: 'اغلاق',
   password: "كلمه المرور",
   passwordEnter: 'الرجاء ادخال كلمه المرور',
   phoneEnter: 'الرجاء ادخال رقم الجوال',
@@ -566,7 +567,15 @@ const ar = {
   OldPassword: 'كلمه المرور القديمه',
   NewPassword: 'كلمه المرور الجديده',
 
+  AcceptedOrders: 'قبول الطلب',
+  RunningPrbareOrder: 'جاري تجهيز الطلب',
+  AcceptOrders: ' تم تسليم الطلب للمندوب',
+  findDelegate: ' جاري البحث عن مندوب',
 
+
+  //   waiting: قبول الطلب
+  // accepted: جاري تجهيز الطلب،
+  //   Progress:تم تجهيز الطلب
 };
 
 export default ar;

@@ -23,26 +23,14 @@ function PhoneCheck({ navigation }) {
     const dispatch = useDispatch();
 
 
-    function activeInput(type) {
-        if (type === 'Phone' || Phone !== '') setPhoneStatues(1);
-    }
 
-    function unActiveInput(type) {
-        if (type === 'Phone' && Phone === '') setPhoneStatues(0);
-    }
 
     const _validate = () => {
         let PhoenErr = validatePhone(Phone);
 
         return PhoenErr
     }
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
-        });
-        setSpinner(false)
-        return unsubscribe;
-    }, [navigation, spinner]);
+
 
     const ConFirmPhone = () => {
         let Val = _validate();
@@ -68,16 +56,13 @@ function PhoneCheck({ navigation }) {
             </View>
 
             <InputIcon
-                label={PhoneStatues === 1 ? i18n.t('phone') : null}
-                placeholder={PhoneStatues === 1 ? null : i18n.t('phone')}
+                label={i18n.t('phone')}
+                placeholder={i18n.t('phone')}
                 keyboardType='numeric'
 
                 onChangeText={(e) => setPhone(e)}
                 value={Phone}
-                onBlur={() => unActiveInput('Phone')}
-                onFocus={() => activeInput('Phone')}
-                inputStyle={{ borderColor: PhoneStatues === 1 ? Colors.sky : Colors.InputColor }}
-                LabelStyle={{ paddingHorizontal: PhoneStatues === 1 ? 10 : 0, color: PhoneStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+
             />
             {
                 spinner ?

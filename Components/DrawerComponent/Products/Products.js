@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, Alert, } from 'react-native';
-import { CheckBox, Content } from "native-base";
+import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, } from 'react-native';
+import { CheckBox, } from "native-base";
 
 
 import HomeHeader from '../../../common/HomeHeader'
@@ -12,16 +12,15 @@ import BTN from '../../../common/BTN';
 import DrobDwn from '../../../common/DrobDwn';
 import Card from '../../../common/Card';
 import { useSelector, useDispatch } from 'react-redux';
-import { GetProducts, DeleteProduct, ProductDetailes } from '../../../store/action/ProductAction';
-import { useIsFocused } from "@react-navigation/native";
+import { GetProducts, DeleteProduct, } from '../../../store/action/ProductAction';
+import Container from '../../../common/Container';
 
 function Products({ navigation }) {
     const dispatch = useDispatch();
-    const isFocused = useIsFocused();
 
 
     const [isSelected2, setSelection2] = useState();
-    const [spinner, setSpinner] = useState(false);
+    const [spinner, setSpinner] = useState(true);
 
 
     const Products = useSelector(state => state.product.products);
@@ -29,131 +28,98 @@ function Products({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
 
-    const ProductDet = useSelector(state => state.product.product);
 
 
 
     useEffect(() => {
 
-        if (isFocused) {
-            dispatch(GetProducts(token, lang))
-            setSpinner(true)
-
-        }
-
-
-    }, [isFocused]);
-
-
-    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
+            setSpinner(true)
+            dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
+            console.log('dd1');
         });
 
-
-        setSpinner(false)
         return unsubscribe;
-    }, [navigation, spinner]);
+    }, [navigation]);
 
 
-    const DeletProduct = async (id) => {
-        await dispatch(DeleteProduct(token, lang, id))
-        await dispatch(GetProducts(token, lang))
+
+
+
+    const DeletProduct = (id) => {
         setSpinner(true)
+        dispatch(DeleteProduct(token, lang, id))
+        dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
 
 
     }
 
-    function renderLoader() {
-        if (spinner) {
-            return (
-                <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 99999,
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                }}>
-                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                </View>
-            );
-        }
-    }
 
     return (
-        <ScrollView style={{ flex: 1 }}>
-            {renderLoader()}
-            <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
+        <Container loading={spinner}>
 
-            <InputIcon
-                placeholder={i18n.t('search1')}
-                image={require('../../../assets/Images/search.png')}
-                styleCont={{ marginTop: -10, height: width * .18, }}
-                inputStyle={{ backgroundColor: '#DBDBDB' }}
-            />
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
 
-            <Card />
-            <DrobDwn />
+                <InputIcon
+                    placeholder={i18n.t('search1')}
+                    image={require('../../../assets/Images/search.png')}
+                    styleCont={{ marginTop: -10, height: width * .18, }}
+                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                />
 
-            <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={Menue.length ? () => navigation.navigate('AddProduct') : () => navigation.navigate('Menue')} />
+                <Card />
+                <DrobDwn />
+
+                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={Menue.length ? () => navigation.navigate('AddProduct') : () => navigation.navigate('Menue')} />
 
 
-            <FlatList
-                pagingEnabled={true}
-                showsVerticalScrollIndicator={false}
-                data={Products}
-                extraData={Products}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => (
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('ProductDet', { Products: item, index: index }); setTimeout(() => dispatch(ProductDetailes(token, lang, item.id)), 1000)
-                    }}>
-                        <View style={styles.Card}>
-                            <View style={{ flexDirection: 'row', flex: .75 }}>
-                                <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
-                                <View style={styles.FWrab}>
-                                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
-                                    <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                    <Text style={styles.name}>{item.menu}</Text>
-                                    <Text style={styles.nMenu}>{item.name}</Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={styles.nText}>{item.price}</Text>
-                                        <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
+                <FlatList
+                    pagingEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    data={Products}
+                    extraData={Products}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                            <View style={styles.Card}>
+                                <View style={{ flexDirection: 'row', flex: .75 }}>
+                                    <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                    <View style={styles.FWrab}>
+                                        <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
+                                        <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                        <Text style={styles.name}>{item.menu}</Text>
+                                        <Text style={styles.nMenu}>{item.name}</Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={styles.nText}>{item.price}</Text>
+                                            <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
+
+                                        </View>
+
 
                                     </View>
+                                </View>
 
+
+                                <View style={styles.SWarb}>
+
+                                    <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { Productsid: item.id })}>
+                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
+                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
 
                                 </View>
-                            </View>
-
-
-                            <View style={styles.SWarb}>
-
-                                <TouchableOpacity style={styles.Edit} onPress={() => {
-                                    navigation.navigate('EditProducts', { ProductID: item.id }); setTimeout(() => {
-                                        dispatch(ProductDetailes(token, lang, item.id));
-                                    }, 1000);
-                                }}>
-                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
-                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                </TouchableOpacity>
 
                             </View>
+                        </TouchableOpacity>
 
-                        </View>
-                    </TouchableOpacity>
+                    )} />
 
-                )} />
-
-        </ScrollView>
+            </ScrollView>
+        </Container>
 
     )
 }

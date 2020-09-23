@@ -7,8 +7,8 @@ export const profile_data = 'profile_data'
 export const Update_Profile = 'Update_Profile'
 
 export const GetProfile = (token, lang) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             url: consts.url + 'profile',
             method: 'GET',
             params: { lang },
@@ -57,8 +57,8 @@ export const UpdateProfile = (token, lang, name, phone, email, cityId, avatar, n
 }
 
 export const EditPasswordSettingsProfile = (token, old_password, current_password, lang, navigation) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             url: consts.url + 'edit-password',
             method: 'POST',
             data: { old_password, current_password },

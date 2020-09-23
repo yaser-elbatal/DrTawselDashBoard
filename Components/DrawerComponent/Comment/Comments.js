@@ -1,117 +1,90 @@
-import React from 'react'
-import { View, StyleSheet, FlatList, Text, Image } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, FlatList, Text, Image, ScrollView } from 'react-native';
 
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import { width } from '../../../consts/HeightWidth'
 import Card from '../../../common/Card';
 import Colors from '../../../consts/Colors'
+import Container from '../../../common/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetRatings } from '../../../store/action/CommentsAction';
+import StarRating from 'react-native-star-rating';
 
 function Comments({ navigation }) {
 
-    const Orderdata = [{
-        id: 'K0',
-        title: `${i18n.t('IncomingRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianYellow, Colors.GradianYellow2]
-    },
-    {
-        id: 'K1',
-        title: `${i18n.t('ActiveRequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianGreen, Colors.GradianGreen2]
-    },
-    {
-        id: 'K2',
-        title: `${i18n.t('Completedrequests')}`,
-        number: `100 ${i18n.t('order')}`,
-        color: [Colors.GradianRed, Colors.GradianRed2]
-    }
+    const [spinner, setSpinner] = useState(true);
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+    const Comments = useSelector(state => state.Comments.comments)
+    const extra = useSelector(state => state.Comments.extra)
 
 
-        ,
-    ]
-
-    const CommInf = [{
-        id: 'K0',
-        Image: require('../../../assets/Images/imagecomment.png'),
-        Date: '20/9/2020',
-        Text: 'هذا  النص هو مثال لنص يمكن ان يتولد في نفس المساحه ',
-        label: `${i18n.t('name')}`,
-        StarImage: require('../../../assets/Images/star_half_yellow.png'),
-        StImage: require('../../../assets/Images/star_gray_half.png')
-    },
-    {
-        id: 'K1',
-        Image: require('../../../assets/Images/imagecomment.png'),
-        Date: '20/9/2020',
-        Text: 'هذا  النص هو مثال لنص يمكن ان يتولد في نفس المساحه ',
-        label: `${i18n.t('name')}`,
-        StarImage: require('../../../assets/Images/star_half_yellow.png'),
-        StImage: require('../../../assets/Images/star_gray_half.png')
 
 
-    },
-    {
-        id: 'K2',
-        Image: require('../../../assets/Images/imagecomment.png'),
-        Date: '20/9/2020',
-        Text: 'هذا  النص هو مثال لنص يمكن ان يتولد في نفس المساحه ',
-        label: `${i18n.t('name')}`,
-        StarImage: require('../../../assets/Images/star_half_yellow.png'),
-        StImage: require('../../../assets/Images/star_gray_half.png')
+    useEffect(() => {
+        setSpinner(true)
+        dispatch(GetRatings(token, lang)).then(() => setSpinner(false))
+    }, [])
 
 
-    }
 
-
-        ,
-    ]
 
     return (
-        <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('comments')} />
-            <Card />
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
-                <View style={{ backgroundColor: Colors.InputColor, height: 70, width: '95%', margin: 20, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', }}>
-                    <Image source={require('../../../assets/Images/big_star_yellow.png')} style={{ width: '20%', height: '50%' }} resizeMode='contain' />
-                    <Text style={[styles.Text, { color: Colors.IconBlack, fontSize: 16 }]}>{i18n.t('RateNum')} : (16)</Text>
+        <Container loading={spinner}>
+
+            <ScrollView style={{ flex: 1, }}>
+                <Header navigation={navigation} label={i18n.t('comments')} />
+                <Card />
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+
+                    <View style={{ backgroundColor: '#F6F6F6', height: 70, width: '95%', margin: 20, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', }}>
+                        <Image source={require('../../../assets/Images/big_star_yellow.png')} style={{ width: '20%', height: '50%' }} resizeMode='contain' />
+                        {
+                            extra === undefined ? null
+                                :
+                                <Text style={[styles.Text, { color: Colors.IconBlack, fontSize: 16 }]}>{i18n.t('RateNum')} : ({extra.count})</Text>
+
+                        }
+                    </View>
                 </View>
-            </View>
 
-            <FlatList
-                pagingEnabled={true}
-                data={CommInf}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                renderItem={(item) => (
+                {Comments && Comments.data ?
+                    Comments.data.map(comm => (
+                        <View style={styles.Card} key={comm.id}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 20, }}>
+                                <Image source={{ uri: comm.user.avatar }} style={{ height: 50, width: 50, borderRadius: 50, }} />
+                                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', marginHorizontal: 10 }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                        <Text style={[styles.CardText]}>{comm.user.name}</Text>
+                                        <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>{comm.date}</Text>
+                                    </View>
+                                    <View style={{ alignSelf: 'flex-start', alignItems: 'center' }}>
+                                        <StarRating
+                                            maxStars={5}
+                                            rating={comm.rate}
+                                            fullStarColor={'yellow'}
+                                            starSize={20}
 
-                    <View style={styles.Card}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 20, }}>
-                            <Image source={item.item.Image} style={{ height: 50, width: 50, borderRadius: 50, }} />
-                            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', marginHorizontal: 10 }}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                    <Text style={[styles.CardText]}>{item.item.label}</Text>
-                                    <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>{item.item.Date}</Text>
+                                        />
+                                    </View>
+
+                                    <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>
+                                        {comm.comment}
+                                    </Text>
                                 </View>
-
-                                <View style={{ flexDirection: 'row', }}>
-                                    <Image source={item.item.StarImage} style={{ height: 12, width: 12, }} />
-                                    <Image source={item.item.StarImage} style={{ height: 12, width: 12, }} />
-                                    <Image source={item.item.StarImage} style={{ height: 12, width: 12, }} />
-                                    <Image source={item.item.StarImage} style={{ height: 12, width: 12, }} />
-                                    <Image source={item.item.StImage} style={{ height: 12, width: 12, }} />
-                                </View>
-                                <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>
-                                    {item.item.Text}
-                                </Text>
                             </View>
                         </View>
-                    </View>
-                )}
-            />
-        </View>
+                    )) : null
+                }
+
+
+
+
+            </ScrollView>
+        </Container>
     )
 }
 const styles = StyleSheet.create({
@@ -135,16 +108,19 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     Card: {
-        height: 140,
-        shadowColor: Colors.bg,
-        margin: 10,
+        shadowColor: '#F6F6F6',
+        margin: '2%',
         borderRadius: 10,
         backgroundColor: Colors.bg,
-        shadowOpacity: 0.25,
+        shadowOpacity: 1,
         shadowRadius: 3.84,
-        elevation: 1,
+        elevation: 5,
         overflow: 'hidden',
-        marginBottom: 0,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+
         flex: 1
     },
     CardText: {

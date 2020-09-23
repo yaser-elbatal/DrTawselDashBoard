@@ -28,19 +28,21 @@ const InputIcon = ({
 
         <View style={[styles.containerTableTextOverInput, styleCont]}>
 
-            <Text style={[styles.labelText, LabelStyle]}  >
-                {label}
+            <Text style={[styles.labelText, {
+                paddingHorizontal: focused ? 10 : 0, color: focused ? Colors.sky : Colors.InputColor, fontSize: 14
+            }, LabelStyle]}  >
+                {focused ? label : null}
             </Text>
 
             <TextInput
-                style={[styles.textInput, inputStyle]}
+                style={[styles.textInput, inputStyle, { borderColor: focused ? Colors.sky : Colors.InputColor, }]}
+                placeholder={focused ? null : placeholder}
                 value={value}
                 onChangeText={onChangeText}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
 
                 {...props}
-                placeholder={placeholder}
             />
             <TouchableOpacity onPress={onPress} style={{
                 left: width * .8,
@@ -75,6 +77,8 @@ const styles = StyleSheet.create({
         bottom: width * .175,
         fontFamily: 'flatMedium',
         color: Colors.fontNormal,
+
+
 
     },
     textInput: {

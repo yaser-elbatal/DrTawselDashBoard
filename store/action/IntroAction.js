@@ -6,8 +6,8 @@ import consts from '../../consts';
 export const Get_intro = 'Get_intro'
 
 export const IntroService = (lang) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             method: 'GET',
             url: consts.url + 'intros',
             params: { lang }

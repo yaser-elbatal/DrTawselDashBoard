@@ -3,8 +3,11 @@ import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, I18nManage
 import AppIntroSlider from 'react-native-app-intro-slider';
 import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
+import I18n from "i18n-js";
+
 import { useSelector, useDispatch } from 'react-redux';
 import { IntroService } from '../../store/action/IntroAction';
+// import Container from '../../common/Container';
 
 
 const { width } = Dimensions.get('window')
@@ -12,55 +15,30 @@ const { height } = Dimensions.get('window')
 
 const Slider = ({ navigation }) => {
 
-    const Intro = useSelector(state => state.intro.intro.data)
+    const Intro = useSelector(state => state.intro.intro)
     const lang = useSelector(state => state.lang.language);
-    const [spinner, setSpinner] = useState(false);
-
+    const [spinner, setSpinner] = useState(true);
+    console.log(Intro);
     const dispatch = useDispatch()
 
-    const FetchData = () => {
-        dispatch(IntroService(lang))
-        setSpinner(true)
-        Intro
-    }
 
     useEffect(() => {
-        FetchData()
+
+        dispatch(IntroService(lang)).then(() => setSpinner(false))
+        I18n.locale = 'ar';
 
         const direction = AsyncStorage.getItem("direction");
         if (direction) {
             navigation.navigate("Login");
         }
 
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
-        });
-        setSpinner(false)
-        return unsubscribe;
-    }, [navigation, spinner]);
 
-    function renderLoader() {
-        if (spinner) {
-            return (
-                <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 99999,
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                }}>
-                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                </View>
-            );
-        }
-    }
+    }, []);
+
+
 
     const slides = Intro.map(int => ({ key: int.id, title: int.title, text: int.details, image: { uri: int.image }, }))
+
     // const slides = [
     //     {
     //         key: 'one',
@@ -87,8 +65,6 @@ const Slider = ({ navigation }) => {
     // ];
 
 
-
-
     const renderItem = ({ item }) => {
         return (
 
@@ -112,8 +88,8 @@ const Slider = ({ navigation }) => {
         );
     };
     return (
-        <>
-            {renderLoader()}
+        <View >
+
             <AppIntroSlider
                 renderItem={renderItem}
                 data={slides} dotClickEnabled={true}
@@ -123,9 +99,10 @@ const Slider = ({ navigation }) => {
                 renderDoneButton={renderDoneButton}
 
             />
-        </>
+        </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     slide:

@@ -19,8 +19,9 @@ export const EditProvider = (token, lang, restaurant_name_ar, restaurant_name_en
 
         }).then(res => {
             if (res.data.success) {
-                navigation.navigate('HomePage')
                 dispatch({ type: Update_Profile, data: res.data })
+                navigation.navigate('HomePage')
+
             }
             Toast.show({
                 text: res.data.message,

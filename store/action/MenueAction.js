@@ -24,8 +24,8 @@ export const MenueInfo = (lang, token) => {
 }
 
 export const AddMenue = (token, lang, nameAr, nameEn,) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'POST',
             url: consts.url + 'add-menu',
             data: { name_ar: nameAr, name_en: nameEn },

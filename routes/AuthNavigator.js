@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
@@ -66,9 +65,33 @@ import EditProduct from '../Components/DrawerComponent/Products/EditProduct';
 import Fregister from '../Components/Auth/Fregister';
 import SRegister from '../Components/Auth/SRegister';
 import TRegister from '../Components/Auth/TRegister';
+import AllOrders from '../common/AllOrders';
+import TransferMony from '../Components/DrawerComponent/Wallet/TransferMony';
 
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+const drawerScreen = () => {
+    return (
+        <Drawer.Navigator initialRouteName="HomePage" drawerStyle={{ backgroundColor: Colors.sky, width }}
+            drawerContent={(props) => <CustomDrawerMenue {...props} />}>
+            <Drawer.Screen name="HomePage" component={HomePage} />
+            <Drawer.Screen name="Menue" component={Menue} />
+            <Drawer.Screen name="Products" component={Products} />
+            <Drawer.Screen name="Orders" component={Orders} />
+            <Drawer.Screen name="AddOffer" component={AddOffer} />
+            <Drawer.Screen name="Settings" component={Settings} />
+            <Drawer.Screen name="Comments" component={Comments} />
+            <Drawer.Screen name="Notifications" component={Notifications} />
+            <Drawer.Screen name="Wallet" component={Wallet} />
+            <Drawer.Screen name="ContactUs" component={ContactUs} />
+            <Drawer.Screen name="ManageAccount" component={ManageAccount} />
+            <Drawer.Screen name="Report" component={Report} />
+        </Drawer.Navigator>
+
+    );
+}
 
 export const MainStackNav = () => {
 
@@ -88,80 +111,68 @@ export const MainStackNav = () => {
             <Stack.Screen name="NewPass" component={NewPassword} />
 
         </Stack.Navigator>
+
     )
 }
 const { width } = Dimensions.get('screen');
 
-const Drawer = createDrawerNavigator();
-export const DrawerNAv = () => {
+const DrawerStack = createStackNavigator();
+
+export const AppStackNavigator = () => {
 
     return (
-        <Drawer.Navigator drawerStyle={{
-            backgroundColor: Colors.sky,
-            width
-        }} initialRouteName="HomePage" drawerContent={(props) => <CustomDrawerMenue {...props} />}>
-            <Stack.Screen name="HomePage" component={HomePage} />
-            <Stack.Screen name="Settings" component={Settings} />
-            <Stack.Screen name="Lang" component={Lang} />
-            <Stack.Screen name="MyProfile" component={myProfil} />
-            <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="Menue" component={Menue} />
-            <Stack.Screen name="EditMenue" component={EditMenue} />
 
-            <Stack.Screen name="Products" component={Products} />
-            <Stack.Screen name="EditProducts" component={EditProduct} />
+        <DrawerStack.Navigator headerMode='none' initialRouteName='drawerScreen'>
+            <DrawerStack.Screen name="drawerScreen" component={drawerScreen} />
+            <DrawerStack.Screen name="Settings" component={Settings} />
+            <DrawerStack.Screen name="Lang" component={Lang} />
+            <DrawerStack.Screen name="MyProfile" component={myProfil} />
+            <DrawerStack.Screen name="EditProfile" component={EditProfile} />
+            <DrawerStack.Screen name="Menue" component={Menue} />
+            <DrawerStack.Screen name="EditMenue" component={EditMenue} />
+            <DrawerStack.Screen name="AllOrders" component={AllOrders} />
 
-            <Stack.Screen name="Orders" component={Orders} />
-            <Stack.Screen name="SpecialOrders" component={SpecialOrders} />
-            <Stack.Screen name="IncomingRequests" component={IncomingRequests} />
-            <Stack.Screen name="ActiveRequests" component={ActiveRequests} />
-            <Stack.Screen name="Completedrequests" component={Completedrequests} />
-            <Stack.Screen name="Rejectedrequests" component={Rejectedrequests} />
-            <Stack.Screen name="OrderDetailes" component={OrderDetailes} />
-            <Stack.Screen name="IncomingOrderDetailes" component={IncomingOrderDetailes} />
-            <Stack.Screen name="ActiveOrderDetailes" component={ActiveOrderDetailes} />
-            <Stack.Screen name="CompletedOrderDetailes" component={CompletedOrderDetailes} />
-            <Stack.Screen name="ProductDetailes" component={ProductDetailes} />
-            <Stack.Screen name="RejectedOrderDetailes" component={RejectedOrderDetailes} />
-            <Stack.Screen name="IncomingSpecialOrder" component={IncomingSpecialOrder} />
-            <Stack.Screen name="IcomingSpecialOrderDetailes" component={IcomingSpecialOrderDetailes} />
-            <Stack.Screen name="ActiveSpecialOrderDetailes" component={ActiveSpecialOrderDetailes} />
-            <Stack.Screen name="RejectedSpecialOrderDetailes" component={RejectedSpecialOrderDetailes} />
-            <Stack.Screen name="ProductSpecialOrderDetailes" component={ProductSpecialOrderDetailes} />
-            <Stack.Screen name="CompletedSpecialOrderDetailes" component={CompletedSpecialOrderDetailes} />
-            <Stack.Screen name="AddProduct" component={AddProduct} />
-            <Stack.Screen name="SuccessAddition" component={SuccessAddition} />
-            <Stack.Screen name="ProductDet" component={ProductDet} />
-            <Stack.Screen name="AddOnotherProduct" component={AddOnotherProduct} />
-            <Stack.Screen name="AddOffer" component={AddOffer} />
-            <Stack.Screen name="AddPices" component={AddPices} />
-            <Stack.Screen name="Previousoffers" component={Previousoffers} />
-            <Stack.Screen name="ChangePassword" component={ChangePassword} />
-            <Stack.Screen name="RestaurantInfo" component={RestaurantInfo} />
-            <Stack.Screen name="Comments" component={Comments} />
-            <Stack.Screen name="Notifications" component={Notifications} />
-            <Stack.Screen name="Wallet" component={Wallet} />
-            <Stack.Screen name="ContactUs" component={ContactUs} />
-            <Stack.Screen name="Banktransfer" component={Banktransfer} />
-            <Stack.Screen name="ManageAccount" component={ManageAccount} />
-            <Stack.Screen name="OrderDetMangeAcc" component={OrderDetMangeAcc} />
-            <Stack.Screen name="OrderDetAdjust" component={OrderDetAdjust} />
-            <Stack.Screen name="Report" component={Report} />
+            <DrawerStack.Screen name="Products" component={Products} />
+            <DrawerStack.Screen name="ProductDet" component={ProductDet} />
+            <DrawerStack.Screen name="EditProducts" component={EditProduct} />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </Drawer.Navigator>
-
+            <DrawerStack.Screen name="Orders" component={Orders} />
+            <DrawerStack.Screen name="SpecialOrders" component={SpecialOrders} />
+            <DrawerStack.Screen name="IncomingRequests" component={IncomingRequests} />
+            <DrawerStack.Screen name="ActiveRequests" component={ActiveRequests} />
+            <DrawerStack.Screen name="Completedrequests" component={Completedrequests} />
+            <DrawerStack.Screen name="Rejectedrequests" component={Rejectedrequests} />
+            <DrawerStack.Screen name="OrderDetailes" component={OrderDetailes} />
+            <DrawerStack.Screen name="IncomingOrderDetailes" component={IncomingOrderDetailes} />
+            <DrawerStack.Screen name="ActiveOrderDetailes" component={ActiveOrderDetailes} />
+            <DrawerStack.Screen name="CompletedOrderDetailes" component={CompletedOrderDetailes} />
+            <DrawerStack.Screen name="ProductDetailes" component={ProductDetailes} />
+            <DrawerStack.Screen name="RejectedOrderDetailes" component={RejectedOrderDetailes} />
+            <DrawerStack.Screen name="IncomingSpecialOrder" component={IncomingSpecialOrder} />
+            <DrawerStack.Screen name="IcomingSpecialOrderDetailes" component={IcomingSpecialOrderDetailes} />
+            <DrawerStack.Screen name="ActiveSpecialOrderDetailes" component={ActiveSpecialOrderDetailes} />
+            <DrawerStack.Screen name="RejectedSpecialOrderDetailes" component={RejectedSpecialOrderDetailes} />
+            <DrawerStack.Screen name="ProductSpecialOrderDetailes" component={ProductSpecialOrderDetailes} />
+            <DrawerStack.Screen name="CompletedSpecialOrderDetailes" component={CompletedSpecialOrderDetailes} />
+            <DrawerStack.Screen name="AddProduct" component={AddProduct} />
+            <DrawerStack.Screen name="SuccessAddition" component={SuccessAddition} />
+            <DrawerStack.Screen name="AddOnotherProduct" component={AddOnotherProduct} />
+            <DrawerStack.Screen name="AddOffer" component={AddOffer} />
+            <DrawerStack.Screen name="AddPices" component={AddPices} />
+            <DrawerStack.Screen name="Previousoffers" component={Previousoffers} />
+            <DrawerStack.Screen name="ChangePassword" component={ChangePassword} />
+            <DrawerStack.Screen name="RestaurantInfo" component={RestaurantInfo} />
+            <DrawerStack.Screen name="Comments" component={Comments} />
+            <DrawerStack.Screen name="Notifications" component={Notifications} />
+            <DrawerStack.Screen name="Wallet" component={Wallet} />
+            <DrawerStack.Screen name="ContactUs" component={ContactUs} />
+            <DrawerStack.Screen name="Banktransfer" component={Banktransfer} />
+            <DrawerStack.Screen name="TransferMony" component={TransferMony} />
+            <DrawerStack.Screen name="ManageAccount" component={ManageAccount} />
+            <DrawerStack.Screen name="OrderDetMangeAcc" component={OrderDetMangeAcc} />
+            <DrawerStack.Screen name="OrderDetAdjust" component={OrderDetAdjust} />
+            <DrawerStack.Screen name="Report" component={Report} />
+        </DrawerStack.Navigator>
     )
 }
+

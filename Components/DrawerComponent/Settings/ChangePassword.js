@@ -23,27 +23,8 @@ function ChangePassword({ navigation }) {
     const user = useSelector(state => state.auth.user.data)
 
 
-    const [passwordStatus, setPasswordStatus] = useState(0);
-    const [newPasswordStatus, seteneWPasswordStatus] = useState(0);
-    const [confirmPasswordStatues, setConfirmPasswordStatues] = useState(0);
-
-    function activeInput(type) {
-
-        if (type === 'password' || password !== '') setPasswordStatus(1);
-        if (type === 'Newpassword' || Newpassword !== '') seteneWPasswordStatus(1);
-        if (type === 'confirmPassword' || confirmPassword !== '') setConfirmPasswordStatues(1);
 
 
-    }
-
-    function unActiveInput(type) {
-        if (type === 'password' && password === '') setPasswordStatus(0);
-        if (type === 'Newpassword' && Newpassword === '') seteneWPasswordStatus(0);
-        if (type === 'confirmPassword' && confirmPassword === '') setConfirmPasswordStatues(0);
-
-
-
-    }
     const _validate = () => {
 
         let passwordErr = password == '' ? i18n.t('passwordErr') : null;
@@ -67,6 +48,7 @@ function ChangePassword({ navigation }) {
     }
 
     return (
+
         <View style={{ flex: 1 }}>
 
             <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
@@ -90,44 +72,35 @@ function ChangePassword({ navigation }) {
 
                     <View style={{ margin: 20, marginTop: 0 }}>
                         <InputIcon
-                            label={passwordStatus === 1 ? i18n.t('password') : null}
-                            placeholder={passwordStatus === 1 ? null : i18n.t('password')}
+                            label={i18n.t('password')}
+                            placeholder={i18n.t('password')}
                             onChangeText={(e) => setPassword(e)}
                             value={password}
                             secureTextEntry
                             styleCont={{ marginTop: 0 }}
-                            inputStyle={{ borderColor: passwordStatus === 1 ? Colors.sky : Colors.InputColor }}
-                            LabelStyle={{ paddingHorizontal: passwordStatus === 1 ? 10 : 0, color: passwordStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                            onBlur={() => unActiveInput('password')}
-                            onFocus={() => activeInput('password')}
+
                             keyboardType='numeric'
 
                         />
                         <InputIcon
-                            label={newPasswordStatus === 1 ? i18n.t('NewPassword') : null}
-                            placeholder={newPasswordStatus === 1 ? null : i18n.t('NewPassword')}
+                            label={i18n.t('NewPassword')}
+                            placeholder={i18n.t('NewPassword')}
                             onChangeText={(e) => setNewPassword(e)}
                             value={Newpassword}
                             secureTextEntry
                             styleCont={{ marginTop: 0 }}
-                            inputStyle={{ borderColor: newPasswordStatus === 1 ? Colors.sky : Colors.InputColor }}
-                            LabelStyle={{ paddingHorizontal: newPasswordStatus === 1 ? 10 : 0, color: newPasswordStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                            onBlur={() => unActiveInput('Newpassword')}
-                            onFocus={() => activeInput('Newpassword')}
+
                             keyboardType='numeric'
 
                         />
                         <InputIcon
-                            label={confirmPasswordStatues === 1 ? i18n.t('confirmPass') : null}
-                            placeholder={confirmPasswordStatues === 1 ? null : i18n.t('confirmPass')}
+                            label={i18n.t('confirmPass')}
+                            placeholder={i18n.t('confirmPass')}
                             onChangeText={(e) => setConfirmPassword(e)}
                             value={confirmPassword}
                             secureTextEntry
                             styleCont={{ marginTop: 0 }}
-                            inputStyle={{ borderColor: confirmPasswordStatues === 1 ? Colors.sky : Colors.InputColor }}
-                            LabelStyle={{ paddingHorizontal: confirmPasswordStatues === 1 ? 10 : 0, color: confirmPasswordStatues === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
-                            onBlur={() => unActiveInput('confirmPassword')}
-                            onFocus={() => activeInput('confirmPassword')}
+
                             keyboardType='numeric'
                         />
                         <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />

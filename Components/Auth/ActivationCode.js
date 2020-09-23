@@ -26,24 +26,12 @@ function ActivateCode({ navigation, route }) {
     const MyactivateCode = 1122;
     const dispatch = useDispatch()
 
-    function activeInput(type) {
-        if (type === 'code' || code !== '') setCodeStatus(1);
-    }
 
-    function unActiveInput(type) {
-        if (type === 'code' && code === '') setCodeStatus(0);
-    }
     useEffect(() => {
         token
     }, []);
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(false)
-        });
-        setSpinner(false)
-        return unsubscribe;
-    }, [navigation, spinner]);
+
 
     const _validate = () => {
         let codeErr = validateCode(code);
@@ -76,16 +64,13 @@ function ActivateCode({ navigation, route }) {
             </View>
 
             <InputIcon
-                label={codeStatus === 1 ? i18n.t('code') : null}
-                placeholder={codeStatus === 1 ? null : i18n.t('code')}
+                label={i18n.t('code')}
+                placeholder={i18n.t('code')}
                 onChangeText={(e) => setCode(e)}
                 value={code}
                 keyboardType='numeric'
 
-                onBlur={() => unActiveInput('code')}
-                onFocus={() => activeInput('code')}
-                inputStyle={{ borderColor: codeStatus === 1 ? Colors.sky : Colors.InputColor }}
-                LabelStyle={{ paddingHorizontal: codeStatus === 1 ? 10 : 0, color: codeStatus === 1 ? Colors.sky : Colors.InputColor, fontSize: 14 }}
+
             />
             {
                 spinner ?
