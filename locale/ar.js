@@ -26,6 +26,7 @@ const ar = {
   city: 'المدينه',
   dep: 'القسم التابه له',
   priceSize: 'سعر الحجم',
+  totalOrders: 'اجمالي الطلبات',
   quantity: 'كميه',
   createAcc: 'أنشاء حساب',
   Activity: 'سجل نشاطك الان',
@@ -571,7 +572,8 @@ const ar = {
   RunningPrbareOrder: 'جاري تجهيز الطلب',
   AcceptOrders: ' تم تسليم الطلب للمندوب',
   findDelegate: ' جاري البحث عن مندوب',
-
+  priceOrders: 'سعر الطلبات',
+  numOrders: 'عدد الطلبات',
 
   //   waiting: قبول الطلب
   // accepted: جاري تجهيز الطلب،

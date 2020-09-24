@@ -1,11 +1,14 @@
 import axios from 'axios';
 import consts from '../../consts';
-import { Toast } from "native-base";
+import { Toast, } from "native-base";
 
 export const GetMenue = 'Get_menue';
 export const Add_menue = 'Add_menue';
 export const Update_Menue = 'Update_Menue';
 export const Delete_menue = 'Delete_menue'
+export const Search_menue = 'Search_menue';
+
+
 
 export const MenueInfo = (lang, token) => {
     return async (dispatch) => {
@@ -93,5 +96,20 @@ export const DeleteMenue = (token, id) => {
         })
 
 
+    }
+}
+
+export const SearchMenue = (token, word, lang) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'POST',
+            url: consts.url + 'search-menu',
+            data: { word },
+            headers: { Authorization: 'Bearer ' + token, },
+            params: { lang }
+
+        }).then(res => {
+            dispatch({ type: Search_menue, data: res.data })
+        })
     }
 }

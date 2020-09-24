@@ -7,7 +7,6 @@ import BTN from '../../../common/BTN'
 import { width, height } from '../../../consts/HeightWidth'
 import { useSelector, useDispatch } from 'react-redux'
 import { Order_Detailes, CancelOrders, ConfirmOrders } from '../../../store/action/OrdersAction';
-import { useIsFocused } from "@react-navigation/native";
 import Container from '../../../common/Container'
 
 
@@ -25,15 +24,17 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
     const lang = useSelector(state => state.lang.language);
     const dispatch = useDispatch();
     const OrderDet = useSelector(state => state.Orders.OrderDetailes);
-    const LoaderOrder = useSelector(state => state.Orders.loader);
     const { OrderId } = route.params
-    const isFocused = useIsFocused();
     const [spinner, setSpinner] = useState(true);
-
+    console.log(OrderDet);
     useEffect(() => {
-        dispatch(Order_Detailes(token, OrderId, lang)).then(() => setSpinner(false))
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            dispatch(Order_Detailes(token, OrderId, lang)).then(() => setSpinner(false))
+        });
 
-    }, []);
+        return unsubscribe;
+    }, [navigation])
 
 
     const CancelIncomingOrders = () => {
@@ -64,10 +65,10 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
     }
     return (
 
-        OrderDet ?
+        !OrderDet ? null :
             <Container loading={spinner}>
                 <View style={{ flex: 1 }}>
-                    <Header navigation={navigation} label={i18n.t('orderDetailes') + `${OrderDet.data.order_id}`} />
+                    <Header navigation={navigation} label={i18n.t('orderDetailes') + `${OrderDet.order_id}`} />
 
                     <ScrollView style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => setClick(!click)}>
@@ -97,19 +98,22 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                         <Text style={{ marginHorizontal: 15 }}>:</Text>
                                         <Text style={{ marginHorizontal: 15, marginVertical: 15 }}>:</Text>
                                     </View>
+                                    {
+                                        !OrderDet.user ? null :
 
-                                    <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                                            <Text style={styles.sname}>{OrderDet.data.user.name}</Text>
-                                            <TouchableOpacity style={{ alignSelf: 'flex-end', alignItems: 'flex-end', left: width * .25 }}>
-                                                <Image source={require('../../../assets/Images/whatsapp.png')} style={{ width: 20, height: 20, }} resizeMode='contain' />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <Text style={[styles.sname, { marginVertical: 15 }]}>{OrderDet.data.user.phone}</Text>
-                                    </View>
+                                            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                                    <Text style={styles.sname}>{OrderDet.user.name}</Text>
+                                                    <TouchableOpacity style={{ alignSelf: 'flex-end', alignItems: 'flex-end', left: width * .25 }}>
+                                                        <Image source={require('../../../assets/Images/whatsapp.png')} style={{ width: 20, height: 20, }} resizeMode='contain' />
+                                                    </TouchableOpacity>
+                                                </View>
+                                                <Text style={[styles.sname, { marginVertical: 15 }]}>{OrderDet.user.phone}</Text>
+                                            </View>
+
+                                    }
+
                                 </View>
-
-
                                 : null
                         }
 
@@ -130,9 +134,10 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                         </TouchableOpacity>
                         {
                             click1 ?
-                                OrderDet && OrderDet.data.products.length ?
-
-                                    OrderDet.data.products.map(item => (
+                                !OrderDet.products ?
+                                    null
+                                    :
+                                    OrderDet.products.map(item => (
                                         <>
                                             <View key={`${item.id}`} style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
                                                 <Text style={styles.name}>{item.name}</Text>
@@ -177,7 +182,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                     ))
 
 
-                                    : null
+
 
                                 : null
                         }
@@ -202,7 +207,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
 
                         {
                             click3 ?
-                                <Text style={[styles.name, { marginHorizontal: 40, marginTop: -10 }]}>{OrderDet.data.payment}</Text>
+                                <Text style={[styles.name, { marginHorizontal: 40, marginTop: -10 }]}>{OrderDet.payment}</Text>
                                 :
                                 null
 
@@ -238,23 +243,23 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text style={styles.sname}>{OrderDet.data.sum} {i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, { paddingVertical: 15 }]}>{OrderDet.data.shipping}{i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, { color: Colors.RedColor, }]}>{OrderDet.data.total} {i18n.t('Rial')}</Text>
+                                        <Text style={styles.sname}>{OrderDet.sum} {i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { paddingVertical: 15 }]}>{OrderDet.shipping}{i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { color: Colors.RedColor, }]}>{OrderDet.total} {i18n.t('Rial')}</Text>
                                     </View>
                                 </View>
                                 : null
                         }
                         {
                             OrderDet &&
-                                OrderDet.data.status === 'WAITING' ?
+                                OrderDet.status === 'WAITING' ?
                                 <>
                                     < BTN title={i18n.t('confirm')} ContainerStyle={styles.LoginBtn} onPress={ConfirmIncomingOrders} />
                                     <BTN title={i18n.t('refuse')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.InputColor }]} onPress={CancelIncomingOrders} />
                                 </>
-                                : OrderDet.data.status === 'PROGRESS' ?
+                                : OrderDet.status === 'PROGRESS' ?
                                     < BTN title={i18n.t('AcceptOrders')} ContainerStyle={styles.LoginBtn} onPress={OrderProcceed} />
-                                    : OrderDet.data.status === 'READY' ?
+                                    : OrderDet.status === 'READY' ?
                                         <>
                                             < BTN title={i18n.t('findDelegate')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.InputColor }]} disabled={true} onPress={() => { }} />
                                             <Text style={{ color: 'red' }}> {i18n.t('findDelegate')}..........</Text>
@@ -271,7 +276,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
 
                 </View>
             </Container>
-            : null
+
     )
 }
 const styles = StyleSheet.create({

@@ -11,13 +11,13 @@ export const Enable_Loader = 'Enable_Loader'
 export const Disable_Loader = 'Disable_Loader'
 
 
-export const GetOrders = (token, status, lang) => {
+export const GetOrders = (token, status, lang, text) => {
     return async (dispatch) => {
         dispatch({ type: Enable_Loader })
         await axios({
             method: 'POST',
             url: consts.url + 'provider-orders',
-            data: { status },
+            data: { status, text },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
 
@@ -41,7 +41,7 @@ export const Order_Detailes = (token, id, lang) => {
             params: { lang }
 
         }).then(res => {
-            dispatch({ type: Get_Order_Detailes, data: res.data })
+            dispatch({ type: Get_Order_Detailes, data: res.data.data })
 
         })
 

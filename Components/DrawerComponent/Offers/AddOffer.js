@@ -28,11 +28,14 @@ function Previousoffers({ navigation }) {
 
     console.log(Banners);
     useEffect(() => {
-        setSpinner(true)
-        dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+        });
 
+        return unsubscribe;
 
-    }, [])
+    }, [navigation]);
 
 
     const DeleteCardBanners = (id) => {

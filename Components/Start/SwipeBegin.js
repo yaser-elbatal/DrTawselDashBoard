@@ -18,7 +18,6 @@ const Slider = ({ navigation }) => {
     const Intro = useSelector(state => state.intro.intro)
     const lang = useSelector(state => state.lang.language);
     const [spinner, setSpinner] = useState(true);
-    console.log(Intro);
     const dispatch = useDispatch()
 
 

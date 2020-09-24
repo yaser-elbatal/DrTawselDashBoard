@@ -1,80 +1,86 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Dimensions, ScrollView, StyleSheet, Modal, Text } from 'react-native'
-import {
-    BarChart,
+import { WebView } from 'react-native-webview';
 
-} from "react-native-chart-kit";
 import Header from '../../../common/Header';
 import i18n from '../../../locale/i18n'
 import { width, height } from '../../../consts/HeightWidth';
 import Colors from '../../../consts/Colors';
 import BTN from '../../../common/BTN';
+import { useSelector, useDispatch } from 'react-redux';
+import { GetRebortsCharts, CreateRebortChart } from '../../../store/action/RebortChartAction';
+import Container from '../../../common/Container';
 
 
 function Report({ navigation }) {
 
-    const chartConfig = {
-        backgroundGradientFrom: Colors.bg,
-        backgroundGradientFromOpacity: 1,
-        backgroundGradientTo: Colors.bg,
-        backgroundGradientToOpacity: 1,
-        fillShadowGradientOpacity: 1,
-        useShadowColorFromDataset: true,
-        color: (opacity = 1) => `rgba(0, 191, 255, ${opacity})`,
-        strokeWidth: 5, // optional, default 3
-        barPercentage: 1,
-        useShadowColorFromDataset: false, // optional
-        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+    const [spinner, setSpinner] = useState(true);
+    const RebortChart = useSelector(state => state.reborts.chart)
+    const dispatch = useDispatch()
 
-    };
-    const data = {
-        labels: ["70%", `50${i18n.t('RS')}`, "80%"],
-        datasets: [
-            {
-                data: [45, 45, 50,]
-            }
-        ]
-    };
+    console.log(RebortChart);
+
+    useEffect(() => {
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            dispatch(GetRebortsCharts(token, lang)).then(() => setSpinner(false))
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
+
+
+
+
     const [modalVisible, setModalVisible] = useState(false);
 
+    const CreateReborts = () => {
+        setSpinner(true)
+        dispatch(CreateRebortChart(token, lang, navigation)).then(() => setSpinner(false))
+        setModalVisible(false)
+    }
+
     return (
-        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('reports')} />
-            <ScrollView style={{ flex: 1 }}>
-                <BarChart
-                    data={data}
-                    width={width}
-                    height={420}
-                    chartConfig={chartConfig}
-                    fromZero={true}
-                    withInnerLines={false}
-                    showBarTops={false}
-                    style={{ marginTop: 40 }}
-                />
-                <BTN title={i18n.t('Createreport')} ContainerStyle={{
-                    marginVertical: 10, borderRadius: 5, marginHorizontal: '5%', marginTop: 10, width: '90%'
-                }} onPress={() => setModalVisible(true)} />
+        <Container loading={spinner}>
 
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible} >
+            <View style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <Header navigation={navigation} label={i18n.t('reports')} />
+                <ScrollView style={{ flex: 1 }}>
 
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <View style={{ margin: 20, marginTop: 50 }}>
-                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, textAlign: 'center', }}>سيتم ارسال التقرير اليك </Text>
+                    <WebView
+                        source={{ uri: 'https://github.com/facebook/react-native' }}
+                        style={{ marginTop: 20, height: 420 }}
+                    />
 
-                                    <BTN title={i18n.t('backHome')} ContainerStyle={{ borderRadius: 5 }} onPress={() => { setModalVisible(false); navigation.navigate('HomePage') }} />
+                    <BTN title={i18n.t('Createreport')} ContainerStyle={{
+                        marginVertical: 10, borderRadius: 5, marginHorizontal: '5%', marginTop: 10, width: '90%'
+                    }} onPress={() => setModalVisible(true)} />
+
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible} >
+
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <View style={{ margin: 20, marginTop: 50 }}>
+                                        <Text style={{ fontFamily: 'flatMedium', fontSize: 14, textAlign: 'center', }}>سيتم ارسال التقرير اليك </Text>
+
+                                        <BTN title={i18n.t('backHome')} ContainerStyle={{ borderRadius: 5 }} onPress={CreateReborts} />
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </Modal>
-                </View>
-            </ScrollView>
+                        </Modal>
+                    </View>
+                </ScrollView>
 
-        </View>
+            </View>
+        </Container>
     )
 }
 const styles = StyleSheet.create({

@@ -9,6 +9,9 @@ export const Delete_Product = 'Delete_Product';
 export const Edit_Product = 'Edit_Product';
 export const Addextra_Products = 'Addextra_Products';
 export const Get_Product_extra = 'Get_Product_extra';
+export const Search_Product = 'Search_Product';
+
+
 
 export const Delete_Extra_Products = 'Delete_Extra_Products'
 
@@ -221,6 +224,22 @@ export const AddExtraProductsFromEdit = (name_ar, name_en, price, product_id, to
                 }
             });
 
+        })
+    }
+}
+
+
+export const SerachForPorducts = (token, lang, word) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'POST',
+            url: consts.url + 'search-products',
+            data: { word },
+            headers: { Authorization: 'Bearer ' + token, },
+            params: { lang }
+
+        }).then(res => {
+            dispatch({ type: Search_Product, data: res.data })
         })
     }
 }

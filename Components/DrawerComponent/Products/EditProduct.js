@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, ActivityIndicator, Modal, Alert, I18nManager, ImageBackground } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, Modal, I18nManager, ImageBackground } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -13,21 +13,22 @@ import { SText } from '../../../common/SText';
 import Header from '../../../common/Header';
 import { useSelector, useDispatch } from 'react-redux';
 import { EditProducts, GetProducts, ProductDetailes, GetProductExtrasFromEdit, AddExtraProductsFromEdit, DeleteProductExtrasFromEdit } from '../../../store/action/ProductAction';
-import { useIsFocused } from "@react-navigation/native";
 import Container from '../../../common/Container';
 
 
 const { width, height } = Dimensions.get('window')
 const EditProduct = ({ navigation, route }) => {
 
+    const { ProductsId } = route.params
 
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-            dispatch(ProductDetailes(token, lang, Productsid))
-            dispatch(GetProductExtrasFromEdit(Productsid, token, lang)).then(() => setSpinner(false));
+            dispatch(ProductDetailes(token, lang, ProductsId.id)).then(() => setSpinner(false));
+            setSpinner(true)
+            dispatch(GetProductExtrasFromEdit(ProductsId.id, token, lang)).then(() => setSpinner(false));
         });
 
         return unsubscribe;
@@ -35,13 +36,12 @@ const EditProduct = ({ navigation, route }) => {
 
 
 
-    const ProductDet = useSelector(state => state.product.product);
+    const ProductDet = useSelector(state => state.product.EditProduct);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
     const ProductsExtras = useSelector(state => state.product.ExtraProduct);
     console.log(ProductsExtras);
-    const { Productsid } = route.params
     const dispatch = useDispatch();
 
 
@@ -64,7 +64,6 @@ const EditProduct = ({ navigation, route }) => {
     const [detailesAr, setDetailesAr] = useState(ProductDet.details_ar)
     const [detailesEn, setDetailesEn] = useState(ProductDet.details_en)
     const [available, setavailable] = useState(ProductDet.available);
-    const LoaderOrder = useSelector(state => state.product.loader);
 
 
 
@@ -110,10 +109,10 @@ const EditProduct = ({ navigation, route }) => {
 
 
 
-    let MenueData = Menue.map(menue => ({ label: menue.name, value: menue.id }));
+    let MenueData = !Menue ? [] : Menue.map(menue => ({ label: menue.name, value: menue.id }));
     // let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
-    console.log(Productsid);
+    console.log(ProductsId);
 
 
 
@@ -122,7 +121,7 @@ const EditProduct = ({ navigation, route }) => {
 
     const Edit_product = () => {
         setSpinner(true)
-        dispatch(EditProducts(token, lang, Productsid, nameAR, nameEN, price, available, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, ProductsExtras, navigation))
+        dispatch(EditProducts(token, lang, ProductsId, nameAR, nameEN, price, available, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, ProductsExtras, navigation))
         dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
 
 
@@ -155,8 +154,8 @@ const EditProduct = ({ navigation, route }) => {
 
     const AddProductExras = () => {
         setSpinner(true)
-        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, Productsid, token, lang));
-        dispatch(GetProductExtrasFromEdit(Productsid, token, lang)).then(() => setSpinner(false))
+        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang));
+        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setSpinner(false))
         setEditMaodVisible(false)
     }
 
@@ -164,19 +163,19 @@ const EditProduct = ({ navigation, route }) => {
     const DeleteExtraOneProduct = (id) => {
         setSpinner(true)
         dispatch(DeleteProductExtrasFromEdit(id, token))
-        dispatch(GetProductExtrasFromEdit(Productsid, token, lang)).then(() => setSpinner(false))
+        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setSpinner(false))
 
     }
 
 
-    const handaleChange = (e, IdSelect) => {
-        let array = SizePriceId;
-        let ID = array.findIndex(id => id.size_id === IdSelect);
-        array[ID].price = e
+    // const handaleChange = (e, IdSelect) => {
+    //     let array = SizePriceId;
+    //     let ID = array.findIndex(id => id.size_id === IdSelect);
+    //     array[ID].price = e
 
-        SetSizePriceId(array)
+    //     SetSizePriceId(array)
 
-    }
+    // }
     const user = useSelector(state => state.auth.user.data);
 
 
@@ -210,7 +209,7 @@ const EditProduct = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                 </View>
-                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('AddPro')}</Text>
+                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
                 {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
 
                 <InputIcon
@@ -433,8 +432,9 @@ const EditProduct = ({ navigation, route }) => {
                     value={detailesEn}
                 />
 
-                {ProductsExtras ?
-                    ProductsExtras.data.length ?
+                {!ProductsExtras ? [] :
+                    !ProductsExtras.data ? [] :
+
                         ProductsExtras.data.map((proExtra, index) =>
                             (
                                 <>
@@ -450,7 +450,7 @@ const EditProduct = ({ navigation, route }) => {
                                     <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
                                 </>
                             )
-                        ) : null : null
+                        )
                 }
 
 

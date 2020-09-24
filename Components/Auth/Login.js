@@ -85,6 +85,7 @@ function Login({ navigation }) {
 
     }
     useEffect(() => {
+        setSpinner(false)
         getDeviceId().then(() => setSpinner(false))
 
     }, []);

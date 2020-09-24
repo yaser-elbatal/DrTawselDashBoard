@@ -12,7 +12,7 @@ import BTN from '../../../common/BTN';
 import DrobDwn from '../../../common/DrobDwn';
 import Card from '../../../common/Card';
 import { useSelector, useDispatch } from 'react-redux';
-import { GetProducts, DeleteProduct, } from '../../../store/action/ProductAction';
+import { GetProducts, DeleteProduct, SerachForPorducts, } from '../../../store/action/ProductAction';
 import Container from '../../../common/Container';
 
 function Products({ navigation }) {
@@ -21,6 +21,7 @@ function Products({ navigation }) {
 
     const [isSelected2, setSelection2] = useState();
     const [spinner, setSpinner] = useState(true);
+    const [Search, setSearch] = useState('');
 
 
     const Products = useSelector(state => state.product.products);
@@ -50,10 +51,13 @@ function Products({ navigation }) {
         setSpinner(true)
         dispatch(DeleteProduct(token, lang, id))
         dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
-
-
     }
 
+
+    const handleChange = (e) => {
+        setSearch(e);
+        setTimeout(() => dispatch(SerachForPorducts(token, lang, Search)), 1000)
+    }
 
     return (
         <Container loading={spinner}>
@@ -63,15 +67,17 @@ function Products({ navigation }) {
 
                 <InputIcon
                     placeholder={i18n.t('search1')}
+                    label={i18n.t('search1')}
+                    value={Search}
+                    onChangeText={(e) => handleChange(e)}
                     image={require('../../../assets/Images/search.png')}
-                    styleCont={{ marginTop: -10, height: width * .18, }}
-                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                    styleCont={{ marginTop: 0, }}
                 />
 
                 <Card />
                 <DrobDwn />
 
-                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={Menue.length ? () => navigation.navigate('AddProduct') : () => navigation.navigate('Menue')} />
+                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={!Menue ? () => navigation.navigate('Menue') : () => navigation.navigate('AddProduct')} />
 
 
                 <FlatList
@@ -103,7 +109,7 @@ function Products({ navigation }) {
 
                                 <View style={styles.SWarb}>
 
-                                    <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { Productsid: item.id })}>
+                                    <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item })}>
                                         <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
                                     </TouchableOpacity>
 

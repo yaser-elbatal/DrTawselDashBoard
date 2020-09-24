@@ -1,6 +1,6 @@
-import { Get_Ratings, Get_Wallet, Get_MyBankes } from '../action/CommentsAction';
+import { Get_Ratings, Get_Wallet, Get_MyBankes, Get_Manage_account } from '../action/CommentsAction';
 
-const initialState = { comments: {}, wallet: {}, extra: {}, Banks: [], }
+const initialState = { comments: {}, wallet: {}, extra: {}, Banks: [], Macoount: [] }
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -13,7 +13,8 @@ export default (state = initialState, action) => {
 
         case Get_MyBankes:
             return { Banks: action.data.data }
-
+        case Get_Manage_account:
+            return { Macoount: action.data }
         default:
             return state;
     }

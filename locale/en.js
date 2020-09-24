@@ -580,6 +580,11 @@ const en = {
   AcceptOrders: 'Deliver Orders to Deligate',
   findDelegate: 'Searching for Delegate',
   close: 'Close',
+  totalOrders: 'total Orders',
+  priceOrders: 'Price Orders',
+  numOrders: 'Num of Orders',
+  search1: 'search1',
+
 
 };
 

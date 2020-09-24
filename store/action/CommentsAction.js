@@ -6,6 +6,7 @@ export const Get_Ratings = 'Get_Ratings';
 export const Get_Wallet = 'Get_Wallet';
 export const Get_MyBankes = 'Get_MyBankes';
 export const Send_Transfer = 'Send_Transfer'
+export const Get_Manage_account = 'Get_Manage_account';
 
 export const GetRatings = (token, lang) => {
     return async (dispatch) => {
@@ -138,6 +139,20 @@ export const SendComplaiment = (token, username, email, description, navigation)
                 });
             }
         }).catch(err => {
+            console.log('err', err);
+        });
+    }
+}
+
+export const ManageAcoounts = (token, lang) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'POST',
+            url: `${consts.url}settlement`,
+            headers: { Authorization: 'Bearer ' + token },
+            params: { lang }
+        }).then((response) => dispatch({ type: Get_Manage_account, data: response.data.data })
+        ).catch(err => {
             console.log('err', err);
         });
     }

@@ -67,6 +67,7 @@ import SRegister from '../Components/Auth/SRegister';
 import TRegister from '../Components/Auth/TRegister';
 import AllOrders from '../common/AllOrders';
 import TransferMony from '../Components/DrawerComponent/Wallet/TransferMony';
+import OrderManageAccDetailes from '../Components/DrawerComponent/ManageAccount/OrderManageAccDetailes';
 
 
 const Stack = createStackNavigator();
@@ -128,6 +129,8 @@ export const AppStackNavigator = () => {
             <DrawerStack.Screen name="Lang" component={Lang} />
             <DrawerStack.Screen name="MyProfile" component={myProfil} />
             <DrawerStack.Screen name="EditProfile" component={EditProfile} />
+            <DrawerStack.Screen name="OrderManageAccDetailes" component={OrderManageAccDetailes} />
+
             <DrawerStack.Screen name="Menue" component={Menue} />
             <DrawerStack.Screen name="EditMenue" component={EditMenue} />
             <DrawerStack.Screen name="AllOrders" component={AllOrders} />

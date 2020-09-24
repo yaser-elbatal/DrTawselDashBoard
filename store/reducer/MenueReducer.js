@@ -1,4 +1,4 @@
-import { GetMenue, Add_menue, Update_Menue } from "../action/MenueAction";
+import { GetMenue, Add_menue, Update_Menue, Search_menue } from "../action/MenueAction";
 
 const initialState = { menue: [] }
 export default (state = initialState, action) => {
@@ -9,7 +9,8 @@ export default (state = initialState, action) => {
             return { ...state, menue: action.data }
         case Update_Menue:
             return { ...state, menue: action.data }
-
+        case Search_menue:
+            return { ...state, menue: action.data }
         default:
             return state;
     }

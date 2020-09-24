@@ -13,7 +13,7 @@ import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
 import Card from '../../../common/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { MenueInfo, AddMenue, DeleteMenue, UpdateMenue } from '../../../store/action/MenueAction';
+import { MenueInfo, AddMenue, DeleteMenue, UpdateMenue, SearchMenue } from '../../../store/action/MenueAction';
 import { Toaster } from '../../..//common/Toaster';
 import { validateUserName } from '../../../common/Validation';
 import Container from '../../../common/Container';
@@ -21,28 +21,21 @@ import Container from '../../../common/Container';
 function Menue({ navigation }) {
 
 
-
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue);
-
     const [nameAR, setNameAr] = useState('');
-    const [nameEN, setNameEN] = useState('')
+    const [nameEN, setNameEN] = useState('');
+    const [DeleteArr, setDeleteArr] = useState([]);
     const [MenueData, setMenueData] = useState()
     const [spinner, setSpinner] = useState(true);
-
+    const [Search, setSearch] = useState('');
     const [nameAREdit, setNameArEdit] = useState();
     const [nameENEdit, setNameENEdit] = useState();
-
 
     const [isSelected2, setSelection2] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
-
-
-
-
-
 
 
     const data = [{
@@ -107,31 +100,59 @@ function Menue({ navigation }) {
     }
 
 
+    const isChecked = (itemId) => {
+        const isThere = DeleteArr.includes(itemId);
+        return isThere;
+    };
+
+
+    const toggleChecked = (itemId) => {
+
+        //let ids = [...DeleteArr, DeleteArr.push(itemId)]
+        // console.log(ids)
+        if (isChecked(itemId)) {
+            //  const index = DeleteArr.indexOf(itemId, 0);
+            // if (index > -1) {
+            DeleteArr.splice(1, itemId);
+            console.log(DeleteArr)
+            //  }
+            // let ids = DeleteArr.splice(itemId, 1);
+            //setDeleteArr(DeleteArr)
+            // console.log(DeleteArr)
+            // isChecked(itemId)
+        } else {
+            setDeleteArr(DeleteArr.concat([itemId]))
+        }
+    };
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
             dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
-            console.log('77777777777');
         });
 
         return unsubscribe;
     }, [navigation]);
 
-
+    const handleChange = (e) => {
+        setSearch(e);
+        setTimeout(() => dispatch(SearchMenue(token, Search, lang)), 1000)
+    }
 
     return (
         <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
                 <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
 
                 <InputIcon
                     placeholder={i18n.t('search1')}
+                    label={i18n.t('search1')}
+                    value={Search}
+                    onChangeText={(e) => handleChange(e)}
                     image={require('../../../assets/Images/search.png')}
-                    styleCont={{ marginTop: 0, height: width * .18, }}
-                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                    styleCont={{ marginTop: 0, }}
                 />
 
                 <Card />
@@ -158,6 +179,7 @@ function Menue({ navigation }) {
                         <Dropdown
                             placeholder={i18n.t('select')}
                             data={data2}
+                            animationDuration={0}
                             fontSize={12}
                             itemTextStyle={{ fontFamily: 'flatMedium' }}
                             lineWidth={0}
@@ -216,9 +238,9 @@ function Menue({ navigation }) {
 
 
                         (
-                            <View style={styles.Card}>
+                            <View style={styles.Card} key={index}>
                                 <View style={styles.FWrab}>
-                                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
+                                    <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => toggleChecked(item.id)} />
                                     <Text style={styles.nText}>{i18n.t('num')} # {index.toString() + 1}</Text>
                                     <View style={{ flexDirection: 'row', marginStart: 5, alignItems: 'center' }}>
                                         <Text style={styles.nMenu}>{i18n.t('name')} :   </Text>

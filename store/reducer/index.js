@@ -14,6 +14,10 @@ import home from './HomeReducer';
 import Banner from './OffersReducer';
 import Orders from './OrdersReducer';
 import Comments from './CommentsReducer'
+import notifications from './NotificationsReducer';
+import reborts from './RebortChartReducer'
+
+
 
 export default multiReducres = combineReducers({
     lang,
@@ -29,5 +33,7 @@ export default multiReducres = combineReducers({
     home,
     Banner,
     Orders,
-    Comments
+    Comments,
+    notifications,
+    reborts
 });

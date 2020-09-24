@@ -21,6 +21,7 @@ function AllOrders({ navigation, route }) {
     const dispatch = useDispatch();
     const OrderRequest = useSelector(state => state.Orders.GetmyOrders);
     const LoaderOrder = useSelector(state => state.Orders.loader);
+    const [Search, setSearch] = useState('');
 
     const isFocused = useIsFocused();
     const [spinner, setSpinner] = useState(true);
@@ -30,7 +31,7 @@ function AllOrders({ navigation, route }) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-            dispatch(GetOrders(token, statues, lang)).then(() => setSpinner(false))
+            dispatch(GetOrders(token, statues, lang, Search)).then(() => setSpinner(false))
         });
 
         return unsubscribe;
@@ -38,18 +39,24 @@ function AllOrders({ navigation, route }) {
 
 
 
+    const handleChange = (e) => {
+        setSearch(e);
+        setTimeout(() => dispatch(GetOrders(token, statues, lang, Search)), 1000)
+    }
 
 
 
     return (
         <Container loading={spinner}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: Colors.bg }}>
                 <Header navigation={navigation} label={label} />
                 <InputIcon
                     placeholder={i18n.t('search1')}
+                    label={i18n.t('search1')}
+                    value={Search}
+                    onChangeText={(e) => handleChange(e)}
                     image={require('../assets/Images/search.png')}
-                    styleCont={{ marginTop: 10, height: width * .18, }}
-                    inputStyle={{ backgroundColor: '#DBDBDB' }}
+                    styleCont={{ marginTop: 20, }}
                 />
                 <Card />
 
