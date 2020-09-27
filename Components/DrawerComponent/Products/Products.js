@@ -9,11 +9,11 @@ import Colors from '../../../consts/Colors';
 import { InputIcon } from '../../../common/InputText';
 import { width, height } from '../../../consts/HeightWidth';
 import BTN from '../../../common/BTN';
-import DrobDwn from '../../../common/DrobDwn';
 import Card from '../../../common/Card';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetProducts, DeleteProduct, SerachForPorducts, } from '../../../store/action/ProductAction';
 import Container from '../../../common/Container';
+import { Dropdown } from 'react-native-material-dropdown';
 
 function Products({ navigation }) {
     const dispatch = useDispatch();
@@ -28,23 +28,69 @@ function Products({ navigation }) {
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
+    const [DeleteArr, setDeleteArr] = useState([]);
+    const [Boaleana, setBoaleana] = useState(false)
 
-
-
+    const data2 = [{
+        value: i18n.t('latest'),
+    }, {
+        value: i18n.t('oldest'),
+    },];
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
             dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
-            console.log('dd1');
         });
 
         return unsubscribe;
     }, [navigation]);
 
 
+    const isChecked = (itemId) => {
+        const isThere = DeleteArr.includes(itemId);
+        return isThere;
+    };
 
+    const toggleChecked = (itemId) => {
+
+        if (isChecked(itemId)) {
+
+            let Deleted = DeleteArr.filter((id) => id !== itemId);
+            setDeleteArr(Deleted)
+
+        } else {
+            setDeleteArr(DeleteArr.concat([itemId]))
+        }
+    };
+
+    const handleChandDrpDown = (val) => {
+        setSpinner(true)
+        Products.reverse();
+        setSpinner(false)
+
+
+    }
+
+    const SelectAllChecked = () => {
+        if (isSelected2) {
+            setSelection2(false);
+            setDeleteArr([])
+        }
+
+        else {
+            setSelection2(true);
+            let MnueID = Products.map(menu => menu.id)
+            setDeleteArr(MnueID)
+        }
+    }
+
+    const DeleteMenueMultiIteM = () => {
+        setSpinner(true)
+        dispatch(DeleteProduct(token, lang, DeleteArr))
+        dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
+    }
 
 
     const DeletProduct = (id) => {
@@ -75,7 +121,34 @@ function Products({ navigation }) {
                 />
 
                 <Card />
-                <DrobDwn />
+
+
+                <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: Colors.InputColor, }}>
+                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={SelectAllChecked} />
+                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('Select')}</Text>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                        <Text style={{ fontFamily: 'flatMedium' }}> {i18n.t('delete')}</Text>
+                    </TouchableOpacity>
+
+
+
+                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('filter')}</Text>
+                    <View style={{ borderWidth: .4, alignItems: 'center', justifyContent: 'center', height: width * .09, backgroundColor: Colors.bg, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                        <Dropdown
+                            placeholder={i18n.t('select')}
+                            data={data2}
+                            animationDuration={0}
+                            onChangeText={(val) => handleChandDrpDown(val)}
+                            fontSize={12}
+                            itemTextStyle={{ fontFamily: 'flatMedium' }}
+                            lineWidth={0}
+                            containerStyle={{ width: width * .22, paddingHorizontal: 5, bottom: 10 }}
+                        />
+                    </View>
+
+                </View>
+
+
 
                 <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={!Menue ? () => navigation.navigate('Menue') : () => navigation.navigate('AddProduct')} />
 
@@ -84,7 +157,7 @@ function Products({ navigation }) {
                     pagingEnabled={true}
                     showsVerticalScrollIndicator={false}
                     data={Products}
-                    extraData={Products}
+                    extraData={spinner}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) => (
                         <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
@@ -92,7 +165,7 @@ function Products({ navigation }) {
                                 <View style={{ flexDirection: 'row', flex: .75 }}>
                                     <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
                                     <View style={styles.FWrab}>
-                                        <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => setSelection2(!isSelected2)} />
+                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => toggleChecked(item.id)} />
                                         <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
                                         <Text style={styles.name}>{item.menu}</Text>
                                         <Text style={styles.nMenu}>{item.name}</Text>

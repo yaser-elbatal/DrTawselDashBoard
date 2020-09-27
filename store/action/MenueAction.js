@@ -73,8 +73,8 @@ export const UpdateMenue = (token, lang, nameAr, nameEn, id) => {
 }
 
 export const DeleteMenue = (token, id) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'DELETE',
             url: consts.url + 'delete-menu',
             data: { id },

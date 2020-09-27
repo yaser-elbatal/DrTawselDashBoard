@@ -23,7 +23,7 @@ function Menue({ navigation }) {
 
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
-    const Menue = useSelector(state => state.menue.menue);
+    const Menue = useSelector(state => state.menue.menue.data);
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('');
     const [DeleteArr, setDeleteArr] = useState([]);
@@ -36,14 +36,11 @@ function Menue({ navigation }) {
     const [isSelected2, setSelection2] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
-
+    // let MenueName = [...Menue.data].reverse();
 
     const data = [{
         value: i18n.t('delete'),
-    }, {
-        value: i18n.t('edit'),
     },];
-
 
 
 
@@ -60,6 +57,7 @@ function Menue({ navigation }) {
         return nameErr || nameEnErr
     }
 
+    console.log(token);
     const dispatch = useDispatch();
 
     const Add_menue = async () => {
@@ -68,6 +66,7 @@ function Menue({ navigation }) {
             setSpinner(true)
             dispatch(AddMenue(token, lang, nameAR, nameEN))
             dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+
             setModalVisible(false)
             setNameAr('');
             setNameEN('')
@@ -77,6 +76,7 @@ function Menue({ navigation }) {
 
         }
     }
+
     const edit = (item) => {
 
         setEditMaodVisible(true)
@@ -86,9 +86,10 @@ function Menue({ navigation }) {
 
     }
 
-    const DeleteMeueIteM = async (id) => {
-        await dispatch(DeleteMenue(token, id))
-        dispatch(MenueInfo(lang, token))
+    const DeleteMeueIteM = (id) => {
+        setSpinner(true)
+        dispatch(DeleteMenue(token, id))
+        dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
 
     }
 
@@ -105,21 +106,13 @@ function Menue({ navigation }) {
         return isThere;
     };
 
-
     const toggleChecked = (itemId) => {
 
-        //let ids = [...DeleteArr, DeleteArr.push(itemId)]
-        // console.log(ids)
         if (isChecked(itemId)) {
-            //  const index = DeleteArr.indexOf(itemId, 0);
-            // if (index > -1) {
-            DeleteArr.splice(1, itemId);
-            console.log(DeleteArr)
-            //  }
-            // let ids = DeleteArr.splice(itemId, 1);
-            //setDeleteArr(DeleteArr)
-            // console.log(DeleteArr)
-            // isChecked(itemId)
+
+            let Deleted = DeleteArr.filter((id) => id !== itemId);
+            setDeleteArr(Deleted)
+
         } else {
             setDeleteArr(DeleteArr.concat([itemId]))
         }
@@ -140,6 +133,34 @@ function Menue({ navigation }) {
         setTimeout(() => dispatch(SearchMenue(token, Search, lang)), 1000)
     }
 
+
+    const DeleteMenueMultiIteM = () => {
+        setSpinner(true)
+        dispatch(DeleteMenue(token, DeleteArr))
+        dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+    }
+
+
+    const handleChandDrpDown = (val) => {
+        Menue.reverse();
+        setModalVisible(!modalVisible)
+
+
+    }
+
+    const SelectAllChecked = () => {
+        if (isSelected2) {
+            setSelection2(false);
+            setDeleteArr([])
+        }
+
+        else {
+            setSelection2(true);
+            let MnueID = Menue.map(menu => menu.id)
+            setDeleteArr(MnueID)
+        }
+    }
+
     return (
         <Container loading={spinner}>
 
@@ -158,19 +179,11 @@ function Menue({ navigation }) {
                 <Card />
 
                 <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: Colors.InputColor, }}>
-                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={() => setSelection2(!isSelected2)} />
+                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={SelectAllChecked} />
                     <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('Select')}</Text>
-                    <View style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
-                        <Dropdown
-                            placeholder={i18n.t('select')}
-                            data={data}
-                            fontSize={12}
-                            itemTextStyle={{ fontFamily: 'flatMedium' }}
-                            lineWidth={0}
-                            containerStyle={{ width: width * .22, paddingHorizontal: 5, bottom: 10 }}
-                            animationDuration={0}
-                        />
-                    </View>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                        <Text style={{ fontFamily: 'flatMedium' }}> {i18n.t('delete')}</Text>
+                    </TouchableOpacity>
 
 
 
@@ -180,6 +193,7 @@ function Menue({ navigation }) {
                             placeholder={i18n.t('select')}
                             data={data2}
                             animationDuration={0}
+                            onChangeText={(val) => handleChandDrpDown(val)}
                             fontSize={12}
                             itemTextStyle={{ fontFamily: 'flatMedium' }}
                             lineWidth={0}
@@ -231,7 +245,7 @@ function Menue({ navigation }) {
 
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={Menue.data}
+                    data={Menue}
                     extraData={modalVisible}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item, index }) =>
@@ -241,7 +255,7 @@ function Menue({ navigation }) {
                             <View style={styles.Card} key={index}>
                                 <View style={styles.FWrab}>
                                     <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => toggleChecked(item.id)} />
-                                    <Text style={styles.nText}>{i18n.t('num')} # {index.toString() + 1}</Text>
+                                    <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
                                     <View style={{ flexDirection: 'row', marginStart: 5, alignItems: 'center' }}>
                                         <Text style={styles.nMenu}>{i18n.t('name')} :   </Text>
                                         <Text style={styles.name}>{item.name}</Text>

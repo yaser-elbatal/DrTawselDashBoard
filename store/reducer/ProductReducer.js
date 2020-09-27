@@ -8,7 +8,7 @@ export default (state = initialState, action) => {
             return { ...state, products: action.data.data }
 
         case Product_Detailes:
-            return { product: action.data.data, EditProduct: action.data.data }
+            return { ...state, product: action.data.data, EditProduct: action.data.data }
         case Add_product:
             return { ...state, products: action.data.data }
         case Edit_Product:
