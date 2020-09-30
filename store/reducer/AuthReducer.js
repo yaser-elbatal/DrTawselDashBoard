@@ -16,7 +16,7 @@ export default (state = initial_State, action) => {
         case login_failed:
             return { ...state, message: action.error.message, success: action.error.success }
         case Sign_up:
-            return { ...state, message: action.payload.message, user: null }
+            return { ...state, message: action.payload.message, }
         case Activate_Code:
             return { ...state, user: action.data, message: action.data.message, success: action.data.success }
         case profile_data:
@@ -28,7 +28,7 @@ export default (state = initial_State, action) => {
         case Update_provider:
             return { ...state, user: action.data, message: action.data.message, success: action.data.success }
         case logout:
-            return { user: null }
+            return { ...state, user: null }
 
         default:
             return state;

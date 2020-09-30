@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage } from 'react-native'
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage, Alert } from 'react-native'
 
 import { SText } from '../../common/SText';
 import BackBtn from '../../common/BackBtn'
@@ -37,6 +37,8 @@ function Login({ navigation }) {
 
 
     const getDeviceId = async () => {
+
+        Alert.alert('aaaaaaaaaa')
         const { status: existingStatus } = await Permissions.getAsync(
             Permissions.NOTIFICATIONS
         );
@@ -55,11 +57,12 @@ function Login({ navigation }) {
         const deviceId = await Notifications.getExpoPushTokenAsync();
 
         setDeviceId(deviceId);
-        setUserId(null);
 
         AsyncStorage.setItem('deviceID', deviceId);
     };
 
+
+    console.log(deviceId);
 
 
 
@@ -75,20 +78,43 @@ function Login({ navigation }) {
         if (!isVal) {
             setSpinner(true)
 
-            dispatch(SignIn(phone, password, deviceId, lang, navigation)).then(() => setSpinner(false))
+            dispatch(SignIn(phone, password, deviceId, lang, navigation)).then(() => setSpinner(false)).catch(e => {
+                setSpinner(false);
+                alert(e);
+            })
         }
         else {
-            Toaster(_validate());
             setSpinner(false)
+
+            Toaster(_validate());
 
         }
 
     }
+
     useEffect(() => {
-        setSpinner(false)
-        getDeviceId().then(() => setSpinner(false))
+        Alert.alert('odoodod')
+        getDeviceId()
+
+
+        // const unsubscribe = navigation.addListener('focus', () => {
+
+
+        //     setSpinner(true)
+        //     //setTimeout(() => {
+        //     // getDeviceId().then(() => setSpinner(false)).catch(e => console.warn(e))
+        //     //}, 8000);
+        // });
+
+        // return unsubscribe;
 
     }, []);
+
+    useEffect(() => {
+        setTimeout(() => setSpinner(false), 500);
+    }, [auth]);
+
+
     return (
         <Container loading={spinner}>
 

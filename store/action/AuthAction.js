@@ -93,9 +93,9 @@ const loginFailed = (dispatch, error, navigation) => {
 
 
 export const SignUp = (data, navigation) => {
-    return (dispatch) => {
-        AsyncStorage.getItem('deviceID').then(deviceId => {
-            console.log(deviceId);
+    return async (dispatch) => {
+        await AsyncStorage.getItem('deviceID').then(deviceId => {
+            console.log(deviceId)
             axios({
                 url: consts.url + 'sign-up',
 
@@ -126,6 +126,7 @@ export const SignUp = (data, navigation) => {
                     lang: data.lang,
                 }
             }).then(res => {
+                console.log('toooooooken' + res.data.data.token);
                 dispatch({ type: Sign_up, payload: res.data })
                 if (res.data.success) {
                     navigation.navigate('ActivateCode', { token: res.data.data.token })
@@ -213,8 +214,8 @@ export const CheckPhone = (lang, phone, navigation) => {
 }
 
 export const ResendCode = (token, navigation, lang) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             method: 'GET',
             url: consts.url + 'resend-code',
             headers: {
@@ -227,7 +228,7 @@ export const ResendCode = (token, navigation, lang) => {
                 navigation.navigate('NewPass', { token: token })
 
             }
-            else {
+            else
                 Toast.show({
                     text: res.data.message,
                     type: res.data.success ? "success" : "danger",
@@ -238,7 +239,7 @@ export const ResendCode = (token, navigation, lang) => {
                         textAlign: 'center'
                     }
                 });
-            }
+
         })
     }
 }

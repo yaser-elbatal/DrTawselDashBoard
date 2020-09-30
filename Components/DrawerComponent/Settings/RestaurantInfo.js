@@ -171,7 +171,7 @@ function RestaurantInfo({ navigation }) {
 
         if (!val) {
             setSpinner(true)
-            dispatch(EditProvider(token, lang, nameAR, nameEN, mapRegion.latitude, mapRegion.longitude, city, WebUrl, CommercialRegister, selectedRadion, selecCommerical, SelectDelivery, BranchNum, from, to, base64, available, navigation))
+            dispatch(EditProvider(token, lang, nameAR, nameEN, mapRegion.latitude, mapRegion.longitude, city, WebUrl, CommercialRegister, selectedRadion, selecCommerical, SelectDelivery, BranchNum, from, to, base64, available, navigation)).then(() => setSpinner(false))
         }
         else {
             setSpinner(false);
@@ -190,6 +190,7 @@ function RestaurantInfo({ navigation }) {
             <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
                 <Header navigation={navigation} label={i18n.t('RestInfo')} />
                 <TouchableOpacity onPress={_pickImage}>
+
                     <Image source={{ uri: user.provider.cover }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
                 </TouchableOpacity>
 

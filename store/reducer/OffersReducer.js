@@ -6,10 +6,10 @@ export default (state = initialState, action) => {
         case Get_banners:
             return { ...state, Banners: action.data.data }
         case Add_banners:
-            return { ...state, Banners: action.data.data }
+            return { ...state, Banners: action.data }
 
         case Delete_Banners:
-            return { ...state, Banners: action.data }
+            return { Banners: action.data }
         default:
             return state;
     }

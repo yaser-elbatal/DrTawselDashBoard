@@ -9,8 +9,8 @@ export const Update_provider = 'Update_provider'
 
 
 export const EditProvider = (token, lang, restaurant_name_ar, restaurant_name_en, latitude, longitude, address, website_url, commercial_register, is_owner, authorization_commercial, available_delivery, num_of_branches, preparing_time_from, preparing_time_to, cover, available, navigation) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             method: 'POST',
             url: consts.url + 'update-provider',
             headers: { Authorization: 'Bearer ' + token, },

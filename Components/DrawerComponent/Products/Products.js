@@ -29,7 +29,6 @@ function Products({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
     const [DeleteArr, setDeleteArr] = useState([]);
-    const [Boaleana, setBoaleana] = useState(false)
 
     const data2 = [{
         value: i18n.t('latest'),
@@ -109,7 +108,7 @@ function Products({ navigation }) {
         <Container loading={spinner}>
 
             <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-                <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} />
+                <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} label={i18n.t('products')} />
 
                 <InputIcon
                     placeholder={i18n.t('search1')}
@@ -118,28 +117,30 @@ function Products({ navigation }) {
                     onChangeText={(e) => handleChange(e)}
                     image={require('../../../assets/Images/search.png')}
                     styleCont={{ marginTop: 0, }}
+                    inputStyle={{ borderRadius: 10 }}
+
                 />
 
                 <Card />
 
 
-                <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: Colors.InputColor, }}>
-                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, width: width * .05, height: height * .03, }} onPress={SelectAllChecked} />
-                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('Select')}</Text>
+                <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
+                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5 }} onPress={SelectAllChecked} />
+                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
                     <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
-                        <Text style={{ fontFamily: 'flatMedium' }}> {i18n.t('delete')}</Text>
+                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
 
 
-                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .025, paddingHorizontal: 2 }}>{i18n.t('filter')}</Text>
+                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 2, color: Colors.inputTextMainColor }}>{i18n.t('filter')}</Text>
                     <View style={{ borderWidth: .4, alignItems: 'center', justifyContent: 'center', height: width * .09, backgroundColor: Colors.bg, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
                         <Dropdown
                             placeholder={i18n.t('select')}
                             data={data2}
                             animationDuration={0}
                             onChangeText={(val) => handleChandDrpDown(val)}
-                            fontSize={12}
+                            fontSize={14}
                             itemTextStyle={{ fontFamily: 'flatMedium' }}
                             lineWidth={0}
                             containerStyle={{ width: width * .22, paddingHorizontal: 5, bottom: 10 }}
@@ -165,10 +166,10 @@ function Products({ navigation }) {
                                 <View style={{ flexDirection: 'row', flex: .75 }}>
                                     <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
                                     <View style={styles.FWrab}>
-                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, width: 20, height: 20, }} onPress={() => toggleChecked(item.id)} />
+                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, }} onPress={() => toggleChecked(item.id)} />
                                         <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                        <Text style={styles.name}>{item.menu}</Text>
-                                        <Text style={styles.nMenu}>{item.name}</Text>
+                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu}</Text>
+                                        <Text style={[styles.nMenu, { color: Colors.IconBlack }]}>{item.name}</Text>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.nText}>{item.price}</Text>
                                             <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     Card: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 130,
+        height: 160,
         width: '90%',
         marginStart: 20,
         marginVertical: 5,
@@ -246,7 +247,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 1,
-        overflow: 'hidden',
+        elevation: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
     },
     FWrab: {
         flexDirection: 'column',
@@ -256,19 +265,20 @@ const styles = StyleSheet.create({
     nText: {
         color: Colors.sky,
         fontFamily: 'flatMedium',
-        marginVertical: 3
+        paddingVertical: 8
 
     },
     nMenu: {
         fontFamily: 'flatMedium',
         fontSize: 12,
-        marginVertical: 5
+        paddingVertical: 5
 
     },
     name: {
         fontFamily: 'flatMedium',
         fontSize: 10,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        paddingVertical: 5
     },
     SWarb: {
         flexDirection: 'column',

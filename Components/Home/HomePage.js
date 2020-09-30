@@ -18,14 +18,18 @@ function HomePage({ navigation }) {
     const user = useSelector(state => state.auth.user.data);
     const token = useSelector(state => state.auth.user.data.token)
     const [spinner, setSpinner] = useState(true);
-
+    console.log(token);
     const lang = useSelector(state => state.lang.language);
     const HomeProduct = useSelector(state => state.home.product);
     const QuickRebort = useSelector(state => state.home.extra);
     const dispatch = useDispatch();
 
 
-    console.log(lang);
+
+
+
+
+
 
 
     useEffect(() => {
@@ -65,7 +69,7 @@ function HomePage({ navigation }) {
                                     </View>
                                 </TouchableOpacity>
                             )
-                            ) : null
+                            ) : <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
 
 
                     }
@@ -87,7 +91,9 @@ function HomePage({ navigation }) {
                                 </View>
                                 <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
                             </View>
-                        </View> : null
+                        </View>
+                        :
+                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                 }
 
             </Content>

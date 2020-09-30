@@ -73,26 +73,6 @@ import OrderManageAccDetailes from '../Components/DrawerComponent/ManageAccount/
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const drawerScreen = () => {
-    return (
-        <Drawer.Navigator initialRouteName="HomePage" drawerStyle={{ backgroundColor: Colors.sky, width }}
-            drawerContent={(props) => <CustomDrawerMenue {...props} />}>
-            <Drawer.Screen name="HomePage" component={HomePage} />
-            <Drawer.Screen name="Menue" component={Menue} />
-            <Drawer.Screen name="Products" component={Products} />
-            <Drawer.Screen name="Orders" component={Orders} />
-            <Drawer.Screen name="AddOffer" component={AddOffer} />
-            <Drawer.Screen name="Settings" component={Settings} />
-            <Drawer.Screen name="Comments" component={Comments} />
-            <Drawer.Screen name="Notifications" component={Notifications} />
-            <Drawer.Screen name="Wallet" component={Wallet} />
-            <Drawer.Screen name="ContactUs" component={ContactUs} />
-            <Drawer.Screen name="ManageAccount" component={ManageAccount} />
-            <Drawer.Screen name="Report" component={Report} />
-        </Drawer.Navigator>
-
-    );
-}
 
 export const MainStackNav = () => {
 
@@ -179,3 +159,23 @@ export const AppStackNavigator = () => {
     )
 }
 
+const drawerScreen = () => {
+    return (
+        <Drawer.Navigator initialRouteName="HomePage" drawerStyle={{ backgroundColor: Colors.sky, width }}
+            drawerContent={(props) => <CustomDrawerMenue {...props} />}>
+            <Drawer.Screen name="HomePage" component={HomePage} />
+            <Drawer.Screen name="Menue" component={Menue} />
+            <Drawer.Screen name="Products" component={Products} />
+            <Drawer.Screen name="Orders" component={Orders} />
+            <Drawer.Screen name="AddOffer" component={AddOffer} />
+            <Drawer.Screen name="Settings" component={Settings} />
+            <Drawer.Screen name="Comments" component={Comments} />
+            <Drawer.Screen name="Notifications" component={Notifications} />
+            <Drawer.Screen name="Wallet" component={Wallet} />
+            <Drawer.Screen name="ContactUs" component={ContactUs} />
+            <Drawer.Screen name="ManageAccount" component={ManageAccount} />
+            <Drawer.Screen name="Report" component={Report} />
+        </Drawer.Navigator>
+
+    );
+}

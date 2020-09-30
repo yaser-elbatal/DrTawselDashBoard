@@ -119,8 +119,6 @@ function AddProduct({ navigation }) {
         setDetailesAr('');
         setDetailesEn('');
 
-
-
     }
 
 
@@ -456,24 +454,24 @@ function AddProduct({ navigation }) {
 
 
                 {
-                    ExtraProduct.length ?
-                        ExtraProduct.map((proExtra, index) =>
-                            (
-                                <>
-                                    <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
-                                        <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
-                                            <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}{i18n.t('Rial')}</Text>
-                                        </View>
-                                        <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => deleteExtraProduct(proExtra.id)}>
-                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                        </TouchableOpacity>
+
+                    ExtraProduct.map((proExtra, index) =>
+                        (
+                            <>
+                                <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
+                                    <View style={{ flexDirection: 'row', paddingStart: 10 }}>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                        <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}{i18n.t('Rial')}</Text>
                                     </View>
-                                    <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
-                                </>
-                            )
-                        ) : null
+                                    <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => deleteExtraProduct(proExtra.id)}>
+                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
+                            </>
+                        )
+                    )
                 }
 
                 <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />

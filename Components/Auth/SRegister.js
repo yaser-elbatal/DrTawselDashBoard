@@ -15,6 +15,7 @@ import * as Location from 'expo-location';
 import { validateUserName, ValdiateDebId, ValdiateCITyId, ValditeCommercialRegister, ValdiateBranch } from '../../common/Validation';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
+import Container from '../../common/Container';
 
 const isIOS = Platform.OS === 'ios';
 const latitudeDelta = 0.0922;
@@ -37,7 +38,8 @@ function SRegister({ navigation, route }) {
 
     const [city, setCity] = useState(null);
     const [MyLocation, setLocation] = useState('');
-
+    const [spinner, setSpinner] = useState(true);
+    const [LOcation, setLOcation] = useState('')
     const [department, setDepartment] = useState(null)
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('');
@@ -83,7 +85,7 @@ function SRegister({ navigation, route }) {
 
         try {
             const { data } = await axios.get(getCity);
-            setLocation(data.results[0].formatted_address)
+            setLOcation(data.results[0].formatted_address)
             console.log("city2  ", data.results[0].formatted_address)
             console.log("city2 ", MyLocation)
 
@@ -104,7 +106,7 @@ function SRegister({ navigation, route }) {
                 userLocation = { latitude: latitude, longitude: latitude, latitudeDelta, longitudeDelta };
             } else {
                 userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
-                // setMapRegion(userLocation);
+                setMapRemapRefRegion(userLocation);
             }
             setMapRegion(userLocation);
             // isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
@@ -116,21 +118,25 @@ function SRegister({ navigation, route }) {
         console.log('MapRegion======' + mapRegion.latitude);
         try {
             const { data } = await axios.get(getCity);
-            setLocation(data.results[0].formatted_address)
+            setLOcation(data.results[0].formatted_address)
 
         } catch (e) {
             console.log(e);
         }
     };
 
-
     useEffect(() => {
-        fetchData();
-        dispatch(GetDepartment(lang))
-        dispatch(getCititis(lang));
+        const unsubscribe = navigation.addListener('focus', () => {
 
+            setSpinner(true)
+            fetchData();
+            dispatch(GetDepartment(lang))
+            dispatch(getCititis(lang)).then(() => setSpinner(false)).catch((e) => { setSpinner(false); console.warn(e); })
+        });
 
-    }, [])
+        return unsubscribe;
+
+    }, [navigation])
 
     const NavigateToNextLocation = () => {
         let val = _validate()
@@ -147,7 +153,7 @@ function SRegister({ navigation, route }) {
                 city: city,
                 BranchNum: BranchNum,
                 CommercialRegister: CommercialRegister,
-                MyLocation: MyLocation,
+                MyLocation: LOcation,
                 latitude: mapRegion.latitude,
                 longitude: mapRegion.longitude
             })
@@ -159,130 +165,138 @@ function SRegister({ navigation, route }) {
     }
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <BackBtn navigation={navigation} />
-            <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
-                <Text style={styles.UText}>{i18n.t('Activity')}</Text>
-                <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
-            </View>
-            <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
-                <Dropdown
-                    placeholder={i18n.t('dep')}
-                    data={DebName}
-                    fontSize={12}
-                    itemTextStyle={{ fontFamily: 'flatMedium' }}
-                    lineWidth={0}
-                    containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
-                    animationDuration={0}
-                    onChangeText={val => setDepartment(val)}
-                    value={DebId.label}
+        <Container loading={spinner}>
+
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <BackBtn navigation={navigation} />
+                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
+                    <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
+                    <Text style={styles.UText}>{i18n.t('Activity')}</Text>
+                    <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
+                </View>
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
+                    <Dropdown
+                        placeholder={i18n.t('dep')}
+                        data={DebName}
+                        fontSize={12}
+                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        lineWidth={0}
+                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                        animationDuration={0}
+                        onChangeText={val => setDepartment(val)}
+                        value={DebId.label}
+                    />
+                </View>
+
+                <InputIcon
+                    label={i18n.t('ResNameAr')}
+                    placeholder={i18n.t('ResNameAr')}
+
+                    onChangeText={(e) => setNameAr(e)}
+                    value={nameAR}
+                    styleCont={{ marginTop: 20 }}
                 />
-            </View>
+                <InputIcon
+                    label={i18n.t('ResNameEn')}
+                    placeholder={i18n.t('ResNameEn')}
 
-            <InputIcon
-                label={i18n.t('ResNameAr')}
-                placeholder={i18n.t('ResNameAr')}
+                    onChangeText={(e) => setNameEN(e)}
+                    value={nameEN}
+                    styleCont={{ marginTop: 0 }}
 
-                onChangeText={(e) => setNameAr(e)}
-                value={nameAR}
-                styleCont={{ marginTop: 20 }}
-            />
-            <InputIcon
-                label={i18n.t('ResNameEn')}
-                placeholder={i18n.t('ResNameEn')}
-
-                onChangeText={(e) => setNameEN(e)}
-                value={nameEN}
-                styleCont={{ marginTop: 0 }}
-
-            />
-            <TouchableOpacity onPress={() => setisopened(!isopened)} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{MyLocation}</Text>
-                <Image source={require('../../assets/Images/location_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
-            </TouchableOpacity>
+                />
+                <InputIcon
+                    label={i18n.t('Location')}
+                    placeholder={i18n.t('Location')}
+                    onChangeText={(e) => setLOcation(e)}
+                    value={LOcation}
+                    styleCont={{ marginTop: 0 }}
+                    image={require('../../assets/Images/location_gray.png')}
+                    onPress={() => setisopened(!isopened)}
+                />
 
 
-            {
-                isopened ?
-                    <View style={styles.centeredView} >
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={isopened}   >
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
-                                    {
-                                        mapRegion.latitude != null ? (
-                                            <MapView
-                                                style={{ flex: 1, width: '100%' }}
-                                                region={mapRegion}
-                                                onRegionChangeComplete={region => setMapRegion(region)}
-                                                customMapStyle={mapStyle}
-                                                initialRegion={mapRegion}
-                                                showsUserLocation={true}
-                                                zoomControlEnabled={true}
-                                                showsTraffic={true} >
-
-                                                <Marker
-                                                    draggable
-                                                    coordinate={mapRegion}
-                                                    onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
-
-                                                >
-                                                    <Image source={require('../../assets/Images/location_gray.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
-                                                </Marker>
-                                            </MapView>
-                                        ) : <View />
-                                    }
-                                    <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
 
 
+
+                {
+                    isopened ?
+                        <View style={styles.centeredView} >
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={isopened}   >
+                                <View style={styles.centeredView}>
+                                    <View style={styles.modalView}>
+
+                                        <MapView
+                                            style={{ flex: 1, width: '100%' }}
+                                            region={mapRegion}
+                                            onRegionChangeComplete={region => setMapRegion(region)}
+                                            customMapStyle={mapStyle}
+                                            initialRegion={mapRegion}
+                                            showsUserLocation={true}
+                                            zoomControlEnabled={true}
+                                            showsTraffic={true} >
+
+                                            <Marker
+                                                draggable
+                                                coordinate={mapRegion}
+                                                onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+
+                                            >
+                                                <Image source={require('../../assets/Images/location_gray.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
+                                            </Marker>
+                                        </MapView>
+                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+
+
+                                    </View>
                                 </View>
-                            </View>
 
 
-                        </Modal>
-                    </View>
-                    : null
-            }
+                            </Modal>
+                        </View>
+                        : null
+                }
 
-            <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 20 }}>
-                <Dropdown
-                    placeholder={i18n.t('city')}
-                    data={cityName}
-                    fontSize={12}
-                    itemTextStyle={{ fontFamily: 'flatMedium' }}
-                    lineWidth={0}
-                    containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
-                    animationDuration={0}
-                    onChangeText={val => setCity(val)}
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 20 }}>
+                    <Dropdown
+                        placeholder={i18n.t('city')}
+                        data={cityName}
+                        fontSize={12}
+                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        lineWidth={0}
+                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                        animationDuration={0}
+                        onChangeText={val => setCity(val)}
 
-                    value={CityID.label}
+                        value={CityID.label}
+                    />
+                </View>
+
+                <InputIcon
+                    label={i18n.t('branchNum')}
+                    placeholder={i18n.t('branchNum')}
+                    keyboardType='numeric'
+                    onChangeText={(e) => setBranchNum(e)}
+                    value={BranchNum}
+                    styleCont={{ marginTop: 20 }}
+
                 />
-            </View>
+                <InputIcon
+                    label={i18n.t('CommercialRegister')}
+                    placeholder={i18n.t('CommercialRegister')}
+                    keyboardType='numeric'
+                    onChangeText={(e) => setCommercialRegister(e)}
+                    value={CommercialRegister}
+                    styleCont={{ marginTop: 0 }}
 
-            <InputIcon
-                label={i18n.t('branchNum')}
-                placeholder={i18n.t('branchNum')}
-                keyboardType='numeric'
-                onChangeText={(e) => setBranchNum(e)}
-                value={BranchNum}
-                styleCont={{ marginTop: 20 }}
+                />
+                <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
 
-            />
-            <InputIcon
-                label={i18n.t('CommercialRegister')}
-                placeholder={i18n.t('CommercialRegister')}
-                keyboardType='numeric'
-                onChangeText={(e) => setCommercialRegister(e)}
-                value={CommercialRegister}
-                styleCont={{ marginTop: 0 }}
-
-            />
-            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
-
-        </ScrollView>
+            </ScrollView>
+        </Container>
     )
 }
 

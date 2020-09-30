@@ -65,7 +65,7 @@ function Previousoffers({ navigation }) {
             setBase64(result.base64);
         }
     };
-    const Add_menue = () => {
+    const Add_Banner = () => {
         setSpinner(true)
         dispatch(AddBanners(token, base64, lang))
         dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
@@ -88,36 +88,42 @@ function Previousoffers({ navigation }) {
 
 
                 {
-                    Banners.length > 0 ?
-                        Banners.map((item, index) => (
+                    !Banners ?
+                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        :
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={spinner}
+                            extraData={modalVisible}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({ item, index }) =>
 
 
+                                (
+                                    <View style={styles.Card}>
+                                        <View style={{ flexDirection: 'row', height: '100%', }}>
+                                            <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                            <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
 
-                            <View style={styles.Card}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
-                                    <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
-
-                                            <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}:{index + 1}</Text>
+                                                    <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}:{index + 1}</Text>
 
 
-                                            <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
-                                                <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 15, width: 15, }} />
-                                            </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
+                                                        <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 15, width: 15, }} />
+                                                    </TouchableOpacity>
 
+                                                </View>
+                                                <View style={{ flexDirection: 'row', }}>
+                                                    <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
+                                                    <Text style={styles.CardText}>{item.date}</Text>
+                                                </View>
+                                                <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
+                                            </View>
                                         </View>
-                                        <View style={{ flexDirection: 'row', }}>
-                                            <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
-                                            <Text style={styles.CardText}>{item.date}</Text>
-                                        </View>
-                                        <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
                                     </View>
-                                </View>
-                            </View>
 
-                        )) : null
-                }
+                                )} />}
 
                 <View style={styles.centeredView}>
                     <Modal
@@ -134,7 +140,7 @@ function Previousoffers({ navigation }) {
                                     <TouchableOpacity onPress={_pickImage}>
                                         <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
                                     </TouchableOpacity>
-                                    <BTN title={i18n.t('AddBanner')} ContainerStyle={styles.LoginBtn1} onPress={Add_menue} />
+                                    <BTN title={i18n.t('AddBanner')} ContainerStyle={styles.LoginBtn1} onPress={Add_Banner} />
                                 </View>
                             </View>
                         </View>

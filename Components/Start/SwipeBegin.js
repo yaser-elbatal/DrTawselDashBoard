@@ -24,7 +24,6 @@ const Slider = ({ navigation }) => {
     useEffect(() => {
 
         dispatch(IntroService(lang)).then(() => setSpinner(false))
-        I18n.locale = 'ar';
 
         const direction = AsyncStorage.getItem("direction");
         if (direction) {
@@ -36,7 +35,7 @@ const Slider = ({ navigation }) => {
 
 
 
-    const slides = Intro.map(int => ({ key: int.id, title: int.title, text: int.details, image: { uri: int.image }, }))
+    const slides = Intro.map(int => ({ key: int.title, title: int.title, text: int.details, image: { uri: int.image }, backgroundColor: 'red', }))
 
     // const slides = [
     //     {
@@ -44,27 +43,25 @@ const Slider = ({ navigation }) => {
     //         title: 'عنوان النص',
     //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
     //         image: require('../../assets/Images/stawseel.png'),
-    //         backgroundColor: Colors.bg,
     //     },
     //     {
     //         key: 'two',
     //         title: 'عنوان النص',
     //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
     //         image: require('../../assets/Images/ftawseel.png'),
-    //         backgroundColor: Colors.bg,
     //     },
     //     {
     //         key: 'three',
     //         title: 'عنوان النص',
     //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
     //         image: require('../../assets/Images/ttawseel.png'),
-    //         backgroundColor: Colors.bg,
 
     //     }
     // ];
 
 
     const renderItem = ({ item }) => {
+
         return (
 
             <View style={styles.slide}>
@@ -72,9 +69,11 @@ const Slider = ({ navigation }) => {
                 <View style={styles.container}>
                     <Text style={styles.title}>{item.title}</Text>
                     <Text style={styles.text}>{item.text}</Text>
+
                 </View>
 
             </View>
+
         );
     }
     const renderDoneButton = () => {
@@ -87,11 +86,12 @@ const Slider = ({ navigation }) => {
         );
     };
     return (
-        <View >
+        <View style={{ flex: 1 }}>
 
             <AppIntroSlider
                 renderItem={renderItem}
-                data={slides} dotClickEnabled={true}
+                data={slides}
+                dotClickEnabled={true}
                 dotStyle={styles.Dotted}
                 activeDotStyle={styles.activeDoted}
                 doneLabel={i18n.t('start')}
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.bg
+        backgroundColor: Colors.BgBlue
     },
     container: {
         position: 'absolute',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
     ImgsSlide: {
         width,
-        height: '100%'
+        height
     },
     title: {
         textAlign: 'center',

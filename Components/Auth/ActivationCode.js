@@ -17,7 +17,6 @@ import { Toaster } from '../../common/Toaster';
 
 function ActivateCode({ navigation, route }) {
     const [code, setCode] = useState('');
-    const [codeStatus, setCodeStatus] = useState(0);
     const [spinner, setSpinner] = useState(false);
 
     const lang = useSelector(state => state.lang.language);
@@ -27,9 +26,6 @@ function ActivateCode({ navigation, route }) {
     const dispatch = useDispatch()
 
 
-    useEffect(() => {
-        token
-    }, []);
 
 
 

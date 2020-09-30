@@ -9,8 +9,8 @@ export const Get_Debartmets = 'Get_Departments';
 
 
 export const getCititis = (lang) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'GET',
             url: `${consts.url}cities`,
             params: { lang }
@@ -25,8 +25,8 @@ export const getCititis = (lang) => {
 };
 
 export const GetDepartment = (lang) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'GET',
             url: `${consts.url}categories`,
             params: { lang }

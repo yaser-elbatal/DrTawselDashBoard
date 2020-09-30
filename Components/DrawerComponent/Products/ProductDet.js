@@ -19,7 +19,7 @@ const ProductDet = ({ navigation, route }) => {
 
     const dispatch = useDispatch();
 
-
+    console.log(ProductDetA);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -58,39 +58,42 @@ const ProductDet = ({ navigation, route }) => {
                                 </TouchableOpacity>
                             </ImageBackground>
                             <View style={styles.ScrolContainer}>
-                                <ScrollView style={{ flex: 1, marginStart: 20, marginEnd: 20 }} showsVerticalScrollIndicator={false}>
+                                <ScrollView style={{ flex: 1, margin: 20 }} showsVerticalScrollIndicator={false}>
+
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
+                                        <View style={styles.Wrab}>
+                                            <View style={{ flexDirection: 'row', }}>
+                                                <Text style={styles.text}>{ProductDetA.name_ar}</Text>
+                                                <Text style={[styles.text, { paddingHorizontal: 10 }]}>{ProductDetA.name_en}</Text>
+                                            </View>
+
+                                            <View >
+                                                {
+                                                    ProductDetA.available == 0 ?
+                                                        <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+                                                        :
+                                                        <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
 
 
-                                    <View style={styles.Wrab}>
-                                        <View style={{ flexDirection: 'row', paddingHorizontal: 5 }}>
-                                            <Text style={styles.text}>{ProductDetA.name_ar}</Text>
-                                            <Text style={[styles.text, { paddingHorizontal: 10 }]}>{ProductDetA.name_en}</Text>
+                                                }
+                                            </View>
+
 
                                         </View>
+                                        <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                                            <Text style={styles.num}>{i18n.t('num')}#{ProductDetA.id}</Text>
+                                            <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDetA.menu}</Text>
+                                            <Text style={styles.num}>{ProductDetA.price}{i18n.t('Rial')}</Text>
+                                            <View style={{ flexDirection: 'row', }}>
+                                                <Text style={styles.num}>{ProductDetA.price}</Text>
+                                                <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price - ProductDetA.discount}</Text>
+                                                <Text style={[styles.num, { color: Colors.InputColor }]}>({i18n.t('Availablekilos') + ProductDetA.available_kilos})</Text>
 
-                                        <TouchableOpacity >
-                                            {
-                                                ProductDetA.available == 0 ?
-                                                    <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-                                                    :
-                                                    <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-
-
-                                            }
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                        <Text style={styles.num}>{i18n.t('num')}#{index + 1}</Text>
-                                        <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDetA.menu}</Text>
-                                        <Text style={styles.num}>{ProductDetA.price}{i18n.t('Rial')}</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={styles.num}>{ProductDetA.price}</Text>
-                                            <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price - ProductDetA.discount}</Text>
-                                            <Text style={[styles.num, { color: Colors.InputColor }]}>({i18n.t('Availablekilos') + ProductDetA.available_kilos})</Text>
+                                            </View>
 
                                         </View>
-
                                     </View>
+
 
                                     <TouchableOpacity onPress={() => setClick1(!click1)}>
                                         <View style={{ backgroundColor: '#F6F6F6', height: 40, }}>
@@ -109,7 +112,7 @@ const ProductDet = ({ navigation, route }) => {
                                     </TouchableOpacity>
                                     {
                                         click1 ?
-                                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 10, color: Colors.InputColor }}>
+                                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 10, color: Colors.InputColor, alignSelf: 'flex-start' }}>
                                                 {ProductDetA.details}
 
 
@@ -136,8 +139,8 @@ const ProductDet = ({ navigation, route }) => {
                                         click2 ?
 
                                             ProductDetA.extras && ProductDetA.extras.map((size, index) => (
-                                                <View style={{ flexDirection: 'row', marginHorizontal: 40, alignItems: 'center' }} key={index + 1}>
-                                                    <Text style={styles.name} key={size.id}> -   {size.name} </Text>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }} key={index + 1}>
+                                                    <Text style={styles.name} key={size.id}> {size.name} </Text>
                                                     <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15 }]}>{size.price}{i18n.t('Rial')}</Text>
 
                                                 </View>
@@ -171,6 +174,7 @@ const styles = StyleSheet.create({
     BImg: {
         height: 50,
         width: 50,
+
     },
     nMenu: {
         fontFamily: 'flatMedium',
@@ -180,7 +184,8 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 14,
         color: Colors.sky,
-        marginBottom: 10
+        marginBottom: 10,
+        paddingVertical: 3
     },
     EditImg: {
         width: 20,

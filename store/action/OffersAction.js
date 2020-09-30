@@ -22,9 +22,10 @@ export const GetBanners = (token, lang) => {
     }
 }
 
+
 export const AddBanners = (token, image, lang) => {
-    return (dispatch) => {
-        axios({
+    return async (dispatch) => {
+        await axios({
             method: 'POST',
             url: consts.url + 'add-banner',
             data: { image },

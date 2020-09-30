@@ -584,6 +584,8 @@ const en = {
   priceOrders: 'Price Orders',
   numOrders: 'Num of Orders',
   search1: 'search1',
+  products: 'products',
+  Location: 'Location'
 
 
 };
