@@ -16,7 +16,7 @@ function TRegister({ navigation, route }) {
     const lang = useSelector(state => state.lang.language);
     const dispatch = useDispatch();
 
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
 
     const [WebUrl, setWebUrl] = useState('');
     const [selecCommerical, setselecCommerical] = useState(null);
@@ -30,9 +30,7 @@ function TRegister({ navigation, route }) {
         { id: 1, title: `${i18n.t("yes")}` },
     ])
 
-    useEffect(() => {
-        setTimeout(() => setSpinner(false), 500);
-    }, []);
+
 
 
     const _validate = () => {
@@ -84,7 +82,7 @@ function TRegister({ navigation, route }) {
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10, flex: .9, fontSize: 10, }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('Franch')}</Text>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('Franch')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
@@ -112,7 +110,7 @@ function TRegister({ navigation, route }) {
                                                 : null
                                         }
                                     </View>
-                                    <Text style={[styles.sText, { color: selecCommerical === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    <Text style={[styles.sText, { color: selecCommerical === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
 
                                 </TouchableOpacity>
                             )
@@ -122,7 +120,7 @@ function TRegister({ navigation, route }) {
                 </View>
                 <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ paddingEnd: 80, flex: .9, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('DeliveryServ')}</Text>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('DeliveryServ')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
@@ -150,7 +148,7 @@ function TRegister({ navigation, route }) {
                                                 : null
                                         }
                                     </View>
-                                    <Text style={[styles.sText, { color: SelectDelivery === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    <Text style={[styles.sText, { color: SelectDelivery === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
 
                                 </TouchableOpacity>
                             )

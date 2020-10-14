@@ -8,12 +8,12 @@ export const validatePassword = (password) =>
 
 export const validateTwoPasswords = (password, confirmPassword) => {
     return password != confirmPassword
-        ? "غير متطابق مع الاخر"
+        ? i18n.t('NotMatch')
         : null;
 };
 
 export const validateCode = (code) =>
-    code === '' || code.length < 3 ? "يرجي التاكد من الكود واعاده المحاوله" : null;
+    code === '' || code.length < 3 ? i18n.t('CodeErr') : null;
 
 export const ValditeCommercialRegister = (CommercialRegister) =>
     CommercialRegister === '' || CommercialRegister.length < 10 ? i18n.t('CommRegister') : null;

@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
             return { wallet: action.data }
 
         case Get_MyBankes:
-            return { Banks: action.data.data }
+            return { ...state, Banks: action.data.data }
         case Get_Manage_account:
             return { Macoount: action.data }
         default:

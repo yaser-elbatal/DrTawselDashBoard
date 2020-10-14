@@ -17,18 +17,18 @@ function Fregister({ navigation }) {
     const [email, setemail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
     const [selectedRadion, setSelectedRadio] = useState(null)
 
     const [data, setData] = useState([
 
-        { id: 0, title: `${i18n.t("no")}` },
+
         { id: 1, title: `${i18n.t("yes")}` },
+        { id: 0, title: `${i18n.t("no")}` },
 
     ])
 
 
-
+    console.log(selectedRadion);
 
 
 
@@ -83,7 +83,6 @@ function Fregister({ navigation }) {
                 placeholder={i18n.t('phone')}
                 onChangeText={(e) => setPhone(e)}
                 value={phone}
-
                 keyboardType='numeric'
                 styleCont={{ marginTop: 0 }}
             />
@@ -93,7 +92,6 @@ function Fregister({ navigation }) {
                 placeholder={i18n.t('email')}
                 onChangeText={(e) => setemail(e)}
                 value={email}
-
                 keyboardType='email-address'
                 styleCont={{ marginTop: 0 }}
             />
@@ -123,25 +121,25 @@ function Fregister({ navigation }) {
 
             <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                 <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                    <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('owner')}</Text>
+                    <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('owner')}</Text>
                 </View>
                 {
                     data.map((item, index) => {
                         return (
-                            <TouchableOpacity onPress={() => { setSelectedRadio(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                            <TouchableOpacity onPress={() => { setSelectedRadio(item.id) }} key={index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
                                 <View style={{
                                     height: 15,
                                     width: 15,
                                     borderRadius: 12,
                                     borderWidth: 2,
-                                    borderColor: selectedRadion === index ? Colors.sky : Colors.fontNormal,
+                                    borderColor: selectedRadion === item.id ? Colors.sky : Colors.fontNormal,
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     alignSelf: 'center',
 
                                 }}>
                                     {
-                                        selectedRadion === index ?
+                                        selectedRadion === item.id ?
                                             <View style={{
                                                 height: 6,
                                                 width: 6,
@@ -151,7 +149,7 @@ function Fregister({ navigation }) {
                                             : null
                                     }
                                 </View>
-                                <Text style={[styles.sText, { color: selectedRadion === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                <Text style={[styles.sText, { color: selectedRadion === item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
 
                             </TouchableOpacity>
 
@@ -179,7 +177,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     LoginBtn: {
-        marginVertical: 5,
+        marginVertical: 25,
         borderRadius: 5,
         marginHorizontal: 20,
         width: '90%',

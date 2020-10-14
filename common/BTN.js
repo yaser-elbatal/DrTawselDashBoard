@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.sky,
         width: '85%',
         marginHorizontal: 30,
-        height: width * .1,
+        height: 45,
         marginTop: 30,
         alignItems: 'center',
         justifyContent: 'center'
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     sText: {
         fontFamily: 'flatMedium',
         color: Colors.bg,
-        fontSize: width * .04,
+        fontSize: 16,
         textAlign: 'center',
     }
 })

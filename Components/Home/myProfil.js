@@ -4,7 +4,6 @@ import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { useSelector, useDispatch } from 'react-redux'
 import { GetProfile } from '../../store/action/ProfileAction'
-import { width } from '../../consts/HeightWidth'
 import Container from '../../common/Container'
 
 function myProfil({ navigation }) {
@@ -14,7 +13,9 @@ function myProfil({ navigation }) {
     const user = useSelector(state => state.auth.user.data)
     const lang = useSelector(state => state.lang.language);
     // const myProf = useSelector(state => state.profile.user.data);
-    // console.log('myProf' + myProf);
+
+    // console.log(myProf);
+
     const dispatch = useDispatch();
 
 
@@ -23,7 +24,6 @@ function myProfil({ navigation }) {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
             dispatch(GetProfile(token, lang)).then(() => setSpinner(false))
-            console.log('11111');
         });
 
         return unsubscribe;
@@ -51,7 +51,7 @@ function myProfil({ navigation }) {
 
                 <View style={styles.ScrolContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
-                        <Image source={require('../../assets/Images/Icon_edit.png')} style={{ width: 30, height: 30 }} />
+                        <Image source={require('../../assets/Images/EditRename.png')} style={{ width: 30, height: 30 }} />
                     </TouchableOpacity>
                     <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
 

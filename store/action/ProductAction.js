@@ -3,7 +3,7 @@ import { Toast } from "native-base";
 import axios from 'axios';
 
 export const Get_Products = 'Get_Products';
-export const Add_product = 'Get_Products';
+export const Add_product = 'Aet_Products';
 export const Product_Detailes = 'Product_Detailes';
 export const Delete_Product = 'Delete_Product';
 export const Edit_Product = 'Edit_Product';
@@ -43,7 +43,6 @@ export const ProductDetailes = (token, lang, id) => {
             params: { lang }
 
         }).then(res => {
-            console.log('ddd' + res.data);
             dispatch({ type: Product_Detailes, data: res.data })
         }).catch(err => console.warn(err))
 

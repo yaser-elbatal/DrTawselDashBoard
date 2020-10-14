@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, ActivityIndicator, ScrollView, } from 'react-native';
+import { View, StyleSheet, Image, Text, ScrollView, } from 'react-native';
 
 import HomeHeader from '../../common/HomeHeader'
 import Colors from '../../consts/Colors';
@@ -8,7 +8,7 @@ import i18n from '../../locale/i18n'
 import { Content } from 'native-base';
 import Card from '../../common/Card'
 import { useSelector, useDispatch } from 'react-redux';
-import { GetQuickReborts, GetHomeProducts } from '../../store/action/HomeAction';
+import { GetHomeProducts } from '../../store/action/HomeAction';
 import Container from '../../common/Container';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -18,7 +18,6 @@ function HomePage({ navigation }) {
     const user = useSelector(state => state.auth.user.data);
     const token = useSelector(state => state.auth.user.data.token)
     const [spinner, setSpinner] = useState(true);
-    console.log(token);
     const lang = useSelector(state => state.lang.language);
     const HomeProduct = useSelector(state => state.home.product);
     const QuickRebort = useSelector(state => state.home.extra);
@@ -31,12 +30,10 @@ function HomePage({ navigation }) {
 
 
 
-
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
             dispatch(GetHomeProducts(token, lang)).then(() => setSpinner(false))
-            console.log('11111');
         });
 
         return unsubscribe;
@@ -53,27 +50,37 @@ function HomePage({ navigation }) {
                 <Card />
 
                 <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
-                <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {
-                        HomeProduct &&
-                            HomeProduct ?
-                            HomeProduct.map((item, index) => (
+                {
+                    HomeProduct && !HomeProduct ?
+                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        :
+                        !HomeProduct.length ?
+                            <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                            :
+                            <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                {
 
-                                <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
-                                    <View style={{ flexDirection: 'column', flex: 1 }}>
-                                        <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%', }} />
-                                        <View style={{ margin: 10, flex: 1, height: '30%', flexDirection: 'column' }}>
-                                            <Text style={styles.prod}>{item.name}</Text>
-                                            <Text style={[styles.prod, { color: Colors.fontNormal, paddingVertical: 5 }]}>{item.price}{i18n.t('RS')}</Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                            ) : <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                                    HomeProduct.map((item, index) => (
+
+                                        <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                                            <View style={{ flexDirection: 'column', flex: 1 }}>
+                                                <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%', flex: .75 }} />
+                                                <View style={{ margin: 10, flex: .25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <Text style={styles.prod}>{item.name}</Text>
+                                                    <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
+                                                </View>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )
+                                    )
 
 
-                    }
-                </ScrollView>
+
+                                }
+                            </ScrollView>
+                }
+
+
 
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
@@ -161,7 +168,7 @@ const styles = StyleSheet.create({
     },
     prod: {
         fontFamily: 'flatMedium',
-        fontSize: width * .025
+        fontSize: 12
     },
     Card: {
         margin: 10,

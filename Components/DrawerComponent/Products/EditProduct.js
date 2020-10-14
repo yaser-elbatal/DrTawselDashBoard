@@ -20,33 +20,9 @@ const { width, height } = Dimensions.get('window')
 const EditProduct = ({ navigation, route }) => {
 
     const { ProductsId } = route.params
-
-
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
-            dispatch(ProductDetailes(token, lang, ProductsId.id)).then(() => setSpinner(false));
-            setSpinner(true)
-            dispatch(GetProductExtrasFromEdit(ProductsId.id, token, lang)).then(() => setSpinner(false));
-        });
-
-        return unsubscribe;
-    }, [navigation, route])
-
-
-
     const ProductDet = useSelector(state => state.product.EditProduct);
-    const token = useSelector(state => state.auth.user.data.token)
-    const lang = useSelector(state => state.lang.language);
-    const Menue = useSelector(state => state.menue.menue.data);
-    const ProductsExtras = useSelector(state => state.product.ExtraProduct);
-    console.log(ProductsExtras);
-    const dispatch = useDispatch();
-
-
     const [nameAR, setNameAr] = useState(ProductDet.name_ar);
-    const [nameEN, setNameEN] = useState(ProductDet.name_en)
+    const [nameEN, setNameEN] = useState(ProductDet.name_en);
     const [price, setPrice] = useState(`${ProductDet.price}`);
     const [small_price, setsmall_price] = useState(`${ProductDet.small_price}`);
     const [mid_price, setmid_price] = useState(`${ProductDet.mid_price}`);
@@ -64,14 +40,51 @@ const EditProduct = ({ navigation, route }) => {
     const [detailesAr, setDetailesAr] = useState(ProductDet.details_ar)
     const [detailesEn, setDetailesEn] = useState(ProductDet.details_en)
     const [available, setavailable] = useState(ProductDet.available);
-
-
+    const token = useSelector(state => state.auth.user.data.token)
+    const lang = useSelector(state => state.lang.language);
+    const Menue = useSelector(state => state.menue.menue.data);
+    const ProductsExtras = useSelector(state => state.product.ExtraProduct ? state.product.ExtraProduct : []);
+    const dispatch = useDispatch();
+    console.log(ProductsExtras);
 
     const [MenueId, setMenue] = useState(ProductDet.menu_id)
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
 
-    const [base64, setBase64] = useState(ProductDet.image);
-    const [userImage, setUserImage] = useState(null);
+    const [base64, setBase64] = useState(null);
+    const [userImage, setUserImage] = useState(ProductDet.image);
+
+
+
+
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            dispatch(ProductDetailes(token, lang, ProductsId))
+            dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setSpinner(false));
+        });
+        setNameAr(ProductDet.name_ar)
+        setNameEN(ProductDet.name_en)
+        setPrice(`${ProductDet.price}`)
+        setsmall_price(`${ProductDet.small_price}`)
+        setmid_price(`${ProductDet.mid_price}`)
+        setlarge_price(`${ProductDet.large_price}`)
+        setavailableKilos(`${ProductDet.available_kilos}`)
+        setDiscount(`${ProductDet.discount}`)
+        setQuantity(`${ProductDet.quantity}`)
+        setDetailesAr(ProductDet.details_ar)
+        setDetailesEn(ProductDet.details_en)
+        setavailable(`${ProductDet.available}`)
+        setMenue(ProductDet.menu_id)
+        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))
+        return unsubscribe;
+    }, [spinner, navigation, route])
+
+
+
+
+
+
 
 
 
@@ -86,8 +99,9 @@ const EditProduct = ({ navigation, route }) => {
 
     const [data, setData] = useState([
 
-        { id: 0, title: `${i18n.t("no")}` },
         { id: 1, title: `${i18n.t("yes")}` },
+        { id: 0, title: `${i18n.t("no")}` },
+
 
     ])
 
@@ -112,7 +126,6 @@ const EditProduct = ({ navigation, route }) => {
     let MenueData = !Menue ? [] : Menue.map(menue => ({ label: menue.name, value: menue.id }));
     // let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
-    console.log(ProductsId);
 
 
 
@@ -154,8 +167,12 @@ const EditProduct = ({ navigation, route }) => {
 
     const AddProductExras = () => {
         setSpinner(true)
-        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang));
-        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setSpinner(false))
+        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setSpinner(false))
+        setSpinner(true)
+        setTimeout(() => {
+            dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))
+        }, 9000);
+
         setEditMaodVisible(false)
     }
 
@@ -238,7 +255,7 @@ const EditProduct = ({ navigation, route }) => {
                         Sizes.map((size, index) => {
                             return (
 
-                                <View key={index} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
+                                <View key={'_' + index} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
                                     <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
                                         <View style={{
                                             height: 15,
@@ -357,20 +374,20 @@ const EditProduct = ({ navigation, route }) => {
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setavailable(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
                                         borderRadius: 12,
                                         borderWidth: 2,
-                                        borderColor: available === index ? Colors.sky : Colors.fontNormal,
+                                        borderColor: available === item.id ? Colors.sky : Colors.fontNormal,
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         alignSelf: 'center',
 
                                     }}>
                                         {
-                                            available === index ?
+                                            available === item.id ?
                                                 <View style={{
                                                     height: 6,
                                                     width: 6,
@@ -380,7 +397,7 @@ const EditProduct = ({ navigation, route }) => {
                                                 : null
                                         }
                                     </View>
-                                    <Text style={[styles.sText, { color: available === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    <Text style={[styles.sText, { color: available === item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
 
                                 </TouchableOpacity>
 
@@ -432,23 +449,26 @@ const EditProduct = ({ navigation, route }) => {
                     value={detailesEn}
                 />
 
-                {!ProductsExtras ? [] :
-                    !ProductsExtras.data ? [] :
+                {
 
-                        ProductsExtras.data.map((proExtra, index) =>
+
+                    !ProductsExtras.length ? null :
+                        ProductsExtras.map((proExtra, index) =>
                             (
-                                <>
-                                    <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
+                                <View key={'_' + index}>
+                                    <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
                                         <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name}</Text>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
+
+                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
                                         </View>
                                         <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
                                             <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
-                                </>
+                                </View>
                             )
                         )
                 }
@@ -473,7 +493,7 @@ const EditProduct = ({ navigation, route }) => {
                                 <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
                                     <InputIcon
                                         styleCont={{ marginTop: 10 }}
-                                        label={i18n.t('prodDetAr')}
+                                        label={i18n.t('prodnameAr')}
                                         placeholder={i18n.t('prodDetEn')}
 
                                         onChangeText={(e) => setProductnameExtraAR(e)}
@@ -483,8 +503,8 @@ const EditProduct = ({ navigation, route }) => {
                                     <InputIcon
 
                                         styleCont={{ marginTop: 0 }}
-                                        label={i18n.t('AddEn')}
-                                        placeholder={i18n.t('AddEn')}
+                                        label={i18n.t('prodnameEn')}
+                                        placeholder={i18n.t('prodnameEn')}
                                         onChangeText={(e) => setProductnameExtraEn(e)}
                                         value={ProductnameExtraEn}
 

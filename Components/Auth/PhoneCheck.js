@@ -13,6 +13,7 @@ import {
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
 import { CheckPhone } from '../../store/action/AuthAction'
+import Container from '../../common/Container';
 
 function PhoneCheck({ navigation }) {
     const [Phone, setPhone] = useState('');
@@ -36,7 +37,7 @@ function PhoneCheck({ navigation }) {
         let Val = _validate();
         if (!Val) {
             setSpinner(true)
-            dispatch(CheckPhone(lang, Phone, navigation))
+            dispatch(CheckPhone(lang, Phone, navigation)).then(() => setSpinner(false))
 
         }
         else {
@@ -45,47 +46,32 @@ function PhoneCheck({ navigation }) {
         }
     }
     return (
-        <View style={styles.container}>
-
-            <BackBtn navigation={navigation} />
-            <View style={{ margin: 20, bottom: 30 }}>
-                <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                    <Text style={styles.UText}>{i18n.t('enterPhone')}</Text>
+        <Container loading={spinner}>
+            <View style={{ backgroundColor: Colors.bg, flex: 1 }}>
+                <BackBtn navigation={navigation} />
+                <View style={{ marginHorizontal: 20, }}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
+                        <Text style={styles.UText}>{i18n.t('enterPhone')}</Text>
+                    </View>
                 </View>
+                <InputIcon
+                    label={i18n.t('phone')}
+                    placeholder={i18n.t('phone')}
+                    keyboardType='numeric'
+                    styleCont={{ marginTop: 20 }}
+                    onChangeText={(e) => setPhone(e)}
+                    value={Phone}
+
+                />
+
+                < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConFirmPhone} />
+
+
             </View>
 
-            <InputIcon
-                label={i18n.t('phone')}
-                placeholder={i18n.t('phone')}
-                keyboardType='numeric'
 
-                onChangeText={(e) => setPhone(e)}
-                value={Phone}
-
-            />
-            {
-                spinner ?
-                    <View style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        width: '100%',
-                        height: '100%',
-                        zIndex: 99999,
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                    }}>
-                        <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                    </View>
-                    :
-                    < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConFirmPhone} />
-
-            }
-
-        </View>
+        </Container>
     )
 }
 const styles = StyleSheet.create({

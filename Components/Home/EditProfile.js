@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackg
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { InputIcon } from '../../common/InputText'
-import { validateUserName, validateEmail, ValdiateCITyId } from '../../common/Validation'
+import { validateUserName, validateEmail, ValdiateCITyId, validatePhone } from '../../common/Validation'
 import { Dropdown } from 'react-native-material-dropdown';
 import BTN from '../../common/BTN'
 import { width } from '../../consts/HeightWidth'
@@ -23,7 +23,7 @@ function EditProfile({ navigation }) {
     const [email, setemail] = useState(user.email)
     const [city, setCity] = useState(user.provider.city)
     const [phone, setPhone] = useState(user.phone)
-    const [base64, setBase64] = useState(user.avatar);
+    const [base64, setBase64] = useState(null);
     const [userImage, setUserImage] = useState(user.avatar);
 
     const [spinner, setSpinner] = useState(true);
@@ -68,8 +68,10 @@ function EditProfile({ navigation }) {
         let nameErr = validateUserName(nameEN)
         let CityID = ValdiateCITyId(city)
         let emailErr = validateEmail(email)
+        let PhoenErr = validatePhone(phone);
 
-        return nameErr || CityID || emailErr
+
+        return nameErr || CityID || emailErr || PhoenErr
     };
 
 
@@ -85,7 +87,7 @@ function EditProfile({ navigation }) {
 
         if (!val) {
             setSpinner(true)
-            dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation))
+            dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation)).then(() => setSpinner(false))
 
         }
         else {
@@ -96,10 +98,14 @@ function EditProfile({ navigation }) {
     }
 
     useEffect(() => {
-        dispatch(getCititis(lang));
-        dispatch(GetProfile(token, lang)).then(() => setSpinner(false))
+        const unsubscribe = navigation.addListener('focus', () => {
+            dispatch(getCititis(lang));
+            dispatch(GetProfile(token, lang)).then(() => setSpinner(false))
+        })
 
-    }, [])
+        return unsubscribe;
+
+    }, [navigation])
 
 
     return (
@@ -107,7 +113,7 @@ function EditProfile({ navigation }) {
         <Container loading={spinner}>
 
             <View style={{ flex: 1, }}>
-                <Image source={image != null ? { uri: image } : { uri: user.avatar }} style={styles.ImgBackGround} />
+                <Image source={image != null ? { uri: image } : { uri: userImage }} style={styles.ImgBackGround} />
                 <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
                     <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
                 </TouchableOpacity>
@@ -164,7 +170,7 @@ function EditProfile({ navigation }) {
                                 styleCont={{ marginTop: 0 }}
                             />
 
-                            <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
+                            <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
                                 <Dropdown
                                     placeholder={i18n.t('city')}
                                     data={cityName}
@@ -196,7 +202,8 @@ const styles = StyleSheet.create({
     MainText: {
         fontFamily: 'flatMedium',
         fontSize: 16,
-        margin: 20
+        margin: 20,
+        paddingStart: 15
     },
     user: {
         fontFamily: 'flatMedium',

@@ -63,33 +63,37 @@ function Notifications({ navigation }) {
             <View style={{ flex: 1 }}>
                 <Header navigation={navigation} label={i18n.t('notifications')} />
 
-                {!Notifications ? [] :
-                    <FlatList
-                        pagingEnabled={true}
-                        style={{ marginTop: 20 }}
-                        data={Notifications}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={(item) => item.id}
-                        renderItem={(item) => (
-                            <TouchableOpacity onPress={() => item.item.type == 'order' ? navigation.navigate('OrderDetailes', { OrderId: item.item.order_id }) : {}}>
-                                <View style={{ borderWidth: 1, width: '90%', height: 100, marginHorizontal: '7%', borderRightWidth: 0, borderTopWidth: 0, borderColor: Colors.InputColor }}>
-                                    <View style={{ flexDirection: 'column', margin: 20, justifyContent: 'center', flex: 1 }}>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <Image source={require('../../../assets/Images/circlegreen.png')} style={{ width: 12, height: 12 }} />
-                                                <Text style={styles.Text}>{item.item.title}</Text>
+                {
+                    !Notifications ?
+                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        :
+                        <FlatList
+                            pagingEnabled={true}
+                            style={{ marginTop: 20 }}
+                            data={Notifications}
+                            extraData={spinner}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={(item) => item.id}
+                            renderItem={(item) => (
+                                <TouchableOpacity onPress={() => item.item.type == 'order' ? navigation.navigate('OrderDetailes', { OrderId: item.item.order_id }) : {}}>
+                                    <View style={{ borderWidth: 1, width: '90%', height: 100, marginHorizontal: '7%', borderRightWidth: 0, borderTopWidth: 0, borderColor: Colors.InputColor }}>
+                                        <View style={{ flexDirection: 'column', margin: 20, justifyContent: 'center', flex: 1 }}>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Image source={require('../../../assets/Images/circlegreen.png')} style={{ width: 12, height: 12 }} />
+                                                    <Text style={styles.Text}>{item.item.title}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => DeleteNotify(item.item.id)}>
+                                                    <Image source={require('../../../assets/Images/cross_gray_not.png')} style={{ width: 10, height: 12 }} resizeMode='contain' />
+                                                </TouchableOpacity>
                                             </View>
-                                            <TouchableOpacity onPress={() => DeleteNotify(item.item.id)}>
-                                                <Image source={require('../../../assets/Images/cross_gray_not.png')} style={{ width: 10, height: 12 }} resizeMode='contain' />
-                                            </TouchableOpacity>
+                                            <Text style={styles.sText}>{item.item.body}</Text>
                                         </View>
-                                        <Text style={styles.sText}>{item.item.body}</Text>
+
                                     </View>
+                                </TouchableOpacity>
 
-                                </View>
-                            </TouchableOpacity>
-
-                        )} />
+                            )} />
                 }
             </View>
         </Container>

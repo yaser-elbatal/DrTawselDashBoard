@@ -29,25 +29,29 @@ function ContactUs({ navigation }) {
 
         let nameA = validateUserName(name)
         let emailErr = validateEmail(email);
-
-        return nameA || emailErr
+        let MessageErr = Message == '' ? 'Enter Detailes' : null
+        return nameA || emailErr || MessageErr
     }
 
     const SendComplaimentation = () => {
         let val = _validate()
         if (!val) {
             setSpinner(true)
-            dispatch(SendComplaiment(token, name, email, Message, navigation)).then(() => setSpinner(false))
-
+            dispatch(SendComplaiment(token, name, email, Message, navigation))
+            setName('')
+            setMessage('')
+            setemail('')
+            setSpinner(false)
         }
         else {
+            setSpinner(false)
             Toaster(_validate());
 
         }
     }
 
     return (
-        <Container>
+        <Container loading={spinner}>
             <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
                 <Header navigation={navigation} label={i18n.t('contactus')} />
                 <Card />

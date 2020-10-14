@@ -29,7 +29,7 @@ const InputIcon = ({
         <View style={[styles.containerTableTextOverInput, styleCont]}>
 
             <Text style={[styles.labelText, {
-                paddingHorizontal: focused ? 10 : 0, color: focused ? Colors.sky : Colors.InputColor, fontSize: 14
+                paddingHorizontal: focused ? 10 : 0, color: focused ? Colors.sky : Colors.InputColor, fontSize: 16
             }, LabelStyle]}  >
                 {focused ? label : null}
             </Text>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         textAlign: I18nManager.isRTL ? "right" : "left",
         fontFamily: "flatMedium",
-        fontSize: width * .026,
+        fontSize: 16,
     },
     image: {
         width: width * 0.04,

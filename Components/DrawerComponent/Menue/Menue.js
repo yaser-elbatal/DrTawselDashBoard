@@ -63,8 +63,8 @@ function Menue({ navigation }) {
         let val = _validate()
         if (!val) {
             setSpinner(true)
-            dispatch(AddMenue(token, lang, nameAR, nameEN))
-            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+            dispatch(AddMenue(token, lang, nameAR, nameEN)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSpinner(false)))
+
 
             setModalVisible(false)
             setNameAr('');
@@ -94,8 +94,8 @@ function Menue({ navigation }) {
 
     const EditMEnue = () => {
         setSpinner(true);
-        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData))
-        dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData)).then(() => dispatch(MenueInfo(lang, token))).then(() => setSpinner(false))
+
         setEditMaodVisible(false)
     }
 
@@ -121,6 +121,8 @@ function Menue({ navigation }) {
 
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
+            setSelection2(false);
+
             dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
         });
 
@@ -129,20 +131,21 @@ function Menue({ navigation }) {
 
     const handleChange = (e) => {
         setSearch(e);
-        setTimeout(() => dispatch(SearchMenue(token, Search, lang)), 1000)
+        setTimeout(() => dispatch(SearchMenue(token, Search, lang)), 0)
     }
 
 
     const DeleteMenueMultiIteM = () => {
         setSpinner(true)
-        dispatch(DeleteMenue(token, DeleteArr))
-        dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+        dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSpinner(false)))
+
     }
 
 
     const handleChandDrpDown = (val) => {
         setSpinner(true)
         Menue.reverse();
+        dispatch(MenueInfo(lang, token))
         setSpinner(false)
 
 
@@ -173,17 +176,17 @@ function Menue({ navigation }) {
                     value={Search}
                     onChangeText={(e) => handleChange(e)}
                     image={require('../../../assets/Images/search.png')}
-                    styleCont={{ marginTop: 0, }}
-                    inputStyle={{ borderRadius: 10 }}
+                    styleCont={{ marginTop: 0, height: 70, }}
+                    inputStyle={{ borderRadius: 10, }}
                 />
 
                 <Card />
 
                 <View style={{ height: 50, width: '90%', margin: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
-                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5 }} onPress={SelectAllChecked} />
+                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                     <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
-                        <Text style={{ fontFamily: 'flatMedium', paddingVertical: 8, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                        <Text style={{ fontFamily: 'flatMedium', paddingVertical: 5, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
 
@@ -193,6 +196,7 @@ function Menue({ navigation }) {
                         <Dropdown
                             placeholder={i18n.t('select')}
                             data={data2}
+                            style={{ fontFamily: 'flatMedium', }}
                             animationDuration={0}
                             onChangeText={(val) => handleChandDrpDown(val)}
                             fontSize={12}
@@ -215,40 +219,42 @@ function Menue({ navigation }) {
                 {
                     !Menue ?
                         <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                        :
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            data={Menue}
-                            extraData={spinner}
-                            keyExtractor={(item) => item.id}
-                            renderItem={({ item, index }) =>
+                        : !Menue.length ?
+                            <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                            :
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                data={Menue}
+                                extraData={spinner}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item, index }) =>
 
 
-                                (
+                                    (
 
-                                    <View style={styles.Card} key={index}>
-                                        <View style={styles.FWrab}>
-                                            <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, }} onPress={() => toggleChecked(item.id)} />
-                                            <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
-                                                <Text style={styles.name}>{item.name}</Text>
+                                        <View style={styles.Card} key={index}>
+                                            <View style={styles.FWrab}>
+                                                <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
+                                                <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
+                                                    <Text style={styles.name}>{item.name}</Text>
+                                                </View>
                                             </View>
+                                            <View style={styles.SWarb}>
+                                                <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
+                                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                                </TouchableOpacity>
+
+                                                <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
+                                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                                </TouchableOpacity>
+
+                                            </View>
+
                                         </View>
-                                        <View style={styles.SWarb}>
-                                            <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
-                                                <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                            </TouchableOpacity>
-
-                                            <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
-                                                <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                            </TouchableOpacity>
-
-                                        </View>
-
-                                    </View>
-                                )
-                            } />
+                                    )
+                                } />
                 }
 
                 <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
@@ -258,7 +264,7 @@ function Menue({ navigation }) {
                         style={{ backgroundColor: Colors.bg, }}
                         visible={EditMaodVisible} >
 
-                        <View style={styles.centeredView}>
+                        <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
                             <View style={styles.modalView}>
                                 <View style={{ margin: 20, backgroundColor: Colors.bg }}>
                                     <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('edit')} </Text>
@@ -282,7 +288,7 @@ function Menue({ navigation }) {
                                     <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={EditMEnue} />
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </Modal>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)}>
@@ -292,10 +298,10 @@ function Menue({ navigation }) {
                         style={{ backgroundColor: Colors.bg, }}
                         visible={modalVisible} >
 
-                        <View style={styles.centeredView}>
+                        <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)} >
                             <View style={styles.modalView}>
                                 <View style={{ margin: 20, backgroundColor: Colors.bg }}>
-                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddMenue')} </Text>
+                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, marginHorizontal: 15 }}>{i18n.t('AddMenue')} </Text>
 
                                     <InputIcon
                                         label={i18n.t('menueAr')}
@@ -315,11 +321,11 @@ function Menue({ navigation }) {
                                     <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={Add_menue} />
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </Modal>
                 </TouchableOpacity>
             </ScrollView>
-        </Container>
+        </Container >
     )
 }
 const styles = StyleSheet.create({
@@ -363,17 +369,17 @@ const styles = StyleSheet.create({
         marginTop: 0,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        shadowRadius: 3,
+        elevation: 1,
         shadowColor: Colors.bg,
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowRadius: 3,
 
-        elevation: 3,
+        elevation: 2,
     },
     FWrab: {
         flexDirection: 'column',

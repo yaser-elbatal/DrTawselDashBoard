@@ -68,6 +68,7 @@ import TRegister from '../Components/Auth/TRegister';
 import AllOrders from '../common/AllOrders';
 import TransferMony from '../Components/DrawerComponent/Wallet/TransferMony';
 import OrderManageAccDetailes from '../Components/DrawerComponent/ManageAccount/OrderManageAccDetailes';
+import EditProd from '../Components/DrawerComponent/Products/EditProd';
 
 
 const Stack = createStackNavigator();
@@ -116,6 +117,9 @@ export const AppStackNavigator = () => {
             <DrawerStack.Screen name="AllOrders" component={AllOrders} />
 
             <DrawerStack.Screen name="Products" component={Products} />
+            <DrawerStack.Screen name="EditProd" component={EditProd} />
+
+
             <DrawerStack.Screen name="ProductDet" component={ProductDet} />
             <DrawerStack.Screen name="EditProducts" component={EditProduct} />
 
@@ -166,6 +170,7 @@ const drawerScreen = () => {
             <Drawer.Screen name="HomePage" component={HomePage} />
             <Drawer.Screen name="Menue" component={Menue} />
             <Drawer.Screen name="Products" component={Products} />
+            <Drawer.Screen name="EditProducts" component={EditProduct} />
             <Drawer.Screen name="Orders" component={Orders} />
             <Drawer.Screen name="AddOffer" component={AddOffer} />
             <Drawer.Screen name="Settings" component={Settings} />
@@ -175,6 +180,9 @@ const drawerScreen = () => {
             <Drawer.Screen name="ContactUs" component={ContactUs} />
             <Drawer.Screen name="ManageAccount" component={ManageAccount} />
             <Drawer.Screen name="Report" component={Report} />
+            <DrawerStack.Screen name="EditProd" component={EditProd} />
+
+
         </Drawer.Navigator>
 
     );

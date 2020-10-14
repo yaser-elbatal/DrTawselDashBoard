@@ -52,6 +52,7 @@ function SRegister({ navigation, route }) {
         latitudeDelta,
         longitudeDelta
     });
+    let mapRef = useRef(null);
 
 
 
@@ -68,13 +69,12 @@ function SRegister({ navigation, route }) {
         return nameErr || nameEnErr || CityID || DebId || ValditeCommercialRegisterErr || BranchErr
     }
     useEffect(() => {
-        MyLocation
     }, [MyLocation, mapRegion]);
 
 
 
     const _handleMapRegionChange = async (mapCoordinate) => {
-
+        setShowAddress(true)
         setMapRegion({ latitude: mapCoordinate.latitude, longitude: mapCoordinate.longitude, latitudeDelta, longitudeDelta });
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
@@ -86,8 +86,6 @@ function SRegister({ navigation, route }) {
         try {
             const { data } = await axios.get(getCity);
             setLOcation(data.results[0].formatted_address)
-            console.log("city2  ", data.results[0].formatted_address)
-            console.log("city2 ", MyLocation)
 
         } catch (e) {
             console.log(e);
@@ -100,26 +98,25 @@ function SRegister({ navigation, route }) {
         if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         } else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, });
+            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
 
-            if (latitude) {
-                userLocation = { latitude: latitude, longitude: latitude, latitudeDelta, longitudeDelta };
-            } else {
-                userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
-                setMapRemapRefRegion(userLocation);
-            }
+
+            userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
+
             setMapRegion(userLocation);
-            // isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
+            isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
 
         }
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += userLocation.latitude + ',' + userLocation.longitude;
         getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
-        console.log('MapRegion======' + mapRegion.latitude);
+        console.log("getCity  ", getCity)
+        // ReactotronConfig.log(getCity);
         try {
             const { data } = await axios.get(getCity);
             setLOcation(data.results[0].formatted_address)
-
+            // console.log("city  " , data.results[0].formatted_address)
+            // console.log("city  " , city)
         } catch (e) {
             console.log(e);
         }
@@ -215,11 +212,8 @@ function SRegister({ navigation, route }) {
                     onPress={() => setisopened(!isopened)}
                 />
 
-
-
-
-
                 {
+
                     isopened ?
                         <View style={styles.centeredView} >
                             <Modal
@@ -229,9 +223,13 @@ function SRegister({ navigation, route }) {
                                 <View style={styles.centeredView}>
                                     <View style={styles.modalView}>
 
+
+
+
                                         <MapView
                                             style={{ flex: 1, width: '100%' }}
                                             region={mapRegion}
+                                            ref={mapRef}
                                             onRegionChangeComplete={region => setMapRegion(region)}
                                             customMapStyle={mapStyle}
                                             initialRegion={mapRegion}
@@ -260,7 +258,7 @@ function SRegister({ navigation, route }) {
                         : null
                 }
 
-                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 20 }}>
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
                     <Dropdown
                         placeholder={i18n.t('city')}
                         data={cityName}

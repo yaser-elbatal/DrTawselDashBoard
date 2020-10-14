@@ -16,11 +16,11 @@ const { width, height } = Dimensions.get('window')
 function Previousoffers({ navigation }) {
 
     const dispatch = useDispatch();
-    const Banners = useSelector(state => state.Banner.Banners)
+    const Banners = useSelector(state => state.Banner.Banners ? state.Banner.Banners : [])
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const [modalVisible, setModalVisible] = useState(false);
-    const [base64, setBase64] = useState('');
+    const [base64, setBase64] = useState(null);
     const [userImage, setUserImage] = useState(null);
     const [spinner, setSpinner] = useState(true);
 
@@ -40,8 +40,8 @@ function Previousoffers({ navigation }) {
 
     const DeleteCardBanners = (id) => {
         setSpinner(true)
-        dispatch(DeleteBanners(token, id))
-        dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+        dispatch(DeleteBanners(token, id)).then(() => dispatch(GetBanners(token, lang)).then(() => setSpinner(false)))
+
 
     }
 
@@ -67,8 +67,8 @@ function Previousoffers({ navigation }) {
     };
     const Add_Banner = () => {
         setSpinner(true)
-        dispatch(AddBanners(token, base64, lang))
-        dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+        dispatch(AddBanners(token, base64, lang)).then(() => dispatch(GetBanners(token, lang)).then(() => setSpinner(false)))
+
         setModalVisible(false)
 
 
@@ -82,20 +82,20 @@ function Previousoffers({ navigation }) {
             <ScrollView style={{ flex: 1 }}>
                 <Header navigation={navigation} label={i18n.t('Previousoffers')} />
                 <Card />
-                <BTN title={i18n.t('AddBanner')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 15 }} onPress={() => setModalVisible(true)} />
+                <BTN title={i18n.t('AddBanner')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 5 }} onPress={() => setModalVisible(true)} />
 
 
 
 
                 {
-                    !Banners ?
+                    !Banners.length ?
                         <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                         :
                         <FlatList
                             showsVerticalScrollIndicator={false}
-                            data={spinner}
-                            extraData={modalVisible}
-                            keyExtractor={(item) => item.id}
+                            data={Banners}
+                            extraData={spinner}
+                            keyExtractor={(item) => "_" + item.id}
                             renderItem={({ item, index }) =>
 
 
@@ -187,20 +187,20 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginHorizontal: 0,
         width: '80%',
-        backgroundColor: Colors.InputColor
+        backgroundColor: '#ECECEC'
 
     },
     Card: {
         height: 140,
         shadowColor: Colors.bg,
         marginHorizontal: '5%',
-        borderRadius: 10,
+        borderRadius: 5,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 1,
         overflow: 'hidden',
-        marginTop: 5
+        marginTop: 10
     },
     centeredView: {
         flex: 1,

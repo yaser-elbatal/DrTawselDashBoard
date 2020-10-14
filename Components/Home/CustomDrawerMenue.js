@@ -21,32 +21,29 @@ function CustomDrawerMenue({ navigation }) {
     }
 
     return (
-        <View style={{ flex: 1, overflow: 'hidden' }}>
-            <View style={{ justifyContent: 'space-between', flexDirection: 'row', }} >
+        <View style={{ flex: 1, }}>
+            <View style={{ justifyContent: 'space-between', flexDirection: 'row', flex: .22 }} >
 
 
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-                    <View style={{ marginTop: 50, marginHorizontal: 20 }}>
-                        <Image source={require('../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
-                    </View>
+                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')} style={{ top: 60, paddingStart: 10 }}>
+                    <Image source={require('../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                    <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
                 </TouchableOpacity>
 
 
 
-                <View style={{ bottom: 50, marginEnd: -20 }}>
-                    <ImageBackground source={require('../../assets/Images/bigP.png')} style={{ height: 180, width: 100, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                        <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-                            <Image source={require('../../assets/Images/crossgray.png')} style={{ height: 20, width: 20, marginTop: 45, }} resizeMode='contain' />
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
+                <ImageBackground source={require('../../assets/Images/bigP.png')} style={{ height: 180, width: 100, alignItems: 'center', justifyContent: 'center', bottom: 30 }} resizeMode='contain'>
+                    <TouchableOpacity onPress={() => navigation.closeDrawer()} style={{ top: 15 }}>
+                        <Image source={require('../../assets/Images/crossgray.png')} style={{ height: 20, width: 20, }} resizeMode='contain' />
+                    </TouchableOpacity>
+                </ImageBackground>
             </View>
-            <ScrollView style={{ flex: 1, bottom: 70, }} showsVerticalScrollIndicator={false}>
-                <Text style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')}</Text>
 
-                <View style={{ flexDirection: 'column', marginVertical: 20 }}>
+            <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
+                <Text style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')} {user.name}</Text>
+
+                <View style={{ flexDirection: 'column', }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
                         <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, width: '95%' }}>
@@ -129,7 +126,7 @@ function CustomDrawerMenue({ navigation }) {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={logoutFunc}>
+                    <TouchableOpacity onPress={logoutFunc} style={{ marginBottom: 20 }}>
                         <View style={{ backgroundColor: Clicle === 13 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
                             <Text style={styles.hellText}>{i18n.t('logout')}</Text>
                         </View>

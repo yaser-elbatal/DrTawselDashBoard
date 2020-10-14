@@ -58,7 +58,7 @@ const ProductDet = ({ navigation, route }) => {
                                 </TouchableOpacity>
                             </ImageBackground>
                             <View style={styles.ScrolContainer}>
-                                <ScrollView style={{ flex: 1, margin: 20 }} showsVerticalScrollIndicator={false}>
+                                <ScrollView style={{ flex: 1, margin: 20, marginTop: 0 }} showsVerticalScrollIndicator={false}>
 
                                     <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
                                         <View style={styles.Wrab}>
@@ -86,8 +86,8 @@ const ProductDet = ({ navigation, route }) => {
                                             <Text style={styles.num}>{ProductDetA.price}{i18n.t('Rial')}</Text>
                                             <View style={{ flexDirection: 'row', }}>
                                                 <Text style={styles.num}>{ProductDetA.price}</Text>
-                                                <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price - ProductDetA.discount}</Text>
-                                                <Text style={[styles.num, { color: Colors.InputColor }]}>({i18n.t('Availablekilos') + ProductDetA.available_kilos})</Text>
+                                                <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.sky, textDecorationStyle: 'solid', color: Colors.fontNormal, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price - ProductDetA.discount}</Text>
+                                                <Text style={[styles.num, { color: Colors.fontNormal }]}>({i18n.t('Availablekilos') + ProductDetA.available_kilos})</Text>
 
                                             </View>
 
@@ -112,7 +112,7 @@ const ProductDet = ({ navigation, route }) => {
                                     </TouchableOpacity>
                                     {
                                         click1 ?
-                                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 10, color: Colors.InputColor, alignSelf: 'flex-start' }}>
+                                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 12, color: Colors.fontNormal, alignSelf: 'flex-start', paddingHorizontal: 15 }}>
                                                 {ProductDetA.details}
 
 

@@ -102,8 +102,8 @@ function RestaurantInfo({ navigation }) {
     const [from, setFrom] = useState(user.provider.preparing_time_from)
     const [to, setTo] = useState(user.provider.preparing_time_to)
     const lang = useSelector(state => state.lang.language);
-    const [base64, setBase64] = useState(user.provider.cover);
-    const [userImage, setUserImage] = useState(null);
+    const [base64, setBase64] = useState(null);
+    const [userImage, setUserImage] = useState(user.provider.cover);
     const [city, setCity] = useState(user.address);
     const [BranchNum, setBranchNum] = useState(`${user.provider.num_of_branches}`);
     const [CommercialRegister, setCommercialRegister] = useState(user.provider.commercial_register);
@@ -139,8 +139,7 @@ function RestaurantInfo({ navigation }) {
         askPermissionsAsync();
 
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
+
             base64: true
         });
 
@@ -191,7 +190,7 @@ function RestaurantInfo({ navigation }) {
                 <Header navigation={navigation} label={i18n.t('RestInfo')} />
                 <TouchableOpacity onPress={_pickImage}>
 
-                    <Image source={{ uri: user.provider.cover }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+                    <Image source={{ uri: userImage }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
                 </TouchableOpacity>
 
                 <InputIcon

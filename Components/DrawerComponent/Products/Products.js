@@ -116,7 +116,7 @@ function Products({ navigation }) {
                     value={Search}
                     onChangeText={(e) => handleChange(e)}
                     image={require('../../../assets/Images/search.png')}
-                    styleCont={{ marginTop: 0, }}
+                    styleCont={{ marginTop: 0, height: 70, }}
                     inputStyle={{ borderRadius: 10 }}
 
                 />
@@ -125,9 +125,9 @@ function Products({ navigation }) {
 
 
                 <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
-                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5 }} onPress={SelectAllChecked} />
+                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                     <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
                         <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
@@ -138,6 +138,7 @@ function Products({ navigation }) {
                         <Dropdown
                             placeholder={i18n.t('select')}
                             data={data2}
+                            style={{ fontFamily: 'flatMedium', }}
                             animationDuration={0}
                             onChangeText={(val) => handleChandDrpDown(val)}
                             fontSize={14}
@@ -155,21 +156,20 @@ function Products({ navigation }) {
 
 
                 <FlatList
-                    pagingEnabled={true}
                     showsVerticalScrollIndicator={false}
                     data={Products}
                     extraData={spinner}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item, index }) => (
                         <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
                             <View style={styles.Card}>
                                 <View style={{ flexDirection: 'row', flex: .75 }}>
                                     <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
                                     <View style={styles.FWrab}>
-                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, }} onPress={() => toggleChecked(item.id)} />
+                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
                                         <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu}</Text>
-                                        <Text style={[styles.nMenu, { color: Colors.IconBlack }]}>{item.name}</Text>
+                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + '>-'}{item.name}</Text>
+                                        {/* <Text style={[styles.nMenu, { color: Colors.IconBlack }]}></Text> */}
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.nText}>{item.price}</Text>
                                             <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
@@ -183,7 +183,7 @@ function Products({ navigation }) {
 
                                 <View style={styles.SWarb}>
 
-                                    <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item })}>
+                                    <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item.id })}>
                                         <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
                                     </TouchableOpacity>
 
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     Card: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 160,
+        height: 120,
         width: '90%',
         marginStart: 20,
         marginVertical: 5,
@@ -246,8 +246,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 1,
-        elevation: 5,
+        elevation: 2,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -265,7 +264,7 @@ const styles = StyleSheet.create({
     nText: {
         color: Colors.sky,
         fontFamily: 'flatMedium',
-        paddingVertical: 8
+        paddingVertical: 3
 
     },
     nMenu: {
@@ -276,7 +275,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'flatMedium',
-        fontSize: 10,
+        fontSize: 12,
         color: Colors.fontNormal,
         paddingVertical: 5
     },

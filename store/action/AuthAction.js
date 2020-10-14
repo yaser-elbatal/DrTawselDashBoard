@@ -151,8 +151,8 @@ export const SignUp = (data, navigation) => {
 }
 
 export const ActivationCode = (code, token, lang, navigation) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             method: 'POST',
             url: consts.url + 'activate',
             data: { code },
@@ -187,8 +187,8 @@ export const ActivationCode = (code, token, lang, navigation) => {
 }
 
 export const CheckPhone = (lang, phone, navigation) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             method: 'post',
             url: consts.url + 'forget-password',
             data: { lang, phone }
@@ -245,8 +245,8 @@ export const ResendCode = (token, navigation, lang) => {
 }
 
 export const ResetPassword = (password, token, navigation) => {
-    return dispatch => {
-        axios({
+    return async dispatch => {
+        await axios({
             method: 'POST',
             url: consts.url + 'reset-password',
             data: { password },

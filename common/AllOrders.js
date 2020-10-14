@@ -8,7 +8,6 @@ import Header from './Header';
 import Card from './Card';
 import { GetOrders, Order_Detailes } from '../store/action/OrdersAction';
 import { useSelector, useDispatch } from 'react-redux';
-import { useIsFocused } from "@react-navigation/native";
 import Container from './Container';
 
 const { width } = Dimensions.get('window')
@@ -23,9 +22,7 @@ function AllOrders({ navigation, route }) {
     const LoaderOrder = useSelector(state => state.Orders.loader);
     const [Search, setSearch] = useState('');
 
-    const isFocused = useIsFocused();
     const [spinner, setSpinner] = useState(true);
-
 
 
     useEffect(() => {

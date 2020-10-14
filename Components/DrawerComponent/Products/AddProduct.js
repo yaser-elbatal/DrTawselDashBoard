@@ -18,6 +18,8 @@ import { MenueInfo } from '../../../store/action/MenueAction';
 import { width, height } from '../../../consts/HeightWidth';
 import { GetExtraProduct, add_extra_ProductsService, edit_extra_ProductsService, delete_extra_ProductsService } from '../../../store/action/ExtraProductAction';
 import Container from '../../../common/Container';
+import { validateUserName } from '../../../common/Validation';
+import { Toaster } from '../../../common/Toaster';
 
 
 function AddProduct({ navigation }) {
@@ -78,7 +80,7 @@ function AddProduct({ navigation }) {
     const [MenueId, setMenue] = useState('')
     const [available, setavailable] = useState(0);
 
-    const [base64, setBase64] = useState();
+    const [base64, setBase64] = useState(null);
     const [userImage, setUserImage] = useState(null);
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
 
@@ -89,11 +91,11 @@ function AddProduct({ navigation }) {
 
     const [data, setData] = useState([
 
-        { id: 0, title: `${i18n.t("no")}` },
+
         { id: 1, title: `${i18n.t("yes")}` },
+        { id: 0, title: `${i18n.t("no")}` },
 
     ])
-
 
 
 
@@ -101,24 +103,49 @@ function AddProduct({ navigation }) {
     const dispatch = useDispatch();
 
 
+    const _validate = () => {
 
+        let nameErr = validateUserName(nameAR)
+        let nameEnErr = validateUserName(nameEN)
+        let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
+        let DisErr = Discount == '' ? 'Enter Discount' : null;
+        let piceErr = price == '' ? 'Enter Price' : null;
+        let baseErr = base64 == null ? 'Pick Image' : null;
+        let quantityErr = quantity == '' ? 'Enter Quatity' : null;
+        let DetErr = detailesAr == '' ? 'enter Detalies Ar' : null
+        let Det = detailesEn == '' ? 'Enter Detailes English' : null
+        let Kiloes = availableKilos == '' ? 'Enter availableKilos' : null;
+        let MenueIdErr = MenueId == '' ? 'Select Menue' : null
+
+
+        return nameErr || nameEnErr || SelectChoice || DisErr || piceErr || baseErr || quantityErr || DetErr || Det || Kiloes || MenueIdErr
+    }
 
     const Add_Product = () => {
-        setSpinner(true)
-        dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
-        dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
-        setNameAr('');
-        setNameEN('');
-        setsmall_price('');
-        setmid_price('');
-        setlarge_price('');
-        setDiscount('');
-        setPrice('');
-        setavailableKilos('');
-        setQuantity('');
-        setDetailesAr('');
-        setDetailesEn('');
+        let val = _validate();
+        if (!val) {
+            setSpinner(true)
+            dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
+            dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
+            // setNameAr('');
+            // setNameEN('');
+            // setsmall_price('');
+            // setmid_price('');
+            // setlarge_price('');
+            // setDiscount('');
+            // setPrice('');
+            // setavailableKilos('');
+            // setQuantity('');
+            // setDetailesAr('');
+            // setDetailesEn('');
+        }
 
+        else {
+            setSpinner(false);
+            Toaster(_validate());
+
+
+        }
     }
 
 
@@ -243,7 +270,7 @@ function AddProduct({ navigation }) {
 
                 />
 
-                <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text>
+                <Text style={{ marginStart: 20, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text>
                 <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
 
                     {
@@ -367,25 +394,25 @@ function AddProduct({ navigation }) {
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ paddingEnd: 120, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('available')}</Text>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setavailable(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
                                         borderRadius: 12,
                                         borderWidth: 2,
-                                        borderColor: available === index ? Colors.sky : Colors.fontNormal,
+                                        borderColor: available === item.id ? Colors.sky : Colors.fontNormal,
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         alignSelf: 'center',
 
                                     }}>
                                         {
-                                            available === index ?
+                                            available === item.id ?
                                                 <View style={{
                                                     height: 6,
                                                     width: 6,
@@ -395,7 +422,7 @@ function AddProduct({ navigation }) {
                                                 : null
                                         }
                                     </View>
-                                    <Text style={[styles.sText, { color: available === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    <Text style={[styles.sText, { color: available === item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
 
                                 </TouchableOpacity>
 

@@ -13,6 +13,7 @@ import {
     validateCode,
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
+import Container from '../../common/Container'
 
 
 function ActivateCode({ navigation, route }) {
@@ -48,48 +49,36 @@ function ActivateCode({ navigation, route }) {
         }
     }
 
+
+
     return (
-        <View style={styles.container}>
+        <Container loading={spinner}>
+            <View style={styles.container}>
 
-            <BackBtn navigation={navigation} />
-            <View style={{ margin: 20, bottom: 30 }}>
-                <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                    <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
-                </View>
-            </View>
-
-            <InputIcon
-                label={i18n.t('code')}
-                placeholder={i18n.t('code')}
-                onChangeText={(e) => setCode(e)}
-                value={code}
-                keyboardType='numeric'
-
-
-            />
-            {
-                spinner ?
-                    <View style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        width: '100%',
-                        height: '100%',
-                        zIndex: 99999,
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                    }}>
-                        <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                <BackBtn navigation={navigation} />
+                <View style={{ margin: 20, }}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
+                        <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
                     </View>
-                    :
-                    < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
+                </View>
+                <InputIcon
+                    label={i18n.t('code')}
+                    placeholder={i18n.t('code')}
+                    onChangeText={(e) => setCode(e)}
+                    value={code}
+                    styleCont={{ marginTop: 0 }}
+                    keyboardType='numeric'
 
-            }
 
-        </View>
+                />
+                < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
+
+            </View>
+        </Container>
+
+
+
     )
 }
 

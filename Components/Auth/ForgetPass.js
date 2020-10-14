@@ -9,6 +9,7 @@ import { Toaster } from '../../common/Toaster';
 import { validateCode } from '../../common/Validation'
 import { useSelector, useDispatch } from 'react-redux'
 import { ResendCode } from '../../store/action/AuthAction'
+import Container from '../../common/Container'
 
 function ForgetPass({ navigation, route }) {
     const [code, setCode] = useState('');
@@ -35,7 +36,7 @@ function ForgetPass({ navigation, route }) {
         const val = _validate();
         if (MyactivateCode == code && !val) {
             setSpinner(true)
-            dispatch(ResendCode(tokennn, navigation))
+            dispatch(ResendCode(tokennn, navigation)).then(() => setSpinner(false))
         }
         else {
             Toaster(_validate());
@@ -45,45 +46,34 @@ function ForgetPass({ navigation, route }) {
 
 
     return (
-        <View style={styles.container}>
+        <Container loading={spinner}>
 
-            <BackBtn navigation={navigation} />
-            <View style={{ margin: 20, bottom: 30 }}>
-                <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
-                    <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
-                </View>
-            </View>
+            <View style={styles.container}>
 
-            <InputIcon
-                label={i18n.t('code')}
-                placeholder={i18n.t('code')}
-                onChangeText={(e) => setCode(e)}
-                value={code}
-                keyboardType='numeric'
-
-
-            />
-            {
-                spinner ?
-                    <View style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        width: '100%',
-                        height: '100%',
-                        zIndex: 99999,
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                    }}>
-                        <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                <BackBtn navigation={navigation} />
+                <View style={{ margin: 20, }}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
+                        <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
                     </View>
-                    :
-                    <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
-            }
-        </View>
+                </View>
+
+                <InputIcon
+                    label={i18n.t('code')}
+                    placeholder={i18n.t('code')}
+                    onChangeText={(e) => setCode(e)}
+                    value={code}
+                    styleCont={{ marginTop: 0 }}
+                    keyboardType='numeric'
+
+
+                />
+
+                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
+
+            </View>
+        </Container>
+
     )
 }
 
@@ -99,7 +89,6 @@ const styles = StyleSheet.create({
     UText: {
         fontFamily: 'flatMedium',
         fontSize: 14,
-        marginVertical: 10,
         color: Colors.fontNormal
     },
     wrapCheck: {

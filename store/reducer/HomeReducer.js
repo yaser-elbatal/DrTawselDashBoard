@@ -1,4 +1,5 @@
 import { Get_RePorts, Get_Extra_Reborts } from "../action/HomeAction";
+import { Add_product } from "../action/ProductAction";
 
 const initialState = { reports: {}, product: [], extra: {} }
 export default (state = initialState, action) => {
@@ -7,6 +8,9 @@ export default (state = initialState, action) => {
             return { ...state, reports: action.data.data, }
         case Get_Extra_Reborts:
             return { ...state, product: action.data.data, extra: action.data.extra }
+        case Add_product:
+            return { ...state, product: action.data.data, }
+
         default:
             return state;
     }
