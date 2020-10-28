@@ -43,7 +43,7 @@ const EditProduct = ({ navigation, route }) => {
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
-    const ProductsExtras = useSelector(state => state.product.ExtraProduct ? state.product.ExtraProduct : []);
+    const ProductsExtras = useSelector(state => !state.product.ExtraProduct ? [] : state.product.ExtraProduct);
     const dispatch = useDispatch();
     console.log(ProductsExtras);
 
@@ -58,47 +58,42 @@ const EditProduct = ({ navigation, route }) => {
 
 
     useEffect(() => {
+        setSpinner(true)
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-            dispatch(ProductDetailes(token, lang, ProductsId))
-            dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setSpinner(false));
+            dispatch(ProductDetailes(token, lang, ProductsId)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)))
+
         });
 
 
 
-        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))
-
-        setNameAr(ProductDet.name_ar)
-        setNameEN(ProductDet.name_en)
-        setPrice(`${ProductDet.price}`)
-        setsmall_price(`${ProductDet.small_price}`)
-        setmid_price(`${ProductDet.mid_price}`)
-        setlarge_price(`${ProductDet.large_price}`)
-        setavailableKilos(`${ProductDet.available_kilos}`)
-        setDiscount(`${ProductDet.discount}`)
-        setQuantity(`${ProductDet.quantity}`)
-        setDetailesAr(ProductDet.details_ar)
-        setDetailesEn(ProductDet.details_en)
-        setavailable(`${ProductDet.available}`)
-        setMenue(ProductDet.menu_id)
 
         return unsubscribe;
-    }, [navigation, route])
 
-
-
-
-
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
-
-            setSpinner(false)
-        });
-        return unsubscribe;
 
     }, [navigation, route,])
+
+
+
+    setTimeout(() => {
+        setNameAr(ProductDet.name_ar),
+            setNameEN(ProductDet.name_en),
+            setPrice(`${ProductDet.price}`),
+            setsmall_price(`${ProductDet.small_price}`),
+            setmid_price(`${ProductDet.mid_price}`),
+            setlarge_price(`${ProductDet.large_price}`),
+            setavailableKilos(`${ProductDet.available_kilos}`),
+            setDiscount(`${ProductDet.discount}`),
+            setQuantity(`${ProductDet.quantity}`),
+            setDetailesAr(ProductDet.details_ar),
+            setDetailesEn(ProductDet.details_en),
+            setavailable(`${ProductDet.available}`),
+            setMenue(ProductDet.menu_id)
+        setSpinner(false)
+    }, 0);
+
+
+
 
 
 
@@ -212,35 +207,35 @@ const EditProduct = ({ navigation, route }) => {
 
 
     return (
+        <Container loading={spinner}>
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
 
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ right: 20, bottom: 15 }}>
-                    <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                        <TouchableOpacity onPress={() => navigation.navigate('Products')}>
-                            {
-                                I18nManager.isRTL ?
-                                    <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-                                    :
-                                    <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ right: 20, bottom: 15 }}>
+                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                            <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+                                {
+                                    I18nManager.isRTL ?
+                                        <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                                        :
+                                        <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
 
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-                    <View style={{ marginTop: 45, marginHorizontal: 20 }}>
-                        <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                                }
+                            </TouchableOpacity>
+                        </ImageBackground>
                     </View>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                        <View style={{ marginTop: 45, marginHorizontal: 20 }}>
+                            <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                            <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                        </View>
+                    </TouchableOpacity>
 
-            </View>
-            <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
-            {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
-            <Container loading={spinner}>
+                </View>
+                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
+                {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
 
                 <InputIcon
 
@@ -465,25 +460,24 @@ const EditProduct = ({ navigation, route }) => {
                 {
 
 
-                    !ProductsExtras.length ? null :
-                        ProductsExtras.map((proExtra, index) =>
-                            (
-                                <View key={'_' + index}>
-                                    <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
+                    ProductsExtras.map((proExtra, index) =>
+                        (
+                            <View key={'_' + index}>
+                                <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
+                                    <View style={{ flexDirection: 'row', paddingStart: 10 }}>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
 
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
-                                        </View>
-                                        <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
-                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                        </TouchableOpacity>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
                                     </View>
-                                    <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
+                                    <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
+                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                    </TouchableOpacity>
                                 </View>
-                            )
+                                <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
+                            </View>
                         )
+                    )
                 }
 
 
@@ -538,9 +532,9 @@ const EditProduct = ({ navigation, route }) => {
                         </View>
                     </Modal>
                 </View>
-            </Container>
 
-        </ScrollView>
+            </ScrollView>
+        </Container>
 
     )
 }

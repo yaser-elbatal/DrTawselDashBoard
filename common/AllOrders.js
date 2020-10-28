@@ -32,7 +32,7 @@ function AllOrders({ navigation, route }) {
         });
 
         return unsubscribe;
-    }, [navigation])
+    }, [navigation, route])
 
 
 
@@ -84,7 +84,7 @@ function AllOrders({ navigation, route }) {
                                         </View>
                                         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                                             <Text style={[styles.sname,]}> {item.name}</Text>
-                                            <Text style={[styles.sname, { paddingVertical: 15 }]}> {item.date} {i18n.t('minutes')}</Text>
+                                            <Text style={[styles.sname, { paddingVertical: 15 }]}> {item.date} </Text>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 5 }}>
                                                 <Text style={[styles.sname, { color: Colors.sky, }]}> {item.total}</Text>
                                                 <Text style={[styles.sname, { color: Colors.fontNormal, }]}> {i18n.t('Rial')}</Text>

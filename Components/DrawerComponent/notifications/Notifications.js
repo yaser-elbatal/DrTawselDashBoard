@@ -28,8 +28,8 @@ function Notifications({ navigation }) {
 
     const DeleteNotify = (id) => {
         setspinner(true)
-        dispatch(DeleteNotifications(token, id))
-        dispatch(GetNotifications(token, lang)).then(() => setspinner(false))
+        dispatch(DeleteNotifications(token, id)).then(() => dispatch(GetNotifications(token, lang))).then(() => setspinner(false))
+
     }
 
 
@@ -84,7 +84,7 @@ function Notifications({ navigation }) {
                                                     <Text style={styles.Text}>{item.item.title}</Text>
                                                 </View>
                                                 <TouchableOpacity onPress={() => DeleteNotify(item.item.id)}>
-                                                    <Image source={require('../../../assets/Images/cross_gray_not.png')} style={{ width: 10, height: 12 }} resizeMode='contain' />
+                                                    <Image source={require('../../../assets/Images/cross_gray_not.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
                                                 </TouchableOpacity>
                                             </View>
                                             <Text style={styles.sText}>{item.item.body}</Text>

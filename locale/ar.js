@@ -577,7 +577,7 @@ const ar = {
 
   AcceptedOrders: 'قبول الطلب',
   RunningPrbareOrder: 'جاري تجهيز الطلب',
-  AcceptOrders: ' تم تسليم الطلب للمندوب',
+  AcceptOrders: ' هل تم تجهيز الطلب؟',
   findDelegate: ' جاري البحث عن مندوب',
   priceOrders: 'سعر الطلبات',
   numOrders: 'عدد الطلبات',

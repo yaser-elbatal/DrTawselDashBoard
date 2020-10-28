@@ -86,7 +86,7 @@ function Menue({ navigation }) {
 
     const DeleteMeueIteM = (id) => {
         setLoader(true)
-        dispatch(DeleteMenue(token, id)).then(() => dispatch(MenueInfo(lang, token)).then(() => setLoader(false)))
+        dispatch(DeleteMenue(token, id)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSelection2(false), setLoader(false)))
 
 
     }
@@ -130,13 +130,14 @@ function Menue({ navigation }) {
 
     const handleChange = (e) => {
         setSearch(e);
-        setTimeout(() => dispatch(SearchMenue(token, Search, lang)), 0)
+        setLoader(true)
+        setTimeout(() => dispatch(SearchMenue(token, Search, lang).then(false)), 1000)
     }
 
 
     const DeleteMenueMultiIteM = () => {
         setLoader(true)
-        dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setLoader(false)))
+        dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSelection2(false), setLoader(false)))
 
     }
 

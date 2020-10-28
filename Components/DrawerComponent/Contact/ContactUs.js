@@ -20,7 +20,7 @@ function ContactUs({ navigation }) {
     const [email, setemail] = useState('');
     const [Message, setMessage] = useState('');
     const token = useSelector(state => state.auth.user.data.token)
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
 
     const dispatch = useDispatch();
 

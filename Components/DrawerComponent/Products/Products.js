@@ -88,7 +88,7 @@ function Products({ navigation }) {
 
     const DeleteMenueMultiIteM = () => {
         setLoader(true)
-        dispatch(DeleteProduct(token, lang, DeleteArr)).then(() => dispatch(GetProducts(token, lang))).then(() => setLoader(false))
+        dispatch(DeleteProduct(token, lang, DeleteArr)).then(() => dispatch(GetProducts(token, lang))).then(() => setSelection2(false), setLoader(false))
 
     }
 
@@ -99,10 +99,10 @@ function Products({ navigation }) {
 
     }
 
-
+    console.log(token);
     const handleChange = (e) => {
         setSearch(e);
-        setTimeout(() => dispatch(SerachForPorducts(token, lang, Search)), 1000)
+        setTimeout(() => dispatch(SerachForPorducts(token, lang, e)), 1000)
     }
 
     return (

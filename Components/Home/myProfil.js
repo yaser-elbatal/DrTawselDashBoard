@@ -35,7 +35,7 @@ function myProfil({ navigation }) {
 
             <View style={{ flex: 1 }}>
 
-                <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} resizeMode='contain' />
+                <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
 
                 <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                     <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
@@ -117,9 +117,8 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     ImgBackGround: {
-        width: '110%',
-        height: '42%',
-        right: 18
+        width: '100%',
+        height: '100%',
     },
     Line: {
         height: 1,

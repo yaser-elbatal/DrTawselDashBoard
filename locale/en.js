@@ -584,7 +584,7 @@ const en = {
 
   AcceptedOrders: 'Accepted Orders',
   RunningPrbareOrder: 'Processing Request',
-  AcceptOrders: 'Deliver Orders to Deligate',
+  AcceptOrders: 'ّIs Order Ready ?',
   findDelegate: 'Searching for Delegate',
   close: 'Close',
   totalOrders: 'total Orders',

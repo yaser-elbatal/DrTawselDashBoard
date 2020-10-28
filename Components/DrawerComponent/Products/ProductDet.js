@@ -141,7 +141,7 @@ const ProductDet = ({ navigation, route }) => {
                                             ProductDetA.extras && ProductDetA.extras.map((size, index) => (
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }} key={index + 1}>
                                                     <Text style={styles.name} key={size.id}> {size.name} </Text>
-                                                    <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15 }]}>{size.price}{i18n.t('Rial')}</Text>
+                                                    <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15, alignSelf: 'flex-start' }]}>{size.price}{i18n.t('Rial')}</Text>
 
                                                 </View>
 
@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 12,
         color: Colors.fontNormal,
-        marginVertical: 5
+        marginVertical: 5,
+        alignSelf: 'flex-start'
     },
     text: {
         fontFamily: 'flatMedium',

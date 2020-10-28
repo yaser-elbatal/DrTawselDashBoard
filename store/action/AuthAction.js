@@ -28,7 +28,7 @@ export const SignIn = (phone, password, device_id, lang, navigation) => {
         await axios({
             method: 'POST',
             url: CONST.url + 'sign-in',
-            data: { phone, password, device_id, lang, user_type: 4 },
+            data: { phone, password, device_id, user_type: 4 },
             params: { lang }
         })
 

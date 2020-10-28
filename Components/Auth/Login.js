@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage, Alert, Platform } from 'react-native'
+import Constants from 'expo-constants';
 
 import { SText } from '../../common/SText';
 import BackBtn from '../../common/BackBtn'
@@ -7,6 +8,7 @@ import { InputIcon } from '../../common/InputText';
 import Colors from '../../consts/Colors';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
+import * as Notifications from 'expo-notifications';
 
 import {
     validatePhone,
@@ -17,7 +19,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SignIn } from '../../store/action/AuthAction';
 
 import * as Permissions from 'expo-permissions';
-import { Notifications } from 'expo'
+// import { Notifications } from 'expo'
 import Container from '../../common/Container';
 
 function Login({ navigation }) {
@@ -35,32 +37,69 @@ function Login({ navigation }) {
 
 
 
-    const getDeviceId = async () => {
-        Alert.alert('aaaa')
-        const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-        );
 
-        let finalStatus = existingStatus;
 
-        if (existingStatus !== 'granted' || Platform.OS === 'android') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
+    const registerForPushNotificationsAsync = async () => {
+        let token;
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            token = (await Notifications.getExpoPushTokenAsync()).data;
+            // console.log(token);
+            setDeviceId(token)
+        } else {
+            alert('Must use physical device for Push Notifications');
         }
 
-        if (finalStatus !== 'granted') {
-            return;
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
         }
+        setDeviceId(token)
 
-        const deviceId = await Notifications.getExpoPushTokenAsync();
+        return token;
+    }
 
-        setDeviceId(deviceId);
-
-        AsyncStorage.setItem('deviceID', deviceId);
-    };
+    console.log("ss" + deviceId);
 
 
-    console.log(deviceId);
+    // const getDeviceId = async () => {
+    //     Alert.alert('aaaa')
+    //     const { status: existingStatus } = await Permissions.getAsync(
+    //         Permissions.NOTIFICATIONS
+    //     );
+
+    //     let finalStatus = existingStatus;
+
+    //     if (existingStatus !== 'granted' || Platform.OS === 'android') {
+    //         const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    //         finalStatus = status;
+    //     }
+
+    //     if (finalStatus !== 'granted') {
+    //         return;
+    //     }
+
+    //     const deviceId = await Notifications.getExpoPushTokenAsync();
+
+    //     setDeviceId(deviceId);
+
+    //     AsyncStorage.setItem('deviceID', deviceId);
+    // };
+
+
 
 
 
@@ -93,12 +132,12 @@ function Login({ navigation }) {
     useEffect(() => {
 
 
-
-        getDeviceId()
+        registerForPushNotificationsAsync()
+        // getDeviceId()
         setSpinner(false)
 
 
-    }, [spinner, getDeviceId]);
+    }, [spinner,]);
 
 
 
