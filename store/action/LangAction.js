@@ -4,7 +4,7 @@ import i18n from '../../locale/i18n'
 
 export const chooseLang = "choose_Lang";
 
-export const changeLanguage = (lang, direction) => {
+export const changeLanguage = (lang, direction,) => {
     return async (dispatch) => {
         try {
             await AsyncStorage.setItem("lang", lang, () =>
@@ -16,6 +16,7 @@ export const changeLanguage = (lang, direction) => {
                     I18nManager.forceRTL(true);
                 } else {
                     I18nManager.forceRTL(false);
+
                 }
             });
 

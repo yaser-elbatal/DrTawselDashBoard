@@ -61,10 +61,11 @@ function Wallet({ navigation }) {
 
 
     return (
-        <Container loading={spinner}>
 
-            <View style={{ flex: 1 }}>
-                <Header navigation={navigation} label={i18n.t('wallet')} />
+        <View style={{ flex: 1 }}>
+            <Header navigation={navigation} label={i18n.t('wallet')} />
+            <Container loading={spinner}>
+
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={require('../../../assets/Images/undraw_wallet.png')} style={{ width: width * .5, height: width * .4 }} resizeMode='contain' />
                     <View style={styles.SCard}>
@@ -138,9 +139,9 @@ function Wallet({ navigation }) {
                         </Modal>
                     </View>
                 </View>
+            </Container>
 
-            </View>
-        </Container>
+        </View>
     )
 }
 const styles = StyleSheet.create({

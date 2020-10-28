@@ -25,10 +25,10 @@ const Slider = ({ navigation }) => {
 
         dispatch(IntroService(lang)).then(() => setSpinner(false))
 
-        const direction = AsyncStorage.getItem("direction");
-        if (direction) {
-            navigation.navigate("Login");
-        }
+        // const direction = AsyncStorage.getItem("direction");
+        // if (direction) {
+        //     navigation.navigate("Login");
+        // }
 
 
     }, []);

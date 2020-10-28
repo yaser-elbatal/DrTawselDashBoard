@@ -95,7 +95,6 @@ const loginFailed = (dispatch, error, navigation) => {
 export const SignUp = (data, navigation) => {
     return async (dispatch) => {
         await AsyncStorage.getItem('deviceID').then(deviceId => {
-            console.log(deviceId)
             axios({
                 url: consts.url + 'sign-up',
 
@@ -275,19 +274,26 @@ export const ResetPassword = (password, token, navigation) => {
 }
 
 export const Logout = (token) => {
-    return dispatch => {
-        axios({
-            method: 'GET',
-            url: consts.url + 'logout',
-            headers: {
-                Authorization: 'Bearer ' + token,
-
-            }
-        }).then(res => {
-            dispatch({ type: logout })
 
 
+    return async dispatch => {
+        await AsyncStorage.getItem('deviceID').then(deviceId => {
+
+            axios({
+                method: 'POST',
+                url: consts.url + 'logout',
+                data: { device_id: deviceId },
+                headers: {
+                    Authorization: 'Bearer ' + token,
+
+                }
+            }).then(res => {
+                dispatch({ type: logout })
+
+
+            })
         })
+
     }
 }
 

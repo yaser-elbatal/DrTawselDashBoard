@@ -37,10 +37,11 @@ function Banktransfer({ navigation }) {
 
 
     return (
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
-                <Header navigation={navigation} label={i18n.t('Banktransfer')} />
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
+            <Header navigation={navigation} label={i18n.t('Banktransfer')} />
+            <Container loading={spinner}>
+
                 {
                     MyAcoount.map(acc => (
                         <TouchableOpacity onPress={() => navigation.navigate('TransferMony', { AccountId: acc.id })} key={acc.id.toString()} >
@@ -83,11 +84,9 @@ function Banktransfer({ navigation }) {
                 }
 
 
+            </Container>
 
-
-
-            </ScrollView>
-        </Container>
+        </ScrollView>
     )
 }
 

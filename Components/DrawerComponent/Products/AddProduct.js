@@ -127,17 +127,17 @@ function AddProduct({ navigation }) {
             setSpinner(true)
             dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
             dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
-            // setNameAr('');
-            // setNameEN('');
-            // setsmall_price('');
-            // setmid_price('');
-            // setlarge_price('');
-            // setDiscount('');
-            // setPrice('');
-            // setavailableKilos('');
-            // setQuantity('');
-            // setDetailesAr('');
-            // setDetailesEn('');
+            setNameAr('');
+            setNameEN('');
+            setsmall_price('');
+            setmid_price('');
+            setlarge_price('');
+            setDiscount('');
+            setPrice('');
+            setavailableKilos('');
+            setQuantity('');
+            setDetailesAr('');
+            setDetailesEn('');
         }
 
         else {
@@ -247,11 +247,11 @@ function AddProduct({ navigation }) {
 
 
     return (
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-                <Header navigation={navigation} label={i18n.t('AddPro')} />
 
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <Header navigation={navigation} label={i18n.t('AddPro')} />
+            <Container loading={spinner}>
                 <InputIcon
 
                     label={i18n.t('prodnameAr')}
@@ -277,7 +277,7 @@ function AddProduct({ navigation }) {
                         Sizes.map((size, index) => {
                             return (
 
-                                <View key={index + 1} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
+                                <View key={index + '_'} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
                                     <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
                                         <View style={{
                                             height: 15,
@@ -399,7 +399,7 @@ function AddProduct({ navigation }) {
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index + '_'} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
@@ -485,7 +485,7 @@ function AddProduct({ navigation }) {
                     ExtraProduct.map((proExtra, index) =>
                         (
                             <>
-                                <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + 1}>
+                                <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + '_'}>
                                     <View style={{ flexDirection: 'row', paddingStart: 10 }}>
                                         <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
                                         <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>
@@ -548,9 +548,9 @@ function AddProduct({ navigation }) {
                         </View>
                     </Modal>
                 </View>
+            </Container>
 
-            </ScrollView>
-        </Container>
+        </ScrollView>
 
     )
 }

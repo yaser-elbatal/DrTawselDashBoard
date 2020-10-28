@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, FlatList, TouchableOpacity, Modal, Platform, ScrollView } from 'react-native';
+import { View, Text, Image, Dimensions, StyleSheet, FlatList, TouchableOpacity, Modal, Platform, ScrollView, ActivityIndicator } from 'react-native';
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
@@ -21,12 +21,12 @@ function Previousoffers({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const [modalVisible, setModalVisible] = useState(false);
     const [base64, setBase64] = useState(null);
-    const [userImage, setUserImage] = useState(null);
+    const [userImage, setUserImage] = useState();
     const [spinner, setSpinner] = useState(true);
 
+    const [Loader, setLoader] = useState(false)
 
 
-    console.log(Banners);
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
@@ -39,9 +39,8 @@ function Previousoffers({ navigation }) {
 
 
     const DeleteCardBanners = (id) => {
-        setSpinner(true)
-        dispatch(DeleteBanners(token, id)).then(() => dispatch(GetBanners(token, lang)).then(() => setSpinner(false)))
-
+        setLoader(true)
+        dispatch(DeleteBanners(token, id)).then(() => dispatch(GetBanners(token, lang)).then(() => setLoader(false)))
 
     }
 
@@ -55,8 +54,7 @@ function Previousoffers({ navigation }) {
         askPermissionsAsync();
 
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
+
             base64: true
         });
 
@@ -66,9 +64,9 @@ function Previousoffers({ navigation }) {
         }
     };
     const Add_Banner = () => {
-        setSpinner(true)
-        dispatch(AddBanners(token, base64, lang)).then(() => dispatch(GetBanners(token, lang)).then(() => setSpinner(false)))
-
+        setLoader(true)
+        dispatch(AddBanners(token, base64, lang)).then(() => dispatch(GetBanners(token, lang)).then(() => setLoader(false)))
+        setUserImage()
         setModalVisible(false)
 
 
@@ -77,53 +75,70 @@ function Previousoffers({ navigation }) {
 
     return (
 
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1 }}>
-                <Header navigation={navigation} label={i18n.t('Previousoffers')} />
+        <ScrollView style={{ flex: 1 }}>
+            <Header navigation={navigation} label={i18n.t('Previousoffers')} />
+            <Container loading={spinner}>
+
                 <Card />
-                <BTN title={i18n.t('AddBanner')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 5 }} onPress={() => setModalVisible(true)} />
+                <BTN title={i18n.t('AddOffer')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 5 }} onPress={() => setModalVisible(true)} />
 
 
 
 
                 {
-                    !Banners.length ?
-                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+
+                    Loader ?
+                        <View style={{
+                            flex: 1,
+                            width: '100%',
+                            // height: '100%',
+                            zIndex: 99999,
+                            backgroundColor: Colors.bg,
+                            alignItems: 'center',
+                            opacity: .5,
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}>
+                            <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                        </View>
                         :
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            data={Banners}
-                            extraData={spinner}
-                            keyExtractor={(item) => "_" + item.id}
-                            renderItem={({ item, index }) =>
+                        !Banners.length ?
+                            <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                            :
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                data={Banners}
+                                extraData={spinner, Loader}
+                                keyExtractor={(item) => "_" + item.id}
+                                renderItem={({ item, index }) =>
 
 
-                                (
-                                    <View style={styles.Card}>
-                                        <View style={{ flexDirection: 'row', height: '100%', }}>
-                                            <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
-                                            <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
+                                    (
+                                        <View style={styles.Card}>
+                                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                                <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                                <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
 
-                                                    <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}:{index + 1}</Text>
+                                                        <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}:{index + 1}</Text>
 
 
-                                                    <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
-                                                        <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 15, width: 15, }} />
-                                                    </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
+                                                            <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 15, width: 15, }} />
+                                                        </TouchableOpacity>
 
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', }}>
+                                                        <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
+                                                        <Text style={styles.CardText}>{item.date}</Text>
+                                                    </View>
+                                                    <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
                                                 </View>
-                                                <View style={{ flexDirection: 'row', }}>
-                                                    <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
-                                                    <Text style={styles.CardText}>{item.date}</Text>
-                                                </View>
-                                                <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
                                             </View>
                                         </View>
-                                    </View>
 
-                                )} />}
+                                    )} />}
 
                 <View style={styles.centeredView}>
                     <Modal
@@ -138,7 +153,13 @@ function Previousoffers({ navigation }) {
 
 
                                     <TouchableOpacity onPress={_pickImage}>
-                                        <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+                                        {
+                                            userImage ?
+                                                <Image source={{ uri: userImage }} style={{ width: 100, height: 100, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+                                                :
+                                                <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 100, height: 100, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+
+                                        }
                                     </TouchableOpacity>
                                     <BTN title={i18n.t('AddBanner')} ContainerStyle={styles.LoginBtn1} onPress={Add_Banner} />
                                 </View>
@@ -146,13 +167,13 @@ function Previousoffers({ navigation }) {
                         </View>
                     </Modal>
                 </View>
-            </ScrollView>
+            </Container>
+        </ScrollView>
 
 
 
 
 
-        </Container>
     )
 }
 

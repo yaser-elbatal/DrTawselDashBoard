@@ -44,9 +44,10 @@ function AllOrders({ navigation, route }) {
 
 
     return (
-        <Container loading={spinner}>
-            <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-                <Header navigation={navigation} label={label} />
+        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <Header navigation={navigation} label={label} />
+            <Container loading={spinner}>
+
                 <InputIcon
                     placeholder={i18n.t('search1')}
                     label={i18n.t('search1')}
@@ -97,10 +98,9 @@ function AllOrders({ navigation, route }) {
 
                     )} />
 
+            </Container>
 
-
-            </View>
-        </Container>
+        </View>
     )
 
 
@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
     sname: {
         fontFamily: 'flatMedium',
         fontSize: width * .03,
-        color: Colors.IconBlack
+        color: Colors.IconBlack,
+        alignSelf: 'flex-start'
     },
     Card: {
 

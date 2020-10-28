@@ -32,7 +32,7 @@ function SRegister({ navigation, route }) {
 
     let DebName = Depatrmens.map(deb => ({ label: deb.name, value: deb.id }));
     let DebId = Depatrmens.map(deb => ({ label: deb.name }));
-
+    console.log(Depatrmens);
     let cityName = cities.map(city => ({ label: city.name, value: city.id }));
     let CityID = cities.map(city => ({ label: city.name, }));
 
@@ -74,7 +74,6 @@ function SRegister({ navigation, route }) {
 
 
     const _handleMapRegionChange = async (mapCoordinate) => {
-        setShowAddress(true)
         setMapRegion({ latitude: mapCoordinate.latitude, longitude: mapCoordinate.longitude, latitudeDelta, longitudeDelta });
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
@@ -90,6 +89,8 @@ function SRegister({ navigation, route }) {
         } catch (e) {
             console.log(e);
         }
+        const { data } = await axios.get(getCity);
+        setLOcation(data.results[0].formatted_address)
     };
 
     const fetchData = async () => {
@@ -162,15 +163,17 @@ function SRegister({ navigation, route }) {
     }
 
     return (
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-                <BackBtn navigation={navigation} />
-                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                    <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
-                    <Text style={styles.UText}>{i18n.t('Activity')}</Text>
-                    <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
-                </View>
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <BackBtn navigation={navigation} />
+            <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
+                <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
+                <Text style={styles.UText}>{i18n.t('Activity')}</Text>
+                <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
+            </View>
+
+            <Container loading={spinner}>
+
                 <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
                     <Dropdown
                         placeholder={i18n.t('dep')}
@@ -223,9 +226,6 @@ function SRegister({ navigation, route }) {
                                 <View style={styles.centeredView}>
                                     <View style={styles.modalView}>
 
-
-
-
                                         <MapView
                                             style={{ flex: 1, width: '100%' }}
                                             region={mapRegion}
@@ -243,7 +243,7 @@ function SRegister({ navigation, route }) {
                                                 onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
 
                                             >
-                                                <Image source={require('../../assets/Images/location_gray.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
+                                                <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
                                             </Marker>
                                         </MapView>
                                         <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
@@ -292,9 +292,8 @@ function SRegister({ navigation, route }) {
 
                 />
                 <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
-
-            </ScrollView>
-        </Container>
+            </Container>
+        </ScrollView>
     )
 }
 

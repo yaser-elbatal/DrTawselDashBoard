@@ -24,7 +24,7 @@ function HomePage({ navigation }) {
     const dispatch = useDispatch();
 
 
-
+    console.log(lang);
 
 
 
@@ -43,13 +43,14 @@ function HomePage({ navigation }) {
 
 
     return (
-        <Container loading={spinner}>
-            <Content showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, }}>
 
-                <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
+            <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
+            <Container loading={spinner} >
                 <Card />
 
                 <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
+
                 {
                     HomeProduct && !HomeProduct ?
                         <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
@@ -85,27 +86,56 @@ function HomePage({ navigation }) {
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
                     QuickRebort && QuickRebort.reports ?
-                        <View style={styles.SCard}>
-                            <View style={{ flexDirection: 'row', height: '100%', }}>
-                                <View style={styles.ImgWrab}>
-                                    <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
-                                </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                    <View style={styles.WrabText}>
-                                        <Text style={styles.ProdText}>{QuickRebort.reports.products}</Text>
-                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{QuickRebort.reports.comments}</Text>
+                        <>
+                            <View style={styles.SCard}>
+                                <View style={{ flexDirection: 'row', height: '100%', }}>
+                                    <View style={styles.ImgWrab}>
+                                        <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
                                     </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                        <View style={styles.WrabText}>
+                                            <Text style={styles.ProdText}>{i18n.t('products')}</Text>
+                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('haveProduct')}</Text>
+                                        </View>
+                                    </View>
+                                    <Text style={styles.num}>{QuickRebort.reports.products}</Text>
                                 </View>
-                                <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
                             </View>
-                        </View>
+                            <View style={styles.SCard}>
+                                <View style={{ flexDirection: 'row', height: '100%', }}>
+                                    <View style={styles.ImgWrab}>
+                                        <Image source={require('../../assets/Images/comment.png')} style={styles.SImg} resizeMode='contain' />
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                        <View style={styles.WrabText}>
+                                            <Text style={styles.ProdText}>{i18n.t('comments')}</Text>
+                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Storecomments')}</Text>
+                                        </View>
+                                    </View>
+                                    <Text style={styles.num}>{QuickRebort.reports.comments}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.SCard}>
+                                <View style={{ flexDirection: 'row', height: '100%', }}>
+                                    <View style={styles.ImgWrab}>
+                                        <Image source={require('../../assets/Images/star_home.png')} style={styles.SImg} resizeMode='contain' />
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                        <View style={styles.WrabText}>
+                                            <Text style={styles.ProdText}>{i18n.t('rateing')}</Text>
+                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Yourfeedbacks')}</Text>
+                                        </View>
+                                    </View>
+                                    <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
+                                </View>
+                            </View>
+                        </>
                         :
                         <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                 }
+            </Container>
+        </ScrollView>
 
-            </Content>
-
-        </Container>
 
 
     )
@@ -163,7 +193,7 @@ const styles = StyleSheet.create({
 
     ProdText: {
         fontFamily: 'flatMedium',
-        fontSize: width * .03,
+        fontSize: 14,
         color: Colors.IconBlack
     },
     prod: {

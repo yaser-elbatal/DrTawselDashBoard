@@ -33,10 +33,11 @@ function Comments({ navigation }) {
 
     return (
 
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, }}>
-                <Header navigation={navigation} label={i18n.t('comments')} />
+        <ScrollView style={{ flex: 1, }}>
+            <Header navigation={navigation} label={i18n.t('comments')} />
+            <Container loading={spinner}>
+
                 <Card />
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
@@ -82,9 +83,9 @@ function Comments({ navigation }) {
 
 
 
+            </Container>
 
-            </ScrollView>
-        </Container>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({

@@ -17,6 +17,7 @@ import { MenueInfo, AddMenue, DeleteMenue, UpdateMenue, SearchMenue } from '../.
 import { Toaster } from '../../..//common/Toaster';
 import { validateUserName } from '../../../common/Validation';
 import Container from '../../../common/Container';
+import SLoader from '../../../common/SLoader';
 
 function Menue({ navigation }) {
 
@@ -36,7 +37,7 @@ function Menue({ navigation }) {
     const [isSelected2, setSelection2] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
-
+    const [Loader, setLoader] = useState(false)
     const data = [{
         value: i18n.t('delete'),
     },];
@@ -56,14 +57,13 @@ function Menue({ navigation }) {
         return nameErr || nameEnErr
     }
 
-    console.log(token);
     const dispatch = useDispatch();
 
     const Add_menue = async () => {
         let val = _validate()
         if (!val) {
-            setSpinner(true)
-            dispatch(AddMenue(token, lang, nameAR, nameEN)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSpinner(false)))
+            setLoader(true)
+            dispatch(AddMenue(token, lang, nameAR, nameEN)).then(() => dispatch(MenueInfo(lang, token)).then(() => setLoader(false)))
 
 
             setModalVisible(false)
@@ -77,24 +77,23 @@ function Menue({ navigation }) {
     }
 
     const edit = (item) => {
-
         setEditMaodVisible(true)
-        setNameArEdit(item.name);
-        setNameENEdit(item.name);
+        setNameArEdit(item.name_ar);
+        setNameENEdit(item.name_en);
         setMenueData(item.id);
 
     }
 
     const DeleteMeueIteM = (id) => {
-        setSpinner(true)
-        dispatch(DeleteMenue(token, id))
-        dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+        setLoader(true)
+        dispatch(DeleteMenue(token, id)).then(() => dispatch(MenueInfo(lang, token)).then(() => setLoader(false)))
+
 
     }
 
     const EditMEnue = () => {
-        setSpinner(true);
-        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData)).then(() => dispatch(MenueInfo(lang, token))).then(() => setSpinner(false))
+        setLoader(true);
+        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData)).then(() => dispatch(MenueInfo(lang, token))).then(() => setLoader(false))
 
         setEditMaodVisible(false)
     }
@@ -136,8 +135,8 @@ function Menue({ navigation }) {
 
 
     const DeleteMenueMultiIteM = () => {
-        setSpinner(true)
-        dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSpinner(false)))
+        setLoader(true)
+        dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setLoader(false)))
 
     }
 
@@ -145,7 +144,6 @@ function Menue({ navigation }) {
     const handleChandDrpDown = (val) => {
         setSpinner(true)
         Menue.reverse();
-        dispatch(MenueInfo(lang, token))
         setSpinner(false)
 
 
@@ -165,10 +163,12 @@ function Menue({ navigation }) {
     }
 
     return (
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
-                <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
+            <HomeHeader navigation={navigation} label={i18n.t('menue')} onPress={() => navigation.navigate('MyProfile')} />
+
+            <Container loading={spinner} >
+
 
                 <InputIcon
                     placeholder={i18n.t('search1')}
@@ -215,47 +215,63 @@ function Menue({ navigation }) {
 
 
 
-
                 {
-                    !Menue ?
-                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                        : !Menue.length ?
+                    Loader ?
+                        <View style={{
+                            flex: 1,
+                            width: '100%',
+                            // height: '100%',
+                            zIndex: 99999,
+                            backgroundColor: Colors.bg,
+                            alignItems: 'center',
+                            opacity: .5,
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}>
+                            <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                        </View>
+                        :
+                        !Menue ?
                             <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                            :
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                data={Menue}
-                                extraData={spinner}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item, index }) =>
+                            : !Menue.length ?
+                                <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                                :
+                                <FlatList
+                                    showsVerticalScrollIndicator={false}
+                                    data={Menue}
+                                    extraData={spinner, Loader}
+                                    keyExtractor={(item) => item.id.toString()}
+                                    renderItem={({ item, index }) =>
 
 
-                                    (
+                                        (
 
-                                        <View style={styles.Card} key={index}>
-                                            <View style={styles.FWrab}>
-                                                <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
-                                                <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
-                                                    <Text style={styles.name}>{item.name}</Text>
+                                            <View style={styles.Card} key={index}>
+                                                <View style={styles.FWrab}>
+                                                    <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
+                                                    <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
+                                                        <Text style={styles.name}>{item.name}</Text>
+                                                    </View>
                                                 </View>
+                                                <View style={styles.SWarb}>
+                                                    <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
+                                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                                    </TouchableOpacity>
+
+                                                    <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
+                                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                                    </TouchableOpacity>
+
+                                                </View>
+
                                             </View>
-                                            <View style={styles.SWarb}>
-                                                <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
-                                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                                </TouchableOpacity>
-
-                                                <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
-                                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                                </TouchableOpacity>
-
-                                            </View>
-
-                                        </View>
-                                    )
-                                } />
+                                        )
+                                    } />
                 }
+
+
 
                 <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
                     <Modal
@@ -324,8 +340,9 @@ function Menue({ navigation }) {
                         </TouchableOpacity>
                     </Modal>
                 </TouchableOpacity>
-            </ScrollView>
-        </Container >
+            </Container>
+        </ScrollView>
+
     )
 }
 const styles = StyleSheet.create({

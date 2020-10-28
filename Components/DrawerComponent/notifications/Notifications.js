@@ -59,9 +59,9 @@ function Notifications({ navigation }) {
     //         }
     //     ]
     return (
-        <Container loading={spinner}>
-            <View style={{ flex: 1 }}>
-                <Header navigation={navigation} label={i18n.t('notifications')} />
+        <View style={{ flex: 1 }}>
+            <Header navigation={navigation} label={i18n.t('notifications')} />
+            <Container loading={spinner}>
 
                 {
                     !Notifications ?
@@ -95,8 +95,9 @@ function Notifications({ navigation }) {
 
                             )} />
                 }
-            </View>
-        </Container>
+            </Container>
+
+        </View>
     )
 }
 

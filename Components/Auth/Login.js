@@ -104,15 +104,15 @@ function Login({ navigation }) {
 
 
     return (
-        <Container loading={spinner}>
 
-            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
-                <BackBtn navigation={navigation} />
-                <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
-                    <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
-                    <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
-                </View>
+            <BackBtn navigation={navigation} />
+            <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
+                <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
+                <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
+            </View>
+            <Container loading={spinner}>
 
                 <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
                 <InputIcon
@@ -138,9 +138,8 @@ function Login({ navigation }) {
                 <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
 
                 <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 30, marginTop: 10 }} />
-
-            </ScrollView>
-        </Container>
+            </Container>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({

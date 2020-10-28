@@ -82,12 +82,12 @@ function TransferMony({ navigation, route }) {
 
     return (
 
-        <Container loading={spinner}>
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
 
-                <Header navigation={navigation} label={i18n.t('Banktransfer')} />
+            <Header navigation={navigation} label={i18n.t('Banktransfer')} />
 
 
+            <Container loading={spinner}>
 
                 <TouchableOpacity onPress={_pickImage}>
                     {
@@ -140,10 +140,11 @@ function TransferMony({ navigation, route }) {
 
                 />
                 <BTN title={i18n.t("send")} onPress={SubmitHandler} ContainerStyle={{ marginVertical: width * .1, borderRadius: 10 }} TextStyle={{ fontSize: width * .04, }} />
-            </ScrollView>
+            </Container>
+
+        </ScrollView>
 
 
-        </Container>
     )
 }
 

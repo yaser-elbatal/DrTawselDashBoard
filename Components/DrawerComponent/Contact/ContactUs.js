@@ -51,9 +51,10 @@ function ContactUs({ navigation }) {
     }
 
     return (
-        <Container loading={spinner}>
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-                <Header navigation={navigation} label={i18n.t('contactus')} />
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <Header navigation={navigation} label={i18n.t('contactus')} />
+            <Container loading={spinner}>
+
                 <Card />
                 <InputIcon
                     label={i18n.t('username')}
@@ -82,9 +83,9 @@ function ContactUs({ navigation }) {
 
 
                 <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={SendComplaimentation} />
+            </Container>
 
-            </ScrollView>
-        </Container>
+        </ScrollView>
 
     )
 }

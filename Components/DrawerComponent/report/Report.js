@@ -45,10 +45,11 @@ function Report({ navigation }) {
     }
 
     return (
-        <Container loading={spinner}>
 
-            <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-                <Header navigation={navigation} label={i18n.t('reports')} />
+        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <Header navigation={navigation} label={i18n.t('reports')} />
+            <Container loading={spinner}>
+
                 <ScrollView style={{ flex: 1 }}>
 
                     <WebView
@@ -78,9 +79,9 @@ function Report({ navigation }) {
                         </Modal>
                     </View>
                 </ScrollView>
+            </Container>
 
-            </View>
-        </Container>
+        </View>
     )
 }
 const styles = StyleSheet.create({

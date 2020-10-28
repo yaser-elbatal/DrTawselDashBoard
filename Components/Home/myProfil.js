@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
     MainText: {
         fontFamily: 'flatMedium',
         fontSize: 16,
-        margin: 20
+        margin: 20,
+        marginTop: -10,
     },
     user: {
         fontFamily: 'flatMedium',

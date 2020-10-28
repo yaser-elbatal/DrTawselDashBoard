@@ -184,10 +184,11 @@ function RestaurantInfo({ navigation }) {
 
 
 
-        <Container loading={spinner}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
-                <Header navigation={navigation} label={i18n.t('RestInfo')} />
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
+            <Header navigation={navigation} label={i18n.t('RestInfo')} />
+            <Container loading={spinner}>
+
                 <TouchableOpacity onPress={_pickImage}>
 
                     <Image source={{ uri: userImage }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
@@ -458,9 +459,8 @@ function RestaurantInfo({ navigation }) {
 
                 </View>
                 <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateRestaurantInfo} />
-
-            </ScrollView>
-        </Container>
+            </Container>
+        </ScrollView>
 
     )
 }

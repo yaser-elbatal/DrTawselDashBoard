@@ -15,6 +15,7 @@ const ar = {
   forgetPss: 'نسيت كلمه المرور',
   haveNoAcc: "ليس لديك حساب ؟",
   haveAcc: 'لديك حساب بالفعل؟',
+  haveProduct: 'المنتجات الخاصه بك',
   Location: 'الموقع',
   click: 'اضغط هنا',
   visitor: 'الدخول كذائر',
@@ -22,6 +23,7 @@ const ar = {
   registerNow: "سجل الآن",
   PassReco: "استعاده كلمه المرور",
   send: "ارسال",
+  Arabic: 'العربيه',
   username: ' اسم المستخدم بالعربي',
   usernamen: 'اسم المستخدم بالانجليزي',
   CommercialRegister: 'السجل التجاري',
@@ -94,7 +96,7 @@ const ar = {
   Hello: 'اهلا',
   Dash: 'اهلا بك في لوحه التحكم الخاص من جديد',
   newProduct: 'احدث المنتجات',
-
+  Storecomments: 'التعليقات الخاصه بالمتجر',
 
 
   order: 'طلب',
@@ -104,6 +106,7 @@ const ar = {
   Rate: 'التقييمات الخاص بالمتجر',
   comments: 'التعليقات',
   rateing: 'التقييمات',
+  Yourfeedbacks: 'التعليقات الخاصه بك',
   menueAr: 'اسم المنيو بالعربي',
   menueEn: 'اسم المنيو بالانجليزي',
   AddMenue: '  +  اضافه منيو ',
@@ -221,7 +224,7 @@ const ar = {
   cancel: 'الغاء',
   edit: 'تعديل',
   reports: 'التقارير',
-  ManageAcc: 'اداره الحساب',
+  ManageAcc: 'اداره الحسابات',
   //specialOrder
   AddOffer: 'اضافه عرض',
   specialOrder: 'طلبات خاصه',
@@ -287,7 +290,7 @@ const ar = {
   categoryValue: 'قيمه الاصناف',
 
   deliveryDetailes: 'تفاصيل التسليم',
-
+  chooseLang: 'اختيار اللغه',
   language: "اللغة",
   chooseLang: "اختر اللغة المفضلة لديك",
   selectedLang: "اللغة المختارة",

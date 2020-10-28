@@ -19,7 +19,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
     const [click3, setClick3] = useState(true)
     const [click4, setClick4] = useState(true)
     const [ModalVisible, setModalVisible] = useState(false)
-
+    const [Detailes, setDetailes] = useState([])
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const dispatch = useDispatch();
@@ -66,11 +66,12 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
     return (
 
         !OrderDet ? null :
-            <Container loading={spinner}>
+            <ScrollView style={{ flex: 1 }}>
+
                 <View style={{ flex: 1 }}>
                     <Header navigation={navigation} label={i18n.t('orderDetailes') + `${OrderDet.order_id}`} />
+                    <Container loading={spinner}>
 
-                    <ScrollView style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => setClick(!click)}>
                             <View style={{ width: '90%', margin: 20, backgroundColor: '#F8F8F8', height: 50, justifyContent: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10, alignItems: 'center', }}>
@@ -138,46 +139,19 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                     null
                                     :
                                     OrderDet.products.map(item => (
-                                        <>
-                                            <View key={`${item.id}`} style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
-                                                <Text style={styles.name}>{item.name}</Text>
-                                                <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
-                                                <Text style={styles.name}>{item.quantity}{i18n.t('Meals')}</Text>
-                                                <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
-                                                <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-                                                    <Text style={[styles.name, { color: Colors.sky, fontSize: 14, }]}>{i18n.t('detailes')}</Text>
-                                                </TouchableWithoutFeedback>
 
-                                            </View>
-                                            <View style={styles.centeredView}>
-                                                <Modal
-                                                    animationType="slide"
-                                                    transparent={true}
-                                                    style={{ backgroundColor: Colors.bg, }}
-                                                    visible={ModalVisible} >
+                                        <View key={`${item.id}`} style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
+                                            <Text style={styles.name}>{item.name}</Text>
+                                            <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
+                                            <Text style={styles.name}>{item.quantity}{i18n.t('Meals')}</Text>
+                                            <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
+                                            <TouchableWithoutFeedback onPress={() => { setModalVisible(true); setDetailes(item.extras) }}>
+                                                <Text style={[styles.name, { color: Colors.sky, fontSize: 14, }]}>{i18n.t('detailes')}</Text>
+                                            </TouchableWithoutFeedback>
 
-                                                    <View style={styles.centeredView}>
-                                                        <View style={styles.modalView}>
-                                                            <View style={{ margin: 20, }}>
-                                                                {
-                                                                    item.extras.map((ex, index) => {
-                                                                        return (
-                                                                            <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                                                <Text style={{ fontFamily: 'flatMedium', }}>_{ex.name}</Text>
-                                                                                <Text style={{ fontFamily: 'flatMedium', paddingHorizontal: 20, color: Colors.sky }}>{ex.price} {i18n.t('Rial')}</Text>
+                                        </View>
 
-                                                                            </View>
-                                                                        )
-                                                                    })
-                                                                }
 
-                                                                <BTN title={i18n.t('close')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
-                                                            </View>
-                                                        </View>
-                                                    </View>
-                                                </Modal>
-                                            </View>
-                                        </>
 
                                     ))
 
@@ -187,7 +161,34 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                 : null
                         }
 
+                        <View style={styles.centeredView}>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                style={{ backgroundColor: Colors.bg, }}
+                                visible={ModalVisible} >
 
+                                <View style={styles.centeredView}>
+                                    <View style={styles.modalView}>
+                                        <View style={{ margin: 20, }}>
+                                            {
+                                                Detailes.map((ex, index) => {
+                                                    return (
+                                                        <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
+                                                            <Text style={{ fontFamily: 'flatMedium', }}>_{ex.name}</Text>
+                                                            <Text style={{ fontFamily: 'flatMedium', paddingHorizontal: 20, color: Colors.sky }}>{ex.price} {i18n.t('Rial')}</Text>
+
+                                                        </View>
+                                                    )
+                                                })
+                                            }
+
+                                            <BTN title={i18n.t('close')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
+                                        </View>
+                                    </View>
+                                </View>
+                            </Modal>
+                        </View>
 
                         <TouchableOpacity onPress={() => setClick3(!click3)}>
                             <View style={{ width: '90%', margin: 20, backgroundColor: '#F8F8F8', justifyContent: 'center', height: 50, marginTop: 0 }}>
@@ -207,7 +208,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
 
                         {
                             click3 ?
-                                <Text style={[styles.name, { marginHorizontal: 40, marginTop: -10 }]}>{OrderDet.payment}</Text>
+                                <Text style={[styles.name, { marginHorizontal: 40, marginTop: -10, alignSelf: 'flex-start' }]}>{OrderDet.payment_text}</Text>
                                 :
                                 null
 
@@ -272,11 +273,11 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
 
 
 
-                    </ScrollView>
+                    </Container>
+
 
                 </View>
-            </Container>
-
+            </ScrollView>
     )
 }
 const styles = StyleSheet.create({
@@ -294,7 +295,8 @@ const styles = StyleSheet.create({
     sname: {
         fontFamily: 'flatMedium',
         fontSize: width * .03,
-        color: Colors.IconBlack
+        color: Colors.IconBlack,
+        alignSelf: 'flex-start'
     },
     LoginBtn: {
         marginVertical: 5,

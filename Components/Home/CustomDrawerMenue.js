@@ -19,7 +19,7 @@ function CustomDrawerMenue({ navigation }) {
     const logoutFunc = () => {
         dispatch(Logout(token))
     }
-
+    // console.log(token);
     return (
         <View style={{ flex: 1, }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', flex: .22 }} >
