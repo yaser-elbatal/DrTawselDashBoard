@@ -43,7 +43,7 @@ function CustomDrawerMenue({ navigation }) {
             <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
                 <Text style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')} {user.name}</Text>
 
-                <View style={{ flexDirection: 'column', }}>
+                <View style={{ flexDirection: 'column', marginTop: 10 }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
                         <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, width: '95%' }}>

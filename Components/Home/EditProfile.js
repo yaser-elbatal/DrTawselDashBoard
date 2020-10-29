@@ -53,7 +53,8 @@ function EditProfile({ navigation }) {
         askPermissionsAsync();
 
         let result = await ImagePicker.launchImageLibraryAsync({
-
+            allowsEditing: true,
+            aspect: [3, 4],
             base64: true
         });
 
@@ -75,7 +76,25 @@ function EditProfile({ navigation }) {
 
 
 
-
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                    backgroundColor: '#23232387',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center', }} />
+                </View>
+            );
+        }
+    }
 
 
 
@@ -109,92 +128,91 @@ function EditProfile({ navigation }) {
 
     return (
 
-        <Container loading={spinner}>
 
-            <View style={{ flex: 1, }}>
-                <Image source={image != null ? { uri: image } : { uri: userImage }} style={styles.ImgBackGround} />
-                <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
-                    <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
+        <View style={{ flex: 1, }}>
+            {renderLoader()}
+            <Image source={image != null ? { uri: image } : { uri: userImage }} style={styles.ImgBackGround} />
+            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
+                <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
+            </TouchableOpacity>
+
+
+
+            <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    {
+                        I18nManager.isRTL ?
+                            <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                            :
+                            <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+
+                    }
                 </TouchableOpacity>
+            </ImageBackground>
+
+            <View style={styles.ScrolContainer}>
+                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+
+                    <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
 
 
+                    <View style={{ margin: 20, marginTop: 0 }}>
 
-                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                                :
-                                <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                        <InputIcon
+                            label={i18n.t('usernamen')}
+                            placeholder={i18n.t('usernamen')}
+                            onChangeText={(e) => setNameEN(e)}
+                            value={nameEN}
+                            styleCont={{ marginTop: 0 }}
 
-                        }
-                    </TouchableOpacity>
-                </ImageBackground>
-
-                <View style={styles.ScrolContainer}>
-                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-
-                        <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
+                        />
 
 
-                        <View style={{ margin: 20, marginTop: 0 }}>
+                        <InputIcon
+                            label={i18n.t('email')}
+                            placeholder={i18n.t('email')}
+                            onChangeText={(e) => setemail(e)}
+                            value={email}
 
-                            <InputIcon
-                                label={i18n.t('usernamen')}
-                                placeholder={i18n.t('usernamen')}
-                                onChangeText={(e) => setNameEN(e)}
-                                value={nameEN}
-                                styleCont={{ marginTop: 0 }}
+                            keyboardType='email-address'
+                            styleCont={{ marginTop: 0 }}
+                        />
 
+                        <InputIcon
+                            label={i18n.t('phone')}
+                            placeholder={i18n.t('phone')}
+                            onChangeText={(e) => setPhone(e)}
+                            value={phone}
+
+                            keyboardType='numeric'
+                            styleCont={{ marginTop: 0 }}
+                        />
+
+                        <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
+                            <Dropdown
+                                placeholder={i18n.t('city')}
+                                data={cityName}
+                                fontSize={12}
+                                itemTextStyle={{ fontFamily: 'flatMedium' }}
+                                lineWidth={0}
+                                containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                                animationDuration={0}
+                                onChangeText={val => setCity(val)}
+
+                                value={city}
                             />
-
-
-                            <InputIcon
-                                label={i18n.t('email')}
-                                placeholder={i18n.t('email')}
-                                onChangeText={(e) => setemail(e)}
-                                value={email}
-
-                                keyboardType='email-address'
-                                styleCont={{ marginTop: 0 }}
-                            />
-
-                            <InputIcon
-                                label={i18n.t('phone')}
-                                placeholder={i18n.t('phone')}
-                                onChangeText={(e) => setPhone(e)}
-                                value={phone}
-
-                                keyboardType='numeric'
-                                styleCont={{ marginTop: 0 }}
-                            />
-
-                            <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
-                                <Dropdown
-                                    placeholder={i18n.t('city')}
-                                    data={cityName}
-                                    fontSize={12}
-                                    itemTextStyle={{ fontFamily: 'flatMedium' }}
-                                    lineWidth={0}
-                                    containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
-                                    animationDuration={0}
-                                    onChangeText={val => setCity(val)}
-
-                                    value={city}
-                                />
-                            </View>
-
-                            <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateData} />
-
-
-
                         </View>
 
+                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateData} />
 
-                    </ScrollView>
-                </View>
+
+
+                    </View>
+
+
+                </ScrollView>
             </View>
-        </Container>
+        </View>
     )
 }
 const styles = StyleSheet.create({

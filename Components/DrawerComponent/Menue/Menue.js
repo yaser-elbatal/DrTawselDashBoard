@@ -129,9 +129,18 @@ function Menue({ navigation }) {
     }, [navigation]);
 
     const handleChange = (e) => {
-        setSearch(e);
         setLoader(true)
-        setTimeout(() => dispatch(SearchMenue(token, Search, lang).then(false)), 1000)
+
+        setSearch(e);
+
+
+        setTimeout(() => dispatch(SearchMenue(token, Search, lang)).then(() => setLoader(false)), 1000)
+        if (e == '') {
+            setLoader(true)
+            dispatch(MenueInfo(lang, token)).then(() => setLoader(false))
+
+
+        }
     }
 
 
@@ -162,6 +171,7 @@ function Menue({ navigation }) {
             setDeleteArr(MnueID)
         }
     }
+
 
     return (
 

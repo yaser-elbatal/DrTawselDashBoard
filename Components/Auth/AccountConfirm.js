@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
-    View, StyleSheet, Text, Toast, ActivityIndicator
+    View, StyleSheet, Text, Toast, ActivityIndicator, Alert
 } from 'react-native'
 import { InputIcon } from '../../common/InputText'
 import BackBtn from '../../common/BackBtn'
@@ -12,6 +12,7 @@ import { ActivationCode, ResendCode } from '../../store/action/AuthAction'
 import {
     validateCode,
     validatePassword,
+    ValdiateActivationCode,
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
 import Container from '../../common/Container'
@@ -34,9 +35,13 @@ function AccountConfirm({ navigation, route }) {
 
 
 
-    const _validate = () => {
-        let codeErr = validateCode(code);
 
+
+
+
+
+    const _validate = () => {
+        let codeErr = ValdiateActivationCode(code)
         return codeErr
     }
 

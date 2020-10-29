@@ -33,7 +33,7 @@ function Lang({ navigation }) {
 
             <TouchableOpacity onPress={() => changeLang("ar", "RTL")}>
                 <View style={[styles.Container, { marginTop: 25 }]}>
-                    <Text style={[styles.text, { color: lan === 'ar' ? Colors.sky : Colors.IconBlack }]}>{i18n.t('Arab')}</Text>
+                    <Text style={[styles.text, { color: lan === 'ar' ? Colors.sky : Colors.IconBlack, alignSelf: 'flex-start' }]}>{i18n.t('Arab')}</Text>
                 </View>
             </TouchableOpacity>
 
@@ -41,7 +41,7 @@ function Lang({ navigation }) {
 
             <TouchableOpacity onPress={() => changeLang("en", "LTR")}>
                 <View style={styles.Container}>
-                    <Text style={[styles.text, { color: lan === 'en' ? Colors.sky : Colors.IconBlack }]}>{i18n.t('English')}</Text>
+                    <Text style={[styles.text, { color: lan === 'en' ? Colors.sky : Colors.IconBlack, alignSelf: 'flex-start' }]}>{i18n.t('English')}</Text>
                 </View>
             </TouchableOpacity>
         </View>

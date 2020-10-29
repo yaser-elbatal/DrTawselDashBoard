@@ -78,7 +78,7 @@ function AddProduct({ navigation }) {
     const [detailesAr, setDetailesAr] = useState('')
     const [detailesEn, setDetailesEn] = useState('')
     const [MenueId, setMenue] = useState('')
-    const [available, setavailable] = useState(0);
+    const [available, setavailable] = useState(1);
 
     const [base64, setBase64] = useState(null);
     const [userImage, setUserImage] = useState(null);
@@ -108,17 +108,17 @@ function AddProduct({ navigation }) {
         let nameErr = validateUserName(nameAR)
         let nameEnErr = validateUserName(nameEN)
         let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
-        let DisErr = Discount == '' ? 'Enter Discount' : null;
+        // let DisErr = Discount == '' ? 'Enter Discount' : null;
         let piceErr = price == '' ? 'Enter Price' : null;
         let baseErr = base64 == null ? 'Pick Image' : null;
         let quantityErr = quantity == '' ? 'Enter Quatity' : null;
         let DetErr = detailesAr == '' ? 'enter Detalies Ar' : null
         let Det = detailesEn == '' ? 'Enter Detailes English' : null
-        let Kiloes = availableKilos == '' ? 'Enter availableKilos' : null;
+        // let Kiloes = availableKilos == '' ? 'Enter availableKilos' : null;
         let MenueIdErr = MenueId == '' ? 'Select Menue' : null
 
 
-        return nameErr || nameEnErr || SelectChoice || DisErr || piceErr || baseErr || quantityErr || DetErr || Det || Kiloes || MenueIdErr
+        return nameErr || nameEnErr || SelectChoice || piceErr || baseErr || quantityErr || DetErr || Det || MenueIdErr
     }
 
     const Add_Product = () => {
@@ -154,6 +154,7 @@ function AddProduct({ navigation }) {
     useEffect(() => {
         dispatch(MenueInfo(lang, token))
         GetExtraProduct()
+
     }, []);
 
 
@@ -170,7 +171,6 @@ function AddProduct({ navigation }) {
 
         askPermissionsAsync();
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
             aspect: [4, 3],
             base64: true
         });
@@ -386,7 +386,6 @@ function AddProduct({ navigation }) {
                     styleCont={{ marginTop: -5 }}
                     label={i18n.t('quantity')}
                     placeholder={i18n.t('quantity')}
-
                     keyboardType='numeric'
                     onChangeText={(e) => setQuantity(e)}
                     value={quantity}
@@ -434,18 +433,29 @@ function AddProduct({ navigation }) {
 
                 </View>
 
-                <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, marginTop: 20 }}>
+
+                <InputIcon
+                    styleCont={{ marginTop: 20 }}
+                    label={i18n.t('ProdPice')}
+                    placeholder={i18n.t('ProdPice')}
+                    onChangeText={(e) => setUserImage(e)}
+                    value={userImage}
+                    image={require('../../../assets/Images/camera_gray.png')}
+                    onPress={_pickImage}
+                />
+
+                {/* <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, marginTop: 20 }}>
                     <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
                     <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
 
 
-                <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 15, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 0, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
                     <Dropdown
                         placeholder={i18n.t('menue')}
                         data={MenueData}
-                        fontSize={12}
+                        fontSize={16}
                         itemTextStyle={{ fontFamily: 'flatMedium' }}
                         lineWidth={0}
                         containerStyle={{ width: '95%', paddingHorizontal: 5, bottom: 10, }}
@@ -485,7 +495,7 @@ function AddProduct({ navigation }) {
                     ExtraProduct.map((proExtra, index) =>
                         (
                             <>
-                                <View style={{ backgroundColor: Colors.InputColor, width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + '_'}>
+                                <View style={{ backgroundColor: '#F7F7F7', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + '_'}>
                                     <View style={{ flexDirection: 'row', paddingStart: 10 }}>
                                         <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
                                         <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>

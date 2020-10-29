@@ -155,16 +155,16 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.sky,
         flex: 1,
         marginHorizontal: -16,
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 10
 
     },
     textBtn: {
         color: Colors.bg,
         fontFamily: 'flatMedium',
         textAlign: 'center',
-        padding: 15,
         fontWeight: '200',
-        fontSize: 18
+        fontSize: 18,
     }
 })
 export default Slider

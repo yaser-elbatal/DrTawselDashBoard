@@ -9,7 +9,7 @@ const Toaster = (message) => {
     return Toast.show(message, {
         position: Toast.position.CENTER,
         containerStyle: {
-            backgroundColor: Colors.IconBlack,
+            backgroundColor: Colors.RedColor,
             paddingHorizontal: width * 0.05,
             borderRadius: 5,
         },

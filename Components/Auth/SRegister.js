@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, ScrollView, StyleSheet, Text, Platform, TouchableOpacity, Modal, Image, Button } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, Platform, TouchableOpacity, Modal, Image, Button, Alert } from 'react-native'
 import Colors from '../../consts/Colors';
 import BackBtn from '../../common/BackBtn';
 import i18n from '../../locale/i18n';
@@ -127,14 +127,17 @@ function SRegister({ navigation, route }) {
         const unsubscribe = navigation.addListener('focus', () => {
 
             setSpinner(true)
+
             fetchData();
             dispatch(GetDepartment(lang))
             dispatch(getCititis(lang)).then(() => setSpinner(false)).catch((e) => { setSpinner(false); console.warn(e); })
         });
 
         return unsubscribe;
-
     }, [navigation])
+
+
+
 
     const NavigateToNextLocation = () => {
         let val = _validate()
@@ -227,7 +230,7 @@ function SRegister({ navigation, route }) {
                                     <View style={styles.modalView}>
 
                                         <MapView
-                                            style={{ flex: 1, width: '100%' }}
+                                            style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
                                             region={mapRegion}
                                             ref={mapRef}
                                             onRegionChangeComplete={region => setMapRegion(region)}
@@ -262,8 +265,8 @@ function SRegister({ navigation, route }) {
                     <Dropdown
                         placeholder={i18n.t('city')}
                         data={cityName}
-                        fontSize={12}
-                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        fontSize={16}
+                        itemTextStyle={{ fontFamily: 'flatMedium', fontSize: 16 }}
                         lineWidth={0}
                         containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
                         animationDuration={0}

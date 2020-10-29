@@ -12,7 +12,7 @@ const Container = ({ loading, children }) => {
                 flex: 1,
                 width: '100%',
                 zIndex: 99999,
-                // backgroundColor: Colors.bg,
+                backgroundColor: '#ffffff1c',
                 alignItems: 'center',
                 justifyContent: 'center',
                 alignSelf: 'center',

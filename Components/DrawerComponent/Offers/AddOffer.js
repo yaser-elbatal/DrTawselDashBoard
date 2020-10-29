@@ -125,7 +125,7 @@ function Previousoffers({ navigation }) {
 
 
                                                         <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
-                                                            <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 15, width: 15, }} />
+                                                            <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 22, width: 22, }} />
                                                         </TouchableOpacity>
 
                                                     </View>

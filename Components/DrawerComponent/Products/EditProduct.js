@@ -161,7 +161,6 @@ const EditProduct = ({ navigation, route }) => {
 
         askPermissionsAsync();
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
             aspect: [4, 3],
             base64: true
         });
@@ -417,10 +416,21 @@ const EditProduct = ({ navigation, route }) => {
 
                 </View>
 
-                <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", marginTop: 15, borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+
+                <InputIcon
+                    styleCont={{ marginTop: 20 }}
+                    label={i18n.t('ProdPice')}
+                    placeholder={i18n.t('ProdPice')}
+                    onChangeText={(e) => setUserImage(e)}
+                    value={userImage}
+                    image={require('../../../assets/Images/camera_gray.png')}
+                    onPress={_pickImage}
+                />
+
+                {/* <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", marginTop: 15, borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
                     <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
                     <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
 
 

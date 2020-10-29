@@ -35,11 +35,11 @@ function TRegister({ navigation, route }) {
 
     const _validate = () => {
 
-        let UrlErr = WebUrl === '' ? i18n.t('webUrl') : null
+        // let UrlErr = WebUrl === '' ? i18n.t('webUrl') : null
         let SelectDeliveryErr = SelectDelivery === null ? i18n.t('SelectYN') : null;
         let selecCommericalErr = selecCommerical === null ? i18n.t('SelectYN') : null;
 
-        return UrlErr || SelectDeliveryErr || selecCommericalErr
+        return UrlErr || SelectDeliveryErr
 
     }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager, ActivityIndicator } from 'react-native'
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { useSelector, useDispatch } from 'react-redux'
@@ -30,68 +30,89 @@ function myProfil({ navigation }) {
     }, [navigation])
 
 
+    function renderLoader() {
+        if (spinner) {
+            return (
+                <View style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                    backgroundColor: '#23232387',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center', }} />
+                </View>
+            );
+        }
+    }
+
     return (
-        <Container loading={spinner}>
-
-            <View style={{ flex: 1 }}>
-
-                <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
-
-                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
-                    <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                                :
-                                <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-
-                        }
-                    </TouchableOpacity>
-                </ImageBackground>
-
-                <View style={styles.ScrolContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
-                        <Image source={require('../../assets/Images/EditRename.png')} style={{ width: 30, height: 30 }} />
-                    </TouchableOpacity>
-                    <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
-
-                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-
-                        <View style={{ margin: 20, marginTop: 0 }}>
-
-                            <View style={styles.Wrab}>
-                                <Text style={styles.user}>{user.name}</Text>
-
-                            </View>
-                            <View style={styles.Line}></View>
-                            <View style={styles.Wrab}>
-                                <Text style={styles.user}>{user.phone}</Text>
-
-                            </View>
-                            <View style={styles.Line}></View>
 
 
 
-                            <View style={styles.Wrab}>
-                                <Text style={styles.user}>{user.provider.city}</Text>
+        <View style={{ flex: 1 }}>
+            {renderLoader()}
 
-                            </View>
-                            <View style={styles.Line}></View>
+            <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
 
-                            <View style={styles.Wrab}>
-                                <Text style={styles.user}>{user.email}</Text>
+            <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
+                <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
+                    {
+                        I18nManager.isRTL ?
+                            <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                            :
+                            <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
 
-                            </View>
-                            <View style={styles.Line}></View>
+                    }
+                </TouchableOpacity>
+            </ImageBackground>
 
+            <View style={styles.ScrolContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
+                    <Image source={require('../../assets/Images/EditRename.png')} style={{ width: 30, height: 30 }} />
+                </TouchableOpacity>
+                <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
+
+                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+
+                    <View style={{ margin: 20, marginTop: 0 }}>
+
+                        <View style={styles.Wrab}>
+                            <Text style={styles.user}>{user.name}</Text>
 
                         </View>
+                        <View style={styles.Line}></View>
+                        <View style={styles.Wrab}>
+                            <Text style={styles.user}>{user.phone}</Text>
+
+                        </View>
+                        <View style={styles.Line}></View>
 
 
-                    </ScrollView>
-                </View>
+
+                        <View style={styles.Wrab}>
+                            <Text style={styles.user}>{user.provider.city}</Text>
+
+                        </View>
+                        <View style={styles.Line}></View>
+
+                        <View style={styles.Wrab}>
+                            <Text style={styles.user}>{user.email}</Text>
+
+                        </View>
+                        <View style={styles.Line}></View>
+
+
+                    </View>
+
+
+                </ScrollView>
             </View>
-        </Container>
+        </View>
     )
 }
 const styles = StyleSheet.create({
@@ -118,7 +139,7 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '100%',
-        height: '100%',
+        height: '60%',
     },
     Line: {
         height: 1,

@@ -142,6 +142,7 @@ function Login({ navigation }) {
 
 
 
+
     return (
 
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -167,7 +168,6 @@ function Login({ navigation }) {
                     onChangeText={(e) => setPassword(e)}
                     value={password}
                     secureTextEntry
-                    keyboardType='numeric'
                     styleCont={{ marginTop: 0 }}
                 />
 

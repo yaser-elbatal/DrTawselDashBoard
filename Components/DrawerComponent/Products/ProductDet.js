@@ -45,7 +45,7 @@ const ProductDet = ({ navigation, route }) => {
                 {
                     !ProductDetA ? null :
                         <>
-                            <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} />
+                            <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} resizeMode='contain' />
                             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                     {
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
 
     ImgBackGround: {
         width: '100%',
-        height: '60%',
-        bottom: 100,
+        height: '100%',
+        bottom: 220
     },
     Line: {
         height: 1,

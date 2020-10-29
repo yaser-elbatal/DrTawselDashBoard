@@ -105,6 +105,7 @@ function Products({ navigation }) {
         setTimeout(() => dispatch(SerachForPorducts(token, lang, e)), 1000)
     }
 
+
     return (
 
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
@@ -181,11 +182,11 @@ function Products({ navigation }) {
                                 <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
                                     <View style={styles.Card}>
                                         <View style={{ flexDirection: 'row', flex: .75 }}>
-                                            <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                            <Image source={{ uri: item.image }} style={{ height: '100%', width: '40%' }} />
                                             <View style={styles.FWrab}>
                                                 <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
                                                 <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                                <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + '>-'}{item.name}</Text>
+                                                <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
                                                 {/* <Text style={[styles.nMenu, { color: Colors.IconBlack }]}></Text> */}
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                     <Text style={styles.nText}>{item.price}</Text>

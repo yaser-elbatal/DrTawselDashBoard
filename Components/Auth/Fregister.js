@@ -103,7 +103,6 @@ function Fregister({ navigation }) {
                 value={password}
                 secureTextEntry
                 styleCont={{ marginTop: 0 }}
-                keyboardType='numeric'
 
 
 
@@ -114,7 +113,6 @@ function Fregister({ navigation }) {
                 onChangeText={(e) => setConfirmPassword(e)}
                 value={confirmPassword}
                 secureTextEntry
-                keyboardType='numeric'
 
                 styleCont={{ marginTop: 0 }}
             />

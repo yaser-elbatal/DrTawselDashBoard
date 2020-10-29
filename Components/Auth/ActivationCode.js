@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
-    View, StyleSheet, Text, Toast, ActivityIndicator
+    View, StyleSheet, Text, Toast, ActivityIndicator, Alert
 } from 'react-native'
 import { InputIcon } from '../../common/InputText'
 import BackBtn from '../../common/BackBtn'
@@ -10,7 +10,7 @@ import i18n from '../../locale/i18n'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActivationCode } from '../../store/action/AuthAction'
 import {
-    validateCode,
+    validateCode, ValdiateActivationCode,
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
 import Container from '../../common/Container'
@@ -22,17 +22,14 @@ function ActivateCode({ navigation, route }) {
 
     const lang = useSelector(state => state.lang.language);
     const { token } = route.params;
-    console.log('tokenFRomActivtion' + token);
     const MyactivateCode = 1122;
     const dispatch = useDispatch()
 
 
 
 
-
     const _validate = () => {
-        let codeErr = validateCode(code);
-
+        let codeErr = ValdiateActivationCode(code)
         return codeErr
     }
 
