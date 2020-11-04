@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import Container from '../../../common/Container';
+import HomeHeader from '../../../common/HomeHeader';
 
 const { width, height } = Dimensions.get('window')
 
@@ -77,7 +78,8 @@ function Previousoffers({ navigation }) {
 
 
         <ScrollView style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('Previousoffers')} />
+            <HomeHeader navigation={navigation} label={i18n.t('Previousoffers')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 <Card />

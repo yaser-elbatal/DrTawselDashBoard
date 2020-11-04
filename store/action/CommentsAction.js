@@ -69,6 +69,15 @@ export const SendTransferFromACc = (token, lang, AccountId, base64, Bankname, ac
         }).then((response) => {
             if (response.data.success) {
                 navigation.navigate('Wallet')
+                Toast.show({
+                    text: response.data.message,
+                    type: response.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        textAlign: 'center'
+                    }
+                });
             }
             else {
                 Toast.show({
@@ -95,8 +104,32 @@ export const Withdrawwallet = (token, account_number) => {
             headers: { Authorization: 'Bearer ' + token },
             data: { account_number }
         }).then((response) => {
+
+            Toast.show({
+                text: response.data.message,
+                type: response.data.success ? "success" : "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+
+
+            });
+
             if (response.data.success) {
                 navigation.navigate('Wallet')
+                Toast.show({
+                    text: response.data.message,
+                    type: response.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        textAlign: 'center'
+                    }
+
+
+                });
             }
             else {
                 Toast.show({
@@ -107,8 +140,12 @@ export const Withdrawwallet = (token, account_number) => {
                         color: "white",
                         textAlign: 'center'
                     }
+
+
                 });
             }
+
+
         }).catch(err => {
             console.log('err', err);
         });
@@ -126,6 +163,15 @@ export const SendComplaiment = (token, username, email, description, navigation)
         }).then((response) => {
             if (response.data.success) {
                 navigation.navigate('HomePage')
+                Toast.show({
+                    text: response.data.message,
+                    type: response.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        textAlign: 'center'
+                    }
+                });
             }
             else {
                 Toast.show({

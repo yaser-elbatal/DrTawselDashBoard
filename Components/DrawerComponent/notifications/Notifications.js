@@ -60,12 +60,13 @@ function Notifications({ navigation }) {
     //     ]
     return (
         <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('notifications')} />
+            <HomeHeader navigation={navigation} label={i18n.t('notifications')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 {
-                    !Notifications ?
-                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                    !Notifications || !Notifications.length ?
+                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center', }} />
                         :
                         <FlatList
                             pagingEnabled={true}

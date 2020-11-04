@@ -111,10 +111,14 @@ function Menue({ navigation }) {
             let Deleted = DeleteArr.filter((id) => id !== itemId);
             setDeleteArr(Deleted)
 
+
         } else {
             setDeleteArr(DeleteArr.concat([itemId]))
+
         }
+
     };
+    console.log('NoneChecked' + DeleteArr);
 
     useEffect(() => {
 
@@ -134,13 +138,14 @@ function Menue({ navigation }) {
         setSearch(e);
 
 
-        setTimeout(() => dispatch(SearchMenue(token, Search, lang)).then(() => setLoader(false)), 1000)
         if (e == '') {
             setLoader(true)
             dispatch(MenueInfo(lang, token)).then(() => setLoader(false))
 
 
         }
+        setTimeout(() => dispatch(SearchMenue(token, e, lang)).then(() => setLoader(false)), 1000)
+
     }
 
 
@@ -196,7 +201,7 @@ function Menue({ navigation }) {
                 <View style={{ height: 50, width: '90%', margin: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
                     <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                     <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
                         <Text style={{ fontFamily: 'flatMedium', paddingVertical: 5, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
@@ -352,7 +357,7 @@ function Menue({ navigation }) {
                     </Modal>
                 </TouchableOpacity>
             </Container>
-        </ScrollView>
+        </ScrollView >
 
     )
 }

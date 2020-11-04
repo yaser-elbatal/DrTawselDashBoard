@@ -11,6 +11,7 @@ import Container from '../../../common/Container';
 import { SendComplaiment } from '../../../store/action/CommentsAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toaster } from '../../../common/Toaster';
+import HomeHeader from '../../../common/HomeHeader';
 
 const { width } = Dimensions.get('window')
 
@@ -29,7 +30,7 @@ function ContactUs({ navigation }) {
 
         let nameA = validateUserName(name)
         let emailErr = validateEmail(email);
-        let MessageErr = Message == '' ? 'Enter Detailes' : null
+        let MessageErr = Message == '' ? `${i18n.t('EnterDetailes')}` : null
         return nameA || emailErr || MessageErr
     }
 
@@ -52,7 +53,8 @@ function ContactUs({ navigation }) {
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('contactus')} />
+            <HomeHeader navigation={navigation} label={i18n.t('contactus')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 <Card />
@@ -71,15 +73,20 @@ function ContactUs({ navigation }) {
                     keyboardType='email-address'
                     styleCont={{ marginTop: 0 }}
                 />
+
+
                 <InputIcon
+
+
                     placeholder={i18n.t('message')}
-                    styleCont={{ height: width * .32, marginHorizontal: '5%', marginTop: 20 }}
-                    placeholder={i18n.t('prodDetAr')}
+                    styleCont={{ height: 160, marginTop: 20, width: '90%' }}
+                    inputStyle={{ paddingHorizontal: 0, paddingRight: 10, paddingLeft: 0, top: 0, paddingStart: 10 }}
+                    LabelStyle={{ bottom: width * .9, }}
+                    placeholder={i18n.t('message')}
                     onChangeText={(e) => setMessage(e)}
                     value={Message}
-                    LabelStyle={{ bottom: width * .35 }}
-
-                />
+                    multiline={true}
+                    numberOfLines={10} />
 
 
                 <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={SendComplaimentation} />

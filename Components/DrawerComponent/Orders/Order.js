@@ -5,13 +5,15 @@ import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManage
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
+import HomeHeader from '../../../common/HomeHeader';
 
 const { width } = Dimensions.get('window')
 
 function Orders({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} />
+            <HomeHeader navigation={navigation} label={i18n.t('orders')} onPress={() => navigation.navigate('MyProfile')} />
+
             <View style={styles.wrap}>
 
                 <TouchableOpacity onPress={() => navigation.navigate('AllOrders', { statues: 'WAITING', label: i18n.t('IncomingRequests') })}>

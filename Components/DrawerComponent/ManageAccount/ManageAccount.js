@@ -9,6 +9,7 @@ import BTN from '../../../common/BTN';
 import Container from '../../../common/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { ManageAcoounts } from '../../../store/action/CommentsAction';
+import HomeHeader from '../../../common/HomeHeader';
 
 const { width } = Dimensions.get('window')
 function ManageAccount({ navigation }) {
@@ -39,7 +40,8 @@ function ManageAccount({ navigation }) {
 
     return (
         <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('ManageAcc')} />
+            <HomeHeader navigation={navigation} label={i18n.t('ManageAcc')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 {

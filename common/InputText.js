@@ -42,6 +42,7 @@ const InputIcon = ({
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
 
+
                 {...props}
             />
             <TouchableOpacity onPress={onPress} style={{
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         paddingHorizontal: 25,
         borderColor: '#E0E0E0',
         borderWidth: 1,

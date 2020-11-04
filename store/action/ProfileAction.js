@@ -67,7 +67,7 @@ export const EditPasswordSettingsProfile = (token, old_password, current_passwor
 
         }).then(res => {
             if (res.data.success) {
-                navigation.navigate('MyProfile')
+                navigation.navigate('Settings')
 
             }
             Toast.show({

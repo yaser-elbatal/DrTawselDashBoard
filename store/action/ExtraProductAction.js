@@ -28,6 +28,15 @@ export const add_extra_ProductsService = (data) => {
     }
 };
 
+
+export const temp_extra_ProductsService = () => {
+    return dispatch => {
+        return dispatch({ type: 'temp_array', });
+    }
+};
+
+
+
 export const edit_extra_ProductsService = (data) => {
     return dispatch => {
         return dispatch({

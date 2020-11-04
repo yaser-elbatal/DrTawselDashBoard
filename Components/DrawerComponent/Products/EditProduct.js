@@ -14,20 +14,21 @@ import Header from '../../../common/Header';
 import { useSelector, useDispatch } from 'react-redux';
 import { EditProducts, GetProducts, ProductDetailes, GetProductExtrasFromEdit, AddExtraProductsFromEdit, DeleteProductExtrasFromEdit } from '../../../store/action/ProductAction';
 import Container from '../../../common/Container';
+import { validateUserName } from '../../../common/Validation';
 
 
 const { width, height } = Dimensions.get('window')
 const EditProduct = ({ navigation, route }) => {
 
     const { ProductsId } = route.params
-    const ProductDet = useSelector(state => state.product.EditProduct);
+    const ProductDet = useSelector(state => state.product.product);
     const [nameAR, setNameAr] = useState(ProductDet.name_ar);
     const [nameEN, setNameEN] = useState(ProductDet.name_en);
     const [price, setPrice] = useState(`${ProductDet.price}`);
     const [small_price, setsmall_price] = useState(`${ProductDet.small_price}`);
     const [mid_price, setmid_price] = useState(`${ProductDet.mid_price}`);
     const [large_price, setlarge_price] = useState(`${ProductDet.large_price}`);
-    const [selectedRadion, setSelectedRadio] = useState(0)
+    const [selectedRadion, setSelectedRadio] = useState(1)
     const [spinner, setSpinner] = useState(true);
 
     const [ProductnameExtraAR, setProductnameExtraAR] = useState('');
@@ -39,13 +40,13 @@ const EditProduct = ({ navigation, route }) => {
     const [quantity, setQuantity] = useState(`${ProductDet.quantity}`)
     const [detailesAr, setDetailesAr] = useState(ProductDet.details_ar)
     const [detailesEn, setDetailesEn] = useState(ProductDet.details_en)
-    const [available, setavailable] = useState(ProductDet.available);
+    const [available, setavailable] = useState(`${ProductDet.available}`);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
     const ProductsExtras = useSelector(state => !state.product.ExtraProduct ? [] : state.product.ExtraProduct);
     const dispatch = useDispatch();
-    console.log(ProductsExtras);
+    console.log(available);
 
     const [MenueId, setMenue] = useState(ProductDet.menu_id)
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
@@ -64,8 +65,24 @@ const EditProduct = ({ navigation, route }) => {
             dispatch(ProductDetailes(token, lang, ProductsId)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)))
 
         });
+        setTimeout(() => {
 
+            setNameAr(ProductDet.name_ar),
+                setNameEN(ProductDet.name_en),
+                setPrice(`${ProductDet.price}`),
+                setsmall_price(`${ProductDet.small_price}`),
+                setmid_price(`${ProductDet.mid_price}`),
+                setlarge_price(`${ProductDet.large_price}`),
+                setavailableKilos(`${ProductDet.available_kilos}`),
+                setDiscount(`${ProductDet.discount}`),
+                setQuantity(`${ProductDet.quantity}`),
+                setDetailesAr(ProductDet.details_ar),
+                setDetailesEn(ProductDet.details_en),
+                setavailable(`${ProductDet.available}`),
+                setMenue(ProductDet.menu_id)
 
+            setSpinner(false)
+        }, 1000);
 
 
         return unsubscribe;
@@ -75,22 +92,7 @@ const EditProduct = ({ navigation, route }) => {
 
 
 
-    setTimeout(() => {
-        setNameAr(ProductDet.name_ar),
-            setNameEN(ProductDet.name_en),
-            setPrice(`${ProductDet.price}`),
-            setsmall_price(`${ProductDet.small_price}`),
-            setmid_price(`${ProductDet.mid_price}`),
-            setlarge_price(`${ProductDet.large_price}`),
-            setavailableKilos(`${ProductDet.available_kilos}`),
-            setDiscount(`${ProductDet.discount}`),
-            setQuantity(`${ProductDet.quantity}`),
-            setDetailesAr(ProductDet.details_ar),
-            setDetailesEn(ProductDet.details_en),
-            setavailable(`${ProductDet.available}`),
-            setMenue(ProductDet.menu_id)
-        setSpinner(false)
-    }, 0);
+
 
 
 
@@ -106,9 +108,8 @@ const EditProduct = ({ navigation, route }) => {
 
 
     const [data, setData] = useState([
-
-        { id: 1, title: `${i18n.t("yes")}` },
-        { id: 0, title: `${i18n.t("no")}` },
+        { id: `${1}`, title: `${i18n.t("yes")}` },
+        { id: `${0}`, title: `${i18n.t("no")}` },
 
 
     ])
@@ -137,7 +138,23 @@ const EditProduct = ({ navigation, route }) => {
 
 
 
+    const _validate = () => {
 
+        let nameErr = validateUserName(nameAR)
+        let nameEnErr = validateUserName(nameEN)
+        // let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
+        // let DisErr = Discount == '' ? 'Enter Discount' : null;
+        let piceErr = price && small_price && mid_price && large_price == '' ? 'Enter All Price' : null;
+        let baseErr = base64 == null ? i18n.t('PickImage') : null;
+        let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
+        let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null
+        let Det = detailesEn == '' ? i18n.t('EnterDetailesEn') : null
+        // let Kiloes = availableKilos == '' ? 'Enter availableKilos' : null;
+        let MenueIdErr = MenueId == '' ? i18n.t('SelectMenue') : null
+
+
+        return nameErr || nameEnErr || piceErr || baseErr || quantityErr || DetErr || Det || MenueIdErr
+    }
 
 
     const Edit_product = () => {
@@ -375,26 +392,26 @@ const EditProduct = ({ navigation, route }) => {
 
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ paddingEnd: 120, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('available')}</Text>
+                    <View style={{ paddingEnd: 120, paddingStart: 10 }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
                                         borderRadius: 12,
                                         borderWidth: 2,
-                                        borderColor: available === item.id ? Colors.sky : Colors.fontNormal,
+                                        borderColor: available == item.id ? Colors.sky : Colors.fontNormal,
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         alignSelf: 'center',
 
                                     }}>
                                         {
-                                            available === item.id ?
+                                            available == item.id ?
                                                 <View style={{
                                                     height: 6,
                                                     width: 6,
@@ -404,7 +421,7 @@ const EditProduct = ({ navigation, route }) => {
                                                 : null
                                         }
                                     </View>
-                                    <Text style={[styles.sText, { color: available === item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    <Text style={[styles.sText, { color: available == item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
 
                                 </TouchableOpacity>
 
@@ -423,6 +440,8 @@ const EditProduct = ({ navigation, route }) => {
                     placeholder={i18n.t('ProdPice')}
                     onChangeText={(e) => setUserImage(e)}
                     value={userImage}
+                    inputStyle={{ fontSize: 12 }}
+                    imgStyle={{ width: 25, height: 25, bottom: 5 }}
                     image={require('../../../assets/Images/camera_gray.png')}
                     onPress={_pickImage}
                 />
@@ -452,17 +471,23 @@ const EditProduct = ({ navigation, route }) => {
 
 
                     placeholder={i18n.t('prodDetAr')}
-                    styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 20 }}
-                    placeholder={i18n.t('prodDetAr')}
+                    styleCont={{ height: 160, marginTop: 20, width: '90%' }}
+                    inputStyle={{ paddingHorizontal: 0, paddingRight: 10, paddingLeft: 0, top: 0, paddingStart: 10 }}
+                    LabelStyle={{ bottom: width * .9, }}
                     onChangeText={(e) => setDetailesAr(e)}
+                    multiline={true}
+                    numberOfLines={10}
                     value={detailesAr}
                 />
 
                 <InputIcon
 
                     placeholder={i18n.t('prodDetEn')}
-                    styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 20 }}
-                    placeholder={i18n.t('prodDetAr')}
+                    styleCont={{ height: 160, marginTop: 20, width: '90%' }}
+                    inputStyle={{ paddingHorizontal: 0, paddingRight: 10, paddingLeft: 0, top: 0, paddingStart: 10 }}
+                    LabelStyle={{ bottom: width * .9, }}
+                    multiline={true}
+                    numberOfLines={10}
                     onChangeText={(e) => setDetailesEn(e)}
                     value={detailesEn}
                 />
@@ -531,6 +556,7 @@ const EditProduct = ({ navigation, route }) => {
                                         styleCont={{ marginTop: 0 }}
                                         label={i18n.t('price')}
                                         placeholder={i18n.t('price')}
+                                        keyboardType='numeric'
 
                                         onChangeText={(e) => setPricePrdouctExtra(e)}
                                         value={priceProductExtra}

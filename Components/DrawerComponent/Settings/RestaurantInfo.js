@@ -38,6 +38,29 @@ function RestaurantInfo({ navigation }) {
     });
 
 
+    const [isopened, setisopened] = useState(false)
+    const [nameAR, setNameAr] = useState(user.provider.restaurant_name_ar);
+    const [nameEN, setNameEN] = useState(user.provider.restaurant_name_en)
+    const [from, setFrom] = useState(user.provider.preparing_time_from)
+    const [to, setTo] = useState(user.provider.preparing_time_to)
+    const lang = useSelector(state => state.lang.language);
+    const [base64, setBase64] = useState(null);
+    const [userImage, setUserImage] = useState(user.provider.cover);
+    const [city, setCity] = useState(user.address);
+    const [BranchNum, setBranchNum] = useState(`${user.provider.num_of_branches}`);
+    const [CommercialRegister, setCommercialRegister] = useState(user.provider.commercial_register);
+    const [selecCommerical, setselecCommerical] = useState(user.provider.authorization_commercial);
+    const [SelectDelivery, setSelectDelivery] = useState(user.provider.available_delivery)
+    const [selectedRadion, setSelectedRadio] = useState(user.provider.is_owner)
+    const [WebUrl, setWebUrl] = useState(user.provider.website_url);
+
+    const [data, setData] = useState([
+
+        { id: 0, title: `${i18n.t("no")}` },
+        { id: 1, title: `${i18n.t("yes")}` },
+
+    ])
+
     const fetchData = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         let userLocation = {};
@@ -87,37 +110,16 @@ function RestaurantInfo({ navigation }) {
         try {
             const { data } = await axios.get(getCity);
             setCity(data.results[0].formatted_address)
-            console.log("city2  ", data.results[0].formatted_address)
-            console.log("city2 ", city)
 
         } catch (e) {
             console.log(e);
         }
+
+
     };
 
 
-    const [isopened, setisopened] = useState(false)
-    const [nameAR, setNameAr] = useState(user.provider.restaurant_name_ar);
-    const [nameEN, setNameEN] = useState(user.provider.restaurant_name_en)
-    const [from, setFrom] = useState(user.provider.preparing_time_from)
-    const [to, setTo] = useState(user.provider.preparing_time_to)
-    const lang = useSelector(state => state.lang.language);
-    const [base64, setBase64] = useState(null);
-    const [userImage, setUserImage] = useState(user.provider.cover);
-    const [city, setCity] = useState(user.address);
-    const [BranchNum, setBranchNum] = useState(`${user.provider.num_of_branches}`);
-    const [CommercialRegister, setCommercialRegister] = useState(user.provider.commercial_register);
-    const [selecCommerical, setselecCommerical] = useState(user.provider.authorization_commercial);
-    const [SelectDelivery, setSelectDelivery] = useState(user.provider.available_delivery)
-    const [selectedRadion, setSelectedRadio] = useState(user.provider.is_owner)
-    const [WebUrl, setWebUrl] = useState(user.provider.website_url);
 
-    const [data, setData] = useState([
-
-        { id: 0, title: `${i18n.t("no")}` },
-        { id: 1, title: `${i18n.t("yes")}` },
-
-    ])
 
 
 
@@ -212,7 +214,7 @@ function RestaurantInfo({ navigation }) {
                 <InputIcon
                     label={i18n.t('city')}
                     placeholder={i18n.t('city')}
-                    onChangeText={(e) => setCity(e)}
+                    // onChangeText={(e) => setCity(e)}
                     value={city}
                     styleCont={{ marginTop: 0 }}
                     image={require('../../../assets/Images/location_gray.png')}
@@ -300,29 +302,33 @@ function RestaurantInfo({ navigation }) {
                 />
                 <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%' }}>{i18n.t('preparationTime')}</Text>
 
-                <View style={{ flexDirection: 'row', }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <InputIcon
                         label={i18n.t('from')}
                         placeholder={i18n.t('from')}
+                        keyboardType='numeric'
 
                         onChangeText={(e) => setFrom(e)}
                         value={from}
-                        styleCont={{ marginTop: 20, width: '40%' }}
+                        styleCont={{ marginTop: 20, width: '30%' }}
                     />
+                    <Text>:</Text>
                     <InputIcon
                         label={i18n.t('to')}
                         placeholder={i18n.t('to')}
+                        keyboardType='numeric'
 
                         onChangeText={(e) => setTo(e)}
                         value={to}
-                        styleCont={{ marginTop: 20, width: '40%', }}
+                        styleCont={{ marginTop: 20, width: '30%', }}
                     />
+                    <Text style={{ fontFamily: 'flatMedium' }}>{i18n.t('clock')}</Text>
                 </View>
 
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ flex: .75, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('owner')}</Text>
+                    <View style={{ flex: .75, paddingStart: 10 }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('owner')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
@@ -366,13 +372,13 @@ function RestaurantInfo({ navigation }) {
 
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
-                    <View style={{ flex: .75, fontFamily: 'flatMedium', paddingStart: 10, flex: .9, fontSize: 10, }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('Franch')}</Text>
+                    <View style={{ flex: .75, paddingStart: 10, flex: .9, fontSize: 10, }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('Franch')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setselecCommerical(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .19 }}>
+                                <TouchableOpacity onPress={() => { }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .19 }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
@@ -404,8 +410,8 @@ function RestaurantInfo({ navigation }) {
 
                 </View>
                 <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ flex: .75, flex: .9, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor }}>{i18n.t('DeliveryServ')}</Text>
+                    <View style={{ flex: .75, flex: .9, paddingStart: 10 }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('DeliveryServ')}</Text>
                     </View>
                     {
                         data.map((item, index) => {

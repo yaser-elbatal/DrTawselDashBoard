@@ -65,8 +65,8 @@ function HomePage({ navigation }) {
 
                                         <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
                                             <View style={{ flexDirection: 'column', flex: 1 }}>
-                                                <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%', flex: .75 }} />
-                                                <View style={{ margin: 10, flex: .25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
+                                                <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <Text style={styles.prod}>{item.name}</Text>
                                                     <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
                                                 </View>

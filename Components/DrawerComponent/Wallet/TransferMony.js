@@ -53,6 +53,11 @@ function TransferMony({ navigation, route }) {
         if (!isVal) {
             setSpinner(true)
             dispatch(SendTransferFromACc(token, lang, AccountId, base64, Bankname, accountNAme, accountnum, money, navigation)).then(() => setSpinner(false))
+            setName('')
+            setAcoountname('')
+            setAccountnum('')
+            setUserImage('')
+            setMoney('')
         }
         else {
             setSpinner(false)

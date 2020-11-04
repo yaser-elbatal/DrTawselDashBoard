@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet, Image, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+import { Toast, } from "native-base";
 
 import i18n from '../../../locale/i18n'
 import { InputIcon } from '../../../common/InputText'
@@ -16,7 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Add_Products, GetProducts } from '../../../store/action/ProductAction';
 import { MenueInfo } from '../../../store/action/MenueAction';
 import { width, height } from '../../../consts/HeightWidth';
-import { GetExtraProduct, add_extra_ProductsService, edit_extra_ProductsService, delete_extra_ProductsService } from '../../../store/action/ExtraProductAction';
+import { GetExtraProduct, add_extra_ProductsService, edit_extra_ProductsService, delete_extra_ProductsService, temp_extra_ProductsService } from '../../../store/action/ExtraProductAction';
 import Container from '../../../common/Container';
 import { validateUserName } from '../../../common/Validation';
 import { Toaster } from '../../../common/Toaster';
@@ -29,7 +30,8 @@ function AddProduct({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
     const ExtraProduct = useSelector(state => state.ExtraProduct.ExtraProduct);
-
+    const [ProductExtra, setProductExtra] = useState([])
+    const [Show, setShow] = useState(false);
 
 
     const [nameAR, setNameAr] = useState('');
@@ -49,8 +51,8 @@ function AddProduct({ navigation }) {
     const [small_price, setsmall_price] = useState('');
     const [mid_price, setmid_price] = useState('');
     const [large_price, setlarge_price] = useState('');
-    const [selectedRadion, setSelectedRadio] = useState(0)
-    const [spinner, setSpinner] = useState(false);
+    const [selectedRadion, setSelectedRadio] = useState(1)
+    const [spinner, setSpinner] = useState(true);
 
 
 
@@ -86,7 +88,8 @@ function AddProduct({ navigation }) {
 
 
 
-    let MenueData = Menue.length ? Menue.map(menue => ({ label: menue.name, value: menue.id })) : null
+    let MenueData = !Menue || !Menue.length ? navigation.navigate('Menue') : Menue.map(menue => ({ label: menue.name, value: menue.id }))
+
     let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
     const [data, setData] = useState([
@@ -109,13 +112,13 @@ function AddProduct({ navigation }) {
         let nameEnErr = validateUserName(nameEN)
         let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
         // let DisErr = Discount == '' ? 'Enter Discount' : null;
-        let piceErr = price == '' ? 'Enter Price' : null;
-        let baseErr = base64 == null ? 'Pick Image' : null;
-        let quantityErr = quantity == '' ? 'Enter Quatity' : null;
-        let DetErr = detailesAr == '' ? 'enter Detalies Ar' : null
-        let Det = detailesEn == '' ? 'Enter Detailes English' : null
+        let piceErr = price && small_price && mid_price && large_price == '' ? 'Enter All Price' : null;
+        let baseErr = base64 == null ? i18n.t('PickImage') : null;
+        let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
+        let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null
+        let Det = detailesEn == '' ? i18n.t('EnterDetailesEn') : null
         // let Kiloes = availableKilos == '' ? 'Enter availableKilos' : null;
-        let MenueIdErr = MenueId == '' ? 'Select Menue' : null
+        let MenueIdErr = MenueId == '' ? i18n.t('SelectMenue') : null
 
 
         return nameErr || nameEnErr || SelectChoice || piceErr || baseErr || quantityErr || DetErr || Det || MenueIdErr
@@ -138,6 +141,7 @@ function AddProduct({ navigation }) {
             setQuantity('');
             setDetailesAr('');
             setDetailesEn('');
+            setProductExtra([])
         }
 
         else {
@@ -152,12 +156,22 @@ function AddProduct({ navigation }) {
 
 
     useEffect(() => {
-        dispatch(MenueInfo(lang, token))
-        GetExtraProduct()
 
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            GetExtraProduct()
+            dispatch(temp_extra_ProductsService())
+            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
 
 
+        });
+
+
+        return unsubscribe;
+
+    }, [navigation]);
+
+    console.log(MenueData);
 
 
 
@@ -190,7 +204,6 @@ function AddProduct({ navigation }) {
         let array = SizePriceId;
         let ID = array.findIndex(id => id.size_id === IdSelect);
         array[ID].price = e
-        console.log(array);
 
         SetSizePriceId(array)
 
@@ -199,6 +212,7 @@ function AddProduct({ navigation }) {
 
 
     const submitData = () => {
+
         if (ProductnameExtraAR && ProductnameExtraEn && !ExProdId) {
             const newEmployee = {
                 id: Math.floor(Math.random() * (999 - 100 + 1) + 100),
@@ -206,8 +220,8 @@ function AddProduct({ navigation }) {
                 name_en: ProductnameExtraEn,
                 price: priceProductExtra
             };
+            dispatch(add_extra_ProductsService(newEmployee))
 
-            dispatch(add_extra_ProductsService(newEmployee));
         } else if (ProductnameExtraAR && ProductnameExtraEn && ExProdId) {
             const updatedDetails = {
                 id: ExProdId,
@@ -216,6 +230,7 @@ function AddProduct({ navigation }) {
                 price: priceProductExtra
             };
             dispatch(add_extra_ProductsService(updatedDetails));
+
         } else {
             alert('Enter Extra Data.');
         }
@@ -232,7 +247,7 @@ function AddProduct({ navigation }) {
     const deleteExtraProduct = (id) => {
         clearData();
         dispatch(delete_extra_ProductsService(id));
-
+        // setProductExtra([ExtraProduct])
     }
 
 
@@ -398,7 +413,7 @@ function AddProduct({ navigation }) {
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index + '_'} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={item.id.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
@@ -472,7 +487,8 @@ function AddProduct({ navigation }) {
                     styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 20 }}
                     label={i18n.t('prodDetAr')}
                     placeholder={i18n.t('prodDetAr')}
-
+                    multiline={true}
+                    numberOfLines={10}
                     onChangeText={(e) => setDetailesAr(e)}
                     value={detailesAr}
                     LabelStyle={{ bottom: width * .32 }}
@@ -483,7 +499,8 @@ function AddProduct({ navigation }) {
                     styleCont={{ height: width * .35, marginHorizontal: '5%', marginTop: 0 }}
                     label={i18n.t('prodDetEn')}
                     placeholder={i18n.t('prodDetEn')}
-
+                    multiline={true}
+                    numberOfLines={10}
                     onChangeText={(e) => setDetailesEn(e)}
                     value={detailesEn}
                     LabelStyle={{ fontSize: 14, bottom: width * .32, }}
@@ -491,7 +508,6 @@ function AddProduct({ navigation }) {
 
 
                 {
-
                     ExtraProduct.map((proExtra, index) =>
                         (
                             <>
@@ -509,6 +525,7 @@ function AddProduct({ navigation }) {
                             </>
                         )
                     )
+
                 }
 
                 <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
@@ -526,8 +543,8 @@ function AddProduct({ navigation }) {
                                 <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
                                     <InputIcon
                                         styleCont={{ marginTop: 10 }}
-                                        label={i18n.t('prodDetEn')}
-                                        placeholder={i18n.t('prodDetEn')}
+                                        label={i18n.t('ExtraProductAr')}
+                                        placeholder={i18n.t('ExtraProductAr')}
 
                                         onChangeText={(e) => setProductnameExtraAR(e)}
                                         value={ProductnameExtraAR}
@@ -536,8 +553,8 @@ function AddProduct({ navigation }) {
                                     <InputIcon
 
                                         styleCont={{ marginTop: 0 }}
-                                        label={i18n.t('AddEn')}
-                                        placeholder={i18n.t('AddEn')}
+                                        label={i18n.t('ExtarPrdoctEn')}
+                                        placeholder={i18n.t('ExtarPrdoctEn')}
                                         onChangeText={(e) => setProductnameExtraEn(e)}
                                         value={ProductnameExtraEn}
 
@@ -547,6 +564,7 @@ function AddProduct({ navigation }) {
                                         styleCont={{ marginTop: 0 }}
                                         label={i18n.t('price')}
                                         placeholder={i18n.t('price')}
+                                        keyboardType='numeric'
 
                                         onChangeText={(e) => setPricePrdouctExtra(e)}
                                         value={priceProductExtra}
@@ -599,8 +617,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         alignItems: "center",
-        backgroundColor: '#737373',
-        opacity: .95,
+        // backgroundColor: '#737373',
+        // opacity: 1,
 
     },
     modalView: {

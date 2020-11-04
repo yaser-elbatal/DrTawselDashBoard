@@ -12,6 +12,7 @@ import Container from '../../../common/Container'
 import { InputIcon } from '../../../common/InputText'
 import { validateAccountNum } from '../../../common/Validation'
 import { Toaster } from '../../../common/Toaster'
+import HomeHeader from '../../../common/HomeHeader'
 
 function Wallet({ navigation }) {
 
@@ -63,7 +64,8 @@ function Wallet({ navigation }) {
     return (
 
         <View style={{ flex: 1 }}>
-            <Header navigation={navigation} label={i18n.t('wallet')} />
+            <HomeHeader navigation={navigation} label={i18n.t('wallet')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>

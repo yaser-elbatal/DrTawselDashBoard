@@ -27,6 +27,11 @@ export default (state = initialstate, action) => {
                 ...state,
                 ExtraProduct: state.ExtraProduct.filter(item => item.id !== action.payload)
             };
+        case 'temp_array':
+            return {
+                ...state,
+                ExtraProduct: []
+            };
         default:
             return state;
     }

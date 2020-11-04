@@ -45,7 +45,7 @@ const ProductDet = ({ navigation, route }) => {
                 {
                     !ProductDetA ? null :
                         <>
-                            <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} resizeMode='contain' />
+                            <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} resizeMode='cover' />
                             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                     {
@@ -83,11 +83,10 @@ const ProductDet = ({ navigation, route }) => {
                                         <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                                             <Text style={styles.num}>{i18n.t('num')}#{ProductDetA.id}</Text>
                                             <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDetA.menu}</Text>
-                                            <Text style={styles.num}>{ProductDetA.price}{i18n.t('Rial')}</Text>
                                             <View style={{ flexDirection: 'row', }}>
-                                                <Text style={styles.num}>{ProductDetA.price}</Text>
-                                                <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.sky, textDecorationStyle: 'solid', color: Colors.fontNormal, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price - ProductDetA.discount}</Text>
-                                                <Text style={[styles.num, { color: Colors.fontNormal }]}>({i18n.t('Availablekilos') + ProductDetA.available_kilos})</Text>
+                                                <Text style={styles.num}>{ProductDetA.price - ProductDetA.discount}{i18n.t('Rial')}</Text>
+                                                <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.sky, textDecorationStyle: 'solid', color: Colors.fontNormal, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price}</Text>
+                                                <Text style={[styles.num, { color: Colors.fontNormal }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
 
                                             </View>
 
@@ -213,8 +212,7 @@ const styles = StyleSheet.create({
 
     ImgBackGround: {
         width: '100%',
-        height: '100%',
-        bottom: 220
+        height: '50%',
     },
     Line: {
         height: 1,

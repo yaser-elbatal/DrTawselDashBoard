@@ -99,10 +99,17 @@ function Products({ navigation }) {
 
     }
 
-    console.log(token);
     const handleChange = (e) => {
+        setLoader(true)
+
         setSearch(e);
-        setTimeout(() => dispatch(SerachForPorducts(token, lang, e)), 1000)
+
+        if (e == '') {
+            setLoader(true)
+            dispatch(SerachForPorducts(token, lang, e))
+        }
+        setTimeout(() => dispatch(SerachForPorducts(token, lang, e)).then(() => setLoader(false)), 1000)
+
     }
 
 
@@ -129,7 +136,7 @@ function Products({ navigation }) {
                 <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
                     <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                     <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
                         <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
@@ -189,8 +196,8 @@ function Products({ navigation }) {
                                                 <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
                                                 {/* <Text style={[styles.nMenu, { color: Colors.IconBlack }]}></Text> */}
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Text style={styles.nText}>{item.price}</Text>
-                                                    <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price - item.discount}</Text>
+                                                    <Text style={styles.nText}>{item.price - item.discount}</Text>
+                                                    <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price}</Text>
 
                                                 </View>
 

@@ -22,18 +22,18 @@ function CustomDrawerMenue({ navigation }) {
     // console.log(token);
     return (
         <View style={{ flex: 1, }}>
-            <View style={{ justifyContent: 'space-between', flexDirection: 'row', flex: .22 }} >
+            <View style={{ justifyContent: 'space-between', flexDirection: 'row', flex: .22, overflow: 'hidden' }} >
 
 
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')} style={{ top: 60, paddingStart: 10 }}>
+                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')} style={{ top: 55, paddingStart: 10 }}>
                     <Image source={require('../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
                     <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
                 </TouchableOpacity>
 
 
 
-                <ImageBackground source={require('../../assets/Images/bigP.png')} style={{ height: 180, width: 100, alignItems: 'center', justifyContent: 'center', bottom: 30 }} resizeMode='contain'>
+                <ImageBackground source={require('../../assets/Images/bigP.png')} style={{ height: 180, width: 100, alignItems: 'center', justifyContent: 'center', bottom: 35, left: 12 }} resizeMode='contain'>
                     <TouchableOpacity onPress={() => navigation.closeDrawer()} style={{ top: 15 }}>
                         <Image source={require('../../assets/Images/crossgray.png')} style={{ height: 20, width: 20, }} resizeMode='contain' />
                     </TouchableOpacity>
@@ -43,7 +43,7 @@ function CustomDrawerMenue({ navigation }) {
             <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
                 <Text style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')} {user.name}</Text>
 
-                <View style={{ flexDirection: 'column', marginTop: 10 }}>
+                <View style={{ flexDirection: 'column', marginTop: 15 }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
                         <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, width: '95%' }}>
