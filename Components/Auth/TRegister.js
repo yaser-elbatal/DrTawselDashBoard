@@ -39,7 +39,7 @@ function TRegister({ navigation, route }) {
         let SelectDeliveryErr = SelectDelivery === null ? i18n.t('SelectYN') : null;
         let selecCommericalErr = selecCommerical === null ? i18n.t('SelectYN') : null;
 
-        return UrlErr || SelectDeliveryErr
+        return selecCommericalErr || SelectDeliveryErr
 
     }
 

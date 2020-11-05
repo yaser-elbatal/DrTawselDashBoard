@@ -88,7 +88,7 @@ function AddProduct({ navigation }) {
 
 
 
-    let MenueData = !Menue || !Menue.length ? navigation.navigate('Menue') : Menue.map(menue => ({ label: menue.name, value: menue.id }))
+    let MenueData = Menue.map(menue => ({ label: menue.name, value: menue.id }))
 
     let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
@@ -112,7 +112,7 @@ function AddProduct({ navigation }) {
         let nameEnErr = validateUserName(nameEN)
         let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
         // let DisErr = Discount == '' ? 'Enter Discount' : null;
-        let piceErr = price && small_price && mid_price && large_price == '' ? 'Enter All Price' : null;
+        let piceErr = small_price && mid_price && large_price == '' ? 'Enter All Price' : null;
         let baseErr = base64 == null ? i18n.t('PickImage') : null;
         let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
         let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null
@@ -130,18 +130,7 @@ function AddProduct({ navigation }) {
             setSpinner(true)
             dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
             dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
-            setNameAr('');
-            setNameEN('');
-            setsmall_price('');
-            setmid_price('');
-            setlarge_price('');
-            setDiscount('');
-            setPrice('');
-            setavailableKilos('');
-            setQuantity('');
-            setDetailesAr('');
-            setDetailesEn('');
-            setProductExtra([])
+
         }
 
         else {
@@ -159,6 +148,18 @@ function AddProduct({ navigation }) {
 
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
+            setNameAr('');
+            setNameEN('');
+            setsmall_price('');
+            setmid_price('');
+            setlarge_price('');
+            setDiscount('');
+            setPrice('');
+            setavailableKilos('');
+            setQuantity('');
+            setDetailesAr('');
+            setDetailesEn('');
+            setProductExtra([])
             GetExtraProduct()
             dispatch(temp_extra_ProductsService())
             dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))

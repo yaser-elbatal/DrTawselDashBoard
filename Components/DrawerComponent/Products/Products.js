@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GetProducts, DeleteProduct, SerachForPorducts, } from '../../../store/action/ProductAction';
 import Container from '../../../common/Container';
 import { Dropdown } from 'react-native-material-dropdown';
+import { MenueInfo } from '../../../store/action/MenueAction';
 
 function Products({ navigation }) {
     const dispatch = useDispatch();
@@ -37,11 +38,14 @@ function Products({ navigation }) {
         value: i18n.t('oldest'),
     },];
 
+
+
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-            dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
+            dispatch(GetProducts(token, lang))
+            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
         });
 
         return unsubscribe;
@@ -60,7 +64,8 @@ function Products({ navigation }) {
             let Deleted = DeleteArr.filter((id) => id !== itemId);
             setDeleteArr(Deleted)
 
-        } else {
+        }
+        else {
             setDeleteArr(DeleteArr.concat([itemId]))
         }
     };
@@ -161,7 +166,7 @@ function Products({ navigation }) {
 
 
 
-                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={!Menue ? () => navigation.navigate('Menue') : () => navigation.navigate('AddProduct')} />
+                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={Menue.length ? () => navigation.navigate('AddProduct') : () => navigation.navigate('Menue', { pathname: 'yasser' })} />
 
                 {
                     Loader ?

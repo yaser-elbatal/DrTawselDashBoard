@@ -81,12 +81,21 @@ const ProductDet = ({ navigation, route }) => {
 
                                         </View>
                                         <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                                            <Text style={styles.num}>{i18n.t('num')}#{ProductDetA.id}</Text>
+                                            <Text style={styles.num}>{i18n.t('num')} #{ProductDetA.id}</Text>
                                             <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDetA.menu}</Text>
                                             <View style={{ flexDirection: 'row', }}>
-                                                <Text style={styles.num}>{ProductDetA.price - ProductDetA.discount}{i18n.t('Rial')}</Text>
-                                                <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.sky, textDecorationStyle: 'solid', color: Colors.fontNormal, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price}</Text>
-                                                <Text style={[styles.num, { color: Colors.fontNormal }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
+                                                <Text style={styles.num}>{ProductDetA.price - ProductDetA.discount} {i18n.t('Rial')}</Text>
+                                                {
+                                                    ProductDetA.discount == 0 ? null :
+                                                        <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.sky, textDecorationStyle: 'solid', color: Colors.fontNormal, paddingHorizontal: 15, fontSize: 10 }]}>{ProductDetA.price}</Text>
+
+                                                }
+                                                {
+                                                    ProductDetA.available_kilos == 0 ?
+                                                        null :
+                                                        <Text style={[styles.num, { color: Colors.fontNormal }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
+
+                                                }
 
                                             </View>
 

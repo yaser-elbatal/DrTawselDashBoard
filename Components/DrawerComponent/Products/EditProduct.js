@@ -59,40 +59,48 @@ const EditProduct = ({ navigation, route }) => {
 
 
     useEffect(() => {
-        setSpinner(true)
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-            dispatch(ProductDetailes(token, lang, ProductsId)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)))
+
+
+            console.log('rrrrrrr');
+            dispatch(ProductDetailes(token, lang, ProductsId)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setSpinner(false))
 
         });
-        setTimeout(() => {
-
-            setNameAr(ProductDet.name_ar),
-                setNameEN(ProductDet.name_en),
-                setPrice(`${ProductDet.price}`),
-                setsmall_price(`${ProductDet.small_price}`),
-                setmid_price(`${ProductDet.mid_price}`),
-                setlarge_price(`${ProductDet.large_price}`),
-                setavailableKilos(`${ProductDet.available_kilos}`),
-                setDiscount(`${ProductDet.discount}`),
-                setQuantity(`${ProductDet.quantity}`),
-                setDetailesAr(ProductDet.details_ar),
-                setDetailesEn(ProductDet.details_en),
-                setavailable(`${ProductDet.available}`),
-                setMenue(ProductDet.menu_id)
-
-            setSpinner(false)
-        }, 1000);
 
 
+        setNameAr(ProductDet.name_ar),
+            setNameEN(ProductDet.name_en),
+            setPrice(`${ProductDet.price}`),
+            setsmall_price(`${ProductDet.small_price}`),
+            setmid_price(`${ProductDet.mid_price}`),
+            setlarge_price(`${ProductDet.large_price}`),
+            setavailableKilos(`${ProductDet.available_kilos}`),
+            setDiscount(`${ProductDet.discount}`),
+            setQuantity(`${ProductDet.quantity}`),
+            setDetailesAr(ProductDet.details_ar),
+            setDetailesEn(ProductDet.details_en),
+            setavailable(`${ProductDet.available}`),
+            setMenue(ProductDet.menu_id)
         return unsubscribe;
 
 
-    }, [navigation, route,])
+    }, [route, navigation, spinner])
 
 
 
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener('focus', () => {
+    //         setSpinner(true)
+    //         console.log('ssss');
 
+
+    //         setSpinner(false)
+    //     });
+
+    //     return unsubscribe;
+
+    // }, [navigation, route,])
 
 
 
@@ -231,7 +239,7 @@ const EditProduct = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ right: 20, bottom: 15 }}>
                         <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                            <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+                            <TouchableOpacity onPress={() => navigation.push('Products')}>
                                 {
                                     I18nManager.isRTL ?
                                         <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />

@@ -10,6 +10,7 @@ import BTN from '../../../common/BTN';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetRebortsCharts, CreateRebortChart } from '../../../store/action/RebortChartAction';
 import Container from '../../../common/Container';
+import HomeHeader from '../../../common/HomeHeader';
 
 
 function Report({ navigation }) {
@@ -47,7 +48,8 @@ function Report({ navigation }) {
     return (
 
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('reports')} />
+            <HomeHeader navigation={navigation} label={i18n.t('reports')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 <ScrollView style={{ flex: 1 }}>
@@ -70,7 +72,7 @@ function Report({ navigation }) {
                             <View style={styles.centeredView}>
                                 <View style={styles.modalView}>
                                     <View style={{ margin: 20, marginTop: 50 }}>
-                                        <Text style={{ fontFamily: 'flatMedium', fontSize: 14, textAlign: 'center', }}>سيتم ارسال التقرير اليك </Text>
+                                        <Text style={{ fontFamily: 'flatMedium', fontSize: 14, textAlign: 'center', }}>{i18n.t('DoneReb')} </Text>
 
                                         <BTN title={i18n.t('backHome')} ContainerStyle={{ borderRadius: 5 }} onPress={CreateReborts} />
                                     </View>

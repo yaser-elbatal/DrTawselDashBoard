@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, 
 import { CheckBox } from "native-base";
 import { Dropdown } from 'react-native-material-dropdown';
 
+import { Toast } from "native-base";
 
 
 import HomeHeader from '../../../common/HomeHeader'
@@ -19,7 +20,7 @@ import { validateUserName } from '../../../common/Validation';
 import Container from '../../../common/Container';
 import SLoader from '../../../common/SLoader';
 
-function Menue({ navigation }) {
+function Menue({ navigation, route }) {
 
 
     const token = useSelector(state => state.auth.user.data.token)
@@ -41,7 +42,6 @@ function Menue({ navigation }) {
     const data = [{
         value: i18n.t('delete'),
     },];
-
 
 
     const data2 = [{
@@ -126,11 +126,24 @@ function Menue({ navigation }) {
             setSpinner(true)
             setSelection2(false);
 
+
             dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
         });
 
+        if (route.params) {
+            Toast.show({
+                text: i18n.t('AddMen'),
+                type: "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
+        }
+
         return unsubscribe;
-    }, [navigation]);
+    }, [navigation, route]);
 
     const handleChange = (e) => {
         setLoader(true)
@@ -201,7 +214,7 @@ function Menue({ navigation }) {
                 <View style={{ height: 50, width: '90%', margin: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
                     <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                     <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2 && !DeleteArr.length} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
                         <Text style={{ fontFamily: 'flatMedium', paddingVertical: 5, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 

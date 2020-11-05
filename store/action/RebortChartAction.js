@@ -1,6 +1,7 @@
 
 import consts from '../../consts';
 import axios from 'axios';
+import { Toast } from "native-base";
 
 export const Get_Chart_data = 'Get_Chart_data'
 export const Create_reborts = 'Create_reborts'
@@ -31,6 +32,16 @@ export const CreateRebortChart = (token, lang, navigation) => {
             if (response.data.success) {
                 // dispatch({ type: Create_reborts, data: response.data.data })
                 navigation.navigate('HomePage')
+
+                Toast.show({
+                    text: response.data.message,
+                    type: response.data.success ? "success" : "danger",
+                    duration: 9000,
+                    textStyle: {
+                        color: "white",
+                        textAlign: 'center'
+                    }
+                });
             }
 
 

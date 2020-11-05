@@ -37,8 +37,14 @@ function AllOrders({ navigation, route }) {
 
 
     const handleChange = (e) => {
+
         setSearch(e);
-        setTimeout(() => dispatch(GetOrders(token, statues, lang, Search)), 1000)
+        if (e == '') {
+            setSpinner(true)
+
+            dispatch(GetOrders(token, statues, lang, e)).then(() => setSpinner(false))
+        }
+        setTimeout(() => dispatch(GetOrders(token, statues, lang, e)), 1000)
     }
 
 
