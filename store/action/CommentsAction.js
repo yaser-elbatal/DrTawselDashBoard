@@ -162,7 +162,6 @@ export const SendComplaiment = (token, username, email, description, navigation)
             data: { username, email, description, subject: 'رائع' }
         }).then((response) => {
             if (response.data.success) {
-                navigation.navigate('HomePage')
                 Toast.show({
                     text: response.data.message,
                     type: response.data.success ? "success" : "danger",

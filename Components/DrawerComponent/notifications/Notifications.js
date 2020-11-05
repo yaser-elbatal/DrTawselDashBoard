@@ -6,6 +6,7 @@ import Colors from '../../../consts/Colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetNotifications, DeleteNotifications } from '../../../store/action/NotificationsAction';
 import Container from '../../../common/Container';
+import HomeHeader from '../../../common/HomeHeader';
 
 function Notifications({ navigation }) {
 

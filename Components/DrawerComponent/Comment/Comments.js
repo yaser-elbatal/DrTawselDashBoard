@@ -10,6 +10,7 @@ import Container from '../../../common/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetRatings } from '../../../store/action/CommentsAction';
 import StarRating from 'react-native-star-rating';
+import HomeHeader from '../../../common/HomeHeader';
 
 function Comments({ navigation }) {
 
@@ -35,7 +36,8 @@ function Comments({ navigation }) {
 
 
         <ScrollView style={{ flex: 1, }}>
-            <Header navigation={navigation} label={i18n.t('comments')} />
+            <HomeHeader navigation={navigation} label={i18n.t('comments')} onPress={() => navigation.navigate('MyProfile')} />
+
             <Container loading={spinner}>
 
                 <Card />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
 import Colors from '../../../consts/Colors'
 import i18n from '../../../locale/i18n'
@@ -23,7 +23,11 @@ function ChangePassword({ navigation }) {
     const user = useSelector(state => state.auth.user.data)
 
 
-
+    useEffect(() => {
+        setPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+    }, [])
 
     const _validate = () => {
 
@@ -37,9 +41,7 @@ function ChangePassword({ navigation }) {
         const isVal = _validate();
         if (!isVal) {
             dispatch(EditPasswordSettingsProfile(token, password, Newpassword, lang, navigation))
-            setPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
+
 
         }
         else {
@@ -79,7 +81,7 @@ function ChangePassword({ navigation }) {
                             secureTextEntry
                             styleCont={{ marginTop: 0 }}
 
-                            keyboardType='numeric'
+
 
                         />
                         <InputIcon
@@ -90,7 +92,7 @@ function ChangePassword({ navigation }) {
                             secureTextEntry
                             styleCont={{ marginTop: 0 }}
 
-                            keyboardType='numeric'
+
 
                         />
                         <InputIcon
@@ -101,7 +103,7 @@ function ChangePassword({ navigation }) {
                             secureTextEntry
                             styleCont={{ marginTop: 0 }}
 
-                            keyboardType='numeric'
+
                         />
                         <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
                     </View>

@@ -378,20 +378,20 @@ function RestaurantInfo({ navigation }) {
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .19 }}>
+                                <TouchableOpacity onPress={() => setselecCommerical(index)} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .19 }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
                                         borderRadius: 12,
                                         borderWidth: 2,
-                                        borderColor: selecCommerical === index ? Colors.sky : Colors.fontNormal,
+                                        borderColor: selecCommerical == index ? Colors.sky : Colors.fontNormal,
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         alignSelf: 'center',
 
                                     }}>
                                         {
-                                            selecCommerical === index ?
+                                            selecCommerical == index ?
                                                 <View style={{
                                                     height: 6,
                                                     width: 6,
@@ -401,7 +401,7 @@ function RestaurantInfo({ navigation }) {
                                                 : null
                                         }
                                     </View>
-                                    <Text style={[styles.sText, { color: selecCommerical === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    <Text style={[styles.sText, { color: selecCommerical == index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
 
                                 </TouchableOpacity>
                             )

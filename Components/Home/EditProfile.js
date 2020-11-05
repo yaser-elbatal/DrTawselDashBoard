@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '100%',
-        height: '100%',
+        height: '60%',
         bottom: 90,
         opacity: .7
     },
@@ -248,7 +248,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         backgroundColor: Colors.bg,
-        bottom: 0, height: '50%',
+        bottom: 0,
+        height: '60%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
     },

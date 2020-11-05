@@ -514,6 +514,7 @@ const en = {
   AddMen: 'Add Menue To be able To Add Prdoucts',
   prodDetAr: 'Product Detailes Arabic',
   prodDetEn: 'Product Detailes English',
+  EnterPrice: 'Enter Price',
   clock: 'Minute',
   PickImage: 'Pick Image for Prdouct',
   EnterQuatity: 'Enter Quatity',

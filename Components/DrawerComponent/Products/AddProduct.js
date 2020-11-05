@@ -112,7 +112,7 @@ function AddProduct({ navigation }) {
         let nameEnErr = validateUserName(nameEN)
         let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
         // let DisErr = Discount == '' ? 'Enter Discount' : null;
-        let piceErr = small_price && mid_price && large_price == '' ? 'Enter All Price' : null;
+        let piceErr = large_price == '' ? i18n.t('EnterPrice') : null;
         let baseErr = base64 == null ? i18n.t('PickImage') : null;
         let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
         let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null
@@ -128,7 +128,7 @@ function AddProduct({ navigation }) {
         let val = _validate();
         if (!val) {
             setSpinner(true)
-            dispatch(Add_Products(token, lang, nameAR, nameEN, price, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
+            dispatch(Add_Products(token, lang, nameAR, nameEN, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
             dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
 
         }
@@ -334,8 +334,8 @@ function AddProduct({ navigation }) {
                     selectedRadion === 1 ?
                         <InputIcon
                             styleCont={{ marginTop: 20 }}
-                            label={i18n.t('BigPrice')}
-                            placeholder={i18n.t('BigPrice')}
+                            label={i18n.t('price')}
+                            placeholder={i18n.t('price')}
 
                             onChangeText={(e) => { setlarge_price(e); handaleChange(e, 1) }}
                             keyboardType='numeric'
@@ -379,15 +379,7 @@ function AddProduct({ navigation }) {
                     value={Discount}
                 />
 
-                <InputIcon
-                    styleCont={{ marginTop: 0 }}
-                    label={i18n.t('price')}
-                    placeholder={i18n.t('price')}
 
-                    keyboardType='numeric'
-                    onChangeText={(e) => setPrice(e)}
-                    value={price}
-                />
 
                 <InputIcon
                     styleCont={{ marginTop: -5 }}
@@ -408,7 +400,7 @@ function AddProduct({ navigation }) {
                 />
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ paddingEnd: 120, fontFamily: 'flatMedium', paddingStart: 10 }}>
+                    <View style={{ paddingEnd: 150, fontFamily: 'flatMedium', paddingStart: 10 }}>
                         <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                     </View>
                     {
@@ -456,6 +448,8 @@ function AddProduct({ navigation }) {
                     placeholder={i18n.t('ProdPice')}
                     onChangeText={(e) => setUserImage(e)}
                     value={userImage}
+                    editable={false}
+                    imgStyle={{ width: 25, height: 25, bottom: 5 }}
                     image={require('../../../assets/Images/camera_gray.png')}
                     onPress={_pickImage}
                 />
@@ -514,9 +508,9 @@ function AddProduct({ navigation }) {
                             <>
                                 <View style={{ backgroundColor: '#F7F7F7', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + '_'}>
                                     <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar} / </Text>
                                         <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.price}  {i18n.t('Rial')}</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => deleteExtraProduct(proExtra.id)}>
                                         <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />

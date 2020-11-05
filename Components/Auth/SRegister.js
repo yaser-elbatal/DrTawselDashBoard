@@ -29,6 +29,7 @@ function SRegister({ navigation, route }) {
     const Depatrmens = useSelector(state => state.cities.deparment);
     const lang = useSelector(state => state.lang.language);
     const cities = useSelector(state => state.cities.cities)
+    const [initMap, setInitMap] = useState(true);
 
     let DebName = Depatrmens.map(deb => ({ label: deb.name, value: deb.id }));
     let DebId = Depatrmens.map(deb => ({ label: deb.name }));
@@ -94,15 +95,19 @@ function SRegister({ navigation, route }) {
     };
 
     const fetchData = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+        const { status, permissions } = await Permissions.askAsync(Permissions.LOCATION);
+
+        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
         let userLocation = {};
-        if (status !== 'granted') {
+        if (status !== 'granted' || !permissions) {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
         } else {
             const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
 
 
             userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
+            setInitMap(false);
 
             setMapRegion(userLocation);
             isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;

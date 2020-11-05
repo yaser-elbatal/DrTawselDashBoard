@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, Modal, I18nManager, ImageBackground } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, Modal, I18nManager, ImageBackground, ActivityIndicator } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+import { Toaster } from '../../../common/Toaster';
 
 import i18n from '../../../locale/i18n'
 import { InputIcon } from '../../../common/InputText'
@@ -30,6 +31,7 @@ const EditProduct = ({ navigation, route }) => {
     const [large_price, setlarge_price] = useState(`${ProductDet.large_price}`);
     const [selectedRadion, setSelectedRadio] = useState(1)
     const [spinner, setSpinner] = useState(true);
+    const [Loader, setLoader] = useState(false)
 
     const [ProductnameExtraAR, setProductnameExtraAR] = useState('');
     const [ProductnameExtraEn, setProductnameExtraEn] = useState('')
@@ -44,9 +46,8 @@ const EditProduct = ({ navigation, route }) => {
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
-    const ProductsExtras = useSelector(state => !state.product.ExtraProduct ? [] : state.product.ExtraProduct);
+    const ProductsExtras = useSelector(state => state.product.ExtraProduct ? state.product.ExtraProduct : []);
     const dispatch = useDispatch();
-    console.log(available);
 
     const [MenueId, setMenue] = useState(ProductDet.menu_id)
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
@@ -152,7 +153,7 @@ const EditProduct = ({ navigation, route }) => {
         let nameEnErr = validateUserName(nameEN)
         // let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
         // let DisErr = Discount == '' ? 'Enter Discount' : null;
-        let piceErr = price && small_price && mid_price && large_price == '' ? 'Enter All Price' : null;
+        let piceErr = large_price == '' ? i18n.t('EnterPrice') : null;
         let baseErr = base64 == null ? i18n.t('PickImage') : null;
         let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
         let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null
@@ -166,12 +167,15 @@ const EditProduct = ({ navigation, route }) => {
 
 
     const Edit_product = () => {
-        setSpinner(true)
-        dispatch(EditProducts(token, lang, ProductsId, nameAR, nameEN, price, available, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, ProductsExtras, navigation))
-        dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
-
-
-
+        let val = _validate()
+        if (!val) {
+            setSpinner(true)
+            dispatch(EditProducts(token, lang, ProductsId, nameAR, nameEN, available, detailesAr, detailesEn, availableKilos, Discount, quantity, MenueId, small_price, mid_price, large_price, base64, ProductsExtras, navigation)).then(() => setSpinner(false))
+        }
+        else {
+            setSpinner(false);
+            Toaster(_validate());
+        }
     }
 
 
@@ -198,21 +202,23 @@ const EditProduct = ({ navigation, route }) => {
 
 
     const AddProductExras = () => {
-        setSpinner(true)
-        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setSpinner(false))
-        setSpinner(true)
+        setLoader(true)
+        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setLoader(false))
+
         setTimeout(() => {
             dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))
         }, 9000);
-
+        setProductnameExtraAR('');
+        setProductnameExtraEn('')
+        setPricePrdouctExtra('')
         setEditMaodVisible(false)
     }
 
 
     const DeleteExtraOneProduct = (id) => {
-        setSpinner(true)
+        setLoader(true)
         dispatch(DeleteProductExtrasFromEdit(id, token))
-        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setSpinner(false))
+        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setLoader(false))
 
     }
 
@@ -331,7 +337,7 @@ const EditProduct = ({ navigation, route }) => {
                             styleCont={{ marginTop: 20 }}
                             label={i18n.t('BigPrice')}
                             placeholder={i18n.t('BigPrice')}
-                            onChangeText={(e) => { setlarge_price(e); handaleChange(e, 1) }}
+                            onChangeText={(e) => { setlarge_price(e); }}
                             keyboardType='numeric'
                             value={large_price}
                         />
@@ -340,7 +346,7 @@ const EditProduct = ({ navigation, route }) => {
                                 styleCont={{ marginTop: 20 }}
                                 label={i18n.t('SmallPrice')}
                                 placeholder={i18n.t('SmallPrice')}
-                                onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}
+                                onChangeText={(e) => { setsmall_price(e); }}
                                 value={small_price}
                                 keyboardType='numeric'
                             />
@@ -350,7 +356,7 @@ const EditProduct = ({ navigation, route }) => {
                                     styleCont={{ marginTop: 20 }}
                                     label={i18n.t('MidlePrice')}
                                     placeholder={i18n.t('MidlePrice')}
-                                    onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
+                                    onChangeText={(e) => { setmid_price(e); }}
                                     value={mid_price}
                                     keyboardType='numeric'
                                 />
@@ -369,15 +375,7 @@ const EditProduct = ({ navigation, route }) => {
                     value={Discount}
                 />
 
-                <InputIcon
-                    styleCont={{ marginTop: 0 }}
-                    label={i18n.t('price')}
-                    placeholder={i18n.t('price')}
 
-                    keyboardType='numeric'
-                    onChangeText={(e) => setPrice(e)}
-                    value={price}
-                />
 
                 <InputIcon
                     styleCont={{ marginTop: -5 }}
@@ -400,7 +398,7 @@ const EditProduct = ({ navigation, route }) => {
 
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ paddingEnd: 120, paddingStart: 10 }}>
+                    <View style={{ paddingEnd: 150, paddingStart: 10 }}>
                         <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                     </View>
                     {
@@ -448,6 +446,7 @@ const EditProduct = ({ navigation, route }) => {
                     placeholder={i18n.t('ProdPice')}
                     onChangeText={(e) => setUserImage(e)}
                     value={userImage}
+                    editable={false}
                     inputStyle={{ fontSize: 12 }}
                     imgStyle={{ width: 25, height: 25, bottom: 5 }}
                     image={require('../../../assets/Images/camera_gray.png')}
@@ -503,24 +502,41 @@ const EditProduct = ({ navigation, route }) => {
                 {
 
 
-                    ProductsExtras.map((proExtra, index) =>
-                        (
-                            <View key={'_' + index}>
-                                <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
-                                    <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
 
-                                        <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                    Loader ?
+                        <View style={{
+                            flex: 1,
+                            width: '100%',
+                            // height: '100%',
+                            zIndex: 99999,
+                            backgroundColor: Colors.bg,
+                            alignItems: 'center',
+                            opacity: .5,
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                        }}>
+                            <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                        </View>
+                        :
+
+                        ProductsExtras.map((proExtra, index) =>
+                            (
+                                <View key={'_' + index}>
+                                    <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
+                                        <View style={{ flexDirection: 'row', paddingStart: 10 }}>
+                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
+
+                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                                        </View>
+                                        <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
+                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                        </TouchableOpacity>
                                     </View>
-                                    <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
-                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                    </TouchableOpacity>
+                                    <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
                                 </View>
-                                <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
-                            </View>
+                            )
                         )
-                    )
                 }
 
 

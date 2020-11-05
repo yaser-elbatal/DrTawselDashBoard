@@ -85,12 +85,12 @@ export const DeleteProduct = (token, lang, id) => {
 
 
 
-export const EditProducts = (token, lang, id, name_ar, name_en, price, available, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, ExtraProduct, navigation) => {
+export const EditProducts = (token, lang, id, name_ar, name_en, available, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, ExtraProduct, navigation) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}update-product`,
-            data: { id, name_ar, name_en, price, available, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, extras: ExtraProduct },
+            data: { id, name_ar, name_en, available, details_ar, details_en, available_kilos, discount, quantity, menue_id, small_price, mid_price, large_price, image, extras: ExtraProduct },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
         }).then(res => {
@@ -114,12 +114,12 @@ export const EditProducts = (token, lang, id, name_ar, name_en, price, available
     }
 }
 
-export const Add_Products = (token, lang, name_ar, name_en, price, details_ar, details_en, available, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, navigation, extras,) => {
+export const Add_Products = (token, lang, name_ar, name_en, details_ar, details_en, available, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, navigation, extras,) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}add-product`,
-            data: { name_ar, name_en, price, details_ar, details_en, available, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, extras, },
+            data: { name_ar, name_en, details_ar, details_en, available, available_kilos, discount, quantity, small_price, mid_price, large_price, menue_id, image, extras, },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }
 
