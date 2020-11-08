@@ -9,7 +9,6 @@ import BTN from '../../common/BTN';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toaster } from '../../common/Toaster';
 import { SignUp } from '../../store/action/AuthAction';
-import Container from '../../common/Container';
 
 function TRegister({ navigation, route }) {
 
@@ -17,7 +16,8 @@ function TRegister({ navigation, route }) {
     const dispatch = useDispatch();
 
     const [spinner, setSpinner] = useState(false);
-
+    const [from, setFrom] = useState('')
+    const [to, setTo] = useState('')
     const [WebUrl, setWebUrl] = useState('');
     const [selecCommerical, setselecCommerical] = useState(null);
     const [SelectDelivery, setSelectDelivery] = useState(null)
@@ -38,8 +38,10 @@ function TRegister({ navigation, route }) {
         // let UrlErr = WebUrl === '' ? i18n.t('webUrl') : null
         let SelectDeliveryErr = SelectDelivery === null ? i18n.t('SelectYN') : null;
         let selecCommericalErr = selecCommerical === null ? i18n.t('SelectYN') : null;
+        let ToEror = to == '' ? i18n.t('PrebaringTime') : null;
+        let FromError = from == '' ? i18n.t('PrebaringTime') : null
 
-        return selecCommericalErr || SelectDeliveryErr
+        return selecCommericalErr || SelectDeliveryErr || ToEror || FromError
 
     }
 
@@ -48,7 +50,7 @@ function TRegister({ navigation, route }) {
         let val = _validate();
         if (!val) {
             setSpinner(true)
-            const data = { name, nameAR, nameEN, password, phone, email, CommercialRegister, city, department, isowner, BranchNum, MyLocation, latitude, longitude, WebUrl, selecCommerical, SelectDelivery, lang };
+            const data = { name, nameAR, nameEN, password, phone, email, CommercialRegister, city, department, isowner, BranchNum, MyLocation, latitude, longitude, WebUrl, selecCommerical, SelectDelivery, to, from, lang };
             dispatch(SignUp(data, navigation)).then(() => setSpinner(false)).catch(e => { setSpinner(false); console.warn(e); })
 
         }
@@ -78,6 +80,33 @@ function TRegister({ navigation, route }) {
                 value={WebUrl}
                 styleCont={{ marginTop: 20 }}
             />
+
+
+            <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%' }}>{i18n.t('preparationTime')}</Text>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <InputIcon
+                    label={i18n.t('from')}
+                    placeholder={i18n.t('from')}
+                    keyboardType='numeric'
+
+                    onChangeText={(e) => setFrom(e)}
+                    value={from}
+                    styleCont={{ marginTop: 20, width: '30%' }}
+                />
+                <Text>:</Text>
+                <InputIcon
+                    label={i18n.t('to')}
+                    placeholder={i18n.t('to')}
+                    keyboardType='numeric'
+
+                    onChangeText={(e) => setTo(e)}
+                    value={to}
+                    styleCont={{ marginTop: 20, width: '30%', }}
+                />
+                <Text style={{ fontFamily: 'flatMedium' }}>{i18n.t('clock')}</Text>
+            </View>
+
 
             <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                 <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10, flex: .9, fontSize: 10, }}>

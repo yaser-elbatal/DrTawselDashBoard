@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TouchableOpacity, Image, Text, ScrollView, StyleSheet, Modal, Dimensions, Platform, Button, ActivityIndicator } from 'react-native'
+import { View, TouchableOpacity, Image, Text, ScrollView, StyleSheet, Modal, Dimensions, Platform, Button, Alert } from 'react-native'
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import axios from "axios";
@@ -53,7 +53,7 @@ function RestaurantInfo({ navigation }) {
     const [SelectDelivery, setSelectDelivery] = useState(user.provider.available_delivery)
     const [selectedRadion, setSelectedRadio] = useState(user.provider.is_owner)
     const [WebUrl, setWebUrl] = useState(user.provider.website_url);
-
+    const [InitMap, setInitMap] = useState(true)
     const [data, setData] = useState([
 
         { id: 0, title: `${i18n.t("no")}` },
@@ -65,7 +65,8 @@ function RestaurantInfo({ navigation }) {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         let userLocation = {};
         if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
+            setInitMap(false)
+            Alert.alert('صلاحيات تحديد موقعك الحالي ملغاه');
         } else {
             const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, });
             if (user.latitude) {
@@ -73,8 +74,9 @@ function RestaurantInfo({ navigation }) {
             } else {
                 userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
             }
+            // setInitMap(true)
             setMapRegion(userLocation);
-            // isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
+            isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
 
         }
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
@@ -86,12 +88,15 @@ function RestaurantInfo({ navigation }) {
             setCity(data.results[0].formatted_address)
 
         } catch (e) {
+            alert('We could not find your position. Please make sure your location service provider is on');
+
             console.log(e);
+
         }
     };
 
     useEffect(() => {
-        fetchData().then(() => setSpinner(false))
+        fetchData()
     }, []);
 
     useEffect(() => {
@@ -160,12 +165,10 @@ function RestaurantInfo({ navigation }) {
 
         let nameErr = validateUserName(nameAR)
         let nameEnErr = validateUserName(nameEN)
-        let UrlErr = WebUrl === '' ? i18n.t('webUrl') : null
         let SelectDeliveryErr = SelectDelivery === null ? i18n.t('SelectYN') : null;
         let selecCommericalErr = selecCommerical === null ? i18n.t('SelectYN') : null;
-        let ValditeCommercialRegisterErr = ValditeCommercialRegister(CommercialRegister)
 
-        return nameEnErr || nameErr || UrlErr || SelectDeliveryErr || selecCommericalErr || ValditeCommercialRegisterErr
+        return nameEnErr || nameErr || SelectDeliveryErr || selecCommericalErr || ValditeCommercialRegisterErr
     }
     const UpdateRestaurantInfo = () => {
         let val = _validate()
@@ -218,7 +221,7 @@ function RestaurantInfo({ navigation }) {
                     value={city}
                     styleCont={{ marginTop: 0 }}
                     image={require('../../../assets/Images/location_gray.png')}
-                    onPress={() => setisopened(!isopened)}
+                    onPress={InitMap ? () => setisopened(true) : setisopened(false)}
                 />
 
 
@@ -232,34 +235,41 @@ function RestaurantInfo({ navigation }) {
                                 animationType="slide"
                                 transparent={true}
                                 visible={isopened}   >
-                                <View style={styles.centeredView}>
-                                    <View style={styles.modalView}>
+                                {
+                                    InitMap ?
+                                        (
+                                            <View style={styles.centeredView}>
+                                                <View style={styles.modalView}>
 
-                                        <MapView
-                                            ref={mapRef}
-                                            style={{ flex: 1, width: '100%' }}
-                                            region={mapRegion}
-                                            onRegionChangeComplete={region => setMapRegion(region)}
-                                            customMapStyle={mapStyle}
-                                            initialRegion={mapRegion}
-                                            showsUserLocation={true}
-                                            zoomControlEnabled={true}
-                                            showsTraffic={true} >
+                                                    <MapView
+                                                        ref={mapRef}
+                                                        style={{ flex: 1, width: '100%' }}
+                                                        region={mapRegion}
+                                                        onRegionChangeComplete={region => setMapRegion(region)}
+                                                        customMapStyle={mapStyle}
+                                                        initialRegion={mapRegion}
+                                                        showsUserLocation={true}
+                                                        zoomControlEnabled={true}
+                                                        showsTraffic={true} >
 
-                                            <Marker
-                                                draggable
-                                                coordinate={mapRegion}
-                                                onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+                                                        <Marker
+                                                            draggable
+                                                            coordinate={mapRegion}
+                                                            onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
 
-                                            >
-                                                <Image source={require('../../../assets/Images/location_gray.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
-                                            </Marker>
-                                        </MapView>
-                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+                                                        >
+                                                            <Image source={require('../../../assets/Images/location_gray.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
+                                                        </Marker>
+                                                    </MapView>
+                                                    <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
 
 
-                                    </View>
-                                </View>
+                                                </View>
+                                            </View>
+                                        )
+                                        : (<View />)
+                                }
+
 
 
                             </Modal>

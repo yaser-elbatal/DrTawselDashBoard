@@ -25,7 +25,7 @@ function Menue({ navigation, route }) {
 
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
-    const Menue = useSelector(state => state.menue.menue.data);
+    const Menue = useSelector(state => state.menue.menue ? state.menue.menue.data : []);
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('');
     const [DeleteArr, setDeleteArr] = useState([]);
@@ -49,6 +49,36 @@ function Menue({ navigation, route }) {
     }, {
         value: i18n.t('oldest'),
     },];
+
+
+
+
+    useEffect(() => {
+
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            setSelection2(false);
+
+
+            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+        });
+
+        if (route.params) {
+            Toast.show({
+                text: i18n.t('AddMen'),
+                type: "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
+        }
+
+        return unsubscribe;
+    }, [navigation, route]);
+
+
     const _validate = () => {
 
 
@@ -120,30 +150,7 @@ function Menue({ navigation, route }) {
     };
     console.log('NoneChecked' + DeleteArr);
 
-    useEffect(() => {
 
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
-            setSelection2(false);
-
-
-            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
-        });
-
-        if (route.params) {
-            Toast.show({
-                text: i18n.t('AddMen'),
-                type: "danger",
-                duration: 3000,
-                textStyle: {
-                    color: "white",
-                    textAlign: 'center'
-                }
-            });
-        }
-
-        return unsubscribe;
-    }, [navigation, route]);
 
     const handleChange = (e) => {
         setLoader(true)

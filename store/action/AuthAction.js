@@ -117,7 +117,10 @@ export const SignUp = (data, navigation) => {
                     website_url: data.WebUrl,
                     authorization_commercial: data.selecCommerical,
                     available_delivery: data.SelectDelivery,
+                    preparing_time_to: data.to,
+                    preparing_time_from: data.from,
                     device_id: deviceId,
+
                     user_type: 4,
 
                 }
@@ -297,3 +300,30 @@ export const Logout = (token) => {
     }
 }
 
+export const ValidEmailPhone = (key) => {
+    return async dispatch => {
+        await axios({
+            method: 'POST',
+            url: consts.url + 'check-key-available',
+            data: { key },
+
+        }).then(res => {
+            if (res.data.success) {
+                dispatch({ type: 'ValidEmailPhone', data: res.data })
+            }
+            !res.data.success ?
+                Toast.show({
+                    text: res.data.message,
+                    type: "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                })
+                : null
+        }
+        )
+    }
+}

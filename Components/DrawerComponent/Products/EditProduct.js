@@ -154,7 +154,7 @@ const EditProduct = ({ navigation, route }) => {
         // let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
         // let DisErr = Discount == '' ? 'Enter Discount' : null;
         let piceErr = large_price == '' ? i18n.t('EnterPrice') : null;
-        let baseErr = base64 == null ? i18n.t('PickImage') : null;
+        // let baseErr = base64 == null ? i18n.t('PickImage') : null;
         let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
         let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null
         let Det = detailesEn == '' ? i18n.t('EnterDetailesEn') : null
@@ -162,7 +162,7 @@ const EditProduct = ({ navigation, route }) => {
         let MenueIdErr = MenueId == '' ? i18n.t('SelectMenue') : null
 
 
-        return nameErr || nameEnErr || piceErr || baseErr || quantityErr || DetErr || Det || MenueIdErr
+        return nameErr || nameEnErr || piceErr || quantityErr || DetErr || Det || MenueIdErr
     }
 
 
@@ -245,7 +245,7 @@ const EditProduct = ({ navigation, route }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ right: 20, bottom: 15 }}>
                         <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                            <TouchableOpacity onPress={() => navigation.push('Products')}>
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
                                 {
                                     I18nManager.isRTL ?
                                         <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />

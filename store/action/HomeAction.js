@@ -37,3 +37,24 @@ export const GetHomeProducts = (token, lang) => {
 
     }
 }
+
+
+
+export const NotificationCount = (token, lang) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'GET',
+            url: consts.url + 'notification-count',
+            headers: { Authorization: 'Bearer ' + token, },
+            params: { lang }
+
+        }).then(res => {
+            dispatch({ type: 'NotificationCount', data: res.data })
+        })
+
+
+    }
+}
+
+
+

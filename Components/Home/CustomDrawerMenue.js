@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { View, Text, ImageBackground, TouchableOpacity, Image, StyleSheet, ScrollView, AsyncStorage } from 'react-native'
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { useDispatch, useSelector } from 'react-redux'
 import { Logout } from '../../store/action/AuthAction'
+import { NotificationCount } from '../../store/action/HomeAction'
 
 
 
@@ -13,6 +14,13 @@ function CustomDrawerMenue({ navigation }) {
     const dispatch = useDispatch();
     const token = useSelector(state => state.auth.user.data.token);
     const user = useSelector(state => state.auth.user.data);
+    const lang = useSelector(state => state.lang.language);
+    const NotifyCount = useSelector(state => state.home.NotifyCount.data.count);
+
+    useEffect(() => {
+        dispatch(NotificationCount(token, lang))
+    }, [])
+    console.log(NotifyCount);
 
 
 
@@ -97,7 +105,7 @@ function CustomDrawerMenue({ navigation }) {
                         <View style={{ backgroundColor: Clicle === 8 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={styles.hellText}>{i18n.t('notifications')}</Text>
                             <View style={{ backgroundColor: Colors.bg, height: 30, width: 40, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={{ color: Colors.sky, fontFamily: 'flatMedium', fontSize: 14 }}>2</Text>
+                                <Text style={{ color: Colors.sky, fontFamily: 'flatMedium', fontSize: 14 }}>{NotifyCount}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>

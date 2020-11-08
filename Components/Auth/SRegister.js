@@ -102,6 +102,7 @@ function SRegister({ navigation, route }) {
         let userLocation = {};
         if (status !== 'granted' || !permissions) {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
+
         } else {
             const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
 
@@ -186,8 +187,10 @@ function SRegister({ navigation, route }) {
                     <Dropdown
                         placeholder={i18n.t('dep')}
                         data={DebName}
-                        fontSize={12}
+                        fontSize={16}
+                        labelFontSize={16}
                         itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        itemTextStyle={{ fontSize: 18, fontFamily: 'flatMedium' }}
                         lineWidth={0}
                         containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
                         animationDuration={0}
@@ -220,7 +223,7 @@ function SRegister({ navigation, route }) {
                     value={LOcation}
                     styleCont={{ marginTop: 0 }}
                     image={require('../../assets/Images/location_gray.png')}
-                    onPress={() => setisopened(!isopened)}
+                    onPress={mapRegion.latitude != null ? () => setisopened(true) : () => setisopened(false)}
                 />
 
                 {
@@ -231,34 +234,38 @@ function SRegister({ navigation, route }) {
                                 animationType="slide"
                                 transparent={true}
                                 visible={isopened}   >
-                                <View style={styles.centeredView}>
-                                    <View style={styles.modalView}>
+                                {
 
-                                        <MapView
-                                            style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
-                                            region={mapRegion}
-                                            ref={mapRef}
-                                            onRegionChangeComplete={region => setMapRegion(region)}
-                                            customMapStyle={mapStyle}
-                                            initialRegion={mapRegion}
-                                            showsUserLocation={true}
-                                            zoomControlEnabled={true}
-                                            showsTraffic={true} >
+                                    <View style={styles.centeredView}>
+                                        <View style={styles.modalView}>
 
-                                            <Marker
-                                                draggable
-                                                coordinate={mapRegion}
-                                                onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+                                            <MapView
+                                                style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
+                                                region={mapRegion}
+                                                ref={mapRef}
+                                                onRegionChangeComplete={region => setMapRegion(region)}
+                                                customMapStyle={mapStyle}
+                                                initialRegion={mapRegion}
+                                                showsUserLocation={true}
+                                                zoomControlEnabled={true}
+                                                showsTraffic={true} >
 
-                                            >
-                                                <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
-                                            </Marker>
-                                        </MapView>
-                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+                                                <Marker
+                                                    draggable
+                                                    coordinate={mapRegion}
+                                                    onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+
+                                                >
+                                                    <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
+                                                </Marker>
+                                            </MapView>
+                                            <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
 
 
+                                        </View>
                                     </View>
-                                </View>
+
+                                }
 
 
                             </Modal>
@@ -271,6 +278,7 @@ function SRegister({ navigation, route }) {
                         placeholder={i18n.t('city')}
                         data={cityName}
                         fontSize={16}
+                        labelFontSize={16}
                         itemTextStyle={{ fontFamily: 'flatMedium', fontSize: 16 }}
                         lineWidth={0}
                         containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}

@@ -89,7 +89,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
         !OrderDet ? null :
             <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
 
-                <Header navigation={navigation} label={i18n.t('orderDetailes') + `${OrderDet.order_id}`} />
+                <Header navigation={navigation} label={i18n.t('orderDetailes') + "  " + `${OrderDet.order_id}`} />
                 <Container loading={spinner}>
 
                     <TouchableOpacity onPress={() => setClick(!click)}>

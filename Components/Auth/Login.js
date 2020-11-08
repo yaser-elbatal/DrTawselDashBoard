@@ -72,7 +72,6 @@ function Login({ navigation }) {
         return token;
     }
 
-    console.log("ss" + deviceId);
 
 
     // const getDeviceId = async () => {

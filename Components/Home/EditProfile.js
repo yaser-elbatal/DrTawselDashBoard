@@ -53,7 +53,6 @@ function EditProfile({ navigation }) {
         askPermissionsAsync();
 
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
             aspect: [3, 4],
             base64: true
         });

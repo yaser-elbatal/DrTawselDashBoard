@@ -93,7 +93,7 @@ const ProductDet = ({ navigation, route }) => {
                                                 {
                                                     ProductDetA.available_kilos == 0 ?
                                                         null :
-                                                        <Text style={[styles.num, { color: Colors.fontNormal }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
+                                                        <Text style={[styles.num, { color: Colors.fontNormal, paddingHorizontal: 3 }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
 
                                                 }
 
@@ -146,17 +146,20 @@ const ProductDet = ({ navigation, route }) => {
                                     {
                                         click2 ?
 
-                                            ProductDetA.extras && ProductDetA.extras.map((size, index) => (
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }} key={index + 1}>
-                                                    <Text style={styles.name} key={size.id}> {size.name} </Text>
-                                                    <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15, alignSelf: 'flex-start' }]}>{size.price}{i18n.t('Rial')}</Text>
+                                            ProductDetA.extras && ProductDetA.extras.length ?
+                                                ProductDetA.extras.map((size, index) => (
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }} key={index + 1}>
+                                                        <Text style={styles.name} key={size.id}> {size.name} </Text>
+                                                        <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15, alignSelf: 'flex-start' }]}>{size.price}{i18n.t('Rial')}</Text>
 
-                                                </View>
+                                                    </View>
 
 
 
-                                            ))
 
+                                                ))
+                                                :
+                                                <Text style={styles.name}>{i18n.t('nothing')}</Text>
 
                                             : null
                                     }
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'flatMedium',
-        fontSize: 12,
+        fontSize: 14,
         color: Colors.fontNormal,
         marginVertical: 5,
         alignSelf: 'flex-start'

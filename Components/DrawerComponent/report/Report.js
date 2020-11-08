@@ -20,8 +20,9 @@ function Report({ navigation }) {
     const [spinner, setSpinner] = useState(true);
     const RebortChart = useSelector(state => state.reborts.chart)
     const dispatch = useDispatch()
+    const user = useSelector(state => state.auth.user.data);
 
-    console.log(RebortChart);
+    console.log(user.id);
 
     useEffect(() => {
 
@@ -55,7 +56,7 @@ function Report({ navigation }) {
                 <ScrollView style={{ flex: 1 }}>
 
                     <WebView
-                        source={{ uri: 'https://github.com/facebook/react-native' }}
+                        source={{ uri: `https://drtawsel.aait-sa.com/pie/${user.id}` }}
                         style={{ marginTop: 20, height: 420 }}
                     />
 

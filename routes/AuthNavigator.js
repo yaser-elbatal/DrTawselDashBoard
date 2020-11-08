@@ -109,7 +109,7 @@ export const AppStackNavigator = () => {
 
         <DrawerStack.Navigator headerMode='none' initialRouteName='drawerScreen'>
             <DrawerStack.Screen name="drawerScreen" component={drawerScreen} />
-            <DrawerStack.Screen name="Settings" component={Settings} />
+
             <DrawerStack.Screen name="Lang" component={Lang} />
             <DrawerStack.Screen name="MyProfile" component={myProfil} />
             <DrawerStack.Screen name="EditProfile" component={EditProfile} />
@@ -119,14 +119,13 @@ export const AppStackNavigator = () => {
             <DrawerStack.Screen name="EditMenue" component={EditMenue} />
             <DrawerStack.Screen name="AllOrders" component={AllOrders} />
 
-            <DrawerStack.Screen name="Products" component={Products} />
             <DrawerStack.Screen name="EditProd" component={EditProd} />
 
 
             <DrawerStack.Screen name="ProductDet" component={ProductDet} />
             <DrawerStack.Screen name="EditProducts" component={EditProduct} />
+            <DrawerStack.Screen name="Products" component={Products} />
 
-            <DrawerStack.Screen name="Orders" component={Orders} />
             <DrawerStack.Screen name="SpecialOrders" component={SpecialOrders} />
             <DrawerStack.Screen name="IncomingRequests" component={IncomingRequests} />
             <DrawerStack.Screen name="ActiveRequests" component={ActiveRequests} />
@@ -154,7 +153,7 @@ export const AppStackNavigator = () => {
             <DrawerStack.Screen name="RestaurantInfo" component={RestaurantInfo} />
             <DrawerStack.Screen name="Comments" component={Comments} />
             <DrawerStack.Screen name="Notifications" component={Notifications} />
-            <DrawerStack.Screen name="Wallet" component={Wallet} />
+            {/* <DrawerStack.Screen name="Wallet" component={Wallet} /> */}
             <DrawerStack.Screen name="ContactUs" component={ContactUs} />
             <DrawerStack.Screen name="Banktransfer" component={Banktransfer} />
             <DrawerStack.Screen name="TransferMony" component={TransferMony} />

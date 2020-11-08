@@ -12,7 +12,7 @@ function Card({ navigation }) {
 
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
-    const Reports = useSelector(state => state.home.reports);
+    const Reports = useSelector(state => state.home.reports ? state.home.reports : {});
 
     const [spinner, setSpinner] = useState(true);
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function Card({ navigation }) {
 
 
     useEffect(() => {
-        dispatch(GetQuickReborts(token, lang)).then(() => setSpinner(false))
+        dispatch(GetQuickReborts(token, lang))
     }, [])
 
     const Orderdata = [{

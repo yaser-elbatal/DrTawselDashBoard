@@ -24,7 +24,6 @@ function HomePage({ navigation }) {
     const dispatch = useDispatch();
 
 
-    console.log(lang);
 
 
 
@@ -52,12 +51,11 @@ function HomePage({ navigation }) {
                 <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
 
                 {
-                    HomeProduct && !HomeProduct ?
+                    !HomeProduct ?
                         <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                         :
-                        !HomeProduct.length ?
-                            <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                            :
+                        HomeProduct.length ?
+
                             <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {
 
@@ -79,6 +77,9 @@ function HomePage({ navigation }) {
 
                                 }
                             </ScrollView>
+                            :
+                            <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+
                 }
 
 

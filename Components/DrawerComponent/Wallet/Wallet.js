@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Image, StyleSheet, Text, TouchableOpacity, I18nManager, Modal, Platform } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, I18nManager, Modal, Platform, ImageBackground } from 'react-native'
 
 import i18n from '../../../locale/i18n'
 import Header from '../../../common/Header'
@@ -13,8 +13,11 @@ import { InputIcon } from '../../../common/InputText'
 import { validateAccountNum } from '../../../common/Validation'
 import { Toaster } from '../../../common/Toaster'
 import HomeHeader from '../../../common/HomeHeader'
+import { useIsDrawerOpen } from '@react-navigation/drawer';
+import { DrawerActions } from '@react-navigation/native'
 
 function Wallet({ navigation }) {
+    const user = useSelector(state => state.auth.user.data);
 
 
     const [accountnum, setAccountnum] = useState('');
@@ -25,7 +28,8 @@ function Wallet({ navigation }) {
     const [spinner, setSpinner] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
-
+    const isDrawerOpen = useIsDrawerOpen();
+    console.log(isDrawerOpen);
 
     const _validate = () => {
 
@@ -64,7 +68,53 @@ function Wallet({ navigation }) {
     return (
 
         <View style={{ flex: 1 }}>
-            <HomeHeader navigation={navigation} label={i18n.t('wallet')} onPress={() => navigation.navigate('MyProfile')} />
+            {/* <HomeHeader navigation={navigation} label={i18n.t('wallet')} onPress={() => navigation.navigate('MyProfile')} /> */}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                <View style={{ marginHorizontal: -30, marginVertical: -10 }}>
+                    <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} style={{ top: 20 }}>
+                            <Image source={require('../../../assets/Images/menu.png')} style={{ height: 25, width: 25, }} resizeMode='contain' />
+                        </TouchableOpacity>
+                    </ImageBackground>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')} style={{ margin: 20, top: 25 }}>
+                    <View style={{}}>
+                        <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+            <View style={{ flexDirection: 'column', margin: 15, }}>
+                <Text style={{ fontFamily: 'flatMedium', fontSize: 20 }}>{i18n.t('wallet')}</Text>
+            </View>
+
+
+
+            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ right: 20, bottom: 15 }}>
+                    <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                        <TouchableOpacity onPress={() => navigation.navigate('HomePages')}>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+
+                            }
+                        </TouchableOpacity>
+                    </ImageBackground>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                    <View style={{ marginTop: 45, marginHorizontal: 20 }}>
+                        <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+            <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('wallet')}</Text> */}
+
 
             <Container loading={spinner}>
 
@@ -128,7 +178,6 @@ function Wallet({ navigation }) {
                                             onChangeText={(e) => setAccountnum(e)}
                                             styleCont={{ marginTop: 10, width, }}
                                             inputStyle={{ borderRadius: 25, marginHorizontal: '3%' }}
-                                            keyboardType='numeric'
 
 
                                         />

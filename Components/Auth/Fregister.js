@@ -5,10 +5,11 @@ import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
 import { InputIcon } from '../../common/InputText';
 import { validateUserName, validatePhone, validateEmail, validatePassword, validateTwoPasswords } from '../../common/Validation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { width } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
+import { ValidEmailPhone } from '../../store/action/AuthAction';
 
 function Fregister({ navigation }) {
 
@@ -18,7 +19,10 @@ function Fregister({ navigation }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [selectedRadion, setSelectedRadio] = useState(null)
+    const Validation = useSelector(state => state.auth.Validate);
 
+
+    console.log(Validation);
     const [data, setData] = useState([
 
 
@@ -28,7 +32,6 @@ function Fregister({ navigation }) {
     ])
 
 
-    console.log(selectedRadion);
 
 
 
@@ -47,6 +50,8 @@ function Fregister({ navigation }) {
     };
 
 
+    const dispatch = useDispatch();
+
 
     const NavigateToNext = () => {
         let Val = _validate();
@@ -59,7 +64,11 @@ function Fregister({ navigation }) {
         }
     }
 
-
+    const HandelChange = (e) => {
+        setTimeout(() => {
+            dispatch(ValidEmailPhone(e))
+        }, 1000);
+    }
 
 
     return (
@@ -81,7 +90,7 @@ function Fregister({ navigation }) {
             <InputIcon
                 label={i18n.t('phone')}
                 placeholder={i18n.t('phone')}
-                onChangeText={(e) => setPhone(e)}
+                onChangeText={(e) => { HandelChange(e); setPhone(e) }}
                 value={phone}
                 keyboardType='numeric'
                 styleCont={{ marginTop: 0 }}
@@ -90,7 +99,7 @@ function Fregister({ navigation }) {
             <InputIcon
                 label={i18n.t('email')}
                 placeholder={i18n.t('email')}
-                onChangeText={(e) => setemail(e)}
+                onChangeText={(e) => { HandelChange(e); setemail(e) }}
                 value={email}
                 keyboardType='email-address'
                 styleCont={{ marginTop: 0 }}
@@ -158,7 +167,7 @@ function Fregister({ navigation }) {
                 }
 
             </View>
-            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNext} />
+            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNext} disabled={Validation} />
 
         </ScrollView>
     )

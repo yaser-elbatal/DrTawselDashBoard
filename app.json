@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "DrTawselDashboard",
-    "slug": "DrTawselDashboard",
+    "name": "دكتور توصيل - تاجر",
+    "slug": "DashboardDrTawsel",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Images/image.png",
     "splash": {
       "image": "./assets/Images/splash.png",
       "resizeMode": "contain",

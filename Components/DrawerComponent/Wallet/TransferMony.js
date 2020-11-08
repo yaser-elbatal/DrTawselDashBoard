@@ -130,7 +130,6 @@ function TransferMony({ navigation, route }) {
                     onChangeText={(e) => setAccountnum(e)}
                     styleCont={{ marginTop: 10 }}
                     inputStyle={{ borderRadius: 25 }}
-                    keyboardType='numeric'
 
 
                 />

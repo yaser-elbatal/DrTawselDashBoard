@@ -117,7 +117,7 @@ function Products({ navigation }) {
 
     }
 
-
+    console.log(Menue);
     return (
 
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
@@ -166,7 +166,7 @@ function Products({ navigation }) {
 
 
 
-                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={Menue.length ? () => navigation.navigate('AddProduct') : () => navigation.navigate('Menue', { pathname: 'yasser' })} />
+                <BTN title={i18n.t('AddProd')} ContainerStyle={styles.LoginBtn} onPress={!Menue || !Menue.length ? () => navigation.navigate('Menue', { pathname: 'yasser' }) : () => navigation.navigate('AddProduct')} />
 
                 {
                     Loader ?
@@ -199,11 +199,12 @@ function Products({ navigation }) {
                                                 <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
                                                 <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
                                                 <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
-                                                {/* <Text style={[styles.nMenu, { color: Colors.IconBlack }]}></Text> */}
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                     <Text style={styles.nText}>{item.price - item.discount}</Text>
-                                                    <Text style={[styles.nText, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.InputColor, paddingHorizontal: 5, fontSize: 10 }]}>{item.price}</Text>
-
+                                                    {
+                                                        item.discount == 0 ? null :
+                                                            <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price}</Text>
+                                                    }
                                                 </View>
 
 

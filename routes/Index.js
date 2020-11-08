@@ -12,11 +12,12 @@ function MainRoot() {
     return (
         <NavigationContainer >
             {
-                auth.user !== null ?
-
-                    <AppStackNavigator />
-                    :
+                auth.user == null ?
                     <MainStackNav />
+                    :
+                    <AppStackNavigator />
+
+
             }
 
         </NavigationContainer>
