@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GetHomeProducts } from '../../store/action/HomeAction';
 import Container from '../../common/Container';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as Animatable from 'react-native-animatable';
 
 
 function HomePage({ navigation }) {
@@ -87,7 +88,9 @@ function HomePage({ navigation }) {
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
                     QuickRebort && QuickRebort.reports ?
-                        <>
+
+                        <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+
                             <View style={styles.SCard}>
                                 <View style={{ flexDirection: 'row', height: '100%', }}>
                                     <View style={styles.ImgWrab}>
@@ -130,7 +133,7 @@ function HomePage({ navigation }) {
                                     <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
                                 </View>
                             </View>
-                        </>
+                        </Animatable.View>
                         :
                         <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                 }

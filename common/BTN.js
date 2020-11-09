@@ -1,8 +1,8 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, Dimensions, View } from 'react-native'
 import Colors from '../consts/Colors'
 const { width } = Dimensions.get('window')
-
+import * as Animatable from 'react-native-animatable';
 function BTN({
     title,
     onPress,
@@ -11,11 +11,15 @@ function BTN({
     disabled
 }) {
     return (
-        <TouchableOpacity style={[styles.container, ContainerStyle]} onPress={onPress} disabled={disabled}>
-            <Text style={[styles.sText, TextStyle]}>
-                {title}
-            </Text>
-        </TouchableOpacity>
+        <View style={{ overflow: 'hidden' }}>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                <TouchableOpacity style={[styles.container, ContainerStyle]} onPress={onPress} disabled={disabled}>
+                    <Text style={[styles.sText, TextStyle]}>
+                        {title}
+                    </Text>
+                </TouchableOpacity>
+            </Animatable.View>
+        </View>
     )
 }
 const styles = StyleSheet.create({
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
         color: Colors.bg,
         fontSize: 16,
         textAlign: 'center',
+        alignSelf: 'center'
     }
 })
 export default BTN

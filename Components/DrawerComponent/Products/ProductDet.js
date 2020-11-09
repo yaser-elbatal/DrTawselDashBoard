@@ -6,6 +6,7 @@ import Colors from '../../../consts/Colors'
 import { useDispatch, useSelector } from 'react-redux';
 import Container from '../../../common/Container';
 import { ProductDetailes } from '../../../store/action/ProductAction';
+import * as Animatable from 'react-native-animatable';
 
 
 const ProductDet = ({ navigation, route }) => {
@@ -39,11 +40,14 @@ const ProductDet = ({ navigation, route }) => {
 
 
     return (
+
         <Container loading={spinner}>
 
-            <View style={{ flex: 1 }}>
+            <Animatable.View animation="pulse" easing="ease-out" delay={500} style={{ flex: 1 }}>
+
                 {
                     !ProductDetA ? null :
+
                         <>
                             <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} resizeMode='cover' />
                             <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
@@ -120,7 +124,7 @@ const ProductDet = ({ navigation, route }) => {
                                     </TouchableOpacity>
                                     {
                                         click1 ?
-                                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 12, color: Colors.fontNormal, alignSelf: 'flex-start', paddingHorizontal: 15 }}>
+                                            <Text style={{ marginTop: 15, fontFamily: 'flatMedium', fontSize: 14, color: Colors.fontNormal, alignSelf: 'flex-start', paddingHorizontal: 15 }}>
                                                 {ProductDetA.details}
 
 
@@ -168,9 +172,10 @@ const ProductDet = ({ navigation, route }) => {
                         </>
                 }
 
+            </Animatable.View>
 
-            </View>
         </Container>
+
 
     )
 }

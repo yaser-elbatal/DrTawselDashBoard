@@ -10,6 +10,7 @@ import { width } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import { ValidEmailPhone } from '../../store/action/AuthAction';
+import * as Animatable from 'react-native-animatable';
 
 function Fregister({ navigation }) {
 
@@ -75,9 +76,9 @@ function Fregister({ navigation }) {
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             <BackBtn navigation={navigation} />
             <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
-                <Text style={styles.UText}>{i18n.t('Activity')}</Text>
-                <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('CompInfo')}</Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Animatable.Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Animatable.Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('CompInfo')}</Animatable.Text>
             </View>
 
             <InputIcon
@@ -167,7 +168,7 @@ function Fregister({ navigation }) {
                 }
 
             </View>
-            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNext} disabled={Validation} />
+            <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNext} disabled={!Validation} />
 
         </ScrollView>
     )

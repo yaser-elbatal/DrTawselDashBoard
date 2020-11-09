@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GetRatings } from '../../../store/action/CommentsAction';
 import StarRating from 'react-native-star-rating';
 import HomeHeader from '../../../common/HomeHeader';
+import * as Animatable from 'react-native-animatable';
 
 function Comments({ navigation }) {
 
@@ -54,33 +55,37 @@ function Comments({ navigation }) {
                     </View>
                 </View>
 
-                {Comments && Comments.data ?
+                {Comments && Comments.data.length ?
                     Comments.data.map(comm => (
-                        <View style={styles.Card} key={comm.id}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 20, }}>
-                                <Image source={{ uri: comm.user.avatar }} style={{ height: 50, width: 50, borderRadius: 50, }} />
-                                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', marginHorizontal: 10 }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                        <Text style={[styles.CardText]}>{comm.user.name}</Text>
-                                        <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>{comm.date}</Text>
-                                    </View>
-                                    <View style={{ alignSelf: 'flex-start', alignItems: 'center' }}>
-                                        <StarRating
-                                            maxStars={5}
-                                            rating={comm.rate}
-                                            fullStarColor={'yellow'}
-                                            starSize={20}
+                        <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                                        />
-                                    </View>
+                            <View style={styles.Card} key={comm.id}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 20, }}>
+                                    <Image source={{ uri: comm.user.avatar }} style={{ height: 50, width: 50, borderRadius: 50, }} />
+                                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', marginHorizontal: 10 }}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                            <Text style={[styles.CardText]}>{comm.user.name}</Text>
+                                            <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>{comm.date}</Text>
+                                        </View>
+                                        <View style={{ alignSelf: 'flex-start', alignItems: 'center' }}>
+                                            <StarRating
+                                                maxStars={5}
+                                                rating={comm.rate}
+                                                fullStarColor={'yellow'}
+                                                starSize={20}
 
-                                    <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>
-                                        {comm.comment}
-                                    </Text>
+                                            />
+                                        </View>
+
+                                        <Text style={[styles.CardText, { color: Colors.fontNormal, fontSize: 10, }]}>
+                                            {comm.comment}
+                                        </Text>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    )) : null
+                        </Animatable.View>
+                    )) : <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+
                 }
 
 

@@ -2,6 +2,7 @@ import React from 'react'
 import Colors from '../consts/Colors'
 import { View, TouchableOpacity, Image, ImageBackground, Text } from 'react-native'
 import { useSelector } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
 
 function HomeHeader({ label, title, navigation, onPress, }) {
     const user = useSelector(state => state.auth.user.data);
@@ -25,7 +26,7 @@ function HomeHeader({ label, title, navigation, onPress, }) {
 
             </View>
             <View style={{ flexDirection: 'column', margin: 15, }}>
-                <Text style={{ fontFamily: 'flatMedium', fontSize: 20 }}>{label}</Text>
+                <Animatable.Text animation='shake' easing="ease-out" delay={500} style={{ fontFamily: 'flatMedium', fontSize: 20 }}>{label}</Animatable.Text>
                 <Text style={{ fontFamily: 'flatMedium', fontSize: 12, color: Colors.fontNormal }}>{title}</Text>
             </View>
         </View>

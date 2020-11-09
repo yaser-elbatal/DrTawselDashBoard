@@ -7,6 +7,7 @@ import i18n from '../locale/i18n'
 import { GetQuickReborts } from '../store/action/HomeAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from './Container';
+import * as Animatable from 'react-native-animatable';
 
 function Card({ navigation }) {
 
@@ -21,7 +22,7 @@ function Card({ navigation }) {
 
 
     useEffect(() => {
-        dispatch(GetQuickReborts(token, lang))
+        dispatch(GetQuickReborts(token, lang)).then(() => setSpinner(false))
     }, [])
 
     const Orderdata = [{
@@ -49,7 +50,7 @@ function Card({ navigation }) {
 
     return (
 
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} style={{ justifyContent: 'center', alignItems: 'center' }}>
             <FlatList
                 horizontal
                 pagingEnabled={true}
@@ -81,7 +82,7 @@ function Card({ navigation }) {
 
 
                 )} />
-        </View>
+        </Animatable.View>
     )
 }
 const styles = StyleSheet.create({

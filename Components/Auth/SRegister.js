@@ -16,6 +16,7 @@ import { validateUserName, ValdiateDebId, ValdiateCITyId, ValditeCommercialRegis
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import Container from '../../common/Container';
+import * as Animatable from 'react-native-animatable';
 
 const isIOS = Platform.OS === 'ios';
 const latitudeDelta = 0.0922;
@@ -176,9 +177,9 @@ function SRegister({ navigation, route }) {
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             <BackBtn navigation={navigation} />
             <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
-                <Text style={styles.UText}>{i18n.t('Activity')}</Text>
-                <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Animatable.Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Animatable.Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Animatable.Text>
             </View>
 
             <Container loading={spinner}>
@@ -259,8 +260,9 @@ function SRegister({ navigation, route }) {
                                                     <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
                                                 </Marker>
                                             </MapView>
-                                            <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
-
+                                            <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
+                                                <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+                                            </Animatable.View>
 
                                         </View>
                                     </View>

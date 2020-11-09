@@ -56,7 +56,6 @@ export const UpdateMenue = (token, lang, nameAr, nameEn, id) => {
 
         }).then(res => {
             if (res.data.success) {
-                MenueInfo(lang, token)
                 dispatch({ type: Update_Menue, data: res.data })
             }
             Toast.show({

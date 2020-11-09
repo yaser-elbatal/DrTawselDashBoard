@@ -5,6 +5,7 @@ import i18n from '../../locale/i18n'
 import { useDispatch, useSelector } from 'react-redux'
 import { Logout } from '../../store/action/AuthAction'
 import { NotificationCount } from '../../store/action/HomeAction'
+import * as Animatable from 'react-native-animatable';
 
 
 
@@ -15,7 +16,7 @@ function CustomDrawerMenue({ navigation }) {
     const token = useSelector(state => state.auth.user.data.token);
     const user = useSelector(state => state.auth.user.data);
     const lang = useSelector(state => state.lang.language);
-    const NotifyCount = useSelector(state => state.home.NotifyCount.data.count);
+    const NotifyCount = useSelector(state => state.home.NotifyCount ? state.home.NotifyCount.data ? state.home.NotifyCount.data.count : null : null);
 
     useEffect(() => {
         dispatch(NotificationCount(token, lang))
@@ -30,7 +31,8 @@ function CustomDrawerMenue({ navigation }) {
     // console.log(token);
     return (
         <View style={{ flex: 1, }}>
-            <View style={{ justifyContent: 'space-between', flexDirection: 'row', flex: .22, overflow: 'hidden' }} >
+
+            <Animatable.View animation="pulse" easing="ease-out" delay={500} style={{ justifyContent: 'space-between', flexDirection: 'row', flex: .22, overflow: 'hidden' }} >
 
 
 
@@ -46,12 +48,13 @@ function CustomDrawerMenue({ navigation }) {
                         <Image source={require('../../assets/Images/crossgray.png')} style={{ height: 20, width: 20, }} resizeMode='contain' />
                     </TouchableOpacity>
                 </ImageBackground>
-            </View>
+
+            </Animatable.View>
 
             <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
-                <Text style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')} {user.name}</Text>
+                <Animatable.Text animation="flash" easing="ease-out" delay={500} style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')} {user.name}</Animatable.Text>
 
-                <View style={{ flexDirection: 'column', marginTop: 15 }}>
+                <Animatable.View animation="fadeInUp" easing="ease-out" delay={500} style={{ flexDirection: 'column', marginTop: 15 }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
                         <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, width: '95%' }}>
@@ -141,7 +144,7 @@ function CustomDrawerMenue({ navigation }) {
                     </TouchableOpacity>
 
 
-                </View>
+                </Animatable.View>
             </ScrollView>
 
         </View>

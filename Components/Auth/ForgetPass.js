@@ -10,6 +10,7 @@ import { validateCode } from '../../common/Validation'
 import { useSelector, useDispatch } from 'react-redux'
 import { ResendCode } from '../../store/action/AuthAction'
 import Container from '../../common/Container'
+import * as Animatable from 'react-native-animatable';
 
 function ForgetPass({ navigation, route }) {
     const [code, setCode] = useState('');
@@ -53,8 +54,8 @@ function ForgetPass({ navigation, route }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ margin: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
-                        <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
+                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Animatable.Text>
+                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Animatable.Text>
                     </View>
                 </View>
 

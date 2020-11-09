@@ -4,6 +4,7 @@ import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
 import HomeHeader from '../../../common/HomeHeader'
+import * as Animatable from 'react-native-animatable';
 
 
 const { width } = Dimensions.get('window')
@@ -14,84 +15,85 @@ function Settings({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <HomeHeader navigation={navigation} label={i18n.t('settings')} onPress={() => navigation.navigate('MyProfile')} />
+            <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} style={{ justifyContent: 'center', alignItems: 'center' }}>
 
-            <View style={styles.wrap}>
+                <View style={styles.wrap}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('myProfile')}</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                        <View style={styles.Container}>
+                            <Text style={styles.text}>{i18n.t('myProfile')}</Text>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                            }
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={styles.Line}></View>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('RestaurantInfo')}>
+                        <View style={styles.Container}>
+                            <Text style={styles.text}>{i18n.t('RestInfo')}</Text>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                            }
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={styles.Line}></View>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
+                        <View style={styles.Container}>
+                            <Text style={styles.text}>{i18n.t('password')}</Text>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                            }
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={styles.Line}></View>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Lang')}>
+                        <View style={styles.Container}>
+                            <Text style={styles.text}>{i18n.t('language')}</Text>
+                            {
+                                I18nManager.isRTL ?
+                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+
+                            }
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={styles.Line}></View>
+
+
+                </View>
+                <View style={styles.Container}>
+                    <Text style={styles.text}>{i18n.t('notifications')}</Text>
+                    <TouchableOpacity onPress={() => setSelect(!Select)}>
                         {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                            Select ?
+                                <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
                                 :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+                                <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
 
                         }
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.Line}></View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('RestaurantInfo')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('RestInfo')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
-
-                        }
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.Line}></View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('password')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
-
-                        }
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.Line}></View>
-
-                <TouchableOpacity onPress={() => navigation.navigate('Lang')}>
-                    <View style={styles.Container}>
-                        <Text style={styles.text}>{i18n.t('language')}</Text>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
-
-                        }
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.Line}></View>
-
-
-            </View>
-            <View style={styles.Container}>
-                <Text style={styles.text}>{i18n.t('notifications')}</Text>
-                <TouchableOpacity onPress={() => setSelect(!Select)}>
-                    {
-                        Select ?
-                            <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-                            :
-                            <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-
-                    }
-                </TouchableOpacity>
-            </View>
-
+                    </TouchableOpacity>
+                </View>
+            </Animatable.View>
         </View>
     )
 }

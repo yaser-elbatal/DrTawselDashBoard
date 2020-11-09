@@ -19,10 +19,13 @@ import { validateUserName } from '../../../common/Validation';
 
 
 const { width, height } = Dimensions.get('window')
+
+
+
 const EditProduct = ({ navigation, route }) => {
 
     const { ProductsId } = route.params
-    const ProductDet = useSelector(state => state.product.product);
+    const ProductDet = useSelector(state => state.product.product ? state.product.product : {});
     const [nameAR, setNameAr] = useState(ProductDet.name_ar);
     const [nameEN, setNameEN] = useState(ProductDet.name_en);
     const [price, setPrice] = useState(`${ProductDet.price}`);
@@ -45,7 +48,7 @@ const EditProduct = ({ navigation, route }) => {
     const [available, setavailable] = useState(`${ProductDet.available}`);
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
-    const Menue = useSelector(state => state.menue.menue.data);
+    const Menue = useSelector(state => state.menue.menue.data === undefined ? [] : state.menue.menue.data);
     const ProductsExtras = useSelector(state => state.product.ExtraProduct ? state.product.ExtraProduct : []);
     const dispatch = useDispatch();
 
@@ -56,15 +59,13 @@ const EditProduct = ({ navigation, route }) => {
     const [userImage, setUserImage] = useState(ProductDet.image);
 
 
-
+    console.log(Menue);
 
 
     useEffect(() => {
+
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-
-
-            console.log('rrrrrrr');
             dispatch(ProductDetailes(token, lang, ProductsId)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setSpinner(false))
 
         });
@@ -141,7 +142,7 @@ const EditProduct = ({ navigation, route }) => {
 
 
 
-    let MenueData = !Menue ? [] : Menue.map(menue => ({ label: menue.name, value: menue.id }));
+    // let MenueData = Menue.map(menue => ({ label: menue.name, value: menue.id }));
     // let MenueName = Menue.map(menue => ({ label: menue.name, }));
 
 
@@ -458,22 +459,29 @@ const EditProduct = ({ navigation, route }) => {
                     <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
                 </TouchableOpacity> */}
 
+                {
+                    !Menue ?
+                        (<View />)
+                        :
+                        <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 15, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                            <Dropdown
+                                placeholder={i18n.t('menue')}
+                                data={Menue.map(me => ({ label: me.name, value: me.id }))}
+                                fontSize={12}
+                                itemTextStyle={{ fontFamily: 'flatMedium' }}
+                                lineWidth={0}
+                                containerStyle={{ width: '95%', paddingHorizontal: 5, bottom: 10, }}
+                                animationDuration={0}
+                                onChangeText={val => setMenue(val)}
+
+                                value={ProductDet.menu}
+                            />
+                        </View>
+
+                }
 
 
-                <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 15, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
-                    <Dropdown
-                        placeholder={i18n.t('menue')}
-                        data={MenueData}
-                        fontSize={12}
-                        itemTextStyle={{ fontFamily: 'flatMedium' }}
-                        lineWidth={0}
-                        containerStyle={{ width: '95%', paddingHorizontal: 5, bottom: 10, }}
-                        animationDuration={0}
-                        onChangeText={val => setMenue(val)}
 
-                        value={ProductDet.menu}
-                    />
-                </View>
                 <InputIcon
 
 

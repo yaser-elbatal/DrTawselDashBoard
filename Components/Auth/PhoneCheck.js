@@ -14,6 +14,7 @@ import {
 import { Toaster } from '../../common/Toaster';
 import { CheckPhone } from '../../store/action/AuthAction'
 import Container from '../../common/Container';
+import * as Animatable from 'react-native-animatable';
 
 function PhoneCheck({ navigation }) {
     const [Phone, setPhone] = useState('');
@@ -51,8 +52,8 @@ function PhoneCheck({ navigation }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ marginHorizontal: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                        <Text style={styles.UText}>{i18n.t('enterPhone')}</Text>
+                        <Animatable.Text animation='slideInLeft' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Animatable.Text>
+                        <Animatable.Text animation='slideInRight' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterPhone')}</Animatable.Text>
                     </View>
                 </View>
                 <InputIcon

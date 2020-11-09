@@ -15,6 +15,7 @@ import { Toaster } from '../../../common/Toaster'
 import HomeHeader from '../../../common/HomeHeader'
 import { useIsDrawerOpen } from '@react-navigation/drawer';
 import { DrawerActions } from '@react-navigation/native'
+import * as Animatable from 'react-native-animatable';
 
 function Wallet({ navigation }) {
     const user = useSelector(state => state.auth.user.data);
@@ -91,75 +92,58 @@ function Wallet({ navigation }) {
 
 
 
-            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ right: 20, bottom: 15 }}>
-                    <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                        <TouchableOpacity onPress={() => navigation.navigate('HomePages')}>
-                            {
-                                I18nManager.isRTL ?
-                                    <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-                                    :
-                                    <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-                    <View style={{ marginTop: 45, marginHorizontal: 20 }}>
-                        <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                        <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
-                    </View>
-                </TouchableOpacity>
-
-            </View>
-            <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('wallet')}</Text> */}
 
 
             <Container loading={spinner}>
+                <View style={{ overflow: 'hidden' }}>
+                    <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Image source={require('../../../assets/Images/undraw_wallet.png')} style={{ width: width * .5, height: width * .4 }} resizeMode='contain' />
+                            <View style={styles.SCard}>
+                                <Text style={styles.Text}>{i18n.t('CurrBallanc')}</Text>
+                                {
+                                    TotalWallet === undefined ? null :
+                                        <Text style={styles.Text}>{TotalWallet.amount} {i18n.t('Rial')}</Text>
 
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={require('../../../assets/Images/undraw_wallet.png')} style={{ width: width * .5, height: width * .4 }} resizeMode='contain' />
-                    <View style={styles.SCard}>
-                        <Text style={styles.Text}>{i18n.t('CurrBallanc')}</Text>
-                        {
-                            TotalWallet === undefined ? null :
-                                <Text style={styles.Text}>{TotalWallet.amount} {i18n.t('Rial')}</Text>
-
-                        }
-                    </View>
+                                }
+                            </View>
+                        </View>
+                    </Animatable.View>
                 </View>
 
                 <View style={styles.wrap}>
+                    <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} >
 
-                    <TouchableOpacity onPress={() => navigation.navigate('Banktransfer')}>
-                        <View style={styles.Container}>
-                            <Text style={styles.text}>{i18n.t('rechargebalance')}</Text>
-                            {
-                                I18nManager.isRTL ?
-                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                    :
-                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+                        <TouchableOpacity onPress={() => navigation.navigate('Banktransfer')}>
+                            <View style={styles.Container}>
+                                <Text style={styles.text}>{i18n.t('rechargebalance')}</Text>
+                                {
+                                    I18nManager.isRTL ?
+                                        <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                        :
+                                        <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
 
-                            }
-                        </View>
-                    </TouchableOpacity>
+                                }
+                            </View>
+                        </TouchableOpacity>
 
-                    <View style={styles.Line}></View>
+                        <View style={styles.Line}></View>
 
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <View style={styles.Container}>
-                            <Text style={styles.text}>{i18n.t('Refundmoney')}</Text>
-                            {
-                                I18nManager.isRTL ?
-                                    <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
-                                    :
-                                    <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
+                        <TouchableOpacity onPress={() => setModalVisible(true)}>
+                            <View style={styles.Container}>
+                                <Text style={styles.text}>{i18n.t('Refundmoney')}</Text>
+                                {
+                                    I18nManager.isRTL ?
+                                        <Image source={require('../../../assets/Images/opengrayarrow.png')} style={styles.Img} resizeMode='contain' />
+                                        :
+                                        <Image source={require('../../../assets/Images/opengrayarrow_left.png')} style={styles.Img} resizeMode='contain' />
 
-                            }
+                                }
 
-                        </View>
-                    </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
+                    </Animatable.View>
+
                     <View style={styles.centeredView}>
                         <Modal
                             animationType="slide"
@@ -181,8 +165,11 @@ function Wallet({ navigation }) {
 
 
                                         />
-                                        <BTN title={i18n.t('agree')} ContainerStyle={styles.LoginBtn} onPress={WithdrawwalletConfirm} />
-                                        <BTN title={i18n.t('close')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.inputTextMainColor }]} onPress={() => setModalVisible(false)} />
+                                        <View style={{ width: '100%' }}>
+                                            <BTN title={i18n.t('agree')} ContainerStyle={styles.LoginBtn} onPress={WithdrawwalletConfirm} />
+                                            <BTN title={i18n.t('close')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.inputTextMainColor }]} onPress={() => setModalVisible(false)} />
+                                        </View>
+
 
                                     </View>
                                 </View>
@@ -270,8 +257,6 @@ const styles = StyleSheet.create({
     LoginBtn: {
         marginTop: 20,
         borderRadius: 5,
-        marginHorizontal: 15,
-        width: '91%',
     },
 })
 export default Wallet

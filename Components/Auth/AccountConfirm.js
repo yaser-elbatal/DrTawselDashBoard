@@ -16,6 +16,7 @@ import {
 } from "../../common/Validation";
 import { Toaster } from '../../common/Toaster';
 import Container from '../../common/Container'
+import * as Animatable from 'react-native-animatable';
 
 
 
@@ -65,8 +66,8 @@ function AccountConfirm({ navigation, route }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ marginHorizontal: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                        <Text style={styles.UText}>{i18n.t('enterCod')}</Text>
+                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Animatable.Text>
+                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Animatable.Text>
                     </View>
                 </View>
 

@@ -9,6 +9,7 @@ import BTN from '../../common/BTN';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toaster } from '../../common/Toaster';
 import { SignUp } from '../../store/action/AuthAction';
+import * as Animatable from 'react-native-animatable';
 
 function TRegister({ navigation, route }) {
 
@@ -66,9 +67,9 @@ function TRegister({ navigation, route }) {
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             <BackBtn navigation={navigation} />
             <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
-                <Text style={styles.UText}>{i18n.t('Activity')}</Text>
-                <Text style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('connectInfo')}</Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Animatable.Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Animatable.Text>
+                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('connectInfo')}</Animatable.Text>
             </View>
 
             <InputIcon

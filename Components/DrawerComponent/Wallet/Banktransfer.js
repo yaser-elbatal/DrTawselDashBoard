@@ -11,6 +11,7 @@ import BTN from '../../../common/BTN'
 import { GetAccountBanks } from '../../../store/action/CommentsAction'
 import { useSelector, useDispatch } from 'react-redux'
 import Container from '../../../common/Container'
+import * as Animatable from 'react-native-animatable';
 
 function Banktransfer({ navigation }) {
 
@@ -40,51 +41,55 @@ function Banktransfer({ navigation }) {
 
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
             <Header navigation={navigation} label={i18n.t('Banktransfer')} />
-            <Container loading={spinner}>
+            <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} >
 
-                {
-                    MyAcoount.map(acc => (
-                        <TouchableOpacity onPress={() => navigation.navigate('TransferMony', { AccountId: acc.id })} key={acc.id.toString()} >
-                            <View style={{ marginHorizontal: '5%', backgroundColor: '#F8F8F8', borderRadius: 10, padding: 10, overflow: 'hidden' }} key={acc.id}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Container loading={spinner}>
 
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: .5 }}>
-                                        <Image source={{ uri: acc.image }} style={{ width: 60, height: 60 }} />
-                                        <View style={{ flexDirection: 'column', alignItems: 'center', paddingHorizontal: 2 }}>
-                                            <Text style={{ fontSize: 8, color: 'blue', fontFamily: 'flatMedium' }}> {acc.bank_name}</Text>
+                    {
+                        MyAcoount.map(acc => (
+
+                            <TouchableOpacity onPress={() => navigation.navigate('TransferMony', { AccountId: acc.id })} key={acc.id.toString()} >
+                                <View style={{ marginHorizontal: '5%', backgroundColor: '#F8F8F8', borderRadius: 10, padding: 10, overflow: 'hidden' }} key={acc.id}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', flex: .5 }}>
+                                            <Image source={{ uri: acc.image }} style={{ width: 60, height: 60 }} />
+                                            <View style={{ flexDirection: 'column', alignItems: 'center', paddingHorizontal: 2 }}>
+                                                <Text style={{ fontSize: 8, color: 'blue', fontFamily: 'flatMedium' }}> {acc.bank_name}</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                    <View style={{ flexDirection: 'column', flex: .5, justifyContent: 'center' }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('bankname')} : </Text>
-                                            <Text style={{ fontSize: width * .025, color: Colors.RedColor, fontFamily: 'flatMedium' }}>{acc.bank_name}</Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-                                            <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('Accname')} : </Text>
-                                            <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>{acc.account_name}</Text>
-                                        </View>
+                                        <View style={{ flexDirection: 'column', flex: .5, justifyContent: 'center' }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('bankname')} : </Text>
+                                                <Text style={{ fontSize: width * .025, color: Colors.RedColor, fontFamily: 'flatMedium' }}>{acc.bank_name}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('Accname')} : </Text>
+                                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>{acc.account_name}</Text>
+                                            </View>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('Accnum')} :  </Text>
-                                            <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>{acc.account_number}</Text>
-                                        </View>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('Accnum')} :  </Text>
+                                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium' }}>{acc.account_number}</Text>
+                                            </View>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-                                            <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>IBAN   :   </Text>
-                                            <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium', }}>  {acc.iban_number}  </Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>IBAN   :   </Text>
+                                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium', }}>  {acc.iban_number}  </Text>
 
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
 
-                    ))
+                        ))
 
-                }
+                    }
 
 
-            </Container>
+                </Container>
+            </Animatable.View>
 
         </ScrollView>
     )

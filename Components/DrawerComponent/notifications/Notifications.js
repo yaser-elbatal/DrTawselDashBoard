@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GetNotifications, DeleteNotifications } from '../../../store/action/NotificationsAction';
 import Container from '../../../common/Container';
 import HomeHeader from '../../../common/HomeHeader';
+import * as Animatable from 'react-native-animatable';
 
 function Notifications({ navigation }) {
 
@@ -77,23 +78,25 @@ function Notifications({ navigation }) {
                             showsVerticalScrollIndicator={false}
                             keyExtractor={(item) => item.id}
                             renderItem={(item) => (
-                                <TouchableOpacity onPress={() => item.item.type == 'order' ? navigation.navigate('OrderDetailes', { OrderId: item.item.order_id }) : {}}>
-                                    <View style={{ borderWidth: 1, width: '90%', height: 100, marginHorizontal: '7%', borderRightWidth: 0, borderTopWidth: 0, borderColor: Colors.InputColor }}>
-                                        <View style={{ flexDirection: 'column', margin: 20, justifyContent: 'center', flex: 1 }}>
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Image source={require('../../../assets/Images/circlegreen.png')} style={{ width: 12, height: 12 }} />
-                                                    <Text style={styles.Text}>{item.item.title}</Text>
+                                <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                                    <TouchableOpacity onPress={() => item.item.type == 'order' ? navigation.navigate('OrderDetailes', { OrderId: item.item.order_id }) : {}}>
+                                        <View style={{ borderWidth: 1, width: '90%', height: 100, marginHorizontal: '7%', borderRightWidth: 0, borderTopWidth: 0, borderColor: Colors.InputColor }}>
+                                            <View style={{ flexDirection: 'column', margin: 20, justifyContent: 'center', flex: 1 }}>
+                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                        <Image source={require('../../../assets/Images/circlegreen.png')} style={{ width: 12, height: 12 }} />
+                                                        <Text style={styles.Text}>{item.item.title}</Text>
+                                                    </View>
+                                                    <TouchableOpacity onPress={() => DeleteNotify(item.item.id)}>
+                                                        <Image source={require('../../../assets/Images/cross_gray_not.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
+                                                    </TouchableOpacity>
                                                 </View>
-                                                <TouchableOpacity onPress={() => DeleteNotify(item.item.id)}>
-                                                    <Image source={require('../../../assets/Images/cross_gray_not.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
-                                                </TouchableOpacity>
+                                                <Text style={styles.sText}>{item.item.body}</Text>
                                             </View>
-                                            <Text style={styles.sText}>{item.item.body}</Text>
-                                        </View>
 
-                                    </View>
-                                </TouchableOpacity>
+                                        </View>
+                                    </TouchableOpacity>
+                                </Animatable.View>
 
                             )} />
                 }

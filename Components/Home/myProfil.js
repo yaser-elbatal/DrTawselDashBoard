@@ -4,7 +4,7 @@ import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { useSelector, useDispatch } from 'react-redux'
 import { GetProfile } from '../../store/action/ProfileAction'
-import Container from '../../common/Container'
+import * as Animatable from 'react-native-animatable';
 
 function myProfil({ navigation }) {
     const [spinner, setSpinner] = useState(true);
@@ -54,65 +54,71 @@ function myProfil({ navigation }) {
 
 
 
-        <View style={{ flex: 1 }}>
-            {renderLoader()}
+        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <Animatable.View animation="pulse" easing="ease-out" delay={500} style={{ flex: 1 }} >
 
-            <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
+                {renderLoader()}
 
-            <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
-                <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
-                    {
-                        I18nManager.isRTL ?
-                            <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                            :
-                            <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
 
-                    }
-                </TouchableOpacity>
-            </ImageBackground>
+                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
+                    <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
+                        {
+                            I18nManager.isRTL ?
+                                <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                                :
+                                <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
 
-            <View style={styles.ScrolContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
-                    <Image source={require('../../assets/Images/EditRename.png')} style={{ width: 30, height: 30 }} />
-                </TouchableOpacity>
-                <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
+                        }
+                    </TouchableOpacity>
+                </ImageBackground>
 
-                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                <View style={styles.ScrolContainer}>
 
-                    <View style={{ margin: 20, marginTop: 0 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
+                        <Image source={require('../../assets/Images/EditRename.png')} style={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                    <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
 
-                        <View style={styles.Wrab}>
-                            <Text style={styles.user}>{user.name}</Text>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+
+                        <View style={{ margin: 20, marginTop: 0 }}>
+
+                            <View style={styles.Wrab}>
+                                <Text style={styles.user}>{user.name}</Text>
+
+                            </View>
+                            <View style={styles.Line}></View>
+                            <View style={styles.Wrab}>
+                                <Text style={styles.user}>{user.phone}</Text>
+
+                            </View>
+                            <View style={styles.Line}></View>
+
+
+
+                            <View style={styles.Wrab}>
+                                <Text style={styles.user}>{user.provider.city}</Text>
+
+                            </View>
+                            <View style={styles.Line}></View>
+
+                            <View style={styles.Wrab}>
+                                <Text style={styles.user}>{user.email}</Text>
+
+                            </View>
+                            <View style={styles.Line}></View>
+
 
                         </View>
-                        <View style={styles.Line}></View>
-                        <View style={styles.Wrab}>
-                            <Text style={styles.user}>{user.phone}</Text>
-
-                        </View>
-                        <View style={styles.Line}></View>
 
 
+                    </ScrollView>
+                </View>
+            </Animatable.View>
 
-                        <View style={styles.Wrab}>
-                            <Text style={styles.user}>{user.provider.city}</Text>
-
-                        </View>
-                        <View style={styles.Line}></View>
-
-                        <View style={styles.Wrab}>
-                            <Text style={styles.user}>{user.email}</Text>
-
-                        </View>
-                        <View style={styles.Line}></View>
-
-
-                    </View>
-
-
-                </ScrollView>
-            </View>
         </View>
+
     )
 }
 const styles = StyleSheet.create({

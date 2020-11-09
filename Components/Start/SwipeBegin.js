@@ -8,6 +8,7 @@ import I18n from "i18n-js";
 import { useSelector, useDispatch } from 'react-redux';
 import { IntroService } from '../../store/action/IntroAction';
 // import Container from '../../common/Container';
+import * as Animatable from 'react-native-animatable';
 
 
 const { width } = Dimensions.get('window')
@@ -63,26 +64,30 @@ const Slider = ({ navigation }) => {
     const renderItem = ({ item }) => {
 
         return (
-
-            <View style={styles.slide}>
+            <Animatable.View animation="zoomIn" easing="ease-out" delay={500} style={styles.slide}>
                 <Image source={item.image} style={styles.ImgsSlide} />
                 <View style={styles.container}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.text}>{item.text}</Text>
+                    <Animatable.Text animation="slideInDown" iterationCount={5} direction="alternate" style={styles.title}>{item.title}</Animatable.Text>
+                    <Animatable.Text animation="slideInDown" iterationCount={5} direction="alternate" style={styles.text}>{item.text}</Animatable.Text>
 
                 </View>
 
-            </View>
+            </Animatable.View>
+
 
         );
     }
     const renderDoneButton = () => {
         return (
-            <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.textBtn}>
-                    {i18n.t('start')}
-                </Text>
-            </TouchableOpacity>
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.textBtn}>
+                        {i18n.t('start')}
+                    </Text>
+                </TouchableOpacity>
+            </Animatable.View>
+
+
         );
     };
     return (

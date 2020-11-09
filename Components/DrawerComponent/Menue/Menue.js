@@ -18,7 +18,7 @@ import { MenueInfo, AddMenue, DeleteMenue, UpdateMenue, SearchMenue } from '../.
 import { Toaster } from '../../..//common/Toaster';
 import { validateUserName } from '../../../common/Validation';
 import Container from '../../../common/Container';
-import SLoader from '../../../common/SLoader';
+import * as Animatable from 'react-native-animatable';
 
 function Menue({ navigation, route }) {
 
@@ -148,7 +148,6 @@ function Menue({ navigation, route }) {
         }
 
     };
-    console.log('NoneChecked' + DeleteArr);
 
 
 
@@ -281,28 +280,30 @@ function Menue({ navigation, route }) {
 
 
                                         (
+                                            <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                                            <View style={styles.Card} key={index}>
-                                                <View style={styles.FWrab}>
-                                                    <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
-                                                    <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
-                                                        <Text style={styles.name}>{item.name}</Text>
+                                                <View style={styles.Card} key={index}>
+                                                    <View style={styles.FWrab}>
+                                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
+                                                        <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
+                                                            <Text style={styles.name}>{item.name}</Text>
+                                                        </View>
                                                     </View>
+                                                    <View style={styles.SWarb}>
+                                                        <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
+                                                            <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                                        </TouchableOpacity>
+
+                                                        <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
+                                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                                        </TouchableOpacity>
+
+                                                    </View>
+
                                                 </View>
-                                                <View style={styles.SWarb}>
-                                                    <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
-                                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                                    </TouchableOpacity>
-
-                                                    <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
-                                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                                    </TouchableOpacity>
-
-                                                </View>
-
-                                            </View>
+                                            </Animatable.View>
                                         )
                                     } />
                 }

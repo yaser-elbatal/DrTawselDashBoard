@@ -9,6 +9,7 @@ import Colors from '../../consts/Colors';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import * as Notifications from 'expo-notifications';
+import * as Animatable from 'react-native-animatable';
 
 import {
     validatePhone,
@@ -136,7 +137,7 @@ function Login({ navigation }) {
         setSpinner(false)
 
 
-    }, [spinner,]);
+    }, [navigation]);
 
 
 
@@ -148,12 +149,17 @@ function Login({ navigation }) {
 
             <BackBtn navigation={navigation} />
             <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
-                <Text style={styles.TextLogin}>{i18n.t('login')}</Text>
-                <Text style={styles.UText}>{i18n.t('loginInf')}</Text>
+                <Animatable.Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Animatable.Text>
+                <Animatable.Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Animatable.Text>
             </View>
             <Container loading={spinner}>
 
-                <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
+
+                <View style={{ overflow: 'hidden' }}>
+                    <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
+                        <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
+                    </Animatable.View>
+                </View>
                 <InputIcon
                     label={i18n.t('phone')}
                     placeholder={i18n.t('phone')}

@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux'
 import { ResetPassword } from '../../store/action/AuthAction'
 import { Toaster } from '../../common/Toaster'
 import Container from '../../common/Container'
+import * as Animatable from 'react-native-animatable';
 
 
 function NewPassword({ navigation, route }) {
@@ -64,8 +65,8 @@ function NewPassword({ navigation, route }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ marginHorizontal: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
-                        <Text style={styles.UText}>{i18n.t('enternewPass')}</Text>
+                        <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Animatable.Text>
+                        <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enternewPass')}</Animatable.Text>
                     </View>
                 </View>
 
@@ -76,7 +77,6 @@ function NewPassword({ navigation, route }) {
                     value={password}
                     secureTextEntry
                     styleCont={{ marginTop: 20 }}
-                    keyboardType='numeric'
                 />
                 <InputIcon
                     label={i18n.t('confirmPass')}
@@ -84,7 +84,6 @@ function NewPassword({ navigation, route }) {
                     onChangeText={(e) => setConfirmPassword(e)}
                     value={confirmPassword}
                     secureTextEntry
-                    keyboardType='numeric'
                     styleCont={{ marginTop: 0 }}
                 />
                 <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />

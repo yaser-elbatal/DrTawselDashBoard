@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, I18nManager, Text } from 'react-native';
+import { StyleSheet, View, I18nManager, Text, Platform } from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Provider } from 'react-redux';
 import I18n from "i18n-js";
-
+import { Notifications } from 'expo'
 import MainRoot from './routes/Index';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistedStore } from './store/index';
@@ -21,6 +21,13 @@ export default function App() {
 
   useEffect(() => {
     // I18nManager.forceRTL(true)
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('orders', {
+        name: 'Chat messages',
+        sound: true,
+      });
+    }
 
     async function loadFont() {
       await Font.loadAsync({

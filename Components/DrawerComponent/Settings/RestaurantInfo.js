@@ -168,7 +168,7 @@ function RestaurantInfo({ navigation }) {
         let SelectDeliveryErr = SelectDelivery === null ? i18n.t('SelectYN') : null;
         let selecCommericalErr = selecCommerical === null ? i18n.t('SelectYN') : null;
 
-        return nameEnErr || nameErr || SelectDeliveryErr || selecCommericalErr || ValditeCommercialRegisterErr
+        return nameEnErr || nameErr || SelectDeliveryErr || selecCommericalErr
     }
     const UpdateRestaurantInfo = () => {
         let val = _validate()

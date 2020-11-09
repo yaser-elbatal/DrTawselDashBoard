@@ -7,6 +7,7 @@ import Colors from '../../consts/Colors';
 import { useDispatch } from 'react-redux';
 import { changeLanguage } from '../../store/action/LangAction';
 import Lang from '../DrawerComponent/Settings/Lang';
+import * as Animatable from 'react-native-animatable';
 
 function ChooseLang({ navigation }) {
 
@@ -34,7 +35,7 @@ function ChooseLang({ navigation }) {
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: Colors.bg }}>
-            <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }} >
+            <Animatable.View animation="fadeInUpBig" easing="ease-out" direction="alternate" delay={500} style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }} >
                 <Image source={require('../../assets/Images/dr.tawsel.png')} style={{ height: 170, width: 170 }} resizeMode='contain' />
                 <Text style={{ fontFamily: 'flatMedium', marginVertical: 15, fontSize: 20 }}>{i18n.t('chooseLange')}</Text>
 
@@ -48,7 +49,7 @@ function ChooseLang({ navigation }) {
                     <Text style={{ fontFamily: 'flatMedium', }}>{i18n.t('English')}</Text>
                 </TouchableOpacity>
 
-            </View>
+            </Animatable.View>
         </View>
 
     )

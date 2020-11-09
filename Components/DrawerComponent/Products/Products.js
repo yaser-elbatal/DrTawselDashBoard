@@ -15,6 +15,7 @@ import { GetProducts, DeleteProduct, SerachForPorducts, } from '../../../store/a
 import Container from '../../../common/Container';
 import { Dropdown } from 'react-native-material-dropdown';
 import { MenueInfo } from '../../../store/action/MenueAction';
+import * as Animatable from 'react-native-animatable';
 
 function Products({ navigation }) {
     const dispatch = useDispatch();
@@ -191,41 +192,44 @@ function Products({ navigation }) {
                             extraData={spinner, Loader}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item, index }) => (
-                                <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
-                                    <View style={styles.Card}>
-                                        <View style={{ flexDirection: 'row', flex: .75 }}>
-                                            <Image source={{ uri: item.image }} style={{ height: '100%', width: '40%' }} />
-                                            <View style={styles.FWrab}>
-                                                <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
-                                                <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                                <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Text style={styles.nText}>{item.price - item.discount}</Text>
-                                                    {
-                                                        item.discount == 0 ? null :
-                                                            <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price}</Text>
-                                                    }
-                                                </View>
+                                <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
+                                    <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                                        <View style={styles.Card}>
+                                            <View style={{ flexDirection: 'row', flex: .75 }}>
+                                                <Image source={{ uri: item.image }} style={{ height: '100%', width: '40%' }} />
+                                                <View style={styles.FWrab}>
+                                                    <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
+                                                    <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                                    <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                        <Text style={styles.nText}>{item.price - item.discount}</Text>
+                                                        {
+                                                            item.discount == 0 ? null :
+                                                                <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price}</Text>
+                                                        }
+                                                    </View>
+
+
+                                                </View>
+                                            </View>
+
+
+                                            <View style={styles.SWarb}>
+
+                                                <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item.id })}>
+                                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                                </TouchableOpacity>
+
+                                                <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
+                                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                                </TouchableOpacity>
 
                                             </View>
-                                        </View>
-
-
-                                        <View style={styles.SWarb}>
-
-                                            <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item.id })}>
-                                                <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                            </TouchableOpacity>
-
-                                            <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
-                                                <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                            </TouchableOpacity>
 
                                         </View>
-
-                                    </View>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
+                                </Animatable.View>
 
                             )} />
                 }

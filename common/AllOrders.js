@@ -9,6 +9,7 @@ import Card from './Card';
 import { GetOrders, Order_Detailes } from '../store/action/OrdersAction';
 import { useSelector, useDispatch } from 'react-redux';
 import Container from './Container';
+import * as Animatable from 'react-native-animatable';
 
 const { width } = Dimensions.get('window')
 
@@ -70,37 +71,40 @@ function AllOrders({ navigation, route }) {
                     extraData={OrderRequest}
                     keyExtractor={(item) => `${item.id}`}
                     renderItem={({ item, index }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('OrderDetailes', { OrderId: item.id })}>
-                            <View style={styles.Card}>
+                        <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                                <View style={{ margin: 10, justifyContent: 'center' }}>
+                            <TouchableOpacity onPress={() => navigation.navigate('OrderDetailes', { OrderId: item.id })}>
+                                <View style={styles.Card}>
 
-                                    <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
+                                    <View style={{ margin: 10, justifyContent: 'center' }}>
 
-                                    <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
-                                        <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                            <Text style={[styles.name, {}]}>{i18n.t('rebresentativename')}</Text>
-                                            <Text style={[styles.name, { paddingVertical: 15 }]}>{i18n.t('time')}</Text>
-                                            <Text style={[styles.name, { paddingTop: 5 }]}>{i18n.t('totaly')}</Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}>
-                                            <Text style={{ paddingHorizontal: 15 }}>:</Text>
-                                            <Text style={{ paddingVertical: 15, paddingHorizontal: 15 }}>:</Text>
-                                            <Text style={{ paddingHorizontal: 15 }}>:</Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                                            <Text style={[styles.sname,]}> {item.name}</Text>
-                                            <Text style={[styles.sname, { paddingVertical: 15 }]}> {item.date} </Text>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 5 }}>
-                                                <Text style={[styles.sname, { color: Colors.sky, }]}> {item.total}</Text>
-                                                <Text style={[styles.sname, { color: Colors.fontNormal, }]}> {i18n.t('Rial')}</Text>
+                                        <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
 
+                                        <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+                                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                                <Text style={[styles.name, {}]}>{i18n.t('rebresentativename')}</Text>
+                                                <Text style={[styles.name, { paddingVertical: 15 }]}>{i18n.t('time')}</Text>
+                                                <Text style={[styles.name, { paddingTop: 5 }]}>{i18n.t('totaly')}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}>
+                                                <Text style={{ paddingHorizontal: 15 }}>:</Text>
+                                                <Text style={{ paddingVertical: 15, paddingHorizontal: 15 }}>:</Text>
+                                                <Text style={{ paddingHorizontal: 15 }}>:</Text>
+                                            </View>
+                                            <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+                                                <Text style={[styles.sname,]}> {item.name}</Text>
+                                                <Text style={[styles.sname, { paddingVertical: 15 }]}> {item.date} </Text>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 5 }}>
+                                                    <Text style={[styles.sname, { color: Colors.sky, }]}> {item.total}</Text>
+                                                    <Text style={[styles.sname, { color: Colors.fontNormal, }]}> {i18n.t('Rial')}</Text>
+
+                                                </View>
                                             </View>
                                         </View>
                                     </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </Animatable.View>
 
                     )} />
 
