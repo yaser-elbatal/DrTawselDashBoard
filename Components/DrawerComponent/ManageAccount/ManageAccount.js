@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Image } from 'react-native'
 
 
 import Header from '../../../common/Header'
@@ -39,13 +39,17 @@ function ManageAccount({ navigation }) {
 
 
     return (
-        <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
             <HomeHeader navigation={navigation} label={i18n.t('ManageAcc')} onPress={() => navigation.navigate('MyProfile')} />
 
             <Container loading={spinner}>
 
                 {
-                    !ManAcc ? null :
+                    ManAcc && !ManAcc.length ?
+                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+
+
+                        :
                         ManAcc.map((item, index) => {
                             return (
                                 <TouchableOpacity onPress={() => navigation.navigate('OrderManageAccDetailes', { OrderId: item.order_id })}>
@@ -80,7 +84,7 @@ function ManageAccount({ navigation }) {
                 }
 
             </Container>
-        </View>
+        </ScrollView>
 
 
     )

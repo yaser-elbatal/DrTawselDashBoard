@@ -1,5 +1,5 @@
 import { I18nManager, AsyncStorage } from "react-native";
-import Expo, { Updates } from "expo";
+import * as Updates from 'expo-updates';
 import i18n from '../../locale/i18n'
 
 export const chooseLang = "choose_Lang";
@@ -25,7 +25,7 @@ export const changeLanguage = (lang, direction,) => {
             dispatch({
                 type: chooseLang,
                 lang,
-            }).then(await Updates.reload());
+            }).then(await Updates.reloadAsync());
         } catch (e) {
             console.log("chang lang err", e);
         }

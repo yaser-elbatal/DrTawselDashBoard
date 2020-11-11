@@ -53,12 +53,13 @@ export const AddBanners = (token, image, lang) => {
 }
 
 
-export const DeleteBanners = (token, id) => {
+export const DeleteBanners = (token, id, lang) => {
     return async (dispatch) => {
         await axios({
             method: 'DELETE',
             url: `${consts.url}delete-banner?id=${id}`,
             headers: { Authorization: 'Bearer ' + token, },
+            params: { lang }
 
         }).then(res => {
 

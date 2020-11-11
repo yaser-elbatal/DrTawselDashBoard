@@ -33,6 +33,7 @@ export const SignIn = (phone, password, device_id, lang, navigation) => {
         })
 
             .then(res => {
+                console.log(res.data);
                 handelLogin(dispatch, res.data, navigation)
             })
 
@@ -56,13 +57,16 @@ const handelLogin = (dispatch, data, navigation) => {
 
 
 const loginSuccess = (dispatch, data, navigation) => {
-    if (!data.data.active) {
-        navigation.navigate('ActivateCode', { token: data.data.token, })
+    console.log(data.data.active);
 
-    }
-    else {
+    if (data.data.active) {
+
         AsyncStorage.setItem('token', JSON.stringify(data.data.token))
             .then(() => dispatch({ type: login_success, data }));
+    }
+    else {
+        navigation.navigate('ActivateCode', { token: data.data.token, })
+
     }
 
 };
@@ -308,9 +312,9 @@ export const ValidEmailPhone = (key) => {
             data: { key },
 
         }).then(res => {
-            if (res.data.success) {
-                dispatch({ type: 'ValidEmailPhone', data: res.data })
-            }
+
+            dispatch({ type: 'ValidEmailPhone', data: res.data })
+
             !res.data.success ?
                 Toast.show({
                     text: res.data.message,

@@ -96,13 +96,14 @@ export const SendTransferFromACc = (token, lang, AccountId, base64, Bankname, ac
     }
 }
 
-export const Withdrawwallet = (token, account_number) => {
+export const Withdrawwallet = (token, account_number, lang) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}withdraw-wallet`,
             headers: { Authorization: 'Bearer ' + token },
-            data: { account_number }
+            data: { account_number },
+            params: { lang }
         }).then((response) => {
 
             Toast.show({
@@ -153,18 +154,20 @@ export const Withdrawwallet = (token, account_number) => {
 }
 
 
-export const SendComplaiment = (token, username, email, description, navigation) => {
+export const SendComplaiment = (token, username, email, description, lang) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
             url: `${consts.url}send-complaint`,
             headers: { Authorization: 'Bearer ' + token },
-            data: { username, email, description, subject: 'رائع' }
+            data: { username, email, description, subject: 'رائع' },
+            params: { lang }
+
         }).then((response) => {
             if (response.data.success) {
                 Toast.show({
                     text: response.data.message,
-                    type: response.data.success ? "success" : "danger",
+                    type: "success",
                     duration: 3000,
                     textStyle: {
                         color: "white",

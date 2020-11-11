@@ -4,7 +4,7 @@ import { Content } from 'native-base';
 import i18n from '../../locale/i18n'
 import { width } from '../../consts/HeightWidth';
 import Colors from '../../consts/Colors';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage } from '../../store/action/LangAction';
 import Lang from '../DrawerComponent/Settings/Lang';
 import * as Animatable from 'react-native-animatable';
@@ -12,39 +12,42 @@ import * as Animatable from 'react-native-animatable';
 function ChooseLang({ navigation }) {
 
     const [lan, setLang] = useState('')
-
+    const lang = useSelector(state => state.lang.language);
+    console.log('u' + lang);
     const dispatch = useDispatch();
 
     const changeLang = async (lang, direction) => {
         await dispatch(changeLanguage(lang, direction,));
 
-
+        AsyncStorage.getItem("lang").then((value) => {
+            setLang(value);
+        })
     };
+    // console.log(lan);
 
-    AsyncStorage.getItem("lang").then((value) => {
-        setLang(value);
-    })
 
     useEffect(() => {
-        const direction = AsyncStorage.getItem("direction");
-        if (direction) {
+        if (lang) {
             navigation.navigate("Home");
+
         }
+
+
 
     }, [])
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: Colors.bg }}>
             <Animatable.View animation="fadeInUpBig" easing="ease-out" direction="alternate" delay={500} style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }} >
-                <Image source={require('../../assets/Images/dr.tawsel.png')} style={{ height: 170, width: 170 }} resizeMode='contain' />
-                <Text style={{ fontFamily: 'flatMedium', marginVertical: 15, fontSize: 20 }}>{i18n.t('chooseLange')}</Text>
+                <Image source={require('../../assets/Images/Dr.png')} style={{ height: 200, width: 400 }} />
+                <Text style={{ fontFamily: 'flatMedium', fontSize: 20 }}>{i18n.t('chooseLange')}</Text>
 
-                <TouchableOpacity onPress={() => { changeLang("ar", "RTL") }} style={{ borderWidth: 1, borderColor: lan === 'ar' ? Colors.sky : '#F7F7F7', backgroundColor: '#F7F7F7', width: 200, height: 150, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginTop: 20, flexDirection: 'column' }}>
+                <TouchableOpacity onPress={() => { changeLang("ar", "RTL") }} style={{ borderWidth: 1, borderColor: lang == 'ar' ? Colors.sky : '#F7F7F7', backgroundColor: '#F7F7F7', width: 200, height: 150, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginTop: 10, flexDirection: 'column' }}>
                     <Image source={require('../../assets/Images/saudi_arabia.png')} style={{ height: 100, width: 100 }} resizeMode='contain' />
                     <Text style={{ fontFamily: 'flatMedium', }}>{i18n.t('Arabic')}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => { changeLang("en", "LTR") }} style={{ borderColor: lan === 'en' ? Colors.sky : '#F7F7F7', backgroundColor: '#F7F7F7', width: 200, height: 150, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginTop: 20, flexDirection: 'column' }}>
+                <TouchableOpacity onPress={() => { changeLang("en", "LTR") }} style={{ borderWidth: 1, borderColor: lang == 'en' ? Colors.sky : '#F7F7F7', backgroundColor: '#F7F7F7', width: 200, height: 150, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginTop: 20, flexDirection: 'column' }}>
                     <Image source={require('../../assets/Images/english_language.png')} style={{ height: 100, width: 100 }} resizeMode='contain' />
                     <Text style={{ fontFamily: 'flatMedium', }}>{i18n.t('English')}</Text>
                 </TouchableOpacity>

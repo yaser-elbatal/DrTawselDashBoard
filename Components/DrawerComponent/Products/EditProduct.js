@@ -3,6 +3,7 @@ import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { Toast, } from "native-base";
 
 import { Toaster } from '../../../common/Toaster';
 
@@ -201,25 +202,38 @@ const EditProduct = ({ navigation, route }) => {
         }
     };
 
+    const validateExtraProduce = () => {
+
+        let nameErr = validateUserName(ProductnameExtraAR)
+        let nameEnErr = validateUserName(ProductnameExtraEn)
+        let piceErr = priceProductExtra == '' ? i18n.t('EnterPrice') : null;
+
+        return nameErr || nameEnErr || piceErr
+    }
 
     const AddProductExras = () => {
-        setLoader(true)
-        dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setLoader(false))
+        let val = validateExtraProduce()
+        if (!val) {
+            setLoader(true)
+            dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => setLoader(false))
 
-        setTimeout(() => {
-            dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))
-        }, 9000);
-        setProductnameExtraAR('');
-        setProductnameExtraEn('')
-        setPricePrdouctExtra('')
-        setEditMaodVisible(false)
+
+            setProductnameExtraAR('');
+            setProductnameExtraEn('')
+            setPricePrdouctExtra('')
+            setEditMaodVisible(false)
+
+        }
+        else {
+            setSpinner(false);
+            Toaster(validateExtraProduce());
+        }
     }
 
 
     const DeleteExtraOneProduct = (id) => {
         setLoader(true)
-        dispatch(DeleteProductExtrasFromEdit(id, token))
-        dispatch(GetProductExtrasFromEdit(ProductsId, token, lang)).then(() => setLoader(false))
+        dispatch(DeleteProductExtrasFromEdit(id, token)).then(() => setLoader(false))
 
     }
 
@@ -235,6 +249,27 @@ const EditProduct = ({ navigation, route }) => {
     const user = useSelector(state => state.auth.user.data);
 
 
+
+
+
+
+
+    const handaleChangeDiscount = (e) => {
+        if (e >= 100) {
+            setDiscount(`${ProductDet.discount}`)
+
+            Toast.show({
+                text: i18n.t('discountAvg'),
+                type: "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
+
+        }
+    }
 
 
     return (
@@ -372,7 +407,7 @@ const EditProduct = ({ navigation, route }) => {
                     label={i18n.t('discount')}
                     placeholder={i18n.t('discount')}
                     keyboardType='numeric'
-                    onChangeText={(e) => setDiscount(e)}
+                    onChangeText={(e) => { setDiscount(e); handaleChangeDiscount(e) }}
                     value={Discount}
                 />
 
@@ -405,7 +440,7 @@ const EditProduct = ({ navigation, route }) => {
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
@@ -440,20 +475,20 @@ const EditProduct = ({ navigation, route }) => {
 
                 </View>
 
-
-                <InputIcon
-                    styleCont={{ marginTop: 20 }}
-                    label={i18n.t('ProdPice')}
-                    placeholder={i18n.t('ProdPice')}
-                    onChangeText={(e) => setUserImage(e)}
-                    value={userImage}
-                    editable={false}
-                    inputStyle={{ fontSize: 12 }}
-                    imgStyle={{ width: 25, height: 25, bottom: 5 }}
-                    image={require('../../../assets/Images/camera_gray.png')}
-                    onPress={_pickImage}
-                />
-
+                <TouchableOpacity onPress={_pickImage}>
+                    <InputIcon
+                        styleCont={{ marginTop: 20 }}
+                        label={i18n.t('ProdPice')}
+                        placeholder={i18n.t('ProdPice')}
+                        onChangeText={(e) => setUserImage(e)}
+                        value={userImage}
+                        editable={false}
+                        inputStyle={{ fontSize: 12 }}
+                        imgStyle={{ width: 25, height: 25, bottom: 5 }}
+                        image={require('../../../assets/Images/camera_gray.png')}
+                        onPress={_pickImage}
+                    />
+                </TouchableOpacity>
                 {/* <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", marginTop: 15, borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
                     <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
                     <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
@@ -487,7 +522,7 @@ const EditProduct = ({ navigation, route }) => {
 
                     placeholder={i18n.t('prodDetAr')}
                     styleCont={{ height: 160, marginTop: 20, width: '90%' }}
-                    inputStyle={{ paddingHorizontal: 0, paddingRight: 10, paddingLeft: 0, top: 0, paddingStart: 10 }}
+                    inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
                     LabelStyle={{ bottom: width * .9, }}
                     onChangeText={(e) => setDetailesAr(e)}
                     multiline={true}
@@ -499,7 +534,7 @@ const EditProduct = ({ navigation, route }) => {
 
                     placeholder={i18n.t('prodDetEn')}
                     styleCont={{ height: 160, marginTop: 20, width: '90%' }}
-                    inputStyle={{ paddingHorizontal: 0, paddingRight: 10, paddingLeft: 0, top: 0, paddingStart: 10 }}
+                    inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
                     LabelStyle={{ bottom: width * .9, }}
                     multiline={true}
                     numberOfLines={10}
@@ -562,7 +597,7 @@ const EditProduct = ({ navigation, route }) => {
                         style={{ backgroundColor: Colors.bg, }}
                         visible={EditMaodVisible} >
 
-                        <View style={styles.centeredView}>
+                        <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
                             <View style={styles.modalView}>
                                 <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
                                     <InputIcon
@@ -597,7 +632,7 @@ const EditProduct = ({ navigation, route }) => {
                                     <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={AddProductExras} />
                                 </ScrollView>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </Modal>
                 </View>
 
@@ -638,8 +673,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         alignItems: "center",
-        backgroundColor: '#737373',
-        opacity: .95,
+        // backgroundColor: '#737373',
+        // opacity: .95,
 
     },
     modalView: {
@@ -647,7 +682,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         borderTopLeftRadius: 25,
         width: width,
-        height: height * .49,
+        height: height * .45,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

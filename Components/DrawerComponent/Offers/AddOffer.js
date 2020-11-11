@@ -41,7 +41,7 @@ function Previousoffers({ navigation }) {
 
     const DeleteCardBanners = (id) => {
         setLoader(true)
-        dispatch(DeleteBanners(token, id)).then(() => dispatch(GetBanners(token, lang)).then(() => setLoader(false)))
+        dispatch(DeleteBanners(token, id, lang)).then(() => dispatch(GetBanners(token, lang)).then(() => setLoader(false)))
 
     }
 
@@ -78,7 +78,7 @@ function Previousoffers({ navigation }) {
 
 
         <ScrollView style={{ flex: 1 }}>
-            <HomeHeader navigation={navigation} label={i18n.t('Previousoffers')} onPress={() => navigation.navigate('MyProfile')} />
+            <HomeHeader navigation={navigation} label={i18n.t('offers')} onPress={() => navigation.navigate('MyProfile')} />
 
             <Container loading={spinner}>
 

@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
         case Addextra_Products:
             return { ...state, ExtraProduct: action.data.data }
         case Delete_Extra_Products:
-            return { ...state, product: action.data.data }
+            return { ...state, ExtraProduct: action.data.data }
 
         case Search_Product:
             return { products: action.data.data }

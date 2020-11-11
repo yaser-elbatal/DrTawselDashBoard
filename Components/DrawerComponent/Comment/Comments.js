@@ -19,8 +19,8 @@ function Comments({ navigation }) {
     const dispatch = useDispatch();
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
-    const Comments = useSelector(state => state.Comments.comments)
-    const extra = useSelector(state => state.Comments.extra)
+    const Comments = useSelector(state => state.Comments.comments ? state.Comments.comments.data : [])
+    const extra = useSelector(state => state.Comments.extra ? state.Comments.extra : [])
 
 
 
@@ -46,17 +46,16 @@ function Comments({ navigation }) {
 
                     <View style={{ backgroundColor: '#F6F6F6', height: 70, width: '95%', margin: 20, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', }}>
                         <Image source={require('../../../assets/Images/big_star_yellow.png')} style={{ width: '20%', height: '50%' }} resizeMode='contain' />
-                        {
-                            extra === undefined ? null
-                                :
-                                <Text style={[styles.Text, { color: Colors.IconBlack, fontSize: 16 }]}>{i18n.t('RateNum')} : ({extra.count})</Text>
 
-                        }
+
+                        <Text style={[styles.Text, { color: Colors.IconBlack, fontSize: 16 }]}>{i18n.t('RateNum')} : ({extra.count})</Text>
+
+
                     </View>
                 </View>
 
-                {Comments && Comments.data.length ?
-                    Comments.data.map(comm => (
+                {Comments && Comments.length ?
+                    Comments.map(comm => (
                         <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
                             <View style={styles.Card} key={comm.id}>

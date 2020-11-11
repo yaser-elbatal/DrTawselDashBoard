@@ -20,7 +20,7 @@ function Fregister({ navigation }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [selectedRadion, setSelectedRadio] = useState(null)
-    const Validation = useSelector(state => state.auth.Validate);
+    const Validation = useSelector(state => state.auth.Validate.success);
 
 
     console.log(Validation);

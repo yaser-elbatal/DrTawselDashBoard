@@ -128,8 +128,7 @@ function AddProduct({ navigation }) {
         let val = _validate();
         if (!val) {
             setSpinner(true)
-            dispatch(Add_Products(token, lang, nameAR, nameEN, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct))
-            dispatch(GetProducts(token, lang)).then(() => setSpinner(false))
+            dispatch(Add_Products(token, lang, nameAR, nameEN, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct)).then(() => setSpinner(false))
 
         }
 
@@ -140,6 +139,7 @@ function AddProduct({ navigation }) {
 
         }
     }
+
 
 
 
@@ -172,7 +172,6 @@ function AddProduct({ navigation }) {
 
     }, [navigation]);
 
-    console.log(MenueData);
 
 
 
@@ -212,35 +211,57 @@ function AddProduct({ navigation }) {
 
 
 
+
+    const validateExtraProduce = () => {
+
+        let nameErr = validateUserName(ProductnameExtraAR)
+        let nameEnErr = validateUserName(ProductnameExtraEn)
+        let piceErr = priceProductExtra == '' ? i18n.t('EnterPrice') : null;
+
+        return nameErr || nameEnErr || piceErr
+    }
+
+
     const submitData = () => {
+        let val = validateExtraProduce()
 
-        if (ProductnameExtraAR && ProductnameExtraEn && !ExProdId) {
-            const newEmployee = {
-                id: Math.floor(Math.random() * (999 - 100 + 1) + 100),
-                name_ar: ProductnameExtraAR,
-                name_en: ProductnameExtraEn,
-                price: priceProductExtra
-            };
-            dispatch(add_extra_ProductsService(newEmployee))
+        if (!val) {
 
-        } else if (ProductnameExtraAR && ProductnameExtraEn && ExProdId) {
-            const updatedDetails = {
-                id: ExProdId,
-                name_ar: ProductnameExtraAR,
-                name_en: ProductnameExtraEn,
-                price: priceProductExtra
-            };
-            dispatch(add_extra_ProductsService(updatedDetails));
+            if (ProductnameExtraAR && ProductnameExtraEn && !ExProdId) {
+                const newEmployee = {
+                    id: Math.floor(Math.random() * (999 - 100 + 1) + 100),
+                    name_ar: ProductnameExtraAR,
+                    name_en: ProductnameExtraEn,
+                    price: priceProductExtra
+                };
+                dispatch(add_extra_ProductsService(newEmployee))
 
-        } else {
-            alert('Enter Extra Data.');
+            } else if (ProductnameExtraAR && ProductnameExtraEn && ExProdId) {
+                const updatedDetails = {
+                    id: ExProdId,
+                    name_ar: ProductnameExtraAR,
+                    name_en: ProductnameExtraEn,
+                    price: priceProductExtra
+                };
+                dispatch(add_extra_ProductsService(updatedDetails));
+
+            } else {
+                Alert.alert('Enter Extra Data.');
+            }
+            setEditMaodVisible(false)
+            setPricePrdouctExtra('');
+            setProductnameExtraAR('');
+            setProductnameExtraEn('');
+
+            clearData();
+
         }
-        setEditMaodVisible(false)
-        setPricePrdouctExtra('');
-        setProductnameExtraAR('');
-        setProductnameExtraEn('');
+        else {
+            Toaster(validateExtraProduce());
 
-        clearData();
+
+        }
+
     }
 
 
@@ -260,7 +281,22 @@ function AddProduct({ navigation }) {
         setProductnameExtraEn('')
     }
 
+    const handaleChangeDiscount = (e) => {
+        if (e >= 100) {
+            setDiscount('')
 
+            Toast.show({
+                text: i18n.t('discountAvg'),
+                type: "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center'
+                }
+            });
+
+        }
+    }
 
     return (
 
@@ -375,7 +411,7 @@ function AddProduct({ navigation }) {
                     placeholder={i18n.t('discount')}
 
                     keyboardType='numeric'
-                    onChangeText={(e) => setDiscount(e)}
+                    onChangeText={(e) => { setDiscount(e); handaleChangeDiscount(e) }}
                     value={Discount}
                 />
 
@@ -399,14 +435,14 @@ function AddProduct({ navigation }) {
                     value={quantity}
                 />
 
-                <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                <View style={{ height: width * .14, marginHorizontal: '4%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ paddingEnd: 150, fontFamily: 'flatMedium', paddingStart: 10 }}>
                         <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
                             return (
-                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={item.id.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                <TouchableOpacity onPress={() => { setavailable(item.id) }} key={item.id.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
                                     <View style={{
                                         height: 15,
                                         width: 15,
@@ -441,18 +477,20 @@ function AddProduct({ navigation }) {
 
                 </View>
 
+                <TouchableOpacity onPress={_pickImage}>
+                    <InputIcon
+                        styleCont={{ marginTop: 20 }}
+                        label={i18n.t('ProdPice')}
+                        placeholder={i18n.t('ProdPice')}
+                        onChangeText={(e) => setUserImage(e)}
+                        value={userImage}
+                        editable={false}
+                        imgStyle={{ width: 25, height: 25, bottom: 5 }}
+                        image={require('../../../assets/Images/camera_gray.png')}
+                        onPress={_pickImage}
+                    />
+                </TouchableOpacity>
 
-                <InputIcon
-                    styleCont={{ marginTop: 20 }}
-                    label={i18n.t('ProdPice')}
-                    placeholder={i18n.t('ProdPice')}
-                    onChangeText={(e) => setUserImage(e)}
-                    value={userImage}
-                    editable={false}
-                    imgStyle={{ width: 25, height: 25, bottom: 5 }}
-                    image={require('../../../assets/Images/camera_gray.png')}
-                    onPress={_pickImage}
-                />
 
                 {/* <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, marginTop: 20 }}>
                     <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
@@ -523,7 +561,7 @@ function AddProduct({ navigation }) {
 
                 }
 
-                <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
+                <SText title={`+ ${i18n.t('AddSpecialProduct')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
 
                 <BTN title={`+ ${i18n.t('Add')}`} ContainerStyle={styles.LoginBtn} onPress={Add_Product} />
                 <View style={styles.centeredView}>
@@ -533,7 +571,7 @@ function AddProduct({ navigation }) {
                         style={{ backgroundColor: Colors.bg, }}
                         visible={EditMaodVisible} >
 
-                        <View style={styles.centeredView}>
+                        <TouchableOpacity onPress={() => setEditMaodVisible(false)} style={styles.centeredView}>
                             <View style={styles.modalView}>
                                 <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
                                     <InputIcon
@@ -568,7 +606,7 @@ function AddProduct({ navigation }) {
                                     <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={submitData} />
                                 </ScrollView>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </Modal>
                 </View>
             </Container>
@@ -621,7 +659,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         borderTopLeftRadius: 25,
         width: width,
-        height: height * .49,
+        height: height * .45,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

@@ -97,11 +97,11 @@ function SRegister({ navigation, route }) {
 
     const fetchData = async () => {
 
-        const { status, permissions } = await Permissions.askAsync(Permissions.LOCATION);
+        // const { status, } = await Permissions.askAsync(Permissions.LOCATION);
 
-        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
         let userLocation = {};
-        if (status !== 'granted' || !permissions) {
+        if (status !== 'granted') {
             alert('صلاحيات تحديد موقعك الحالي ملغاه');
 
         } else {

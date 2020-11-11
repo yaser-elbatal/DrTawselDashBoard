@@ -167,9 +167,9 @@ export const AppStackNavigator = () => {
 
 const drawerScreen = () => {
     return (
-        <Drawer.Navigator initialRouteName="HomePage" drawerStyle={{ backgroundColor: Colors.sky, width }}
+        <Drawer.Navigator headerMode='none' screenOptions={{ headerShown: false }} initialRouteName="HomePage" drawerStyle={{ backgroundColor: Colors.bg, width }}
             drawerContent={(props) => <CustomDrawerMenue {...props} />}>
-            <Drawer.Screen name="HomePage" component={HomePage} />
+            <Drawer.Screen name="HomePage" component={HomePage} headerShow={false} />
             <Drawer.Screen name="Menue" component={Menue} />
             <Drawer.Screen name="Products" component={Products} />
             <Drawer.Screen name="EditProducts" component={EditProduct} />

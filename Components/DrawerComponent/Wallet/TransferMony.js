@@ -25,7 +25,7 @@ function TransferMony({ navigation, route }) {
     const [accountnum, setAccountnum] = useState('');
     const [money, setMoney] = useState('');
     const [base64, setBase64] = useState('');
-    const [userImage, setUserImage] = useState(null);
+    const [userImage, setUserImage] = useState('');
 
     const dispatch = useDispatch();
 
@@ -42,6 +42,11 @@ function TransferMony({ navigation, route }) {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
+            setName('')
+            setAcoountname('')
+            setAccountnum('')
+            setUserImage('')
+            setMoney('')
             setSpinner(false)
         });
 
@@ -53,11 +58,7 @@ function TransferMony({ navigation, route }) {
         if (!isVal) {
             setSpinner(true)
             dispatch(SendTransferFromACc(token, lang, AccountId, base64, Bankname, accountNAme, accountnum, money, navigation)).then(() => setSpinner(false))
-            setName('')
-            setAcoountname('')
-            setAccountnum('')
-            setUserImage('')
-            setMoney('')
+
         }
         else {
             setSpinner(false)
@@ -96,7 +97,7 @@ function TransferMony({ navigation, route }) {
 
                 <TouchableOpacity onPress={_pickImage}>
                     {
-                        userImage == null ?
+                        userImage == '' ?
                             <Image source={require('../../../assets/Images/add_photo.png')} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} resizeMode='contain' />
                             :
                             <Image source={{ uri: userImage }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} resizeMode='contain' />

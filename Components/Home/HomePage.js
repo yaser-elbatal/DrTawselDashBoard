@@ -52,34 +52,31 @@ function HomePage({ navigation }) {
                 <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
 
                 {
-                    !HomeProduct ?
-                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                        :
-                        HomeProduct.length ?
+                    HomeProduct && HomeProduct.length ?
 
-                            <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                {
+                        <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                            {
 
-                                    HomeProduct.map((item, index) => (
+                                HomeProduct.map((item, index) => (
 
-                                        <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
-                                            <View style={{ flexDirection: 'column', flex: 1 }}>
-                                                <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
-                                                <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Text style={styles.prod}>{item.name}</Text>
-                                                    <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
-                                                </View>
+                                    <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                                        <View style={{ flexDirection: 'column', flex: 1 }}>
+                                            <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
+                                            <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Text style={styles.prod}>{item.name}</Text>
+                                                <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
                                             </View>
-                                        </TouchableOpacity>
-                                    )
-                                    )
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                                )
 
 
 
-                                }
-                            </ScrollView>
-                            :
-                            <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                            }
+                        </ScrollView>
+                        :
+                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
 
                 }
 

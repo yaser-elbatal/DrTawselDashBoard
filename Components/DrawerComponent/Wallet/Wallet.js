@@ -55,7 +55,7 @@ function Wallet({ navigation }) {
         let val = _validate();
         if (!val) {
             setSpinner(true)
-            dispatch(Withdrawwallet(token, accountnum)).then(() => setSpinner(false))
+            dispatch(Withdrawwallet(token, accountnum, lang)).then(() => setSpinner(false))
             setAccountnum('')
             setModalVisible(false)
         }
@@ -68,7 +68,7 @@ function Wallet({ navigation }) {
 
     return (
 
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             {/* <HomeHeader navigation={navigation} label={i18n.t('wallet')} onPress={() => navigation.navigate('MyProfile')} /> */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                 <View style={{ marginHorizontal: -30, marginVertical: -10 }}>
@@ -150,7 +150,7 @@ function Wallet({ navigation }) {
                             transparent={true}
                             visible={modalVisible} >
 
-                            <View style={[styles.centeredView, { backgroundColor: Colors.bg }]}>
+                            <TouchableOpacity style={[styles.centeredView,]} onPress={() => setModalVisible(false)}>
                                 <View style={styles.modalView}>
 
                                     <View style={{ margin: 20, alignItems: 'center', justifyContent: 'center' }}>
@@ -173,7 +173,7 @@ function Wallet({ navigation }) {
 
                                     </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </Modal>
                     </View>
                 </View>
@@ -235,8 +235,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         alignItems: "center",
-        backgroundColor: '#737373',
-        opacity: Platform.OS = 'ios' ? .95 : .9,
+        // backgroundColor: '#737373',
+        // opacity: .95,
 
     },
     modalView: {
@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         borderTopLeftRadius: 25,
         width: width,
+        height: height * .4,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -252,7 +253,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3.84,
         elevation: 5,
-        justifyContent: 'center'
     },
     LoginBtn: {
         marginTop: 20,

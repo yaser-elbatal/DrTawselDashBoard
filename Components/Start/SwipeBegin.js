@@ -4,6 +4,7 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import Colors from '../../consts/Colors';
 import i18n from '../../locale/i18n';
 import I18n from "i18n-js";
+import Icon from 'react-native-vector-icons/Octicons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { IntroService } from '../../store/action/IntroAction';
@@ -38,28 +39,18 @@ const Slider = ({ navigation }) => {
 
     const slides = Intro.map(int => ({ key: int.title, title: int.title, text: int.details, image: { uri: int.image }, backgroundColor: 'red', }))
 
-    // const slides = [
-    //     {
-    //         key: 'one',
-    //         title: 'عنوان النص',
-    //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
-    //         image: require('../../assets/Images/stawseel.png'),
-    //     },
-    //     {
-    //         key: 'two',
-    //         title: 'عنوان النص',
-    //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
-    //         image: require('../../assets/Images/ftawseel.png'),
-    //     },
-    //     {
-    //         key: 'three',
-    //         title: 'عنوان النص',
-    //         text: 'هذا النص يمكن ان يستبدا في نفس المساحه ويمكن توليد هذا النص في نفس المساحه',
-    //         image: require('../../assets/Images/ttawseel.png'),
+    const renderNextButton = () => {
+        return (
+            <View style={styles.buttonCircle}>
+                <Icon
+                    name="reply"
+                    color="rgba(255, 255, 255, .9)"
+                    size={24}
 
-    //     }
-    // ];
-
+                />
+            </View>
+        );
+    };
 
     const renderItem = ({ item }) => {
 
@@ -101,6 +92,7 @@ const Slider = ({ navigation }) => {
                 activeDotStyle={styles.activeDoted}
                 doneLabel={i18n.t('start')}
                 renderDoneButton={renderDoneButton}
+                renderNextButton={renderNextButton}
 
             />
         </View>
@@ -170,6 +162,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '200',
         fontSize: 18,
-    }
+    },
+    buttonCircle: {
+        width: 40,
+        height: 40,
+        backgroundColor: 'rgba(0, 0, 0, .2)',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
 export default Slider

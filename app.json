@@ -7,12 +7,13 @@
     "icon": "./assets/Images/image.png",
     "splash": {
       "image": "./assets/Images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#FFA903"
     },
     "android": {
       "package": "com.Awmer.DashboardDrTawsel",
       "versionCode": 1,
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBCtrxqozj9xLkL58Frh0Gl4fiQZ_oATZI"

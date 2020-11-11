@@ -88,7 +88,7 @@ const ProductDet = ({ navigation, route }) => {
                                             <Text style={styles.num}>{i18n.t('num')} #{ProductDetA.id}</Text>
                                             <Text style={[styles.num, { color: Colors.fontNormal }]}>{ProductDetA.menu}</Text>
                                             <View style={{ flexDirection: 'row', }}>
-                                                <Text style={[styles.num, { fontSize: 18, }]}>{ProductDetA.price - ProductDetA.discount} {i18n.t('Rial')}</Text>
+                                                <Text style={[styles.num, { fontSize: 18, }]}>{ProductDetA.price - (ProductDetA.price * (ProductDetA.discount / 100))} {i18n.t('Rial')}</Text>
                                                 {
                                                     ProductDetA.discount == 0 ? null :
                                                         <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.RedColor, paddingHorizontal: 15, fontSize: 16 }]}>{ProductDetA.price}</Text>

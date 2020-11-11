@@ -32,9 +32,10 @@ function ChangePassword({ navigation }) {
     const _validate = () => {
 
         let passwordErr = password == '' ? i18n.t('passwordErr') : null;
+        let NewPass = validatePassword(Newpassword);
         let passConfirmErr = validateTwoPasswords(Newpassword, confirmPassword)
 
-        return passwordErr || passConfirmErr;
+        return passwordErr || passConfirmErr || NewPass;
     };
 
     const SubmitLoginHandler = () => {

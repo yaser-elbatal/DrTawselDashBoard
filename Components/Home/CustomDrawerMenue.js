@@ -43,7 +43,7 @@ function CustomDrawerMenue({ navigation }) {
 
 
 
-                <ImageBackground source={require('../../assets/Images/bigP.png')} style={{ height: 180, width: 100, alignItems: 'center', justifyContent: 'center', bottom: 35, left: 12 }} resizeMode='contain'>
+                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 180, width: 100, alignItems: 'center', justifyContent: 'center', bottom: 35, left: 12 }} resizeMode='contain'>
                     <TouchableOpacity onPress={() => navigation.closeDrawer()} style={{ top: 15 }}>
                         <Image source={require('../../assets/Images/crossgray.png')} style={{ height: 20, width: 20, }} resizeMode='contain' />
                     </TouchableOpacity>
@@ -51,95 +51,173 @@ function CustomDrawerMenue({ navigation }) {
 
             </Animatable.View>
 
+            <Animatable.Text animation="flash" easing="ease-out" delay={500} style={[styles.hellText, { color: '#000000', paddingHorizontal: 30, fontWeight: 'bold', fontSize: 20 }]}>{i18n.t('Hello')} {user.name}</Animatable.Text>
             <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
-                <Animatable.Text animation="flash" easing="ease-out" delay={500} style={[styles.hellText, { paddingHorizontal: 20, alignSelf: 'flex-start' }]}>{i18n.t('Hello')} {user.name}</Animatable.Text>
 
-                <Animatable.View animation="fadeInUp" easing="ease-out" delay={500} style={{ flexDirection: 'column', marginTop: 15 }}>
+                <Animatable.View animation="fadeInUp" easing="ease-out" delay={500} style={{ flexDirection: 'column', marginTop: 15, color: '#000000' }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
-                        <View style={{ backgroundColor: Clicle === 0 ? '#09B9D8' : Colors.sky, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('HomePage')}</Text>
+                        <View style={{ backgroundColor: Clicle === 0 ? Colors.sky : Colors.bg, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 0 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 0 ? Colors.bg : '#000000' }]}>{i18n.t('HomePage')}</Text>
                         </View>
                     </TouchableOpacity >
 
                     <TouchableOpacity onPress={() => { setClick(1), navigation.navigate('Menue') }} >
-                        <View style={{ backgroundColor: Clicle === 1 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText} >{i18n.t('menue')}</Text>
+                        <View style={{ backgroundColor: Clicle === 1 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 1 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[[styles.hellText, { color: Clicle === 1 ? Colors.bg : '#000000' }], { color: Clicle === 1 ? Colors.bg : '#000000' }]} >{i18n.t('menue')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { setClick(2); navigation.navigate('Products') }} >
-                        <View style={{ backgroundColor: Clicle === 2 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('Prod')}</Text>
+                        <View style={{ backgroundColor: Clicle === 2 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 2 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 2 ? Colors.bg : '#000000' }]}>{i18n.t('Prod')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { setClick(3); navigation.navigate('Orders') }} >
-                        <View style={{ backgroundColor: Clicle === 3 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('orders')}</Text>
+
+                        <View style={{ backgroundColor: Clicle === 3 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 3 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 3 ? Colors.bg : '#000000' }]}>{i18n.t('orders')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     {/* <TouchableOpacity onPress={() => { setClick(4); navigation.navigate('SpecialOrders') }}>
-                        <View style={{ backgroundColor: Clicle === 4 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('specialOrder')}</Text>
+                        <View style={{ backgroundColor: Clicle === 4 ?Colors.sky : '#000000', marginTop: 30, width: '95%' }}>
+                            <Text style={[styles.hellText, { color: Clicle === 1 ? Colors.bg : '#000000' }]}>{i18n.t('specialOrder')}</Text>
                         </View>
                     </TouchableOpacity> */}
 
                     <TouchableOpacity onPress={() => { setClick(5); navigation.navigate('AddOffer') }}>
-                        <View style={{ backgroundColor: Clicle === 5 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('AddOffer')}</Text>
+                        <View style={{ backgroundColor: Clicle === 5 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 5 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 5 ? Colors.bg : '#000000' }]}>{i18n.t('AddOffer')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('Settings'); setClick(6) }}>
-                        <View style={{ backgroundColor: Clicle === 6 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('settings')}</Text>
+                        <View style={{ backgroundColor: Clicle === 6 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+
+                            {
+                                Clicle === 6 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 6 ? Colors.bg : '#000000' }]}>{i18n.t('settings')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('Comments'); setClick(7) }}>
-                        <View style={{ backgroundColor: Clicle === 7 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('Commentandratings')}</Text>
+                        <View style={{ backgroundColor: Clicle === 7 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 7 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 7 ? Colors.bg : '#000000' }]}>{i18n.t('Commentandratings')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('Notifications'); setClick(8) }}>
-                        <View style={{ backgroundColor: Clicle === 8 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={styles.hellText}>{i18n.t('notifications')}</Text>
-                            <View style={{ backgroundColor: Colors.bg, height: 30, width: 40, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={{ color: Colors.sky, fontFamily: 'flatMedium', fontSize: 14 }}>{NotifyCount}</Text>
+                        <View style={{ backgroundColor: Clicle === 8 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                            {
+                                Clicle === 8 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+                            <Text style={[styles.hellText, { color: Clicle === 8 ? Colors.bg : '#000000' }]}>{i18n.t('notifications')}</Text>
+                            <View style={{
+                                backgroundColor: Colors.bg, height: 30, width: 30, borderRadius: 50, alignItems: 'center', justifyContent: 'center', shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2
+                                },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 3.84,
+                                elevation: 5
+                            }}>
+                                <Text style={{ color: Colors.sky, fontFamily: 'flatMedium', fontSize: 14, elevation: 5, }}>{NotifyCount}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('Wallet'); setClick(9) }}>
-                        <View style={{ backgroundColor: Clicle === 9 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('wallet')}</Text>
+
+                        <View style={{ backgroundColor: Clicle === 9 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 9 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+
+                            <Text style={[styles.hellText, { color: Clicle === 9 ? Colors.bg : '#000000' }]}>{i18n.t('wallet')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('ContactUs'); setClick(10) }}>
-                        <View style={{ backgroundColor: Clicle === 10 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('contactus')}</Text>
+
+                        <View style={{ backgroundColor: Clicle === 10 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 10 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+
+                            <Text style={[styles.hellText, { color: Clicle === 10 ? Colors.bg : '#000000' }]}>{i18n.t('contactus')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('ManageAccount'); setClick(11) }}>
-                        <View style={{ backgroundColor: Clicle === 11 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('ManageAcc')}</Text>
+                        <View style={{ backgroundColor: Clicle === 11 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 11 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+
+                            <Text style={[styles.hellText, { color: Clicle === 11 ? Colors.bg : '#000000' }]}>{i18n.t('ManageAcc')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('Report'); setClick(12) }}>
-                        <View style={{ backgroundColor: Clicle === 12 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('reports')}</Text>
+
+                        <View style={{ backgroundColor: Clicle === 12 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 12 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+
+                            <Text style={[styles.hellText, { color: Clicle === 12 ? Colors.bg : '#000000' }]}>{i18n.t('reports')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={logoutFunc} style={{ marginBottom: 20 }}>
-                        <View style={{ backgroundColor: Clicle === 13 ? '#09B9D8' : Colors.sky, marginTop: 40, width: '95%' }}>
-                            <Text style={styles.hellText}>{i18n.t('logout')}</Text>
+                        <View style={{ backgroundColor: Clicle === 13 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%' }}>
+                            <Text style={[styles.hellText, { color: Clicle === 13 ? Colors.bg : '#000000' }]}>{i18n.t('logout')}</Text>
                         </View>
                     </TouchableOpacity>
 

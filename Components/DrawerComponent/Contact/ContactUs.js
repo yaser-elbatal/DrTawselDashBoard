@@ -22,6 +22,7 @@ function ContactUs({ navigation }) {
     const [Message, setMessage] = useState('');
     const token = useSelector(state => state.auth.user.data.token)
     const [spinner, setSpinner] = useState(false);
+    const lang = useSelector(state => state.lang.language);
 
     const dispatch = useDispatch();
 
@@ -38,7 +39,7 @@ function ContactUs({ navigation }) {
         let val = _validate()
         if (!val) {
             setSpinner(true)
-            dispatch(SendComplaiment(token, name, email, Message, navigation))
+            dispatch(SendComplaiment(token, name, email, Message, navigation, lang))
             setName('')
             setMessage('')
             setemail('')
@@ -80,7 +81,7 @@ function ContactUs({ navigation }) {
 
                     placeholder={i18n.t('message')}
                     styleCont={{ height: 160, marginTop: 20, width: '90%' }}
-                    inputStyle={{ paddingHorizontal: 0, paddingRight: 10, paddingLeft: 0, top: 0, paddingStart: 10 }}
+                    inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
                     LabelStyle={{ bottom: width * .9, }}
                     placeholder={i18n.t('message')}
                     onChangeText={(e) => setMessage(e)}

@@ -43,7 +43,7 @@ export const validateUserName = userName =>
     userName.length < 2 ? i18n.t('usernameErr') : null;
 
 export const validateAccountNum = (code) =>
-    code === '' || code.length < 14 ? "رقم الحساب لا بد من ان يتألف من 14 رقم" : null;
+    code === '' || code.length < 14 ? i18n.t('validateAccountNum') : null;
 
 export const valdiateMoney = (code) =>
     code === '' || code.length <= 0 ? "برجاء اضافه مبلغ صحيح" : null;

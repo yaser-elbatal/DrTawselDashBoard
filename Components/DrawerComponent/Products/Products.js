@@ -21,7 +21,7 @@ function Products({ navigation }) {
     const dispatch = useDispatch();
 
 
-    const [isSelected2, setSelection2] = useState();
+    const [isSelected2, setSelection2] = useState(false);
     const [spinner, setSpinner] = useState(true);
     const [Search, setSearch] = useState('');
     const [Loader, setLoader] = useState(false)
@@ -40,13 +40,13 @@ function Products({ navigation }) {
     },];
 
 
-
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
+            setLoader(true)
             dispatch(GetProducts(token, lang))
-            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false))
+            dispatch(MenueInfo(lang, token)).then(() => setSpinner(false)).then(() => setLoader(false))
         });
 
         return unsubscribe;
@@ -95,14 +95,14 @@ function Products({ navigation }) {
     const DeleteMenueMultiIteM = () => {
         setLoader(true)
         dispatch(DeleteProduct(token, lang, DeleteArr)).then(() => dispatch(GetProducts(token, lang))).then(() => setSelection2(false), setLoader(false))
-
+        setDeleteArr([])
     }
 
 
     const DeletProduct = (id) => {
         setLoader(true)
         dispatch(DeleteProduct(token, lang, id)).then(() => dispatch(GetProducts(token, lang))).then(() => setLoader(false))
-
+        setDeleteArr([])
     }
 
     const handleChange = (e) => {
@@ -118,7 +118,6 @@ function Products({ navigation }) {
 
     }
 
-    console.log(Menue);
     return (
 
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
@@ -140,9 +139,12 @@ function Products({ navigation }) {
 
 
                 <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
-                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
-                    <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                    <TouchableOpacity onPress={SelectAllChecked} style={{ flexDirection: 'row' }}>
+
+                        <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
+                        <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2 && !DeleteArr.length} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, }}>
                         <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
@@ -185,53 +187,57 @@ function Products({ navigation }) {
                             <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
                         </View>
                         :
+                        Products && Products.length ?
 
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            data={Products}
-                            extraData={spinner, Loader}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={({ item, index }) => (
-                                <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                data={Products}
+                                extraData={spinner, Loader}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item, index }) => (
+                                    <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                                    <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
-                                        <View style={styles.Card}>
-                                            <View style={{ flexDirection: 'row', flex: .75 }}>
-                                                <Image source={{ uri: item.image }} style={{ height: '100%', width: '40%' }} />
-                                                <View style={styles.FWrab}>
-                                                    <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
-                                                    <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                                    <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                        <Text style={styles.nText}>{item.price - item.discount}</Text>
-                                                        {
-                                                            item.discount == 0 ? null :
-                                                                <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price}</Text>
-                                                        }
+                                        <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                                            <View style={styles.Card}>
+                                                <View style={{ flexDirection: 'row', flex: .75 }}>
+                                                    <Image source={{ uri: item.image }} style={{ height: '100%', width: '40%' }} />
+                                                    <View style={styles.FWrab}>
+                                                        <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
+                                                        <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <Text style={styles.nText}>{item.price - (item.price * (item.discount / 100))}</Text>
+                                                            {
+                                                                item.discount == 0 ? null :
+                                                                    <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price}</Text>
+                                                            }
+                                                        </View>
+
+
                                                     </View>
+                                                </View>
 
+
+                                                <View style={styles.SWarb}>
+
+                                                    <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item.id })}>
+                                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                                    </TouchableOpacity>
+
+                                                    <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
+                                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                                    </TouchableOpacity>
 
                                                 </View>
-                                            </View>
-
-
-                                            <View style={styles.SWarb}>
-
-                                                <TouchableOpacity style={styles.Edit} onPress={() => navigation.navigate('EditProducts', { ProductsId: item.id })}>
-                                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                                </TouchableOpacity>
-
-                                                <TouchableOpacity style={styles.Delete} onPress={() => DeletProduct(item.id)}>
-                                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                                </TouchableOpacity>
 
                                             </View>
+                                        </TouchableOpacity>
+                                    </Animatable.View>
 
-                                        </View>
-                                    </TouchableOpacity>
-                                </Animatable.View>
+                                )} />
+                            :
+                            <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
 
-                            )} />
                 }
             </Container>
         </ScrollView>

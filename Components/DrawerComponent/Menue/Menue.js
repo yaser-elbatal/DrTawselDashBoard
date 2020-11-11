@@ -52,7 +52,7 @@ function Menue({ navigation, route }) {
 
 
 
-
+    console.log(DeleteArr);
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
@@ -117,7 +117,7 @@ function Menue({ navigation, route }) {
     const DeleteMeueIteM = (id) => {
         setLoader(true)
         dispatch(DeleteMenue(token, id)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSelection2(false), setLoader(false)))
-
+        setDeleteArr([])
 
     }
 
@@ -171,7 +171,7 @@ function Menue({ navigation, route }) {
     const DeleteMenueMultiIteM = () => {
         setLoader(true)
         dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSelection2(false), setLoader(false)))
-
+        setDeleteArr([])
     }
 
 
@@ -218,9 +218,12 @@ function Menue({ navigation, route }) {
                 <Card />
 
                 <View style={{ height: 50, width: '90%', margin: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
-                    <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
-                    <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2 && !DeleteArr.length} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, marginHorizontal: 5 }}>
+                    <TouchableOpacity onPress={SelectAllChecked} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
+                        <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2 && !DeleteArr.length} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, }}>
                         <Text style={{ fontFamily: 'flatMedium', paddingVertical: 5, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
@@ -344,39 +347,37 @@ function Menue({ navigation, route }) {
                         </TouchableOpacity>
                     </Modal>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        style={{ backgroundColor: Colors.bg, }}
-                        visible={modalVisible} >
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    style={{ backgroundColor: Colors.bg, }}
+                    visible={modalVisible} >
 
-                        <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)} >
-                            <View style={styles.modalView}>
-                                <View style={{ margin: 20, backgroundColor: Colors.bg }}>
-                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, marginHorizontal: 15 }}>{i18n.t('AddMenue')} </Text>
+                    <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)} >
+                        <View style={styles.modalView}>
+                            <View style={{ margin: 20, backgroundColor: Colors.bg }}>
+                                <Text style={{ fontFamily: 'flatMedium', fontSize: 14, marginHorizontal: 15 }}>{i18n.t('AddMenue')} </Text>
 
-                                    <InputIcon
-                                        label={i18n.t('menueAr')}
-                                        placeholder={i18n.t('menueAr')}
-                                        onChangeText={(e) => setNameAr(e)}
-                                        value={nameAR}
-                                    />
+                                <InputIcon
+                                    label={i18n.t('menueAr')}
+                                    placeholder={i18n.t('menueAr')}
+                                    onChangeText={(e) => setNameAr(e)}
+                                    value={nameAR}
+                                />
 
-                                    <InputIcon
-                                        label={i18n.t('menueEn')}
-                                        placeholder={i18n.t('menueEn')}
-                                        onChangeText={(e) => setNameEN(e)}
-                                        value={nameEN}
-                                        styleCont={{ marginTop: -5 }}
-                                    />
+                                <InputIcon
+                                    label={i18n.t('menueEn')}
+                                    placeholder={i18n.t('menueEn')}
+                                    onChangeText={(e) => setNameEN(e)}
+                                    value={nameEN}
+                                    styleCont={{ marginTop: -5 }}
+                                />
 
-                                    <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={Add_menue} />
-                                </View>
+                                <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={Add_menue} />
                             </View>
-                        </TouchableOpacity>
-                    </Modal>
-                </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
             </Container>
         </ScrollView >
 
@@ -482,8 +483,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         alignItems: "center",
-        backgroundColor: '#737373',
-        opacity: Platform.OS = 'ios' ? .98 : .9,
+        // backgroundColor: Colors.bg,
+        // opacity: Platform.OS = 'ios' ? .7 : .7,
 
     },
     modalView: {

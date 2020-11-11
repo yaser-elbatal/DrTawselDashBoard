@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: '100%'
     },
     Text: {
         fontFamily: 'flatMedium',
@@ -32,9 +33,10 @@ const styles = StyleSheet.create({
     LoginBtn: {
         marginVertical: 5,
         borderRadius: 10,
-        marginHorizontal: 20,
-        width: '90%',
-        height: width * .1,
+        marginHorizontal: 0,
+        width: '100%',
+        paddingHorizontal: 100
+        // height: width * .1,
 
     },
 })

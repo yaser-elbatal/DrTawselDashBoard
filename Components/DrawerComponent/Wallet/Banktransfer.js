@@ -49,7 +49,7 @@ function Banktransfer({ navigation }) {
                         MyAcoount.map(acc => (
 
                             <TouchableOpacity onPress={() => navigation.navigate('TransferMony', { AccountId: acc.id })} key={acc.id.toString()} >
-                                <View style={{ marginHorizontal: '5%', backgroundColor: '#F8F8F8', borderRadius: 10, padding: 10, overflow: 'hidden' }} key={acc.id}>
+                                <View style={{ marginHorizontal: '5%', backgroundColor: '#F8F8F8', borderRadius: 10, padding: 10, overflow: 'hidden', marginTop: 5 }} key={acc.id}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center', flex: .5 }}>

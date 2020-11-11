@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Provider } from 'react-redux';
 import I18n from "i18n-js";
-import { Notifications } from 'expo'
+import * as Notifications from 'expo-notifications';
 import MainRoot from './routes/Index';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistedStore } from './store/index';
@@ -20,12 +20,13 @@ export default function App() {
 
 
   useEffect(() => {
-    // I18nManager.forceRTL(true)
+    I18n.locale = 'ar';
 
     if (Platform.OS === 'android') {
-      Notifications.createChannelAndroidAsync('orders', {
-        name: 'Chat messages',
-        sound: true,
+      Notifications.setNotificationChannelAsync('orders', {
+        name: 'E-mail notifications',
+        importance: Notifications.AndroidImportance.HIGH,
+        sound: true, // <- for Android 8.0+, see channelId property below
       });
     }
 

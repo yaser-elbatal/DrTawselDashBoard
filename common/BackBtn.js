@@ -23,9 +23,10 @@ function BackBtn({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: -55,
         alignItems: 'flex-end',
-        marginRight: -5
+        bottom: 15,
+        left: 10,
+        right: 0
 
     },
     BGImage: {

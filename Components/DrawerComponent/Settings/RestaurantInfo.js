@@ -74,7 +74,7 @@ function RestaurantInfo({ navigation }) {
             } else {
                 userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
             }
-            // setInitMap(true)
+            setInitMap(true)
             setMapRegion(userLocation);
             isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
 
@@ -213,16 +213,19 @@ function RestaurantInfo({ navigation }) {
                     value={nameEN}
                     styleCont={{ marginTop: 0 }}
                 />
+                <TouchableOpacity onPress={InitMap ? () => setisopened(true) : setisopened(false)}>
+                    <InputIcon
+                        label={i18n.t('city')}
+                        placeholder={i18n.t('city')}
+                        // onChangeText={(e) => setCity(e)}
+                        value={city}
+                        editable={false}
+                        styleCont={{ marginTop: 0 }}
+                        image={require('../../../assets/Images/location_gray.png')}
+                        onPress={InitMap ? () => setisopened(true) : setisopened(false)}
+                    />
+                </TouchableOpacity>
 
-                <InputIcon
-                    label={i18n.t('city')}
-                    placeholder={i18n.t('city')}
-                    // onChangeText={(e) => setCity(e)}
-                    value={city}
-                    styleCont={{ marginTop: 0 }}
-                    image={require('../../../assets/Images/location_gray.png')}
-                    onPress={InitMap ? () => setisopened(true) : setisopened(false)}
-                />
 
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage, Alert, Platform } from 'react-native'
 import Constants from 'expo-constants';
 
@@ -23,6 +23,15 @@ import * as Permissions from 'expo-permissions';
 // import { Notifications } from 'expo'
 import Container from '../../common/Container';
 
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+
 function Login({ navigation }) {
 
     const lang = useSelector(state => state.lang.language);
@@ -31,76 +40,14 @@ function Login({ navigation }) {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, Setisloading] = useState(false);
-    const [deviceId, setDeviceId] = useState('');
     const [userId, setUserId] = useState(null);
 
     const [spinner, setSpinner] = useState(true);
 
-
-
-
-
-    const registerForPushNotificationsAsync = async () => {
-        let token;
-        if (Constants.isDevice) {
-            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-            let finalStatus = existingStatus;
-            if (existingStatus !== 'granted') {
-                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-                finalStatus = status;
-            }
-            if (finalStatus !== 'granted') {
-                alert('Failed to get push token for push notification!');
-                return;
-            }
-            token = (await Notifications.getExpoPushTokenAsync()).data;
-            // console.log(token);
-            setDeviceId(token)
-        } else {
-            alert('Must use physical device for Push Notifications');
-        }
-
-        if (Platform.OS === 'android') {
-            Notifications.setNotificationChannelAsync('default', {
-                name: 'default',
-                importance: Notifications.AndroidImportance.MAX,
-                vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#FF231F7C',
-            });
-        }
-        setDeviceId(token)
-
-        return token;
-    }
-
-
-
-    // const getDeviceId = async () => {
-    //     Alert.alert('aaaa')
-    //     const { status: existingStatus } = await Permissions.getAsync(
-    //         Permissions.NOTIFICATIONS
-    //     );
-
-    //     let finalStatus = existingStatus;
-
-    //     if (existingStatus !== 'granted' || Platform.OS === 'android') {
-    //         const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    //         finalStatus = status;
-    //     }
-
-    //     if (finalStatus !== 'granted') {
-    //         return;
-    //     }
-
-    //     const deviceId = await Notifications.getExpoPushTokenAsync();
-
-    //     setDeviceId(deviceId);
-
-    //     AsyncStorage.setItem('deviceID', deviceId);
-    // };
-
-
-
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
 
 
     const _validate = () => {
@@ -115,7 +62,7 @@ function Login({ navigation }) {
         if (!isVal) {
             setSpinner(true)
 
-            dispatch(SignIn(phone, password, deviceId, lang, navigation)).then(() => setSpinner(false)).catch(e => {
+            dispatch(SignIn(phone, password, expoPushToken, lang, navigation)).then(() => setSpinner(false)).catch(e => {
                 setSpinner(false);
                 alert(e);
             })
@@ -130,17 +77,56 @@ function Login({ navigation }) {
     }
 
     useEffect(() => {
-
-
-        registerForPushNotificationsAsync()
-        // getDeviceId()
         setSpinner(false)
 
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log('response ?????', response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener);
+            Notifications.removeNotificationSubscription(responseListener);
+        };
 
     }, [navigation]);
 
 
+    async function registerForPushNotificationsAsync() {
+        let token;
+        // لان الاشعارات مش بتشتغل ع السيميولاتور
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            token = (await Notifications.getExpoPushTokenAsync()).data;
+            console.log(token);
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
 
+        if (Platform.OS === 'android') {
+            Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+
+        return token;
+    }
 
 
     return (
