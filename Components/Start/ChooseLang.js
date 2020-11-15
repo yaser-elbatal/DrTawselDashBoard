@@ -8,31 +8,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage } from '../../store/action/LangAction';
 import Lang from '../DrawerComponent/Settings/Lang';
 import * as Animatable from 'react-native-animatable';
+import { IntroService } from '../../store/action/IntroAction';
 
 function ChooseLang({ navigation }) {
 
     const [lan, setLang] = useState('')
     const lang = useSelector(state => state.lang.language);
-    console.log('u' + lang);
+
     const dispatch = useDispatch();
 
     const changeLang = async (lang, direction) => {
         await dispatch(changeLanguage(lang, direction,));
 
-        AsyncStorage.getItem("lang").then((value) => {
-            setLang(value);
-        })
     };
     // console.log(lan);
 
 
     useEffect(() => {
 
+
+
         AsyncStorage.getItem("lang").then((lang) => {
             if (lang) {
-                navigation.push("Home", { Home: 'Home' });
+                navigation.push("Home");
                 console.log('a' + lang);
-
             }
         })
 

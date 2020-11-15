@@ -56,7 +56,11 @@ function SRegister({ navigation, route }) {
     });
     let mapRef = useRef(null);
 
+    const FetchDataError = () => {
+        <Text>xxxxxxx</Text>
+        fetchData();
 
+    }
 
     console.log(department, city);
     const _validate = () => {
@@ -67,8 +71,9 @@ function SRegister({ navigation, route }) {
         let DebId = department === null ? i18n.t('DepId') : null
 
         let ValditeCommercialRegisterErr = ValditeCommercialRegister(CommercialRegister)
-        let BranchErr = ValdiateBranch(BranchNum)
-        return nameErr || nameEnErr || CityID || DebId || ValditeCommercialRegisterErr || BranchErr
+        let BranchErr = ValdiateBranch(BranchNum);
+        let MapRegeionEroor = mapRegion.latitude == null ? FetchDataError() : null
+        return nameErr || nameEnErr || CityID || DebId || ValditeCommercialRegisterErr || BranchErr || MapRegeionEroor
     }
     useEffect(() => {
     }, [MyLocation, mapRegion]);
@@ -136,8 +141,9 @@ function SRegister({ navigation, route }) {
             setSpinner(true)
 
             fetchData();
+            dispatch(getCititis(lang))
             dispatch(GetDepartment(lang))
-            dispatch(getCititis(lang)).then(() => setSpinner(false)).catch((e) => { setSpinner(false); console.warn(e); })
+                .then(() => setSpinner(false)).catch((e) => { setSpinner(false); console.warn(e); })
         });
 
         return unsubscribe;
@@ -149,22 +155,24 @@ function SRegister({ navigation, route }) {
     const NavigateToNextLocation = () => {
         let val = _validate()
         if (!val) {
-            navigation.navigate('TRegister', {
-                name: route.params.name,
-                phone: route.params.phone,
-                email: route.params.email,
-                isowner: route.params.isowner,
-                password: route.params.password,
-                department: department,
-                nameAR: nameAR,
-                nameEN: nameEN,
-                city: city,
-                BranchNum: BranchNum,
-                CommercialRegister: CommercialRegister,
-                MyLocation: LOcation,
-                latitude: mapRegion.latitude,
-                longitude: mapRegion.longitude
-            })
+            mapRegion.latitude == null ?
+                fetchData() :
+                navigation.navigate('TRegister', {
+                    name: route.params.name,
+                    phone: route.params.phone,
+                    email: route.params.email,
+                    isowner: route.params.isowner,
+                    password: route.params.password,
+                    department: department,
+                    nameAR: nameAR,
+                    nameEN: nameEN,
+                    city: city,
+                    BranchNum: BranchNum,
+                    CommercialRegister: CommercialRegister,
+                    MyLocation: LOcation,
+                    latitude: mapRegion.latitude,
+                    longitude: mapRegion.longitude
+                })
         }
         else {
             Toaster(_validate());
@@ -221,7 +229,7 @@ function SRegister({ navigation, route }) {
                         styleCont={{ marginTop: 0 }}
 
                     />
-                    <TouchableOpacity onPress={mapRegion.latitude != null ? () => setisopened(true) : () => setisopened(false)}>
+                    <TouchableOpacity onPress={() => mapRegion.latitude == null ? setisopened(false) : setisopened(true)}>
                         <InputIcon
                             label={i18n.t('Location')}
                             placeholder={i18n.t('Location')}
@@ -229,7 +237,7 @@ function SRegister({ navigation, route }) {
                             value={LOcation}
                             styleCont={{ marginTop: 0 }}
                             editable={false}
-
+                            // onPress={() => setisopened(true)}
                             image={require('../../assets/Images/location_gray.png')}
 
                         />
@@ -245,43 +253,46 @@ function SRegister({ navigation, route }) {
                                     transparent={true}
                                     visible={isopened}   >
                                     {
+                                        mapRegion.latitude != null ?
 
-                                        <View style={styles.centeredView}>
-                                            <View style={styles.modalView}>
+                                            <View style={styles.centeredView}>
+                                                <View style={styles.modalView}>
 
-                                                <MapView
-                                                    style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
-                                                    region={mapRegion}
-                                                    ref={mapRef}
-                                                    onRegionChangeComplete={region => setMapRegion(region)}
-                                                    customMapStyle={mapStyle}
-                                                    initialRegion={mapRegion}
-                                                    showsUserLocation={true}
-                                                    zoomControlEnabled={true}
-                                                    showsTraffic={true} >
+                                                    <MapView
+                                                        style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
+                                                        region={mapRegion}
+                                                        ref={mapRef}
+                                                        onRegionChangeComplete={region => setMapRegion(region)}
+                                                        customMapStyle={mapStyle}
+                                                        initialRegion={mapRegion}
+                                                        showsUserLocation={true}
+                                                        zoomControlEnabled={true}
+                                                        showsTraffic={true} >
 
-                                                    <Marker
-                                                        draggable
-                                                        coordinate={mapRegion}
-                                                        onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+                                                        <Marker
+                                                            draggable
+                                                            coordinate={mapRegion}
+                                                            onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
 
-                                                    >
-                                                        <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
-                                                    </Marker>
-                                                </MapView>
-                                                <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
-                                                    <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
-                                                </Animatable.View>
+                                                        >
+                                                            <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
+                                                        </Marker>
+                                                    </MapView>
+                                                    <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
+                                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+                                                    </Animatable.View>
 
+                                                </View>
                                             </View>
-                                        </View>
-
+                                            :
+                                            (<View />)
                                     }
 
 
                                 </Modal>
                             </View>
-                            : null
+                            :
+                            (<View />)
                     }
 
                     <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>

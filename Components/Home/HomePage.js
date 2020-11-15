@@ -30,8 +30,14 @@ function HomePage({ navigation }) {
 
     console.log(HomeProduct);
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setSpinner(true)
+            dispatch(GetHomeProducts(token, lang)).then(() => dispatch(GetQuickReborts(token, lang))).then(() => setSpinner(false))
 
-
+        });
+        return unsubscribe
+    }, [])
 
     useEffect(() => {
 

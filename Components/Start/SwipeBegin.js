@@ -22,28 +22,25 @@ const Slider = ({ navigation, route }) => {
     const [spinner, setSpinner] = useState(true);
     const dispatch = useDispatch()
 
-
     useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            dispatch(IntroService(lang))
 
-        dispatch(IntroService(lang)).then(() => setSpinner(false))
-
-        // const direction = AsyncStorage.getItem("direction");
-        // if (direction) {
-        //     navigation.navigate("Login");
-        // }
-        AsyncStorage.getItem("lang").then((lang) => {
-            if (lang) {
-                navigation.push("Login", { Home: 'Home' });
-                console.log('a' + lang);
-
-            }
+            AsyncStorage.getItem("Inro").then((itro) => {
+                if (itro) {
+                    navigation.push("Login");
+                    console.log('a' + itro);
+                }
+            })
         })
+        return unsubscribe
 
+    }, [navigation]);
 
-
-    }, []);
-
-
+    const Begin = () => {
+        AsyncStorage.setItem('Inro', 'true')
+        navigation.navigate('Login')
+    }
 
     const slides = Intro.map(int => ({ key: int.title, title: int.title, text: int.details, image: { uri: int.image }, backgroundColor: 'red', }))
 
@@ -59,6 +56,8 @@ const Slider = ({ navigation, route }) => {
             </View>
         );
     };
+
+
 
     const renderItem = ({ item }) => {
 
@@ -79,7 +78,7 @@ const Slider = ({ navigation, route }) => {
     const renderDoneButton = () => {
         return (
             <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
-                <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity style={styles.Button} onPress={Begin}>
                     <Text style={styles.textBtn}>
                         {i18n.t('start')}
                     </Text>

@@ -79,9 +79,9 @@ const Drawer = createDrawerNavigator();
 export const MainStackNav = () => {
 
     return (
-        <Stack.Navigator initialRouteName="Home" headerMode='none'>
+        <Stack.Navigator initialRouteName="ChooseLang" headerMode='none'>
 
-            {/* <Stack.Screen name="ChooseLang" component={ChooseLang} /> */}
+            <Stack.Screen name="ChooseLang" component={ChooseLang} />
             <Stack.Screen name="Home" component={Slider} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
