@@ -15,7 +15,7 @@ import * as Animatable from 'react-native-animatable';
 const { width } = Dimensions.get('window')
 const { height } = Dimensions.get('window')
 
-const Slider = ({ navigation }) => {
+const Slider = ({ navigation, route }) => {
 
     const Intro = useSelector(state => state.intro.intro)
     const lang = useSelector(state => state.lang.language);
@@ -31,6 +31,14 @@ const Slider = ({ navigation }) => {
         // if (direction) {
         //     navigation.navigate("Login");
         // }
+        AsyncStorage.getItem("lang").then((lang) => {
+            if (lang) {
+                navigation.push("Login", { Home: 'Home' });
+                console.log('a' + lang);
+
+            }
+        })
+
 
 
     }, []);
@@ -58,8 +66,8 @@ const Slider = ({ navigation }) => {
             <Animatable.View animation="zoomIn" easing="ease-out" delay={500} style={styles.slide}>
                 <Image source={item.image} style={styles.ImgsSlide} />
                 <View style={styles.container}>
-                    <Animatable.Text animation="slideInDown" iterationCount={5} direction="alternate" style={styles.title}>{item.title}</Animatable.Text>
-                    <Animatable.Text animation="slideInDown" iterationCount={5} direction="alternate" style={styles.text}>{item.text}</Animatable.Text>
+                    <Text animation="slideInDown" iterationCount={5} direction="alternate" style={styles.title}>{item.title}</Text>
+                    <Text animation="slideInDown" iterationCount={5} direction="alternate" style={styles.text}>{item.text}</Text>
 
                 </View>
 

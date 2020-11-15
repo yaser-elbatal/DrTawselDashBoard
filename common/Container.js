@@ -16,6 +16,7 @@ const Container = ({ loading, children }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 alignSelf: 'center',
+                marginTop: 50
             }}>
                 <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center', }} />
             </View>

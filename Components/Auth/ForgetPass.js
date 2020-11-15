@@ -54,8 +54,8 @@ function ForgetPass({ navigation, route }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ margin: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Animatable.Text>
-                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Animatable.Text>
+                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
+                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
                     </View>
                 </View>
 

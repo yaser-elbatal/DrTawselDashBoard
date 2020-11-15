@@ -8,10 +8,13 @@ import i18n from '../../locale/i18n'
 import { Content } from 'native-base';
 import Card from '../../common/Card'
 import { useSelector, useDispatch } from 'react-redux';
-import { GetHomeProducts } from '../../store/action/HomeAction';
+import { GetHomeProducts, GetQuickReborts } from '../../store/action/HomeAction';
 import Container from '../../common/Container';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
+import * as Notifications from 'expo-notifications'
+import { Logout } from '../../store/action/AuthAction';
+
 
 
 function HomePage({ navigation }) {
@@ -25,18 +28,54 @@ function HomePage({ navigation }) {
     const dispatch = useDispatch();
 
 
-
+    console.log(HomeProduct);
 
 
 
 
     useEffect(() => {
+
+
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
-            dispatch(GetHomeProducts(token, lang)).then(() => setSpinner(false))
+            dispatch(GetHomeProducts(token, lang)).then(() => dispatch(GetQuickReborts(token, lang))).then(() => setSpinner(false))
+
         });
 
-        return unsubscribe;
+        const subscription = Notifications.addNotificationReceivedListener(notification => {
+            let type = notification.request.content.data.type;
+            let OrderId = notification.request.content.data.order_id
+            console.log('k' + type);
+            console.log(notification.request.content.data);
+            if (type === 'block') {
+                dispatch(Logout(token))
+
+            }
+            else if (type === 'admin') {
+                navigation.navigate('Notifications')
+            }
+            else if (type === 'wallet') {
+                navigation.navigate('Wallet')
+
+            }
+            else if (type === 'order' && OrderId) {
+                navigation.navigate('OrderDetailes', { OrderId: notification.request.content.data.order_id })
+
+            }
+
+        });
+
+
+        const subscriptions = Notifications.addNotificationResponseReceivedListener(response => {
+            const type = response.notification.request.content.data.type;
+            if (type === 'block') {
+                console.log(type);
+
+                dispatch(Logout(token))
+            }
+        });
+        setSpinner(false)
+        return () => { subscription.remove(), unsubscribe, subscriptions };
     }, [navigation])
 
 
@@ -54,31 +93,35 @@ function HomePage({ navigation }) {
                 {
                     HomeProduct && HomeProduct.length ?
 
-                        <ScrollView style={{ flex: 1, }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {
 
-                                HomeProduct.map((item, index) => (
+                        <FlatList
+                            showsHorizontalScrollIndicator={false}
+                            data={HomeProduct}
+                            extraData={spinner}
+                            horizontal={true}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item, index }) => (
 
-                                    <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
-                                        <View style={{ flexDirection: 'column', flex: 1 }}>
-                                            <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
-                                            <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <Text style={styles.prod}>{item.name}</Text>
-                                                <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
-                                            </View>
+
+                                <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
+                                    <View style={{ flexDirection: 'column', flex: 1 }}>
+                                        <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
+                                        <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text style={styles.prod}>{item.name}</Text>
+                                            <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
                                         </View>
-                                    </TouchableOpacity>
-                                )
-                                )
-
-
-
-                            }
-                        </ScrollView>
+                                    </View>
+                                </TouchableOpacity>
+                            )} />
                         :
-                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        < Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+
+
 
                 }
+
+
+
 
 
 
@@ -176,7 +219,10 @@ const styles = StyleSheet.create({
     },
     MainText: {
         fontFamily: 'flatMedium',
-        fontSize: 20, margin: 20
+        fontSize: 20,
+        margin: 20,
+        alignSelf: 'flex-start'
+
     },
     ImgWrab: {
         height: '100%',
@@ -195,7 +241,9 @@ const styles = StyleSheet.create({
     ProdText: {
         fontFamily: 'flatMedium',
         fontSize: 14,
-        color: Colors.IconBlack
+        color: Colors.IconBlack,
+        alignSelf: 'flex-start',
+        paddingVertical: 5
     },
     prod: {
         fontFamily: 'flatMedium',

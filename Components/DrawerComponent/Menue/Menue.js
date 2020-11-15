@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal, Platform, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, ScrollView, TouchableOpacity, Modal, Platform, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import { CheckBox } from "native-base";
 import { Dropdown } from 'react-native-material-dropdown';
 
@@ -223,7 +223,17 @@ function Menue({ navigation, route }) {
                         <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2 && !DeleteArr.length} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, }}>
+                    <TouchableOpacity onPress={DeleteArr.length == 0 ?
+                        () => Toast.show({
+                            text: i18n.t('SelectElement'),
+                            type: "danger",
+                            duration: 3000,
+                            textStyle: {
+                                color: "white",
+                                textAlign: 'center'
+                            }
+                        })
+                        : DeleteMenueMultiIteM} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, }}>
                         <Text style={{ fontFamily: 'flatMedium', paddingVertical: 5, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 
@@ -321,29 +331,32 @@ function Menue({ navigation, route }) {
                         visible={EditMaodVisible} >
 
                         <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
-                            <View style={styles.modalView}>
-                                <View style={{ margin: 20, backgroundColor: Colors.bg }}>
-                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('edit')} </Text>
+                            <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-                                    <InputIcon
+                                <View style={styles.modalView}>
+                                    <View style={{ margin: 20, backgroundColor: Colors.bg }}>
+                                        <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('edit')} </Text>
 
-                                        label={i18n.t('menueAr')}
-                                        placeholder={i18n.t('menueAr')}
-                                        onChangeText={(e) => setNameArEdit(e)}
-                                        value={nameAREdit}
-                                    />
+                                        <InputIcon
 
-                                    <InputIcon
-                                        label={i18n.t('menueEn')}
-                                        placeholder={i18n.t('menueEn')}
-                                        onChangeText={(e) => setNameENEdit(e)}
-                                        value={nameENEdit}
-                                        styleCont={{ marginTop: -5 }}
-                                    />
+                                            label={i18n.t('menueAr')}
+                                            placeholder={i18n.t('menueAr')}
+                                            onChangeText={(e) => setNameArEdit(e)}
+                                            value={nameAREdit}
+                                        />
 
-                                    <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={EditMEnue} />
+                                        <InputIcon
+                                            label={i18n.t('menueEn')}
+                                            placeholder={i18n.t('menueEn')}
+                                            onChangeText={(e) => setNameENEdit(e)}
+                                            value={nameENEdit}
+                                            styleCont={{ marginTop: -5 }}
+                                        />
+
+                                        <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={EditMEnue} />
+                                    </View>
                                 </View>
-                            </View>
+                            </KeyboardAvoidingView>
                         </TouchableOpacity>
                     </Modal>
                 </TouchableOpacity>
@@ -354,28 +367,31 @@ function Menue({ navigation, route }) {
                     visible={modalVisible} >
 
                     <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)} >
-                        <View style={styles.modalView}>
-                            <View style={{ margin: 20, backgroundColor: Colors.bg }}>
-                                <Text style={{ fontFamily: 'flatMedium', fontSize: 14, marginHorizontal: 15 }}>{i18n.t('AddMenue')} </Text>
+                        <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-                                <InputIcon
-                                    label={i18n.t('menueAr')}
-                                    placeholder={i18n.t('menueAr')}
-                                    onChangeText={(e) => setNameAr(e)}
-                                    value={nameAR}
-                                />
+                            <View style={styles.modalView}>
+                                <View style={{ margin: 20, backgroundColor: Colors.bg }}>
+                                    <Text style={{ fontFamily: 'flatMedium', fontSize: 14, marginHorizontal: 15 }}>{i18n.t('AddMenue')} </Text>
 
-                                <InputIcon
-                                    label={i18n.t('menueEn')}
-                                    placeholder={i18n.t('menueEn')}
-                                    onChangeText={(e) => setNameEN(e)}
-                                    value={nameEN}
-                                    styleCont={{ marginTop: -5 }}
-                                />
+                                    <InputIcon
+                                        label={i18n.t('menueAr')}
+                                        placeholder={i18n.t('menueAr')}
+                                        onChangeText={(e) => setNameAr(e)}
+                                        value={nameAR}
+                                    />
 
-                                <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={Add_menue} />
+                                    <InputIcon
+                                        label={i18n.t('menueEn')}
+                                        placeholder={i18n.t('menueEn')}
+                                        onChangeText={(e) => setNameEN(e)}
+                                        value={nameEN}
+                                        styleCont={{ marginTop: -5 }}
+                                    />
+
+                                    <BTN title={i18n.t('AddMenue')} ContainerStyle={styles.LoginBtn} onPress={Add_menue} />
+                                </View>
                             </View>
-                        </View>
+                        </KeyboardAvoidingView>
                     </TouchableOpacity>
                 </Modal>
             </Container>
@@ -414,27 +430,27 @@ const styles = StyleSheet.create({
         width: '91%',
     },
     Card: {
+
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 100,
+        height: 120,
         width: '90%',
         marginStart: 20,
         marginVertical: 5,
-        shadowColor: Colors.inputTextMainColor,
+        shadowColor: Colors.bg,
         marginTop: 0,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
-        shadowRadius: 3,
-        elevation: 1,
-        shadowColor: Colors.bg,
+        shadowRadius: 3.84,
+        elevation: 2,
+        shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.25,
-        shadowRadius: 3,
+        shadowRadius: 3.84,
 
-        elevation: 2,
     },
     FWrab: {
         flexDirection: 'column',

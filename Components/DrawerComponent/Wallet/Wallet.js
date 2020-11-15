@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Image, StyleSheet, Text, TouchableOpacity, I18nManager, Modal, Platform, ImageBackground } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, I18nManager, Modal, Platform, ImageBackground, KeyboardAvoidingView } from 'react-native'
 
 import i18n from '../../../locale/i18n'
 import Header from '../../../common/Header'
@@ -150,30 +150,35 @@ function Wallet({ navigation }) {
                             transparent={true}
                             visible={modalVisible} >
 
-                            <TouchableOpacity style={[styles.centeredView,]} onPress={() => setModalVisible(false)}>
-                                <View style={styles.modalView}>
+                            <View style={[styles.centeredView,]} onPress={() => setModalVisible(false)}>
+                                <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-                                    <View style={{ margin: 20, alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text style={{ fontFamily: 'flatMedium', fontSize: 12, marginVertical: 5, color: Colors.fontNormal }}>{i18n.t('RecoverWallet')} </Text>
-                                        <InputIcon
-                                            label={i18n.t("Accnum")}
-                                            placeholder={i18n.t("Accnum")}
-                                            value={accountnum}
-                                            onChangeText={(e) => setAccountnum(e)}
-                                            styleCont={{ marginTop: 10, width, }}
-                                            inputStyle={{ borderRadius: 25, marginHorizontal: '3%' }}
+                                    <View style={styles.modalView}>
+
+                                        <View style={{ margin: 20, alignItems: 'center', justifyContent: 'center' }}>
+                                            <Text style={{ fontFamily: 'flatMedium', fontSize: 12, marginVertical: 5, color: Colors.fontNormal }}>{i18n.t('RecoverWallet')} </Text>
+                                            <InputIcon
+                                                label={i18n.t("Accnum")}
+                                                placeholder={i18n.t("Accnum")}
+                                                value={accountnum}
+                                                onChangeText={(e) => setAccountnum(e)}
+                                                styleCont={{ marginTop: 10, width, }}
+                                                inputStyle={{ borderRadius: 25, marginHorizontal: '3%' }}
 
 
-                                        />
-                                        <View style={{ width: '100%' }}>
-                                            <BTN title={i18n.t('agree')} ContainerStyle={styles.LoginBtn} onPress={WithdrawwalletConfirm} />
-                                            <BTN title={i18n.t('close')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.inputTextMainColor }]} onPress={() => setModalVisible(false)} />
+                                            />
+                                            <View style={{ width: '100%' }}>
+                                                <BTN title={i18n.t('agree')} ContainerStyle={styles.LoginBtn} onPress={WithdrawwalletConfirm} />
+                                                <BTN title={i18n.t('close')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.inputTextMainColor }]} onPress={() => setModalVisible(false)} />
+                                            </View>
+
+
                                         </View>
 
-
                                     </View>
-                                </View>
-                            </TouchableOpacity>
+                                </KeyboardAvoidingView>
+
+                            </View>
                         </Modal>
                     </View>
                 </View>

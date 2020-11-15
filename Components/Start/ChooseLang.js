@@ -27,10 +27,14 @@ function ChooseLang({ navigation }) {
 
 
     useEffect(() => {
-        if (lang) {
-            navigation.navigate("Home");
 
-        }
+        AsyncStorage.getItem("lang").then((lang) => {
+            if (lang) {
+                navigation.push("Home", { Home: 'Home' });
+                console.log('a' + lang);
+
+            }
+        })
 
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity, } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, Platform, } from 'react-native'
 import Colors from '../../consts/Colors'
 import BackBtn from '../../common/BackBtn'
 import i18n from '../../locale/i18n';
@@ -66,126 +66,131 @@ function TRegister({ navigation, route }) {
 
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             <BackBtn navigation={navigation} />
-            <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Animatable.Text>
-                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Animatable.Text>
-                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('connectInfo')}</Animatable.Text>
-            </View>
-
-            <InputIcon
-                label={i18n.t('webUrl')}
-                placeholder={i18n.t('Url')}
-                dataDetectorTypes={'link'}
-                multiline={true}
-                onChangeText={(e) => setWebUrl(e)}
-                value={WebUrl}
-                styleCont={{ marginTop: 20 }}
-            />
-
-
-            <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%' }}>{i18n.t('preparationTime')}</Text>
-
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <InputIcon
-                    label={i18n.t('from')}
-                    placeholder={i18n.t('from')}
-                    keyboardType='numeric'
-
-                    onChangeText={(e) => setFrom(e)}
-                    value={from}
-                    styleCont={{ marginTop: 20, width: '30%' }}
-                />
-                <Text>:</Text>
-                <InputIcon
-                    label={i18n.t('to')}
-                    placeholder={i18n.t('to')}
-                    keyboardType='numeric'
-
-                    onChangeText={(e) => setTo(e)}
-                    value={to}
-                    styleCont={{ marginTop: 20, width: '30%', }}
-                />
-                <Text style={{ fontFamily: 'flatMedium' }}>{i18n.t('clock')}</Text>
-            </View>
-
-
-            <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10, flex: .9, fontSize: 10, }}>
-                    <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('Franch')}</Text>
+            <KeyboardAvoidingView
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+                style={styles.container}
+            >
+                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Text>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('connectInfo')}</Text>
                 </View>
-                {
-                    data.map((item, index) => {
-                        return (
-                            <TouchableOpacity onPress={() => { setselecCommerical(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
-                                <View style={{
-                                    height: 15,
-                                    width: 15,
-                                    borderRadius: 12,
-                                    borderWidth: 2,
-                                    borderColor: selecCommerical === index ? Colors.sky : Colors.fontNormal,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    alignSelf: 'center',
 
-                                }}>
-                                    {
-                                        selecCommerical === index ?
-                                            <View style={{
-                                                height: 6,
-                                                width: 6,
-                                                borderRadius: 6,
-                                                backgroundColor: Colors.sky,
-                                            }} />
-                                            : null
-                                    }
-                                </View>
-                                <Text style={[styles.sText, { color: selecCommerical === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
+                <InputIcon
+                    label={i18n.t('webUrl')}
+                    placeholder={i18n.t('Url')}
+                    dataDetectorTypes={'link'}
+                    multiline={true}
+                    onChangeText={(e) => setWebUrl(e)}
+                    value={WebUrl}
+                    styleCont={{ marginTop: 20 }}
+                />
 
-                            </TouchableOpacity>
-                        )
-                    })
-                }
 
-            </View>
-            <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                <View style={{ paddingEnd: 80, flex: .9, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                    <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('DeliveryServ')}</Text>
+                <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%' }}>{i18n.t('preparationTime')}</Text>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <InputIcon
+                        label={i18n.t('from')}
+                        placeholder={i18n.t('from')}
+                        keyboardType='numeric'
+
+                        onChangeText={(e) => setFrom(e)}
+                        value={from}
+                        styleCont={{ marginTop: 20, width: '30%' }}
+                    />
+                    <Text>:</Text>
+                    <InputIcon
+                        label={i18n.t('to')}
+                        placeholder={i18n.t('to')}
+                        keyboardType='numeric'
+
+                        onChangeText={(e) => setTo(e)}
+                        value={to}
+                        styleCont={{ marginTop: 20, width: '30%', }}
+                    />
+                    <Text style={{ fontFamily: 'flatMedium' }}>{i18n.t('clock')}</Text>
                 </View>
-                {
-                    data.map((item, index) => {
-                        return (
-                            <TouchableOpacity onPress={() => { setSelectDelivery(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
-                                <View style={{
-                                    height: 15,
-                                    width: 15,
-                                    borderRadius: 12,
-                                    borderWidth: 2,
-                                    borderColor: SelectDelivery === index ? Colors.sky : Colors.fontNormal,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    alignSelf: 'center',
 
-                                }}>
-                                    {
-                                        SelectDelivery === index ?
-                                            <View style={{
-                                                height: 6,
-                                                width: 6,
-                                                borderRadius: 6,
-                                                backgroundColor: Colors.sky,
-                                            }} />
-                                            : null
-                                    }
-                                </View>
-                                <Text style={[styles.sText, { color: SelectDelivery === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
 
-                            </TouchableOpacity>
-                        )
-                    })
-                }
+                <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                    <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10, flex: .9, fontSize: 10, }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('Franch')}</Text>
+                    </View>
+                    {
+                        data.map((item, index) => {
+                            return (
+                                <TouchableOpacity onPress={() => { setselecCommerical(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                    <View style={{
+                                        height: 15,
+                                        width: 15,
+                                        borderRadius: 12,
+                                        borderWidth: 2,
+                                        borderColor: selecCommerical === index ? Colors.sky : Colors.fontNormal,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        alignSelf: 'center',
 
-            </View>
-            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConfirmSignUp} />
+                                    }}>
+                                        {
+                                            selecCommerical === index ?
+                                                <View style={{
+                                                    height: 6,
+                                                    width: 6,
+                                                    borderRadius: 6,
+                                                    backgroundColor: Colors.sky,
+                                                }} />
+                                                : null
+                                        }
+                                    </View>
+                                    <Text style={[styles.sText, { color: selecCommerical === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
+
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+
+                </View>
+                <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                    <View style={{ paddingEnd: 80, flex: .9, fontFamily: 'flatMedium', paddingStart: 10 }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('DeliveryServ')}</Text>
+                    </View>
+                    {
+                        data.map((item, index) => {
+                            return (
+                                <TouchableOpacity onPress={() => { setSelectDelivery(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, }}>
+                                    <View style={{
+                                        height: 15,
+                                        width: 15,
+                                        borderRadius: 12,
+                                        borderWidth: 2,
+                                        borderColor: SelectDelivery === index ? Colors.sky : Colors.fontNormal,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        alignSelf: 'center',
+
+                                    }}>
+                                        {
+                                            SelectDelivery === index ?
+                                                <View style={{
+                                                    height: 6,
+                                                    width: 6,
+                                                    borderRadius: 6,
+                                                    backgroundColor: Colors.sky,
+                                                }} />
+                                                : null
+                                        }
+                                    </View>
+                                    <Text style={[styles.sText, { color: SelectDelivery === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1, fontFamily: 'flatMedium' }]}>{item.title}</Text>
+
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+
+                </View>
+                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConfirmSignUp} />
+            </KeyboardAvoidingView>
         </ScrollView>
     )
 }

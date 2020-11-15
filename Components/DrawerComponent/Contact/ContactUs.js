@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet, FlatList, ScrollView, } from 'react-native';
+import { View, Text, Image, Dimensions, StyleSheet, FlatList, ScrollView, KeyboardAvoidingView, Platform, } from 'react-native';
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors';
@@ -39,7 +39,7 @@ function ContactUs({ navigation }) {
         let val = _validate()
         if (!val) {
             setSpinner(true)
-            dispatch(SendComplaiment(token, name, email, Message, navigation, lang))
+            dispatch(SendComplaiment(token, name, email, Message, lang))
             setName('')
             setMessage('')
             setemail('')
@@ -57,40 +57,44 @@ function ContactUs({ navigation }) {
             <HomeHeader navigation={navigation} label={i18n.t('contactus')} onPress={() => navigation.navigate('MyProfile')} />
 
             <Container loading={spinner}>
-
-                <Card />
-                <InputIcon
-                    label={i18n.t('username')}
-                    placeholder={i18n.t('username')}
-                    onChangeText={(e) => setName(e)}
-                    value={name}
-                    styleCont={{ marginTop: 20 }}
-                />
-                <InputIcon
-                    label={i18n.t('email')}
-                    placeholder={i18n.t('email')}
-                    onChangeText={(e) => setemail(e)}
-                    value={email}
-                    keyboardType='email-address'
-                    styleCont={{ marginTop: 0 }}
-                />
-
-
-                <InputIcon
-
-
-                    placeholder={i18n.t('message')}
-                    styleCont={{ height: 160, marginTop: 20, width: '90%' }}
-                    inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
-                    LabelStyle={{ bottom: width * .9, }}
-                    placeholder={i18n.t('message')}
-                    onChangeText={(e) => setMessage(e)}
-                    value={Message}
-                    multiline={true}
-                    numberOfLines={10} />
+                <KeyboardAvoidingView
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    style={styles.container}
+                >
+                    <Card />
+                    <InputIcon
+                        label={i18n.t('username')}
+                        placeholder={i18n.t('username')}
+                        onChangeText={(e) => setName(e)}
+                        value={name}
+                        styleCont={{ marginTop: 20 }}
+                    />
+                    <InputIcon
+                        label={i18n.t('email')}
+                        placeholder={i18n.t('email')}
+                        onChangeText={(e) => setemail(e)}
+                        value={email}
+                        keyboardType='email-address'
+                        styleCont={{ marginTop: 0 }}
+                    />
 
 
-                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={SendComplaimentation} />
+                    <InputIcon
+
+
+                        placeholder={i18n.t('message')}
+                        styleCont={{ height: 160, marginTop: 20, width: '90%' }}
+                        inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
+                        LabelStyle={{ bottom: width * .9, }}
+                        placeholder={i18n.t('message')}
+                        onChangeText={(e) => setMessage(e)}
+                        value={Message}
+                        multiline={true}
+                        numberOfLines={10} />
+
+
+                    <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={SendComplaimentation} />
+                </KeyboardAvoidingView>
             </Container>
 
         </ScrollView>

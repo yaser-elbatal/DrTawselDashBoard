@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager, KeyboardAvoidingView, Platform } from 'react-native'
 import Colors from '../../../consts/Colors'
 import i18n from '../../../locale/i18n'
 import { InputIcon } from '../../../common/InputText'
@@ -14,7 +14,7 @@ function ChangePassword({ navigation }) {
 
     const dispatch = useDispatch()
     const token = useSelector(state => state.auth.user.data.token)
-    const lang = useSelector(state => state.lang.language.data);
+    const lang = useSelector(state => state.lang.language);
 
     const [password, setPassword] = useState('');
     const [Newpassword, setNewPassword] = useState('');
@@ -51,8 +51,7 @@ function ChangePassword({ navigation }) {
     }
 
     return (
-
-        <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
 
             <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
 
@@ -67,50 +66,53 @@ function ChangePassword({ navigation }) {
                     }
                 </TouchableOpacity>
             </ImageBackground>
+            <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-            <View style={styles.ScrolContainer}>
+                <View style={styles.ScrolContainer}>
 
-                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+
                     <Text style={styles.MainText}>{i18n.t('cnagePass')}</Text>
 
-                    <View style={{ margin: 20, marginTop: 0 }}>
-                        <InputIcon
-                            label={i18n.t('password')}
-                            placeholder={i18n.t('password')}
-                            onChangeText={(e) => setPassword(e)}
-                            value={password}
-                            secureTextEntry
-                            styleCont={{ marginTop: 0 }}
+
+                    <InputIcon
+                        label={i18n.t('password')}
+                        placeholder={i18n.t('password')}
+                        onChangeText={(e) => setPassword(e)}
+                        value={password}
+                        secureTextEntry
+                        styleCont={{ marginTop: 0 }}
 
 
 
-                        />
-                        <InputIcon
-                            label={i18n.t('NewPassword')}
-                            placeholder={i18n.t('NewPassword')}
-                            onChangeText={(e) => setNewPassword(e)}
-                            value={Newpassword}
-                            secureTextEntry
-                            styleCont={{ marginTop: 0 }}
+                    />
+                    <InputIcon
+                        label={i18n.t('NewPassword')}
+                        placeholder={i18n.t('NewPassword')}
+                        onChangeText={(e) => setNewPassword(e)}
+                        value={Newpassword}
+                        secureTextEntry
+                        styleCont={{ marginTop: 0 }}
 
 
 
-                        />
-                        <InputIcon
-                            label={i18n.t('confirmPass')}
-                            placeholder={i18n.t('confirmPass')}
-                            onChangeText={(e) => setConfirmPassword(e)}
-                            value={confirmPassword}
-                            secureTextEntry
-                            styleCont={{ marginTop: 0 }}
+                    />
+                    <InputIcon
+                        label={i18n.t('confirmPass')}
+                        placeholder={i18n.t('confirmPass')}
+                        onChangeText={(e) => setConfirmPassword(e)}
+                        value={confirmPassword}
+                        secureTextEntry
+                        styleCont={{ marginTop: 0 }}
 
 
-                        />
-                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
-                    </View>
-                </ScrollView>
-            </View>
-        </View>
+                    />
+                    <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
+
+                </View>
+            </KeyboardAvoidingView>
+
+        </ScrollView>
+
     )
 }
 const styles = StyleSheet.create({
@@ -136,8 +138,8 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '100%',
-        height: '100%',
-        bottom: 90
+        height: 350,
+        // bottom: 90
     },
     Line: {
         height: 1,
@@ -147,10 +149,9 @@ const styles = StyleSheet.create({
         marginVertical: 15
     },
     ScrolContainer: {
-        position: 'absolute',
         width: '100%',
         backgroundColor: Colors.bg,
-        bottom: 0, height: '50%',
+        bottom: 0, height: 350,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
     },

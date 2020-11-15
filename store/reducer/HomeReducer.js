@@ -8,8 +8,8 @@ export default (state = initialState, action) => {
             return { ...state, reports: action.data.data, }
         case Get_Extra_Reborts:
             return { ...state, product: action.data.data, extra: action.data.extra }
-        case Add_product:
-            return { ...state, product: action.data.data, }
+        // case Add_product:
+        //     return { ...state, product: action.data.data, }
         case 'NotificationCount':
             return { NotifyCount: action.data, }
 

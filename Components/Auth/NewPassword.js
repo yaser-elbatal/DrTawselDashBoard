@@ -65,8 +65,8 @@ function NewPassword({ navigation, route }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ marginHorizontal: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Animatable.Text>
-                        <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enternewPass')}</Animatable.Text>
+                        <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
+                        <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enternewPass')}</Text>
                     </View>
                 </View>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, ImageBackground, I18nManager, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native'
 import Colors from '../../consts/Colors'
 import i18n from '../../locale/i18n'
 import { InputIcon } from '../../common/InputText'
@@ -104,7 +104,7 @@ function EditProfile({ navigation }) {
 
         if (!val) {
             setSpinner(true)
-            dispatch(UpdateProfile(token, lang, nameEN, phone, email, city, base64, navigation)).then(() => setSpinner(false))
+            dispatch(UpdateProfile(token, lang, nameEN, phone, email, base64, navigation)).then(() => setSpinner(false))
 
         }
         else {
@@ -128,7 +128,7 @@ function EditProfile({ navigation }) {
     return (
 
 
-        <View style={{ flex: 1, }}>
+        <ScrollView style={{ flex: 1 }}>
             {renderLoader()}
             <Image source={image != null ? { uri: image } : { uri: userImage }} style={styles.ImgBackGround} />
             <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
@@ -148,14 +148,14 @@ function EditProfile({ navigation }) {
                     }
                 </TouchableOpacity>
             </ImageBackground>
+            <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-            <View style={styles.ScrolContainer}>
-                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                <View style={styles.ScrolContainer}>
 
                     <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
 
 
-                    <View style={{ margin: 20, marginTop: 0 }}>
+                    <View style={{ margin: 20, marginTop: 0, }}>
 
                         <InputIcon
                             label={i18n.t('usernamen')}
@@ -187,7 +187,7 @@ function EditProfile({ navigation }) {
                             styleCont={{ marginTop: 0 }}
                         />
 
-                        <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
+                        {/* <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
                             <Dropdown
                                 placeholder={i18n.t('city')}
                                 data={cityName}
@@ -200,7 +200,7 @@ function EditProfile({ navigation }) {
 
                                 value={city}
                             />
-                        </View>
+                        </View> */}
 
                         <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateData} />
 
@@ -208,10 +208,9 @@ function EditProfile({ navigation }) {
 
                     </View>
 
-
-                </ScrollView>
-            </View>
-        </View>
+                </View>
+            </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({
@@ -238,17 +237,14 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '100%',
-        height: '60%',
-        bottom: 90,
+        height: 350,
         opacity: .7
     },
 
     ScrolContainer: {
-        position: 'absolute',
         width: '100%',
         backgroundColor: Colors.bg,
-        bottom: 0,
-        height: '60%',
+        bottom: 0, height: 350,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
     },
@@ -260,10 +256,11 @@ const styles = StyleSheet.create({
         marginHorizontal: "5%"
     },
     LoginBtn: {
-        marginVertical: 5,
         borderRadius: 5,
         marginHorizontal: 20,
         width: '90%',
+        marginTop: 10
+
     }
 })
 export default EditProfile

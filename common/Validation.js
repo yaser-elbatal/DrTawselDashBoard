@@ -46,7 +46,7 @@ export const validateAccountNum = (code) =>
     code === '' || code.length < 14 ? i18n.t('validateAccountNum') : null;
 
 export const valdiateMoney = (code) =>
-    code === '' || code.length <= 0 ? "برجاء اضافه مبلغ صحيح" : null;
+    code === '' || code.length <= 0 ? i18n.t('ValdiationMoney') : null;
 
 export const ValdiateBranch = (code) =>
     code === '' || code.length <= 0 ? i18n.t('ValdiateBranch') : null;

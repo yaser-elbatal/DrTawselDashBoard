@@ -154,13 +154,13 @@ export const Withdrawwallet = (token, account_number, lang) => {
 }
 
 
-export const SendComplaiment = (token, username, email, description, lang) => {
+export const SendComplaiment = (token, name, email, message, lang) => {
     return async (dispatch) => {
         await axios({
             method: 'POST',
-            url: `${consts.url}send-complaint`,
+            url: `${consts.url}contact-us`,
             headers: { Authorization: 'Bearer ' + token },
-            data: { username, email, description, subject: 'رائع' },
+            data: { name, email, message, },
             params: { lang }
 
         }).then((response) => {

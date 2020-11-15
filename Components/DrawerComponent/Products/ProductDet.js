@@ -20,7 +20,6 @@ const ProductDet = ({ navigation, route }) => {
 
     const dispatch = useDispatch();
 
-    console.log(ProductDetA);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {

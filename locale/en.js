@@ -38,8 +38,8 @@ const en = {
   Completedrequests: 'Completed ٌequests',
   order: 'Order',
   quantity: 'quantity',
-  Quickreports: 'Quick Reports',
-  Yourproducts: 'Your Products',
+  Quickreports: 'Quick reports',
+  Yourproducts: 'Your products',
   AddMenue: '+ Add Menu',
   Select: 'select All',
   filter: 'Filter By',
@@ -67,7 +67,7 @@ const en = {
   confirmPass: "confirm password",
   register: "Register",
   RebName: 'representative name',
-  createAcc: 'create Account',
+  createAcc: 'Create account',
   RebEnter: 'please enter representative name',
   phoneEnter: 'please enter phone number',
   passwordEnter: 'please enter password',
@@ -607,11 +607,13 @@ const en = {
   priceOrders: 'Price Orders',
   numOrders: 'Num of Orders',
   search1: 'search1',
-  products: 'products',
+  products: 'Products',
   Location: 'Location',
+  Createreport: 'Send report to e-mail',
   discountAvg: 'precentage of discount do not pass 100٪ ',
   validateAccountNum: 'Account number must be contain 14 number',
-
+  ValdiationMoney: 'Please enter the amount you want to pay',
+  SelectElement: 'Please Select One eLement',
 };
 
 export default en;

@@ -56,8 +56,8 @@ function ActivateCode({ navigation, route }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ margin: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Animatable.Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Animatable.Text>
-                        <Animatable.Text animation='flipInY' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Animatable.Text>
+                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
+                        <Text animation='flipInY' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
                     </View>
                 </View>
                 <InputIcon

@@ -71,7 +71,6 @@ function Notifications({ navigation }) {
                         <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center', }} />
                         :
                         <FlatList
-                            pagingEnabled={true}
                             style={{ marginTop: 20 }}
                             data={Notifications}
                             extraData={spinner}
@@ -121,7 +120,8 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: Colors.fontNormal,
         marginVertical: 5,
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        alignSelf: 'flex-start'
     },
 
 

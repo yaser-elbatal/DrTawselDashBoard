@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, I18nManager, Text, Platform } from 'react-native';
+import { StyleSheet, View, I18nManager, Text, Platform, AsyncStorage } from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
@@ -11,19 +11,50 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistedStore } from './store/index';
 import './ReactotronConfig';
 import { Root } from 'native-base';
+import * as SplashScreen from 'expo-splash-screen';
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 export default function App() {
   const [isLoading, setisLoading] = useState(true);
 
 
 
-
+  SplashScreen.preventAutoHideAsync()
+    .then((result) =>
+      console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`)
+    )
+    .catch(console.warn);
 
   useEffect(() => {
-    I18n.locale = 'ar';
+    I18n.defaultLocale = 'ar';
+    // I18nManager.forceRTL(true)
+
+    // if (I18nManager.isRTL != true) {
+    //   I18nManager.forceRTL(true);
+    // }
+    // AsyncStorage.getItem("lang").then((lang) => {
+    //   if (!lang) {
+
+    //     I18n.defaultLocale = 'ar'
+    //   }
+    // })
+
+
+
+    const SplashScreenHideAsync = async () => {
+      await SplashScreen.hideAsync();
+    };
+    SplashScreenHideAsync();
+
 
     if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('orders', {
+      Notifications.setNotificationChannelAsync('DrTawsel', {
         name: 'E-mail notifications',
         importance: Notifications.AndroidImportance.HIGH,
         sound: true, // <- for Android 8.0+, see channelId property below
@@ -43,10 +74,14 @@ export default function App() {
     }
     loadFont();
 
+
+
+
+
   }, []);
 
   if (isLoading) {
-    return <AppLoading />;
+    return <AppLoading s />;
   } else {
 
     return (

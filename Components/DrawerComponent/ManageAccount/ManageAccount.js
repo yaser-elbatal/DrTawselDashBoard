@@ -45,7 +45,7 @@ function ManageAccount({ navigation }) {
             <Container loading={spinner}>
 
                 {
-                    ManAcc && !ManAcc.length ?
+                    !ManAcc || !ManAcc.length ?
                         <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
 
 

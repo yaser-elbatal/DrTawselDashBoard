@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, ScrollView, StyleSheet, Text, Platform, TouchableOpacity, Modal, Image, Button, Alert } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, Platform, TouchableOpacity, Modal, Image, Button, Alert, KeyboardAvoidingView } from 'react-native'
 import Colors from '../../consts/Colors';
 import BackBtn from '../../common/BackBtn';
 import i18n from '../../locale/i18n';
@@ -176,141 +176,151 @@ function SRegister({ navigation, route }) {
 
         <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
             <BackBtn navigation={navigation} />
-            <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Animatable.Text>
-                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Animatable.Text>
-                <Animatable.Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Animatable.Text>
-            </View>
-
-            <Container loading={spinner}>
-
-                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
-                    <Dropdown
-                        placeholder={i18n.t('dep')}
-                        data={DebName}
-                        fontSize={16}
-                        labelFontSize={16}
-                        itemTextStyle={{ fontFamily: 'flatMedium' }}
-                        itemTextStyle={{ fontSize: 18, fontFamily: 'flatMedium' }}
-                        lineWidth={0}
-                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
-                        animationDuration={0}
-                        onChangeText={val => setDepartment(val)}
-                        value={DebId.label}
-                    />
+            <KeyboardAvoidingView
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+                style={styles.container}
+            >
+                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Text>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
                 </View>
 
-                <InputIcon
-                    label={i18n.t('ResNameAr')}
-                    placeholder={i18n.t('ResNameAr')}
+                <Container loading={spinner}>
 
-                    onChangeText={(e) => setNameAr(e)}
-                    value={nameAR}
-                    styleCont={{ marginTop: 20 }}
-                />
-                <InputIcon
-                    label={i18n.t('ResNameEn')}
-                    placeholder={i18n.t('ResNameEn')}
+                    <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', marginTop: 10 }}>
+                        <Dropdown
+                            placeholder={i18n.t('dep')}
+                            data={DebName}
+                            fontSize={16}
+                            labelFontSize={16}
+                            itemTextStyle={{ fontFamily: 'flatMedium' }}
+                            itemTextStyle={{ fontSize: 18, fontFamily: 'flatMedium' }}
+                            lineWidth={0}
+                            containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                            animationDuration={0}
+                            onChangeText={val => setDepartment(val)}
+                            value={DebId.label}
+                        />
+                    </View>
 
-                    onChangeText={(e) => setNameEN(e)}
-                    value={nameEN}
-                    styleCont={{ marginTop: 0 }}
+                    <InputIcon
+                        label={i18n.t('ResNameAr')}
+                        placeholder={i18n.t('ResNameAr')}
 
-                />
-                <InputIcon
-                    label={i18n.t('Location')}
-                    placeholder={i18n.t('Location')}
-                    onChangeText={(e) => setLOcation(e)}
-                    value={LOcation}
-                    styleCont={{ marginTop: 0 }}
-                    image={require('../../assets/Images/location_gray.png')}
-                    onPress={mapRegion.latitude != null ? () => setisopened(true) : () => setisopened(false)}
-                />
+                        onChangeText={(e) => setNameAr(e)}
+                        value={nameAR}
+                        styleCont={{ marginTop: 20 }}
+                    />
+                    <InputIcon
+                        label={i18n.t('ResNameEn')}
+                        placeholder={i18n.t('ResNameEn')}
 
-                {
+                        onChangeText={(e) => setNameEN(e)}
+                        value={nameEN}
+                        styleCont={{ marginTop: 0 }}
 
-                    isopened ?
-                        <View style={styles.centeredView} >
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={isopened}   >
-                                {
+                    />
+                    <TouchableOpacity onPress={mapRegion.latitude != null ? () => setisopened(true) : () => setisopened(false)}>
+                        <InputIcon
+                            label={i18n.t('Location')}
+                            placeholder={i18n.t('Location')}
+                            onChangeText={(e) => setLOcation(e)}
+                            value={LOcation}
+                            styleCont={{ marginTop: 0 }}
+                            editable={false}
 
-                                    <View style={styles.centeredView}>
-                                        <View style={styles.modalView}>
+                            image={require('../../assets/Images/location_gray.png')}
 
-                                            <MapView
-                                                style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
-                                                region={mapRegion}
-                                                ref={mapRef}
-                                                onRegionChangeComplete={region => setMapRegion(region)}
-                                                customMapStyle={mapStyle}
-                                                initialRegion={mapRegion}
-                                                showsUserLocation={true}
-                                                zoomControlEnabled={true}
-                                                showsTraffic={true} >
+                        />
+                    </TouchableOpacity>
 
-                                                <Marker
-                                                    draggable
-                                                    coordinate={mapRegion}
-                                                    onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
 
-                                                >
-                                                    <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
-                                                </Marker>
-                                            </MapView>
-                                            <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
-                                                <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
-                                            </Animatable.View>
+                    {
 
+                        isopened ?
+                            <View style={styles.centeredView} >
+                                <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={isopened}   >
+                                    {
+
+                                        <View style={styles.centeredView}>
+                                            <View style={styles.modalView}>
+
+                                                <MapView
+                                                    style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
+                                                    region={mapRegion}
+                                                    ref={mapRef}
+                                                    onRegionChangeComplete={region => setMapRegion(region)}
+                                                    customMapStyle={mapStyle}
+                                                    initialRegion={mapRegion}
+                                                    showsUserLocation={true}
+                                                    zoomControlEnabled={true}
+                                                    showsTraffic={true} >
+
+                                                    <Marker
+                                                        draggable
+                                                        coordinate={mapRegion}
+                                                        onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+
+                                                    >
+                                                        <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
+                                                    </Marker>
+                                                </MapView>
+                                                <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
+                                                    <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+                                                </Animatable.View>
+
+                                            </View>
                                         </View>
-                                    </View>
 
-                                }
+                                    }
 
 
-                            </Modal>
-                        </View>
-                        : null
-                }
+                                </Modal>
+                            </View>
+                            : null
+                    }
 
-                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
-                    <Dropdown
-                        placeholder={i18n.t('city')}
-                        data={cityName}
-                        fontSize={16}
-                        labelFontSize={16}
-                        itemTextStyle={{ fontFamily: 'flatMedium', fontSize: 16 }}
-                        lineWidth={0}
-                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
-                        animationDuration={0}
-                        onChangeText={val => setCity(val)}
+                    <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
+                        <Dropdown
+                            placeholder={i18n.t('city')}
+                            data={cityName}
+                            fontSize={16}
+                            labelFontSize={16}
+                            itemTextStyle={{ fontFamily: 'flatMedium', fontSize: 16 }}
+                            lineWidth={0}
+                            containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                            animationDuration={0}
+                            onChangeText={val => setCity(val)}
 
-                        value={CityID.label}
+                            value={CityID.label}
+                        />
+                    </View>
+
+                    <InputIcon
+                        label={i18n.t('branchNum')}
+                        placeholder={i18n.t('branchNum')}
+                        keyboardType='numeric'
+                        onChangeText={(e) => setBranchNum(e)}
+                        value={BranchNum}
+                        styleCont={{ marginTop: 20 }}
+
                     />
-                </View>
+                    <InputIcon
+                        label={i18n.t('CommercialRegister')}
+                        placeholder={i18n.t('CommercialRegister')}
+                        keyboardType='numeric'
+                        onChangeText={(e) => setCommercialRegister(e)}
+                        value={CommercialRegister}
+                        styleCont={{ marginTop: 0 }}
 
-                <InputIcon
-                    label={i18n.t('branchNum')}
-                    placeholder={i18n.t('branchNum')}
-                    keyboardType='numeric'
-                    onChangeText={(e) => setBranchNum(e)}
-                    value={BranchNum}
-                    styleCont={{ marginTop: 20 }}
-
-                />
-                <InputIcon
-                    label={i18n.t('CommercialRegister')}
-                    placeholder={i18n.t('CommercialRegister')}
-                    keyboardType='numeric'
-                    onChangeText={(e) => setCommercialRegister(e)}
-                    value={CommercialRegister}
-                    styleCont={{ marginTop: 0 }}
-
-                />
-                <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
-            </Container>
+                    />
+                    <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
+                </Container>
+            </KeyboardAvoidingView>
         </ScrollView>
     )
 }

@@ -16,6 +16,7 @@ import Container from '../../../common/Container';
 import { Dropdown } from 'react-native-material-dropdown';
 import { MenueInfo } from '../../../store/action/MenueAction';
 import * as Animatable from 'react-native-animatable';
+import { Toast } from "native-base";
 
 function Products({ navigation }) {
     const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function Products({ navigation }) {
     const [isSelected2, setSelection2] = useState(false);
     const [spinner, setSpinner] = useState(true);
     const [Search, setSearch] = useState('');
-    const [Loader, setLoader] = useState(false)
+    const [Loader, setLoader] = useState(true)
 
 
     const Products = useSelector(state => state.product.products);
@@ -43,8 +44,9 @@ function Products({ navigation }) {
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
             setLoader(true)
+
+            setSpinner(true)
             dispatch(GetProducts(token, lang))
             dispatch(MenueInfo(lang, token)).then(() => setSpinner(false)).then(() => setLoader(false))
         });
@@ -144,7 +146,17 @@ function Products({ navigation }) {
                         <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                         <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={DeleteMenueMultiIteM} disabled={!isSelected2 && !DeleteArr.length} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, }}>
+                    <TouchableOpacity onPress={DeleteArr.length == 0 ?
+                        () => Toast.show({
+                            text: i18n.t('SelectElement'),
+                            type: "danger",
+                            duration: 3000,
+                            textStyle: {
+                                color: "white",
+                                textAlign: 'center'
+                            }
+                        })
+                        : DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, }}>
                         <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, }}> {i18n.t('delete')}</Text>
                     </TouchableOpacity>
 

@@ -52,8 +52,8 @@ function PhoneCheck({ navigation }) {
                 <BackBtn navigation={navigation} />
                 <View style={{ marginHorizontal: 20, }}>
                     <View style={{ flexDirection: 'column' }}>
-                        <Animatable.Text animation='slideInLeft' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Animatable.Text>
-                        <Animatable.Text animation='slideInRight' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterPhone')}</Animatable.Text>
+                        <Text animation='slideInLeft' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
+                        <Text animation='slideInRight' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterPhone')}</Text>
                     </View>
                 </View>
                 <InputIcon

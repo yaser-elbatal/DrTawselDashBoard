@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage, Alert, Platform } from 'react-native'
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator, I18nManager, AsyncStorage, Alert, Platform, KeyboardAvoidingView } from 'react-native'
 import Constants from 'expo-constants';
 
 import { SText } from '../../common/SText';
@@ -77,28 +77,26 @@ function Login({ navigation }) {
     }
 
     useEffect(() => {
-        setSpinner(false)
-
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             setNotification(notification);
         });
 
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log('response ?????', response);
+            console.log(response);
         });
+        registerForPushNotificationsAsync().then(token => AsyncStorage.setItem('deviceID', token));
+
+        setSpinner(false)
 
         return () => {
             Notifications.removeNotificationSubscription(notificationListener);
             Notifications.removeNotificationSubscription(responseListener);
         };
-
-    }, [navigation]);
-
+    }, []);
 
     async function registerForPushNotificationsAsync() {
         let token;
-        // لان الاشعارات مش بتشتغل ع السيميولاتور
         if (Constants.isDevice) {
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
             let finalStatus = existingStatus;
@@ -124,10 +122,12 @@ function Login({ navigation }) {
                 lightColor: '#FF231F7C',
             });
         }
+        AsyncStorage.setItem('deviceID', token);
 
         return token;
     }
 
+    console.log(expoPushToken);
 
     return (
 
@@ -135,39 +135,43 @@ function Login({ navigation }) {
 
             <BackBtn navigation={navigation} />
             <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
-                <Animatable.Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Animatable.Text>
-                <Animatable.Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Animatable.Text>
+                <Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Text>
+                <Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Text>
             </View>
             <Container loading={spinner}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    style={styles.container}
+                >
+
+                    <View style={{ overflow: 'hidden' }}>
+                        <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
+                            <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
+                        </Animatable.View>
+                    </View>
+                    <InputIcon
+                        label={i18n.t('phone')}
+                        placeholder={i18n.t('phone')}
+                        onChangeText={(e) => setPhone(e)}
+                        value={phone}
+                        keyboardType='numeric' />
+
+                    <InputIcon
+                        label={i18n.t('password')}
+                        placeholder={i18n.t('password')}
+                        onChangeText={(e) => setPassword(e)}
+                        value={password}
+                        secureTextEntry
+                        styleCont={{ marginTop: 0 }}
+                    />
+
+                    <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
 
 
-                <View style={{ overflow: 'hidden' }}>
-                    <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
-                        <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
-                    </Animatable.View>
-                </View>
-                <InputIcon
-                    label={i18n.t('phone')}
-                    placeholder={i18n.t('phone')}
-                    onChangeText={(e) => setPhone(e)}
-                    value={phone}
-                    keyboardType='numeric' />
+                    <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
 
-                <InputIcon
-                    label={i18n.t('password')}
-                    placeholder={i18n.t('password')}
-                    onChangeText={(e) => setPassword(e)}
-                    value={password}
-                    secureTextEntry
-                    styleCont={{ marginTop: 0 }}
-                />
-
-                <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
-
-
-                <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
-
-                <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 30, marginTop: 10 }} />
+                    <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 30, marginTop: 10 }} />
+                </KeyboardAvoidingView>
             </Container>
         </ScrollView>
     )

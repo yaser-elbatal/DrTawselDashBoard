@@ -16,6 +16,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { EditProvider } from '../../../store/action/ProviderAction'
 import { validateUserName, ValditeCommercialRegister } from '../../../common/Validation';
 import Container from '../../../common/Container';
+import { Dropdown } from 'react-native-material-dropdown';
+import { getCititis } from '../../../store/action/CitiesAction';
+import { GetProfile } from '../../../store/action/ProfileAction';
 
 const { width } = Dimensions.get('window')
 const { height } = Dimensions.get('window')
@@ -26,16 +29,16 @@ const longitudeDelta = 0.0421;
 
 function RestaurantInfo({ navigation }) {
 
-    const user = useSelector(state => state.auth.user.data)
+    const user = useSelector(state => state.profile.user ? state.profile.user.data : null);
+    // const user = useSelector(state => state.profile.user ? state.profile.user.data : null);
+    // console.log(user);
     const token = useSelector(state => state.auth.user.data.token)
-    const [spinner, setSpinner] = useState(false);
+    const [spinner, setSpinner] = useState(true);
     let mapRef = useRef();
-    const [mapRegion, setMapRegion] = useState({
-        latitude: user.latitude,
-        longitude: user.longitude,
-        latitudeDelta,
-        longitudeDelta
-    });
+
+    const [city2, setCity2] = useState(user.provider.city_id)
+    const cities = useSelector(state => state.cities.cities)
+    let cityName = cities.map(city => ({ label: city.name, value: city.id }));
 
 
     const [isopened, setisopened] = useState(false)
@@ -61,46 +64,30 @@ function RestaurantInfo({ navigation }) {
 
     ])
 
-    const fetchData = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        let userLocation = {};
-        if (status !== 'granted') {
-            setInitMap(false)
-            Alert.alert('صلاحيات تحديد موقعك الحالي ملغاه');
-        } else {
-            const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High, });
-            if (user.latitude) {
-                userLocation = { latitude: user.latitude, longitude: user.latitude, latitudeDelta, longitudeDelta };
-            } else {
-                userLocation = { latitude, longitude, latitudeDelta, longitudeDelta };
-            }
-            setInitMap(true)
-            setMapRegion(userLocation);
-            isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
 
-        }
-        let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-        getCity += userLocation.latitude + ',' + userLocation.longitude;
-        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
-        console.log('MapRegion======' + mapRegion.latitude);
-        try {
-            const { data } = await axios.get(getCity);
-            setCity(data.results[0].formatted_address)
-
-        } catch (e) {
-            alert('We could not find your position. Please make sure your location service provider is on');
-
-            console.log(e);
-
-        }
-    };
-
+    const [mapRegion, setMapRegion] = useState({
+        latitude: user.latitude,
+        longitude: user.longitude,
+        latitudeDelta,
+        longitudeDelta
+    });
     useEffect(() => {
-        fetchData()
-    }, []);
+
+        const unsubscribe = navigation.addListener('focus', () => {
+
+            setSpinner(true)
+            dispatch(GetProfile(token, lang))
+            // fetchData()
+            dispatch(getCititis(lang)).then(() => setSpinner(false));
+
+        })
+        return unsubscribe;
+    }, [navigation]);
 
     useEffect(() => {
     }, [city, mapRegion]);
+
+
 
     const _handleMapRegionChange = async (mapCoordinate) => {
 
@@ -112,13 +99,12 @@ function RestaurantInfo({ navigation }) {
 
         console.log('locations data', getCity);
 
-        try {
-            const { data } = await axios.get(getCity);
-            setCity(data.results[0].formatted_address)
 
-        } catch (e) {
-            console.log(e);
-        }
+        let Data = await axios.get(getCity)
+        await axios.get(getCity).then((data) => setCity(data.results[0].formatted_address))
+
+        console.log('d' + Data);
+
 
 
     };
@@ -126,13 +112,12 @@ function RestaurantInfo({ navigation }) {
 
 
 
-
-
-
     const [available, setAvailable] = useState(user.provider.available)
 
-
-
+    console.log(available);
+    console.log(selecCommerical);
+    console.log(selectedRadion);
+    console.log(SelectDelivery);
     let image = userImage;
 
 
@@ -175,7 +160,7 @@ function RestaurantInfo({ navigation }) {
 
         if (!val) {
             setSpinner(true)
-            dispatch(EditProvider(token, lang, nameAR, nameEN, mapRegion.latitude, mapRegion.longitude, city, WebUrl, CommercialRegister, selectedRadion, selecCommerical, SelectDelivery, BranchNum, from, to, base64, available, navigation)).then(() => setSpinner(false))
+            dispatch(EditProvider(token, lang, nameAR, nameEN, mapRegion.latitude, mapRegion.longitude, city, WebUrl, CommercialRegister, selectedRadion, selecCommerical, SelectDelivery, BranchNum, from, to, base64, available, city2, navigation)).then(() => dispatch(GetProfile(token, lang))).then(() => setSpinner(false))
         }
         else {
             setSpinner(false);
@@ -213,6 +198,21 @@ function RestaurantInfo({ navigation }) {
                     value={nameEN}
                     styleCont={{ marginTop: 0 }}
                 />
+
+                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
+                    <Dropdown
+                        placeholder={i18n.t('city')}
+                        data={cityName}
+                        fontSize={12}
+                        itemTextStyle={{ fontFamily: 'flatMedium' }}
+                        lineWidth={0}
+                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                        animationDuration={0}
+                        onChangeText={val => setCity2(val)}
+
+                        value={user.provider.city}
+                    />
+                </View>
                 <TouchableOpacity onPress={InitMap ? () => setisopened(true) : setisopened(false)}>
                     <InputIcon
                         label={i18n.t('city')}
@@ -220,7 +220,7 @@ function RestaurantInfo({ navigation }) {
                         // onChangeText={(e) => setCity(e)}
                         value={city}
                         editable={false}
-                        styleCont={{ marginTop: 0 }}
+                        styleCont={{ marginTop: 20 }}
                         image={require('../../../assets/Images/location_gray.png')}
                         onPress={InitMap ? () => setisopened(true) : setisopened(false)}
                     />
@@ -289,7 +289,7 @@ function RestaurantInfo({ navigation }) {
                     multiline={true}
                     onChangeText={(e) => setWebUrl(e)}
                     value={WebUrl}
-                    styleCont={{ marginTop: 20 }}
+                    styleCont={{ marginTop: 0 }}
                 />
                 <InputIcon
                     label={i18n.t('CommercialRegister')}

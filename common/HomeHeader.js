@@ -11,7 +11,7 @@ function HomeHeader({ label, title, navigation, onPress, }) {
         <View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                 <View style={{ marginHorizontal: -30, marginVertical: -10 }}>
-                    <ImageBackground source={require('../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                    <ImageBackground source={require('../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', }} resizeMode='contain'>
                         <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={{ top: 20 }}>
                             <Image source={require('../assets/Images/menu.png')} style={{ height: 25, width: 25, }} resizeMode='contain' />
                         </TouchableOpacity>
@@ -26,8 +26,8 @@ function HomeHeader({ label, title, navigation, onPress, }) {
 
             </View>
             <View style={{ flexDirection: 'column', margin: 15, }}>
-                <Animatable.Text animation='shake' easing="ease-out" delay={500} style={{ fontFamily: 'flatMedium', fontSize: 20 }}>{label}</Animatable.Text>
-                <Text style={{ fontFamily: 'flatMedium', fontSize: 12, color: Colors.fontNormal }}>{title}</Text>
+                <Text style={{ fontFamily: 'flatMedium', fontSize: 20, alignSelf: 'flex-start' }}>{label}</Text>
+                <Text style={{ fontFamily: 'flatMedium', fontSize: 12, color: Colors.fontNormal, alignSelf: 'flex-start', paddingVertical: 5 }}>{title}</Text>
             </View>
         </View>
     )

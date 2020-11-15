@@ -36,7 +36,7 @@ function Header({ label, navigation, }) {
                 </TouchableOpacity>
 
             </View>
-            <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{label}</Text>
+            <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, alignSelf: 'flex-start' }}>{label}</Text>
         </>
     )
 }

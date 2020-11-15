@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, Modal, I18nManager, ImageBackground, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, Dimensions, StyleSheet, Image, Modal, I18nManager, ImageBackground, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -52,7 +52,7 @@ const EditProduct = ({ navigation, route }) => {
     const Menue = useSelector(state => state.menue.menue.data === undefined ? [] : state.menue.menue.data);
     const ProductsExtras = useSelector(state => state.product.ExtraProduct ? state.product.ExtraProduct : []);
     const dispatch = useDispatch();
-
+    console.log(ProductDet);
     const [MenueId, setMenue] = useState(ProductDet.menu_id)
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
 
@@ -215,7 +215,7 @@ const EditProduct = ({ navigation, route }) => {
         let val = validateExtraProduce()
         if (!val) {
             setLoader(true)
-            dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => setLoader(false))
+            dispatch(AddExtraProductsFromEdit(ProductnameExtraAR, ProductnameExtraEn, priceProductExtra, ProductsId, token, lang)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setLoader(false))
 
 
             setProductnameExtraAR('');
@@ -233,7 +233,7 @@ const EditProduct = ({ navigation, route }) => {
 
     const DeleteExtraOneProduct = (id) => {
         setLoader(true)
-        dispatch(DeleteProductExtrasFromEdit(id, token)).then(() => setLoader(false))
+        dispatch(DeleteProductExtrasFromEdit(id, token)).then(() => dispatch(GetProductExtrasFromEdit(ProductsId, token, lang))).then(() => setLoader(false))
 
     }
 
@@ -249,7 +249,7 @@ const EditProduct = ({ navigation, route }) => {
     const user = useSelector(state => state.auth.user.data);
 
 
-
+    console.log(user);
 
 
 
@@ -322,7 +322,7 @@ const EditProduct = ({ navigation, route }) => {
 
                 />
 
-                <Text style={{ marginStart: 10, fontFamily: 'flatMedium', fontSize: 16, }}>{i18n.t('addSize')}</Text>
+                <Text style={{ marginStart: 22, fontFamily: 'flatMedium', fontSize: 16, alignSelf: 'flex-start' }}>{i18n.t('addSize')}</Text>
                 <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
 
                     {
@@ -403,7 +403,7 @@ const EditProduct = ({ navigation, route }) => {
 
 
                 <InputIcon
-                    styleCont={{ marginTop: 10 }}
+                    styleCont={{ marginTop: 0 }}
                     label={i18n.t('discount')}
                     placeholder={i18n.t('discount')}
                     keyboardType='numeric'
@@ -561,7 +561,7 @@ const EditProduct = ({ navigation, route }) => {
                             <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
                         </View>
                         :
-
+                        // ProductsExtras.length &&
                         ProductsExtras.map((proExtra, index) =>
                             (
                                 <View key={'_' + index}>
@@ -598,40 +598,43 @@ const EditProduct = ({ navigation, route }) => {
                         visible={EditMaodVisible} >
 
                         <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
-                            <View style={styles.modalView}>
-                                <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
-                                    <InputIcon
-                                        styleCont={{ marginTop: 10 }}
-                                        label={i18n.t('prodnameAr')}
-                                        placeholder={i18n.t('prodDetEn')}
+                            <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-                                        onChangeText={(e) => setProductnameExtraAR(e)}
-                                        value={ProductnameExtraAR}
+                                <View style={styles.modalView}>
+                                    <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
+                                        <InputIcon
+                                            styleCont={{ marginTop: 10 }}
+                                            label={i18n.t('prodnameAr')}
+                                            placeholder={i18n.t('prodDetEn')}
 
-                                    />
-                                    <InputIcon
+                                            onChangeText={(e) => setProductnameExtraAR(e)}
+                                            value={ProductnameExtraAR}
 
-                                        styleCont={{ marginTop: 0 }}
-                                        label={i18n.t('prodnameEn')}
-                                        placeholder={i18n.t('prodnameEn')}
-                                        onChangeText={(e) => setProductnameExtraEn(e)}
-                                        value={ProductnameExtraEn}
+                                        />
+                                        <InputIcon
 
-                                    />
+                                            styleCont={{ marginTop: 0 }}
+                                            label={i18n.t('prodnameEn')}
+                                            placeholder={i18n.t('prodnameEn')}
+                                            onChangeText={(e) => setProductnameExtraEn(e)}
+                                            value={ProductnameExtraEn}
 
-                                    <InputIcon
-                                        styleCont={{ marginTop: 0 }}
-                                        label={i18n.t('price')}
-                                        placeholder={i18n.t('price')}
-                                        keyboardType='numeric'
+                                        />
 
-                                        onChangeText={(e) => setPricePrdouctExtra(e)}
-                                        value={priceProductExtra}
-                                    />
+                                        <InputIcon
+                                            styleCont={{ marginTop: 0 }}
+                                            label={i18n.t('price')}
+                                            placeholder={i18n.t('price')}
+                                            keyboardType='numeric'
 
-                                    <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={AddProductExras} />
-                                </ScrollView>
-                            </View>
+                                            onChangeText={(e) => setPricePrdouctExtra(e)}
+                                            value={priceProductExtra}
+                                        />
+
+                                        <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={AddProductExras} />
+                                    </ScrollView>
+                                </View>
+                            </KeyboardAvoidingView>
                         </TouchableOpacity>
                     </Modal>
                 </View>

@@ -25,12 +25,12 @@ export const GetProfile = (token, lang) => {
 }
 
 
-export const UpdateProfile = (token, lang, name, phone, email, cityId, avatar, navigation) => {
+export const UpdateProfile = (token, lang, name, phone, email, avatar, navigation) => {
     return async dispatch => {
         await axios({
             url: consts.url + 'edit-profile',
             method: 'POST',
-            data: { name, phone, email, cityId, avatar },
+            data: { name, phone, email, avatar },
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang, }
 

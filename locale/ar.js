@@ -25,7 +25,8 @@ const ar = {
   EnterDetailes: ' ادخال تفاصيل الرساله',
   Location: 'الموقع',
   click: 'اضغط هنا',
-
+  SelectElement: 'يرجي تحديد عنصر واحد ع الاقل',
+  ValdiationMoney: "برجاء اضافه مبلغ صحيح",
   visitor: 'الدخول كذائر',
   products: 'المنتجات',
   registerNow: "سجل الآن",
@@ -554,7 +555,7 @@ const ar = {
   CodeErr: 'اعد كتابه الكود صحيحا',
   Adjusted: 'تم التسويه',
   Commission: 'العموله',
-  Createreport: 'انشاء تقرير',
+  Createreport: 'ارسال التقارير للايميل ',
   deb: 'مجال',
   delete: 'حذف',
   edit: 'تعديل',

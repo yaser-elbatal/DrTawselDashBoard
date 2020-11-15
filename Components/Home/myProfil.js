@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         margin: 20,
         marginTop: -10,
+        alignSelf: 'flex-start'
     },
     user: {
         fontFamily: 'flatMedium',

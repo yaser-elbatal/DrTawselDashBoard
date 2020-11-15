@@ -26,12 +26,12 @@ export default (state = initial_State, action) => {
             return { ...state, user: action.data, message: action.data.message, success: action.data.success };
 
         case Update_Profile:
-            return ({ ...state, user: action.data, message: action.data.message, success: action.data.success });
+            return { ...state, user: action.data, message: action.data.message, success: action.data.success };
 
         case Update_provider:
-            return { ...state, user: action.data, message: action.data.message, success: action.data.success }
+            return { ...state, user: action.data, }
         case logout:
-            return { ...state, user: null }
+            return { user: null }
 
         default:
             return state;

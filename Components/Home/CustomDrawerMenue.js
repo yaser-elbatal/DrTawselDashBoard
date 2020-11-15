@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 18,
         color: Colors.bg,
-        padding: 5,
+        padding: 10,
         alignSelf: 'flex-start',
         paddingHorizontal: 60
 

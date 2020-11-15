@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
         color: Colors.sky,
         marginVertical: 5,
         fontFamily: 'flatMedium',
+        alignSelf: 'flex-start'
 
     },
     Text: {
@@ -160,19 +161,41 @@ const styles = StyleSheet.create({
     },
     Card: {
 
+        // flexDirection: 'column',
+        // justifyContent: 'space-between',
+        // height: 140,
+        // width: '92%',
+        // marginHorizontal: '4%',
+        // shadowColor: Colors.bg,
+        // margin: 5,
+        // backgroundColor: Colors.bg,
+        // shadowOpacity: 0.25,
+        // shadowRadius: 3.84,
+        // elevation: 1,
+        // overflow: 'hidden',
+        // borderRadius: 5,
+
+
+
         flexDirection: 'column',
         justifyContent: 'space-between',
         height: 140,
-        width: '92%',
-        marginHorizontal: '4%',
+        width: '90%',
+        marginStart: 20,
+        marginVertical: 5,
         shadowColor: Colors.bg,
-        margin: 5,
+        marginTop: 0,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 1,
-        overflow: 'hidden',
-        borderRadius: 5
+        elevation: 2,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
 
     },
     Contain: {
