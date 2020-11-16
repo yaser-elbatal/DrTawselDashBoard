@@ -23,26 +23,31 @@ const Slider = ({ navigation, route }) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            dispatch(IntroService(lang))
 
-            AsyncStorage.getItem("Inro").then((itro) => {
-                if (itro) {
-                    navigation.push("Login");
-                    console.log('a' + itro);
-                }
-            })
-        })
-        return unsubscribe
+        // AsyncStorage.getItem("Inro").then((itro) => {
+        //     if (itro) {
+        //         navigation.navigate("Login");
+        //     }
+        // })
 
-    }, [navigation]);
+        AsyncStorage.getItem("Inro", (err, res) => {
+            if (res === "true") {
+                navigation.navigate("Login");
+            }
+        });
 
-    const Begin = () => {
-        AsyncStorage.setItem('Inro', 'true')
-        navigation.navigate('Login')
+        dispatch(IntroService(lang))
+
+
+
+    }, []);
+
+    const Begin = async () => {
+        await AsyncStorage.setItem('Inro', 'true').then(() => navigation.navigate('Login'))
+
     }
 
-    const slides = Intro.map(int => ({ key: int.title, title: int.title, text: int.details, image: { uri: int.image }, backgroundColor: 'red', }))
+    const slides = Intro.map(int => ({ key: int.image, title: int.title, text: int.details, image: { uri: int.image }, backgroundColor: 'red', }))
 
     const renderNextButton = () => {
         return (

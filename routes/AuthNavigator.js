@@ -70,6 +70,7 @@ import TransferMony from '../Components/DrawerComponent/Wallet/TransferMony';
 import OrderManageAccDetailes from '../Components/DrawerComponent/ManageAccount/OrderManageAccDetailes';
 import EditProd from '../Components/DrawerComponent/Products/EditProd';
 import ChooseLang from '../Components/Start/ChooseLang';
+import InitScreen from '../Components/Start/Initial';
 
 
 const Stack = createStackNavigator();
@@ -79,8 +80,8 @@ const Drawer = createDrawerNavigator();
 export const MainStackNav = () => {
 
     return (
-        <Stack.Navigator initialRouteName="ChooseLang" headerMode='none'>
-
+        <Stack.Navigator initialRouteName="InitScreen" headerMode='none'>
+            <Stack.Screen name="InitScreen" component={InitScreen} />
             <Stack.Screen name="ChooseLang" component={ChooseLang} />
             <Stack.Screen name="Home" component={Slider} />
             <Stack.Screen name="Login" component={Login} />

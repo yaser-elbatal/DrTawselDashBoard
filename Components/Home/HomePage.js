@@ -31,12 +31,10 @@ function HomePage({ navigation }) {
     console.log(HomeProduct);
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
-            dispatch(GetHomeProducts(token, lang)).then(() => dispatch(GetQuickReborts(token, lang))).then(() => setSpinner(false))
+        dispatch(GetHomeProducts(token, lang));
+        dispatch(GetQuickReborts(token, lang))
 
-        });
-        return unsubscribe
+
     }, [])
 
     useEffect(() => {

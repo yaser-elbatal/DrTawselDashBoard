@@ -4,7 +4,7 @@
     "slug": "DashboardDrTawsel",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Images/Dr.png",
+    "icon": "./assets/Images/1.png",
     "splash": {
       "image": "./assets/Images/splash.png",
       "resizeMode": "cover",

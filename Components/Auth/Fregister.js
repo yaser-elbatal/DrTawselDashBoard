@@ -80,7 +80,7 @@ function Fregister({ navigation }) {
                 style={styles.container}
             >
 
-                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
+                <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Text>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('CompInfo')}</Text>
@@ -183,11 +183,15 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 14,
         marginVertical: 10,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        alignSelf: 'flex-start'
+
     },
     TextLogin: {
         fontFamily: 'flatMedium',
         fontSize: 18,
+        alignSelf: 'flex-start'
+
     },
     LoginBtn: {
         marginVertical: 25,

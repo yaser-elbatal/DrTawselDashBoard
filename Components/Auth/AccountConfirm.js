@@ -65,7 +65,7 @@ function AccountConfirm({ navigation, route }) {
 
                 <BackBtn navigation={navigation} />
                 <View style={{ marginHorizontal: 20, }}>
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
                         <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
                         <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
                     </View>
@@ -94,12 +94,16 @@ const styles = StyleSheet.create({
     TextLogin: {
         fontFamily: 'flatMedium',
         fontSize: 18,
+        alignSelf: 'flex-start'
+
     },
     UText: {
         fontFamily: 'flatMedium',
         fontSize: 14,
         marginVertical: 10,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        alignSelf: 'flex-start'
+
     },
     wrapCheck: {
         flexDirection: 'row',

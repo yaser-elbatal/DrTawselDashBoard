@@ -29,7 +29,7 @@ const longitudeDelta = 0.0421;
 
 function RestaurantInfo({ navigation }) {
 
-    const user = useSelector(state => state.profile.user ? state.profile.user.data : null);
+    const user = useSelector(state => state.auth.user.data);
     // const user = useSelector(state => state.profile.user ? state.profile.user.data : null);
     // console.log(user);
     const token = useSelector(state => state.auth.user.data.token)
@@ -77,7 +77,6 @@ function RestaurantInfo({ navigation }) {
 
             setSpinner(true)
             dispatch(GetProfile(token, lang))
-            // fetchData()
             dispatch(getCititis(lang)).then(() => setSpinner(false));
 
         })

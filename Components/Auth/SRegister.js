@@ -34,12 +34,11 @@ function SRegister({ navigation, route }) {
 
     let DebName = Depatrmens.map(deb => ({ label: deb.name, value: deb.id }));
     let DebId = Depatrmens.map(deb => ({ label: deb.name }));
-    console.log(Depatrmens);
     let cityName = cities.map(city => ({ label: city.name, value: city.id }));
     let CityID = cities.map(city => ({ label: city.name, }));
 
     const [city, setCity] = useState(null);
-    const [MyLocation, setLocation] = useState('');
+    // const [MyLocation, setLocation] = useState('');
     const [spinner, setSpinner] = useState(true);
     const [LOcation, setLOcation] = useState('')
     const [department, setDepartment] = useState(null)
@@ -57,12 +56,10 @@ function SRegister({ navigation, route }) {
     let mapRef = useRef(null);
 
     const FetchDataError = () => {
-        <Text>xxxxxxx</Text>
         fetchData();
 
     }
-
-    console.log(department, city);
+    console.log(LOcation);
     const _validate = () => {
 
         let nameErr = validateUserName(nameAR)
@@ -76,11 +73,12 @@ function SRegister({ navigation, route }) {
         return nameErr || nameEnErr || CityID || DebId || ValditeCommercialRegisterErr || BranchErr || MapRegeionEroor
     }
     useEffect(() => {
-    }, [MyLocation, mapRegion]);
+    }, [LOcation, mapRegion]);
 
 
 
     const _handleMapRegionChange = async (mapCoordinate) => {
+
         setMapRegion({ latitude: mapCoordinate.latitude, longitude: mapCoordinate.longitude, latitudeDelta, longitudeDelta });
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
@@ -96,8 +94,6 @@ function SRegister({ navigation, route }) {
         } catch (e) {
             console.log(e);
         }
-        const { data } = await axios.get(getCity);
-        setLOcation(data.results[0].formatted_address)
     };
 
     const fetchData = async () => {
@@ -127,12 +123,16 @@ function SRegister({ navigation, route }) {
         // ReactotronConfig.log(getCity);
         try {
             const { data } = await axios.get(getCity);
+            console.log('a' + data);
             setLOcation(data.results[0].formatted_address)
             // console.log("city  " , data.results[0].formatted_address)
             // console.log("city  " , city)
         } catch (e) {
             console.log(e);
         }
+        const { data } = await axios.get(getCity);
+        console.log('a' + data);
+        setLOcation(data.results[0].formatted_address)
     };
 
     useEffect(() => {
@@ -188,7 +188,7 @@ function SRegister({ navigation, route }) {
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
                 style={styles.container}
             >
-                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
+                <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Text>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('storeInfo')}</Text>
@@ -233,11 +233,11 @@ function SRegister({ navigation, route }) {
                         <InputIcon
                             label={i18n.t('Location')}
                             placeholder={i18n.t('Location')}
-                            onChangeText={(e) => setLOcation(e)}
+                            onChangeText={() => setLOcation()}
                             value={LOcation}
                             styleCont={{ marginTop: 0 }}
                             editable={false}
-                            // onPress={() => setisopened(true)}
+                            onPress={() => mapRegion.latitude == null ? setisopened(false) : setisopened(true)}
                             image={require('../../assets/Images/location_gray.png')}
 
                         />
@@ -259,10 +259,12 @@ function SRegister({ navigation, route }) {
                                                 <View style={styles.modalView}>
 
                                                     <MapView
+
                                                         style={{ flex: 1, width: '100%', backgroundColor: Colors.bg }}
                                                         region={mapRegion}
                                                         ref={mapRef}
                                                         onRegionChangeComplete={region => setMapRegion(region)}
+                                                        onRegionChangeComplete={(e) => _handleMapRegionChange(e)}
                                                         customMapStyle={mapStyle}
                                                         initialRegion={mapRegion}
                                                         showsUserLocation={true}
@@ -272,14 +274,14 @@ function SRegister({ navigation, route }) {
                                                         <Marker
                                                             draggable
                                                             coordinate={mapRegion}
-                                                            onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+                                                        // onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
 
                                                         >
-                                                            <Image source={require('../../assets/Images/circleblue.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
+                                                            <Image source={require('../../assets/Images/map_pin.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
                                                         </Marker>
                                                     </MapView>
                                                     <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
-                                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
+                                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} color={Colors.sky} />
                                                     </Animatable.View>
 
                                                 </View>
@@ -341,11 +343,15 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 14,
         marginVertical: 10,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        alignSelf: 'flex-start'
+
     },
     TextLogin: {
         fontFamily: 'flatMedium',
         fontSize: 18,
+        alignSelf: 'flex-start'
+
     },
 
     centeredView: {

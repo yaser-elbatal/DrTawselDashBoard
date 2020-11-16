@@ -14,11 +14,7 @@ export const IntroService = (lang) => {
             params: { lang }
         }).then(res => {
             if (res.data.success) {
-                console.log(res.data.data);
-                AsyncStorage.setItem("intro", res.data.data)
                 dispatch({ type: Get_intro, data: res.data })
-
-
             }
 
 

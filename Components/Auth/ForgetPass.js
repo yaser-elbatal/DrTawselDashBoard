@@ -52,7 +52,7 @@ function ForgetPass({ navigation, route }) {
             <View style={styles.container}>
 
                 <BackBtn navigation={navigation} />
-                <View style={{ margin: 20, }}>
+                <View style={{ margin: 20, alignSelf: 'flex-start' }}>
                     <View style={{ flexDirection: 'column' }}>
                         <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
                         <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
@@ -86,11 +86,15 @@ const styles = StyleSheet.create({
     TextLogin: {
         fontFamily: 'flatMedium',
         fontSize: 18,
+        alignSelf: 'flex-start'
+
     },
     UText: {
         fontFamily: 'flatMedium',
         fontSize: 14,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        alignSelf: 'flex-start'
+
     },
     wrapCheck: {
         flexDirection: 'row',

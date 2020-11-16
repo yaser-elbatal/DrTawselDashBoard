@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     sText: {
         fontFamily: 'flatMedium',
         color: Colors.bg,
-        fontSize: 16,
+        fontSize: 18,
         textAlign: 'center',
         alignSelf: 'center'
     }

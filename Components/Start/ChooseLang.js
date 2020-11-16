@@ -1,41 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native'
-import { Content } from 'native-base';
 import i18n from '../../locale/i18n'
-import { width } from '../../consts/HeightWidth';
 import Colors from '../../consts/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage } from '../../store/action/LangAction';
-import Lang from '../DrawerComponent/Settings/Lang';
 import * as Animatable from 'react-native-animatable';
-import { IntroService } from '../../store/action/IntroAction';
 
 function ChooseLang({ navigation }) {
 
-    const [lan, setLang] = useState('')
     const lang = useSelector(state => state.lang.language);
-
     const dispatch = useDispatch();
 
     const changeLang = async (lang, direction) => {
         await dispatch(changeLanguage(lang, direction,));
 
     };
-    // console.log(lan);
-
 
     useEffect(() => {
 
-
-
         AsyncStorage.getItem("lang").then((lang) => {
             if (lang) {
-                navigation.push("Home");
-                console.log('a' + lang);
+                navigation.navigate("Home");
             }
         })
-
-
 
     }, [])
 

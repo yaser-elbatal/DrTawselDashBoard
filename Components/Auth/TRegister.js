@@ -70,24 +70,24 @@ function TRegister({ navigation, route }) {
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
                 style={styles.container}
             >
-                <View style={{ flexDirection: 'column', paddingStart: '5%' }}>
-                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
-                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Text>
-                    <Text animation='bounceIn' easing="ease-out" delay={500} style={[styles.TextLogin, { paddingVertical: 10, }]}>{i18n.t('connectInfo')}</Text>
+                <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>
+                    <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
+                    <Text style={styles.UText}>{i18n.t('Activity')}</Text>
+                    <Text style={[styles.TextLogin, { marginVertical: 10, }]}>{i18n.t('connectInfo')}</Text>
                 </View>
 
                 <InputIcon
                     label={i18n.t('webUrl')}
                     placeholder={i18n.t('Url')}
                     dataDetectorTypes={'link'}
-                    multiline={true}
                     onChangeText={(e) => setWebUrl(e)}
                     value={WebUrl}
+
                     styleCont={{ marginTop: 20 }}
                 />
 
 
-                <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%' }}>{i18n.t('preparationTime')}</Text>
+                <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%', alignSelf: 'flex-start' }}>{i18n.t('preparationTime')}</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <InputIcon
@@ -200,11 +200,15 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 14,
         marginVertical: 10,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        alignSelf: 'flex-start'
+
     },
     TextLogin: {
         fontFamily: 'flatMedium',
         fontSize: 18,
+        alignSelf: 'flex-start'
+
     },
     LoginBtn: {
         marginVertical: 5,

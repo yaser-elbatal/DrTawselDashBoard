@@ -25,11 +25,6 @@ export default function App() {
 
 
 
-  SplashScreen.preventAutoHideAsync()
-    .then((result) =>
-      console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`)
-    )
-    .catch(console.warn);
 
   useEffect(() => {
     I18n.defaultLocale = 'ar';
@@ -46,11 +41,6 @@ export default function App() {
     // })
 
 
-
-    const SplashScreenHideAsync = async () => {
-      await SplashScreen.hideAsync();
-    };
-    SplashScreenHideAsync();
 
 
     if (Platform.OS === 'android') {
@@ -81,7 +71,7 @@ export default function App() {
   }, []);
 
   if (isLoading) {
-    return <AppLoading s />;
+    return <AppLoading />;
   } else {
 
     return (

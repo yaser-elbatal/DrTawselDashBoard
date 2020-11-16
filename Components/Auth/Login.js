@@ -134,7 +134,7 @@ function Login({ navigation }) {
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
             <BackBtn navigation={navigation} />
-            <View style={{ flexDirection: 'column', marginHorizontal: 20 }}>
+            <View style={{ flexDirection: 'column', marginHorizontal: 20, alignSelf: 'flex-start' }}>
                 <Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Text>
                 <Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Text>
             </View>
@@ -184,13 +184,16 @@ const styles = StyleSheet.create({
     TextLogin: {
         fontFamily: 'flatMedium',
         fontSize: 18,
-        color: Colors.fontBold
+        color: Colors.fontBold,
+        alignSelf: 'flex-start'
+
     },
     UText: {
         fontFamily: 'flatMedium',
         fontSize: 14,
         marginVertical: 10,
-        color: Colors.fontNormal
+        color: Colors.fontNormal,
+        alignSelf: 'flex-start'
 
     },
     IMG: {
@@ -206,8 +209,7 @@ const styles = StyleSheet.create({
     },
     LoginBtn: {
         borderRadius: 5,
-        marginHorizontal: 20,
-        width: '90%'
+
     }
 
 })
