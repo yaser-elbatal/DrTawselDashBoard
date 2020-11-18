@@ -21,14 +21,13 @@ function CustomDrawerMenue({ navigation }) {
     useEffect(() => {
         dispatch(NotificationCount(token, lang))
     }, [])
-    console.log(NotifyCount);
 
 
 
     const logoutFunc = () => {
         dispatch(Logout(token))
     }
-    // console.log(token);
+
     return (
         <View style={{ flex: 1, }}>
 
@@ -214,6 +213,34 @@ function CustomDrawerMenue({ navigation }) {
                             <Text style={[styles.hellText, { color: Clicle === 12 ? Colors.bg : '#000000' }]}>{i18n.t('reports')}</Text>
                         </View>
                     </TouchableOpacity>
+                    {/* 
+                    <TouchableOpacity onPress={() => { navigation.navigate('PaginationHooks'); setClick(14) }}>
+
+                        <View style={{ backgroundColor: Clicle === 14 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 14 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+
+                            <Text style={[styles.hellText, { color: Clicle === 14 ? Colors.bg : '#000000' }]}>{i18n.t('reports')}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity onPress={() => { navigation.navigate('Pagination'); setClick(15) }}>
+                        <View style={{ backgroundColor: Clicle === 15 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
+                            {
+                                Clicle === 15 ?
+                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    : null
+                            }
+
+                            <Text style={[styles.hellText, { color: Clicle === 15 ? Colors.bg : '#000000' }]}>{i18n.t('ManageAcc')}</Text>
+                        </View>
+                    </TouchableOpacity> */}
+
+
 
                     <TouchableOpacity onPress={logoutFunc} style={{ marginBottom: 20 }}>
                         <View style={{ backgroundColor: Clicle === 13 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%' }}>

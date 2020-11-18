@@ -123,6 +123,7 @@ export const Withdrawwallet = (token, account_number, lang) => {
                 Toast.show({
                     text: response.data.message,
                     type: response.data.success ? "success" : "danger",
+                    position: 'top',
                     duration: 3000,
                     textStyle: {
                         color: "white",

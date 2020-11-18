@@ -30,7 +30,6 @@ function Wallet({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
     const isDrawerOpen = useIsDrawerOpen();
-    console.log(isDrawerOpen);
 
     const _validate = () => {
 
@@ -87,7 +86,7 @@ function Wallet({ navigation }) {
 
             </View>
             <View style={{ flexDirection: 'column', margin: 15, }}>
-                <Text style={{ fontFamily: 'flatMedium', fontSize: 20 }}>{i18n.t('wallet')}</Text>
+                <Text style={{ fontFamily: 'flatMedium', fontSize: 20, alignSelf: 'flex-start' }}>{i18n.t('wallet')}</Text>
             </View>
 
 

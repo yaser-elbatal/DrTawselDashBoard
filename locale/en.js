@@ -31,6 +31,7 @@ const en = {
   Arabic: 'Arabic',
   RestInfo: 'Restaurant Info',
   Hello: 'Hello ',
+  optional: 'Optional',
   Dash: 'Welcome to the dashboard again',
   newProduct: 'Latest products',
   IncomingRequests: 'Incoming requests',

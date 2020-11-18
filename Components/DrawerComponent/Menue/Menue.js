@@ -39,20 +39,18 @@ function Menue({ navigation, route }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
     const [Loader, setLoader] = useState(false)
-    const data = [{
-        value: i18n.t('delete'),
-    },];
 
 
     const data2 = [{
-        value: i18n.t('latest'),
+        label: i18n.t('latest'),
+        value: 1,
     }, {
-        value: i18n.t('oldest'),
+        label: i18n.t('oldest'),
+        value: 2,
     },];
 
 
 
-    console.log(DeleteArr);
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
@@ -177,7 +175,9 @@ function Menue({ navigation, route }) {
 
     const handleChandDrpDown = (val) => {
         setSpinner(true)
-        Menue.reverse();
+        val == 1 ?
+            Menue.reverse()
+            : Menue
         setSpinner(false)
 
 

@@ -126,29 +126,29 @@ function EditProfile({ navigation }) {
 
 
     return (
+        <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : "height"} style={{ backgroundColor: 'white', flex: 1 }}>
 
 
-        <ScrollView style={{ flex: 1 }}>
-            {renderLoader()}
-            <Image source={image != null ? { uri: image } : { uri: userImage }} style={styles.ImgBackGround} />
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
-                <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
-            </TouchableOpacity>
-
-
-
-            <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    {
-                        I18nManager.isRTL ?
-                            <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                            :
-                            <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-
-                    }
+            <ScrollView style={{ flex: 1 }}>
+                {renderLoader()}
+                <Image source={image != null ? { uri: image } : { uri: userImage }} style={styles.ImgBackGround} />
+                <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', top: 150 }} onPress={_pickImage}>
+                    <Image source={require('../../assets/Images/add_photo_white.png')} style={{ width: 80, height: 80, }} />
                 </TouchableOpacity>
-            </ImageBackground>
-            <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
+
+
+
+                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginLeft: -20 }} resizeMode='contain'>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        {
+                            I18nManager.isRTL ?
+                                <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+                                :
+                                <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+
+                        }
+                    </TouchableOpacity>
+                </ImageBackground>
 
                 <View style={styles.ScrolContainer}>
 
@@ -209,8 +209,9 @@ function EditProfile({ navigation }) {
                     </View>
 
                 </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
+
     )
 }
 const styles = StyleSheet.create({
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '100%',
-        height: 350,
+        height: 400,
         opacity: .7
     },
 

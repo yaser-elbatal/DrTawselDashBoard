@@ -47,17 +47,17 @@ function ForgetPass({ navigation, route }) {
 
 
     return (
-        <Container loading={spinner}>
 
-            <View style={styles.container}>
+        <View style={styles.container}>
 
-                <BackBtn navigation={navigation} />
-                <View style={{ margin: 20, alignSelf: 'flex-start' }}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
-                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
-                    </View>
+            <BackBtn navigation={navigation} />
+            <View style={{ margin: 20, alignSelf: 'flex-start' }}>
+                <View style={{ flexDirection: 'column' }}>
+                    <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
+                    <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
                 </View>
+            </View>
+            <Container loading={spinner}>
 
                 <InputIcon
                     label={i18n.t('code')}
@@ -71,9 +71,9 @@ function ForgetPass({ navigation, route }) {
                 />
 
                 <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
+            </Container>
 
-            </View>
-        </Container>
+        </View>
 
     )
 }

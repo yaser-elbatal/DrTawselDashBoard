@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.sky,
         width: '85%',
         marginHorizontal: 30,
-        height: 45,
+        height: 50,
         marginTop: 30,
         alignItems: 'center',
         justifyContent: 'center'

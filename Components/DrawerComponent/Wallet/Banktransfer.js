@@ -19,7 +19,6 @@ function Banktransfer({ navigation }) {
     const token = useSelector(state => state.auth.user.data.token)
     const lang = useSelector(state => state.lang.language);
     const MyAcoount = useSelector(state => state.Comments.Banks === undefined ? [] : state.Comments.Banks)
-    console.log(MyAcoount);
 
 
     const [spinner, setSpinner] = useState(true);

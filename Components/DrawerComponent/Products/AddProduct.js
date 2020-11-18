@@ -301,11 +301,11 @@ function AddProduct({ navigation }) {
 
     return (
 
+        <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : 'height'} style={{ backgroundColor: 'white', flex: 1 }}>
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <Header navigation={navigation} label={i18n.t('AddPro')} />
-            <Container loading={spinner}>
-                <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <Header navigation={navigation} label={i18n.t('AddPro')} />
+                <Container loading={spinner}>
 
                     <InputIcon
 
@@ -384,8 +384,8 @@ function AddProduct({ navigation }) {
                             selectedRadion === 2 ?
                                 <InputIcon
                                     styleCont={{ marginTop: 20 }}
+                                    placeholder={`${i18n.t('MidlePrice')} (${i18n.t('optional')})`}
                                     label={i18n.t('MidlePrice')}
-                                    placeholder={i18n.t('MidlePrice')}
                                     onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
                                     value={mid_price}
                                     keyboardType='numeric'
@@ -395,7 +395,7 @@ function AddProduct({ navigation }) {
                                     <InputIcon
                                         styleCont={{ marginTop: 20 }}
                                         label={i18n.t('SmallPrice')}
-                                        placeholder={i18n.t('SmallPrice')}
+                                        placeholder={`${i18n.t('SmallPrice')} (${i18n.t('optional')})`}
 
                                         onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}
                                         value={small_price}
@@ -409,7 +409,7 @@ function AddProduct({ navigation }) {
 
 
                     <InputIcon
-                        styleCont={{ marginTop: 10 }}
+                        styleCont={{ marginTop: 0 }}
                         label={i18n.t('discount')}
                         placeholder={i18n.t('discount')}
 
@@ -421,7 +421,7 @@ function AddProduct({ navigation }) {
 
 
                     <InputIcon
-                        styleCont={{ marginTop: -5 }}
+                        styleCont={{ marginTop: 0 }}
                         label={i18n.t('Availablekilos')}
                         placeholder={i18n.t('Availablekilos')}
                         keyboardType='numeric'
@@ -430,7 +430,7 @@ function AddProduct({ navigation }) {
                     />
 
                     <InputIcon
-                        styleCont={{ marginTop: -5 }}
+                        styleCont={{ marginTop: 0 }}
                         label={i18n.t('quantity')}
                         placeholder={i18n.t('quantity')}
                         keyboardType='numeric'
@@ -480,7 +480,7 @@ function AddProduct({ navigation }) {
 
                     </View>
 
-                    <TouchableOpacity onPress={_pickImage}>
+                    {/* <TouchableOpacity onPress={_pickImage} >
                         <InputIcon
                             styleCont={{ marginTop: 20 }}
                             label={i18n.t('ProdPice')}
@@ -492,17 +492,24 @@ function AddProduct({ navigation }) {
                             image={require('../../../assets/Images/camera_gray.png')}
                             onPress={_pickImage}
                         />
+                    </TouchableOpacity> */}
+
+
+                    <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', overflow: 'hidden', marginHorizontal: "4%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingEnd: 20, marginTop: 15 }}>
+                        {
+                            userImage ?
+                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }} numberOfLines={1}>{userImage}</Text>
+                                :
+                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
+
+
+                        }
+                        <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
                     </TouchableOpacity>
 
 
-                    {/* <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, marginTop: 20 }}>
-                    <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
-                    <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
-                </TouchableOpacity> */}
 
-
-
-                    <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 0, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                    <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 15, borderColor: Colors.InputColor, marginHorizontal: '4%' }}>
                         <Dropdown
                             placeholder={i18n.t('menue')}
                             data={MenueData}
@@ -615,10 +622,10 @@ function AddProduct({ navigation }) {
                             </TouchableOpacity>
                         </Modal>
                     </View>
-                </KeyboardAvoidingView>
-            </Container>
+                </Container>
 
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
 
     )
 }

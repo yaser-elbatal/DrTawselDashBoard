@@ -52,7 +52,6 @@ const EditProduct = ({ navigation, route }) => {
     const Menue = useSelector(state => state.menue.menue.data === undefined ? [] : state.menue.menue.data);
     const ProductsExtras = useSelector(state => state.product.ExtraProduct ? state.product.ExtraProduct : []);
     const dispatch = useDispatch();
-    console.log(ProductDet);
     const [MenueId, setMenue] = useState(ProductDet.menu_id)
     const [EditMaodVisible, setEditMaodVisible] = useState(false);
 
@@ -60,7 +59,6 @@ const EditProduct = ({ navigation, route }) => {
     const [userImage, setUserImage] = useState(ProductDet.image);
 
 
-    console.log(Menue);
 
 
     useEffect(() => {
@@ -89,22 +87,6 @@ const EditProduct = ({ navigation, route }) => {
 
 
     }, [route, navigation, spinner])
-
-
-
-    // useEffect(() => {
-    //     const unsubscribe = navigation.addListener('focus', () => {
-    //         setSpinner(true)
-    //         console.log('ssss');
-
-
-    //         setSpinner(false)
-    //     });
-
-    //     return unsubscribe;
-
-    // }, [navigation, route,])
-
 
 
 
@@ -273,77 +255,189 @@ const EditProduct = ({ navigation, route }) => {
 
 
     return (
-        <Container loading={spinner}>
+        <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : 'height'} style={{ backgroundColor: 'white', flex: 1 }}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <Container loading={spinner}>
+
+                <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
 
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ right: 20, bottom: 15 }}>
-                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                            <TouchableOpacity onPress={() => navigation.goBack()}>
-                                {
-                                    I18nManager.isRTL ?
-                                        <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-                                        :
-                                        <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ right: 20, bottom: 15 }}>
+                            <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    {
+                                        I18nManager.isRTL ?
+                                            <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                                            :
+                                            <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
 
-                                }
-                            </TouchableOpacity>
-                        </ImageBackground>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-                        <View style={{ marginTop: 45, marginHorizontal: 20 }}>
-                            <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                            <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                                    }
+                                </TouchableOpacity>
+                            </ImageBackground>
                         </View>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                            <View style={{ marginTop: 45, marginHorizontal: 20 }}>
+                                <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                                <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                            </View>
+                        </TouchableOpacity>
 
-                </View>
-                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
-                {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
+                    </View>
+                    <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
+                    {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
 
-                <InputIcon
+                    <InputIcon
 
-                    label={i18n.t('prodnameAr')}
-                    placeholder={i18n.t('prodnameAr')}
-                    onChangeText={(e) => setNameAr(e)}
-                    value={nameAR}
+                        label={i18n.t('prodnameAr')}
+                        placeholder={i18n.t('prodnameAr')}
+                        onChangeText={(e) => setNameAr(e)}
+                        value={nameAR}
 
-                />
-                <InputIcon
+                    />
+                    <InputIcon
 
-                    label={i18n.t('prodnameEn')}
-                    placeholder={i18n.t('prodnameEn')}
+                        label={i18n.t('prodnameEn')}
+                        placeholder={i18n.t('prodnameEn')}
 
-                    onChangeText={(e) => setNameEN(e)}
-                    value={nameEN}
-                    styleCont={{ marginTop: 0 }}
+                        onChangeText={(e) => setNameEN(e)}
+                        value={nameEN}
+                        styleCont={{ marginTop: 0 }}
 
-                />
+                    />
 
-                <Text style={{ marginStart: 22, fontFamily: 'flatMedium', fontSize: 16, alignSelf: 'flex-start' }}>{i18n.t('addSize')}</Text>
-                <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
+                    <Text style={{ marginStart: 22, fontFamily: 'flatMedium', fontSize: 16, alignSelf: 'flex-start' }}>{i18n.t('addSize')}</Text>
+                    <View style={{ alignItems: 'center', marginTop: 10, borderWidth: 1, height: 50, marginHorizontal: "5%", borderColor: '#E0E0E0', borderRadius: 5, flexDirection: 'row' }}>
+
+                        {
+                            Sizes.map((size, index) => {
+                                return (
+
+                                    <View key={'_' + index} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
+                                        <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                            <View style={{
+                                                height: 15,
+                                                width: 15,
+                                                borderRadius: 12,
+                                                borderWidth: 2,
+                                                borderColor: selectedRadion === size.id ? Colors.sky : Colors.fontNormal,
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                alignSelf: 'center',
+
+                                            }}>
+                                                {
+                                                    selectedRadion === size.id ?
+                                                        <View style={{
+                                                            height: 6,
+                                                            width: 6,
+                                                            borderRadius: 6,
+                                                            backgroundColor: Colors.sky,
+                                                        }} />
+                                                        : null
+                                                }
+                                            </View>
+                                            <Text style={[styles.sText, { color: selectedRadion === size.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{size.name}</Text>
+
+                                        </TouchableOpacity>
+
+
+                                    </View>
+                                )
+                            })
+
+                        }
+
+                    </View>
 
                     {
-                        Sizes.map((size, index) => {
-                            return (
+                        selectedRadion === 1 ?
 
-                                <View key={'_' + index} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
-                                    <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
+                            <InputIcon
+                                styleCont={{ marginTop: 20 }}
+                                label={i18n.t('BigPrice')}
+                                placeholder={i18n.t('BigPrice')}
+                                onChangeText={(e) => { setlarge_price(e); }}
+                                keyboardType='numeric'
+                                value={large_price}
+                            />
+                            : selectedRadion === 3 ?
+                                <InputIcon
+                                    styleCont={{ marginTop: 20 }}
+                                    label={i18n.t('SmallPrice')}
+                                    placeholder={i18n.t('SmallPrice')}
+                                    onChangeText={(e) => { setsmall_price(e); }}
+                                    value={small_price}
+                                    keyboardType='numeric'
+                                />
+
+                                : selectedRadion === 2 ?
+                                    <InputIcon
+                                        styleCont={{ marginTop: 20 }}
+                                        label={i18n.t('MidlePrice')}
+                                        placeholder={i18n.t('MidlePrice')}
+                                        onChangeText={(e) => { setmid_price(e); }}
+                                        value={mid_price}
+                                        keyboardType='numeric'
+                                    />
+                                    : null
+                    }
+
+
+
+
+                    <InputIcon
+                        styleCont={{ marginTop: 0 }}
+                        label={i18n.t('discount')}
+                        placeholder={i18n.t('discount')}
+                        keyboardType='numeric'
+                        onChangeText={(e) => { setDiscount(e); handaleChangeDiscount(e) }}
+                        value={Discount}
+                    />
+
+
+
+                    <InputIcon
+                        styleCont={{ marginTop: -5 }}
+                        label={i18n.t('Availablekilos')}
+                        placeholder={i18n.t('Availablekilos')}
+
+                        keyboardType='numeric'
+                        onChangeText={(e) => setavailableKilos(e)}
+                        value={availableKilos}
+                    />
+
+                    <InputIcon
+                        styleCont={{ marginTop: -5 }}
+                        label={i18n.t('quantity')}
+                        placeholder={i18n.t('quantity')}
+                        keyboardType='numeric'
+                        onChangeText={(e) => setQuantity(e)}
+                        value={quantity}
+                    />
+
+
+                    <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                        <View style={{ paddingEnd: 150, paddingStart: 10 }}>
+                            <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
+                        </View>
+                        {
+                            data.map((item, index) => {
+                                return (
+                                    <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
                                         <View style={{
                                             height: 15,
                                             width: 15,
                                             borderRadius: 12,
                                             borderWidth: 2,
-                                            borderColor: selectedRadion === size.id ? Colors.sky : Colors.fontNormal,
+                                            borderColor: available == item.id ? Colors.sky : Colors.fontNormal,
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             alignSelf: 'center',
 
                                         }}>
                                             {
-                                                selectedRadion === size.id ?
+                                                available == item.id ?
                                                     <View style={{
                                                         height: 6,
                                                         width: 6,
@@ -353,294 +447,188 @@ const EditProduct = ({ navigation, route }) => {
                                                     : null
                                             }
                                         </View>
-                                        <Text style={[styles.sText, { color: selectedRadion === size.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{size.name}</Text>
+                                        <Text style={[styles.sText, { color: available == item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
 
                                     </TouchableOpacity>
 
 
-                                </View>
-                            )
-                        })
 
-                    }
+                                )
+                            })
+                        }
 
-                </View>
+                    </View>
 
-                {
-                    selectedRadion === 1 ?
-
+                    {/* <TouchableOpacity onPress={_pickImage}>
                         <InputIcon
                             styleCont={{ marginTop: 20 }}
-                            label={i18n.t('BigPrice')}
-                            placeholder={i18n.t('BigPrice')}
-                            onChangeText={(e) => { setlarge_price(e); }}
-                            keyboardType='numeric'
-                            value={large_price}
+                            label={i18n.t('ProdPice')}
+                            placeholder={i18n.t('ProdPice')}
+                            onChangeText={(e) => setUserImage(e)}
+                            value={userImage}
+                            editable={false}
+                            inputStyle={{ fontSize: 12 }}
+                            imgStyle={{ width: 25, height: 25, bottom: 5 }}
+                            image={require('../../../assets/Images/camera_gray.png')}
+                            onPress={_pickImage}
                         />
-                        : selectedRadion === 3 ?
-                            <InputIcon
-                                styleCont={{ marginTop: 20 }}
-                                label={i18n.t('SmallPrice')}
-                                placeholder={i18n.t('SmallPrice')}
-                                onChangeText={(e) => { setsmall_price(e); }}
-                                value={small_price}
-                                keyboardType='numeric'
-                            />
-
-                            : selectedRadion === 2 ?
-                                <InputIcon
-                                    styleCont={{ marginTop: 20 }}
-                                    label={i18n.t('MidlePrice')}
-                                    placeholder={i18n.t('MidlePrice')}
-                                    onChangeText={(e) => { setmid_price(e); }}
-                                    value={mid_price}
-                                    keyboardType='numeric'
-                                />
-                                : null
-                }
+                    </TouchableOpacity> */}
 
 
+                    <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', overflow: 'hidden', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingEnd: 20, marginTop: 15 }}>
+                        <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }} numberOfLines={1}>{userImage}</Text>
+                        <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
+                    </TouchableOpacity>
 
 
-                <InputIcon
-                    styleCont={{ marginTop: 0 }}
-                    label={i18n.t('discount')}
-                    placeholder={i18n.t('discount')}
-                    keyboardType='numeric'
-                    onChangeText={(e) => { setDiscount(e); handaleChangeDiscount(e) }}
-                    value={Discount}
-                />
-
-
-
-                <InputIcon
-                    styleCont={{ marginTop: -5 }}
-                    label={i18n.t('Availablekilos')}
-                    placeholder={i18n.t('Availablekilos')}
-
-                    keyboardType='numeric'
-                    onChangeText={(e) => setavailableKilos(e)}
-                    value={availableKilos}
-                />
-
-                <InputIcon
-                    styleCont={{ marginTop: -5 }}
-                    label={i18n.t('quantity')}
-                    placeholder={i18n.t('quantity')}
-                    keyboardType='numeric'
-                    onChangeText={(e) => setQuantity(e)}
-                    value={quantity}
-                />
-
-
-                <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ paddingEnd: 150, paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
-                    </View>
                     {
-                        data.map((item, index) => {
-                            return (
-                                <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
-                                    <View style={{
-                                        height: 15,
-                                        width: 15,
-                                        borderRadius: 12,
-                                        borderWidth: 2,
-                                        borderColor: available == item.id ? Colors.sky : Colors.fontNormal,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        alignSelf: 'center',
+                        !Menue ?
+                            (<View />)
+                            :
+                            <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 15, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
+                                <Dropdown
+                                    placeholder={i18n.t('menue')}
+                                    data={Menue.map(me => ({ label: me.name, value: me.id }))}
+                                    fontSize={12}
+                                    itemTextStyle={{ fontFamily: 'flatMedium' }}
+                                    lineWidth={0}
+                                    containerStyle={{ width: '95%', paddingHorizontal: 5, bottom: 10, }}
+                                    animationDuration={0}
+                                    onChangeText={val => setMenue(val)}
 
-                                    }}>
-                                        {
-                                            available == item.id ?
-                                                <View style={{
-                                                    height: 6,
-                                                    width: 6,
-                                                    borderRadius: 6,
-                                                    backgroundColor: Colors.sky,
-                                                }} />
-                                                : null
-                                        }
-                                    </View>
-                                    <Text style={[styles.sText, { color: available == item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                    value={ProductDet.menu}
+                                />
+                            </View>
 
-                                </TouchableOpacity>
-
-
-
-                            )
-                        })
                     }
 
-                </View>
 
-                <TouchableOpacity onPress={_pickImage}>
+
                     <InputIcon
-                        styleCont={{ marginTop: 20 }}
-                        label={i18n.t('ProdPice')}
-                        placeholder={i18n.t('ProdPice')}
-                        onChangeText={(e) => setUserImage(e)}
-                        value={userImage}
-                        editable={false}
-                        inputStyle={{ fontSize: 12 }}
-                        imgStyle={{ width: 25, height: 25, bottom: 5 }}
-                        image={require('../../../assets/Images/camera_gray.png')}
-                        onPress={_pickImage}
+
+
+                        placeholder={i18n.t('prodDetAr')}
+                        styleCont={{ height: 160, marginTop: 20, width: '90%' }}
+                        inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
+                        LabelStyle={{ bottom: width * .9, }}
+                        onChangeText={(e) => setDetailesAr(e)}
+                        multiline={true}
+                        numberOfLines={10}
+                        value={detailesAr}
                     />
-                </TouchableOpacity>
-                {/* <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', marginHorizontal: "5%", marginTop: 15, borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-                    <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
-                    <Image source={require('../../../assets/Images/camera_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
-                </TouchableOpacity> */}
 
-                {
-                    !Menue ?
-                        (<View />)
-                        :
-                        <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .15, marginTop: 15, borderColor: Colors.InputColor, marginHorizontal: '5%' }}>
-                            <Dropdown
-                                placeholder={i18n.t('menue')}
-                                data={Menue.map(me => ({ label: me.name, value: me.id }))}
-                                fontSize={12}
-                                itemTextStyle={{ fontFamily: 'flatMedium' }}
-                                lineWidth={0}
-                                containerStyle={{ width: '95%', paddingHorizontal: 5, bottom: 10, }}
-                                animationDuration={0}
-                                onChangeText={val => setMenue(val)}
+                    <InputIcon
 
-                                value={ProductDet.menu}
-                            />
-                        </View>
+                        placeholder={i18n.t('prodDetEn')}
+                        styleCont={{ height: 160, marginTop: 20, width: '90%' }}
+                        inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
+                        LabelStyle={{ bottom: width * .9, }}
+                        multiline={true}
+                        numberOfLines={10}
+                        onChangeText={(e) => setDetailesEn(e)}
+                        value={detailesEn}
+                    />
 
-                }
+                    {
 
 
 
-                <InputIcon
+                        Loader ?
+                            <View style={{
+                                flex: 1,
+                                width: '100%',
+                                // height: '100%',
+                                zIndex: 99999,
+                                backgroundColor: Colors.bg,
+                                alignItems: 'center',
+                                opacity: .5,
+                                justifyContent: 'center',
+                                alignSelf: 'center',
+                            }}>
+                                <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
+                            </View>
+                            :
+                            // ProductsExtras.length &&
+                            ProductsExtras.map((proExtra, index) =>
+                                (
+                                    <View key={'_' + index}>
+                                        <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
+                                            <View style={{ flexDirection: 'row', paddingStart: 10 }}>
+                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
+                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
 
-
-                    placeholder={i18n.t('prodDetAr')}
-                    styleCont={{ height: 160, marginTop: 20, width: '90%' }}
-                    inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
-                    LabelStyle={{ bottom: width * .9, }}
-                    onChangeText={(e) => setDetailesAr(e)}
-                    multiline={true}
-                    numberOfLines={10}
-                    value={detailesAr}
-                />
-
-                <InputIcon
-
-                    placeholder={i18n.t('prodDetEn')}
-                    styleCont={{ height: 160, marginTop: 20, width: '90%' }}
-                    inputStyle={{ paddingHorizontal: 0, paddingStart: 10 }}
-                    LabelStyle={{ bottom: width * .9, }}
-                    multiline={true}
-                    numberOfLines={10}
-                    onChangeText={(e) => setDetailesEn(e)}
-                    value={detailesEn}
-                />
-
-                {
-
-
-
-                    Loader ?
-                        <View style={{
-                            flex: 1,
-                            width: '100%',
-                            // height: '100%',
-                            zIndex: 99999,
-                            backgroundColor: Colors.bg,
-                            alignItems: 'center',
-                            opacity: .5,
-                            justifyContent: 'center',
-                            alignSelf: 'center',
-                        }}>
-                            <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                        </View>
-                        :
-                        // ProductsExtras.length &&
-                        ProductsExtras.map((proExtra, index) =>
-                            (
-                                <View key={'_' + index}>
-                                    <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
-
-                                            <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
+                                            </View>
+                                            <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
+                                                <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                            </TouchableOpacity>
                                         </View>
-                                        <TouchableOpacity style={[styles.Delete, { alignItems: 'flex-end' }]} onPress={() => DeleteExtraOneProduct(proExtra.id)}>
-                                            <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                        </TouchableOpacity>
+                                        <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
                                     </View>
-                                    <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
-                                </View>
+                                )
                             )
-                        )
-                }
+                    }
 
 
 
 
-                <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
+                    <SText title={`+ ${i18n.t('AddPro')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
 
-                <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={Edit_product} />
+                    <BTN title={i18n.t('edit')} ContainerStyle={styles.LoginBtn} onPress={Edit_product} />
 
 
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        style={{ backgroundColor: Colors.bg, }}
-                        visible={EditMaodVisible} >
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            style={{ backgroundColor: Colors.bg, }}
+                            visible={EditMaodVisible} >
 
-                        <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
-                            <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
+                            <TouchableOpacity style={styles.centeredView} onPress={() => setEditMaodVisible(false)}>
+                                <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
-                                <View style={styles.modalView}>
-                                    <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
-                                        <InputIcon
-                                            styleCont={{ marginTop: 10 }}
-                                            label={i18n.t('prodnameAr')}
-                                            placeholder={i18n.t('prodDetEn')}
+                                    <View style={styles.modalView}>
+                                        <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
+                                            <InputIcon
+                                                styleCont={{ marginTop: 10 }}
+                                                label={i18n.t('prodnameAr')}
+                                                placeholder={i18n.t('prodDetEn')}
 
-                                            onChangeText={(e) => setProductnameExtraAR(e)}
-                                            value={ProductnameExtraAR}
+                                                onChangeText={(e) => setProductnameExtraAR(e)}
+                                                value={ProductnameExtraAR}
 
-                                        />
-                                        <InputIcon
+                                            />
+                                            <InputIcon
 
-                                            styleCont={{ marginTop: 0 }}
-                                            label={i18n.t('prodnameEn')}
-                                            placeholder={i18n.t('prodnameEn')}
-                                            onChangeText={(e) => setProductnameExtraEn(e)}
-                                            value={ProductnameExtraEn}
+                                                styleCont={{ marginTop: 0 }}
+                                                label={i18n.t('prodnameEn')}
+                                                placeholder={i18n.t('prodnameEn')}
+                                                onChangeText={(e) => setProductnameExtraEn(e)}
+                                                value={ProductnameExtraEn}
 
-                                        />
+                                            />
 
-                                        <InputIcon
-                                            styleCont={{ marginTop: 0 }}
-                                            label={i18n.t('price')}
-                                            placeholder={i18n.t('price')}
-                                            keyboardType='numeric'
+                                            <InputIcon
+                                                styleCont={{ marginTop: 0 }}
+                                                label={i18n.t('price')}
+                                                placeholder={i18n.t('price')}
+                                                keyboardType='numeric'
 
-                                            onChangeText={(e) => setPricePrdouctExtra(e)}
-                                            value={priceProductExtra}
-                                        />
+                                                onChangeText={(e) => setPricePrdouctExtra(e)}
+                                                value={priceProductExtra}
+                                            />
 
-                                        <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={AddProductExras} />
-                                    </ScrollView>
-                                </View>
-                            </KeyboardAvoidingView>
-                        </TouchableOpacity>
-                    </Modal>
-                </View>
+                                            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={AddProductExras} />
+                                        </ScrollView>
+                                    </View>
+                                </KeyboardAvoidingView>
+                            </TouchableOpacity>
+                        </Modal>
+                    </View>
 
-            </ScrollView>
-        </Container>
+                </ScrollView>
+            </Container>
+        </KeyboardAvoidingView>
 
     )
 }

@@ -55,7 +55,7 @@ function ChangePassword({ navigation }) {
 
             <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
 
-            <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
+            <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginLeft: -20 }} resizeMode='contain'>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     {
                         I18nManager.isRTL ?
@@ -119,7 +119,8 @@ const styles = StyleSheet.create({
     MainText: {
         fontFamily: 'flatMedium',
         fontSize: 16,
-        margin: 20
+        margin: 20,
+        alignSelf: 'flex-start'
     },
     user: {
         fontFamily: 'flatMedium',
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     },
     ImgBackGround: {
         width: '100%',
-        height: 350,
+        height: 400,
         // bottom: 90
     },
     Line: {

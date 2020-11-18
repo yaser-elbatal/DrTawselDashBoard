@@ -35,9 +35,11 @@ function Products({ navigation }) {
     const [DeleteArr, setDeleteArr] = useState([]);
 
     const data2 = [{
-        value: i18n.t('latest'),
+        label: i18n.t('latest'),
+        value: 1,
     }, {
-        value: i18n.t('oldest'),
+        label: i18n.t('oldest'),
+        value: 2,
     },];
 
 
@@ -75,7 +77,10 @@ function Products({ navigation }) {
 
     const handleChandDrpDown = (val) => {
         setLoader(true)
-        Products.reverse();
+        val == 1 ?
+            Products.reverse()
+
+            : Products
         setLoader(false)
 
 
@@ -122,7 +127,7 @@ function Products({ navigation }) {
 
     return (
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
             <HomeHeader navigation={navigation} onPress={() => navigation.navigate('MyProfile')} label={i18n.t('products')} />
             <Container loading={spinner}>
 
@@ -141,7 +146,7 @@ function Products({ navigation }) {
 
 
                 <View style={{ height: 60, width: '90%', margin: 20, flexDirection: 'row', alignItems: 'center', zIndex: 10, backgroundColor: '#F6F6F6', }}>
-                    <TouchableOpacity onPress={SelectAllChecked} style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={SelectAllChecked} style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                         <CheckBox checked={isSelected2} color={isSelected2 ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isSelected2 ? Colors.sky : Colors.bg, marginStart: -5, borderRadius: 5 }} onPress={SelectAllChecked} />
                         <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
@@ -173,6 +178,7 @@ function Products({ navigation }) {
                             fontSize={14}
                             itemTextStyle={{ fontFamily: 'flatMedium' }}
                             lineWidth={0}
+
                             containerStyle={{ width: width * .22, paddingHorizontal: 5, bottom: 10 }}
                         />
                     </View>

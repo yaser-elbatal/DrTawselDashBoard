@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TouchableOpacity, Image, Text, ScrollView, StyleSheet, Modal, Dimensions, Platform, Button, Alert } from 'react-native'
+import { View, TouchableOpacity, Image, Text, ScrollView, StyleSheet, Modal, Dimensions, Platform, Button, Alert, KeyboardAvoidingView } from 'react-native'
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import axios from "axios";
@@ -31,7 +31,6 @@ function RestaurantInfo({ navigation }) {
 
     const user = useSelector(state => state.auth.user.data);
     // const user = useSelector(state => state.profile.user ? state.profile.user.data : null);
-    // console.log(user);
     const token = useSelector(state => state.auth.user.data.token)
     const [spinner, setSpinner] = useState(true);
     let mapRef = useRef();
@@ -56,7 +55,9 @@ function RestaurantInfo({ navigation }) {
     const [SelectDelivery, setSelectDelivery] = useState(user.provider.available_delivery)
     const [selectedRadion, setSelectedRadio] = useState(user.provider.is_owner)
     const [WebUrl, setWebUrl] = useState(user.provider.website_url);
-    const [InitMap, setInitMap] = useState(true)
+    const [InitMap, setInitMap] = useState(false)
+    const [available, setAvailable] = useState(user.provider.available)
+
     const [data, setData] = useState([
 
         { id: 0, title: `${i18n.t("no")}` },
@@ -71,11 +72,44 @@ function RestaurantInfo({ navigation }) {
         latitudeDelta,
         longitudeDelta
     });
+
+
+    const fetchData = async () => {
+
+
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        let userLocation = {};
+
+        if (status !== 'granted') {
+            alert('صلاحيات تحديد موقعك الحالي ملغاه');
+            setInitMap(false)
+
+        }
+        else {
+            setInitMap(true)
+            isIOS ? mapRef.current.animateToRegion(userLocation, 1000) : false;
+
+            userLocation = {
+                latitude: user.latitude,
+                longitude: user.longitude,
+                latitudeDelta,
+                longitudeDelta
+            };
+
+            setMapRegion(userLocation);
+            setCity(user.address)
+
+        }
+
+    };
+
+
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
 
             setSpinner(true)
+            fetchData()
             dispatch(GetProfile(token, lang))
             dispatch(getCititis(lang)).then(() => setSpinner(false));
 
@@ -98,25 +132,20 @@ function RestaurantInfo({ navigation }) {
 
         console.log('locations data', getCity);
 
+        try {
+            const { data } = await axios.get(getCity);
+            setCity(data.results[0].formatted_address)
 
-        let Data = await axios.get(getCity)
-        await axios.get(getCity).then((data) => setCity(data.results[0].formatted_address))
-
-        console.log('d' + Data);
-
-
-
+        } catch (e) {
+            console.log(e);
+        }
     };
 
 
 
 
-    const [available, setAvailable] = useState(user.provider.available)
 
-    console.log(available);
-    console.log(selecCommerical);
-    console.log(selectedRadion);
-    console.log(SelectDelivery);
+
     let image = userImage;
 
 
@@ -173,312 +202,322 @@ function RestaurantInfo({ navigation }) {
 
 
 
+        <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : 'height'} style={{ backgroundColor: 'white', flex: 1 }}>
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
-            <Header navigation={navigation} label={i18n.t('RestInfo')} />
-            <Container loading={spinner}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
+                <Header navigation={navigation} label={i18n.t('RestInfo')} />
+                <Container loading={spinner}>
 
-                <TouchableOpacity onPress={_pickImage}>
+                    <TouchableOpacity onPress={_pickImage}>
 
-                    <Image source={{ uri: userImage }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
-                </TouchableOpacity>
+                        <Image source={{ uri: userImage }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+                    </TouchableOpacity>
 
-                <InputIcon
-
-                    label={i18n.t('ResNameAr')}
-                    placeholder={i18n.t('ResNameAr')}
-                    onChangeText={(e) => setNameAr(e)}
-                    value={nameAR}
-                />
-                <InputIcon
-                    label={i18n.t('ResNameEn')}
-                    placeholder={i18n.t('ResNameEn')}
-                    onChangeText={(e) => setNameEN(e)}
-                    value={nameEN}
-                    styleCont={{ marginTop: 0 }}
-                />
-
-                <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
-                    <Dropdown
-                        placeholder={i18n.t('city')}
-                        data={cityName}
-                        fontSize={12}
-                        itemTextStyle={{ fontFamily: 'flatMedium' }}
-                        lineWidth={0}
-                        containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
-                        animationDuration={0}
-                        onChangeText={val => setCity2(val)}
-
-                        value={user.provider.city}
-                    />
-                </View>
-                <TouchableOpacity onPress={InitMap ? () => setisopened(true) : setisopened(false)}>
                     <InputIcon
-                        label={i18n.t('city')}
-                        placeholder={i18n.t('city')}
-                        // onChangeText={(e) => setCity(e)}
-                        value={city}
-                        editable={false}
-                        styleCont={{ marginTop: 20 }}
-                        image={require('../../../assets/Images/location_gray.png')}
-                        onPress={InitMap ? () => setisopened(true) : setisopened(false)}
+
+                        label={i18n.t('ResNameAr')}
+                        placeholder={i18n.t('ResNameAr')}
+                        onChangeText={(e) => setNameAr(e)}
+                        value={nameAR}
                     />
-                </TouchableOpacity>
-
-
-
-
-
-
-                {
-                    isopened ?
-                        <View style={styles.centeredView} >
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={isopened}   >
-                                {
-                                    InitMap ?
-                                        (
-                                            <View style={styles.centeredView}>
-                                                <View style={styles.modalView}>
-
-                                                    <MapView
-                                                        ref={mapRef}
-                                                        style={{ flex: 1, width: '100%' }}
-                                                        region={mapRegion}
-                                                        onRegionChangeComplete={region => setMapRegion(region)}
-                                                        customMapStyle={mapStyle}
-                                                        initialRegion={mapRegion}
-                                                        showsUserLocation={true}
-                                                        zoomControlEnabled={true}
-                                                        showsTraffic={true} >
-
-                                                        <Marker
-                                                            draggable
-                                                            coordinate={mapRegion}
-                                                            onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
-
-                                                        >
-                                                            <Image source={require('../../../assets/Images/location_gray.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
-                                                        </Marker>
-                                                    </MapView>
-                                                    <Button title={i18n.t('save')} onPress={() => setisopened(false)} />
-
-
-                                                </View>
-                                            </View>
-                                        )
-                                        : (<View />)
-                                }
-
-
-
-                            </Modal>
-                        </View>
-                        : null
-                }
-
-
-                <InputIcon
-                    label={i18n.t('webUrl')}
-                    placeholder={i18n.t('Url')}
-
-                    dataDetectorTypes={'link'}
-                    multiline={true}
-                    onChangeText={(e) => setWebUrl(e)}
-                    value={WebUrl}
-                    styleCont={{ marginTop: 0 }}
-                />
-                <InputIcon
-                    label={i18n.t('CommercialRegister')}
-                    placeholder={i18n.t('CommercialRegister')}
-
-                    keyboardType='numeric'
-
-                    onChangeText={(e) => setCommercialRegister(e)}
-                    value={CommercialRegister}
-                    styleCont={{ marginTop: 0 }}
-
-                />
-                <InputIcon
-                    label={i18n.t('branchNum')}
-                    placeholder={i18n.t('branchNum')}
-
-                    keyboardType='numeric'
-
-                    onChangeText={(e) => setBranchNum(e)}
-                    value={BranchNum}
-                    styleCont={{ marginTop: 0 }}
-
-                />
-                <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%' }}>{i18n.t('preparationTime')}</Text>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <InputIcon
-                        label={i18n.t('from')}
-                        placeholder={i18n.t('from')}
-                        keyboardType='numeric'
-
-                        onChangeText={(e) => setFrom(e)}
-                        value={from}
-                        styleCont={{ marginTop: 20, width: '30%' }}
+                        label={i18n.t('ResNameEn')}
+                        placeholder={i18n.t('ResNameEn')}
+                        onChangeText={(e) => setNameEN(e)}
+                        value={nameEN}
+                        styleCont={{ marginTop: 0 }}
                     />
-                    <Text>:</Text>
-                    <InputIcon
-                        label={i18n.t('to')}
-                        placeholder={i18n.t('to')}
-                        keyboardType='numeric'
 
-                        onChangeText={(e) => setTo(e)}
-                        value={to}
-                        styleCont={{ marginTop: 20, width: '30%', }}
-                    />
-                    <Text style={{ fontFamily: 'flatMedium' }}>{i18n.t('clock')}</Text>
-                </View>
+                    <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
+                        <Dropdown
+                            placeholder={i18n.t('city')}
+                            data={cityName}
+                            fontSize={12}
+                            itemTextStyle={{ fontFamily: 'flatMedium' }}
+                            lineWidth={0}
+                            containerStyle={{ width: '90%', paddingHorizontal: 5, bottom: 10 }}
+                            animationDuration={0}
+                            onChangeText={val => setCity2(val)}
 
-
-                <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ flex: .75, paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('owner')}</Text>
+                            value={user.provider.city}
+                        />
                     </View>
-                    {
-                        data.map((item, index) => {
-                            return (
-                                <TouchableOpacity onPress={() => { setSelectedRadio(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .15 }}>
-                                    <View style={{
-                                        height: 15,
-                                        width: 15,
-                                        borderRadius: 12,
-                                        borderWidth: 2,
-                                        borderColor: selectedRadion === index ? Colors.sky : Colors.fontNormal,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        alignSelf: 'center',
-
-                                    }}>
-                                        {
-                                            selectedRadion === index ?
-                                                <View style={{
-                                                    height: 6,
-                                                    width: 6,
-                                                    borderRadius: 6,
-                                                    backgroundColor: Colors.sky,
-                                                }} />
-                                                : null
-                                        }
-                                    </View>
-                                    <Text style={[styles.sText, { color: selectedRadion === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
-
-                                </TouchableOpacity>
-
-
-
-                            )
-                        })
-                    }
-
-                </View>
+                    {/* <TouchableOpacity onPress={InitMap ? () => setisopened(true) : setisopened(false)}>
+                        <InputIcon
+                            label={i18n.t('city')}
+                            placeholder={i18n.t('city')}
+                            // onChangeText={(e) => setCity(e)}
+                            value={city}
+                            editable={false}
+                            styleCont={{ marginTop: 20 }}
+                            image={require('../../../assets/Images/location_gray.png')}
+                            onPress={InitMap ? () => setisopened(true) : setisopened(false)}
+                        />
+                    </TouchableOpacity> */}
 
 
 
 
-                <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
-                    <View style={{ flex: .75, paddingStart: 10, flex: .9, fontSize: 10, }}>
-                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('Franch')}</Text>
-                    </View>
-                    {
-                        data.map((item, index) => {
-                            return (
-                                <TouchableOpacity onPress={() => setselecCommerical(index)} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .19 }}>
-                                    <View style={{
-                                        height: 15,
-                                        width: 15,
-                                        borderRadius: 12,
-                                        borderWidth: 2,
-                                        borderColor: selecCommerical == index ? Colors.sky : Colors.fontNormal,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        alignSelf: 'center',
-
-                                    }}>
-                                        {
-                                            selecCommerical == index ?
-                                                <View style={{
-                                                    height: 6,
-                                                    width: 6,
-                                                    borderRadius: 6,
-                                                    backgroundColor: Colors.sky,
-                                                }} />
-                                                : null
-                                        }
-                                    </View>
-                                    <Text style={[styles.sText, { color: selecCommerical == index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
-
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-
-                </View>
-                <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ flex: .75, flex: .9, paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('DeliveryServ')}</Text>
-                    </View>
-                    {
-                        data.map((item, index) => {
-                            return (
-                                <TouchableOpacity onPress={() => { setSelectDelivery(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', flex: .28 }}>
-                                    <View style={{
-                                        height: 15,
-                                        width: 15,
-                                        borderRadius: 12,
-                                        borderWidth: 2,
-                                        borderColor: SelectDelivery === index ? Colors.sky : Colors.fontNormal,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        alignSelf: 'center',
-
-                                    }}>
-                                        {
-                                            SelectDelivery === index ?
-                                                <View style={{
-                                                    height: 6,
-                                                    width: 6,
-                                                    borderRadius: 6,
-                                                    backgroundColor: Colors.sky,
-                                                }} />
-                                                : null
-                                        }
-                                    </View>
-                                    <Text style={[styles.sText, { color: SelectDelivery === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
-
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-
-                </View>
-
-                <View style={styles.Container}>
-                    <Text style={styles.text}>{i18n.t('ResState')}</Text>
-
-                    <TouchableOpacity onPress={() => setAvailable(!available)}>
-                        {
-                            available ?
-                                <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-                                :
-                                <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-
-                        }
+                    <TouchableOpacity onPress={InitMap ? () => setisopened(true) : () => setisopened(false)} style={{ height: width * .14, flexDirection: 'row', overflow: 'hidden', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingEnd: 20, marginTop: 20 }}>
+                        <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12, marginStart: 5 }}>{city}</Text>
+                        <Image source={require('../../../assets/Images/location_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
                     </TouchableOpacity>
 
 
 
-                </View>
-                <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateRestaurantInfo} />
-            </Container>
-        </ScrollView>
+
+
+                    {
+                        isopened ?
+                            <View style={styles.centeredView} >
+                                <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={isopened}   >
+                                    {
+                                        InitMap ?
+                                            (
+                                                <View style={styles.centeredView}>
+                                                    <View style={styles.modalView}>
+
+                                                        <MapView
+                                                            ref={mapRef}
+                                                            style={{ flex: 1, width: '100%' }}
+                                                            region={mapRegion}
+                                                            onRegionChangeComplete={region => setMapRegion(region)}
+                                                            onRegionChangeComplete={(e) => _handleMapRegionChange(e)}
+                                                            customMapStyle={mapStyle}
+                                                            initialRegion={mapRegion}
+                                                            showsUserLocation={true}
+                                                            zoomControlEnabled={true}
+                                                            showsTraffic={true} >
+
+                                                            <Marker
+                                                                draggable
+                                                                coordinate={mapRegion}
+                                                                onDragEnd={(e) => _handleMapRegionChange(e.nativeEvent.coordinate)}
+
+                                                            >
+                                                                <Image source={require('../../../assets/Images/map_pin.png')} resizeMode={'stretch'} style={{ width: 35, height: 35 }} />
+                                                            </Marker>
+                                                        </MapView>
+                                                        <Button title={i18n.t('save')} onPress={() => setisopened(false)} color={Colors.sky} />
+
+
+                                                    </View>
+                                                </View>
+                                            )
+                                            : (<View />)
+                                    }
+
+
+
+                                </Modal>
+                            </View>
+                            : null
+                    }
+
+
+                    <InputIcon
+                        label={i18n.t('webUrl')}
+                        placeholder={i18n.t('Url')}
+
+                        dataDetectorTypes={'link'}
+                        multiline={true}
+                        onChangeText={(e) => setWebUrl(e)}
+                        value={WebUrl}
+                        styleCont={{ marginTop: 20 }}
+                    />
+                    <InputIcon
+                        label={i18n.t('CommercialRegister')}
+                        placeholder={i18n.t('CommercialRegister')}
+
+                        keyboardType='numeric'
+
+                        onChangeText={(e) => setCommercialRegister(e)}
+                        value={CommercialRegister}
+                        styleCont={{ marginTop: 0 }}
+
+                    />
+                    <InputIcon
+                        label={i18n.t('branchNum')}
+                        placeholder={i18n.t('branchNum')}
+
+                        keyboardType='numeric'
+
+                        onChangeText={(e) => setBranchNum(e)}
+                        value={BranchNum}
+                        styleCont={{ marginTop: 0 }}
+
+                    />
+                    <Text style={{ fontFamily: 'flatMedium', color: Colors.IconBlack, marginHorizontal: '5%', alignSelf: 'flex-start' }}>{i18n.t('preparationTime')}</Text>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <InputIcon
+                            label={i18n.t('from')}
+                            placeholder={i18n.t('from')}
+                            keyboardType='numeric'
+
+                            onChangeText={(e) => setFrom(e)}
+                            value={from}
+                            styleCont={{ marginTop: 20, width: '30%' }}
+                        />
+                        <Text>:</Text>
+                        <InputIcon
+                            label={i18n.t('to')}
+                            placeholder={i18n.t('to')}
+                            keyboardType='numeric'
+
+                            onChangeText={(e) => setTo(e)}
+                            value={to}
+                            styleCont={{ marginTop: 20, width: '30%', }}
+                        />
+                        <Text style={{ fontFamily: 'flatMedium' }}>{i18n.t('clock')}</Text>
+                    </View>
+
+
+                    <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                        <View style={{ flex: .75, paddingStart: 10 }}>
+                            <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>{i18n.t('owner')}</Text>
+                        </View>
+                        {
+                            data.map((item, index) => {
+                                return (
+                                    <TouchableOpacity onPress={() => { setSelectedRadio(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .15 }}>
+                                        <View style={{
+                                            height: 15,
+                                            width: 15,
+                                            borderRadius: 12,
+                                            borderWidth: 2,
+                                            borderColor: selectedRadion === index ? Colors.sky : Colors.fontNormal,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            alignSelf: 'center',
+
+                                        }}>
+                                            {
+                                                selectedRadion === index ?
+                                                    <View style={{
+                                                        height: 6,
+                                                        width: 6,
+                                                        borderRadius: 6,
+                                                        backgroundColor: Colors.sky,
+                                                    }} />
+                                                    : null
+                                            }
+                                        </View>
+                                        <Text style={[styles.sText, { color: selectedRadion === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+
+                                    </TouchableOpacity>
+
+
+
+                                )
+                            })
+                        }
+
+                    </View>
+
+
+
+
+                    <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+                        <View style={{ flex: .75, paddingStart: 10, flex: .9, fontSize: 10, }}>
+                            <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>{i18n.t('Franch')}</Text>
+                        </View>
+                        {
+                            data.map((item, index) => {
+                                return (
+                                    <TouchableOpacity onPress={() => setselecCommerical(index)} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, flex: .19 }}>
+                                        <View style={{
+                                            height: 15,
+                                            width: 15,
+                                            borderRadius: 12,
+                                            borderWidth: 2,
+                                            borderColor: selecCommerical == index ? Colors.sky : Colors.fontNormal,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            alignSelf: 'center',
+
+                                        }}>
+                                            {
+                                                selecCommerical == index ?
+                                                    <View style={{
+                                                        height: 6,
+                                                        width: 6,
+                                                        borderRadius: 6,
+                                                        backgroundColor: Colors.sky,
+                                                    }} />
+                                                    : null
+                                            }
+                                        </View>
+                                        <Text style={[styles.sText, { color: selecCommerical == index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+
+                    </View>
+                    <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+                        <View style={{ flex: .75, flex: .9, paddingStart: 10 }}>
+                            <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>{i18n.t('DeliveryServ')}</Text>
+                        </View>
+                        {
+                            data.map((item, index) => {
+                                return (
+                                    <TouchableOpacity onPress={() => { setSelectDelivery(index) }} key={index + 1} style={{ flexDirection: 'row', justifyContent: 'center', flex: .28 }}>
+                                        <View style={{
+                                            height: 15,
+                                            width: 15,
+                                            borderRadius: 12,
+                                            borderWidth: 2,
+                                            borderColor: SelectDelivery === index ? Colors.sky : Colors.fontNormal,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            alignSelf: 'center',
+
+                                        }}>
+                                            {
+                                                SelectDelivery === index ?
+                                                    <View style={{
+                                                        height: 6,
+                                                        width: 6,
+                                                        borderRadius: 6,
+                                                        backgroundColor: Colors.sky,
+                                                    }} />
+                                                    : null
+                                            }
+                                        </View>
+                                        <Text style={[styles.sText, { color: SelectDelivery === index ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+
+                    </View>
+
+                    <View style={styles.Container}>
+                        <Text style={styles.text}>{i18n.t('ResState')}</Text>
+
+                        <TouchableOpacity onPress={() => setAvailable(!available)}>
+                            {
+                                available ?
+                                    <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+                                    :
+                                    <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+
+                            }
+                        </TouchableOpacity>
+
+
+
+                    </View>
+                    <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateRestaurantInfo} />
+                </Container>
+            </ScrollView>
+        </KeyboardAvoidingView>
 
     )
 }

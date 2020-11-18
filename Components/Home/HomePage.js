@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Image, Text, ScrollView, } from 'react-native';
+import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 
 import HomeHeader from '../../common/HomeHeader'
 import Colors from '../../consts/Colors';
 import { width, height } from '../../consts/HeightWidth';
 import i18n from '../../locale/i18n'
-import { Content } from 'native-base';
 import Card from '../../common/Card'
 import { useSelector, useDispatch } from 'react-redux';
 import { GetHomeProducts, GetQuickReborts } from '../../store/action/HomeAction';
 import Container from '../../common/Container';
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import * as Notifications from 'expo-notifications'
 import { Logout } from '../../store/action/AuthAction';
@@ -28,14 +26,23 @@ function HomePage({ navigation }) {
     const dispatch = useDispatch();
 
 
-    console.log(HomeProduct);
+
+    const onRefresh = () => {
+        //Clear old data of the list
+
+        //Call the Service to get the latest data
+        dispatch(GetHomeProducts(token, lang));
+        dispatch(GetQuickReborts(token, lang))
+    };
+
+
 
     useEffect(() => {
         dispatch(GetHomeProducts(token, lang));
         dispatch(GetQuickReborts(token, lang))
 
 
-    }, [])
+    }, [lang])
 
     useEffect(() => {
 
@@ -48,9 +55,8 @@ function HomePage({ navigation }) {
 
         const subscription = Notifications.addNotificationReceivedListener(notification => {
             let type = notification.request.content.data.type;
-            let OrderId = notification.request.content.data.order_id
-            console.log('k' + type);
-            console.log(notification.request.content.data);
+            let OrderId = notification.request.content.data.order_id;
+
             if (type === 'block') {
                 dispatch(Logout(token))
 
@@ -73,7 +79,6 @@ function HomePage({ navigation }) {
         const subscriptions = Notifications.addNotificationResponseReceivedListener(response => {
             const type = response.notification.request.content.data.type;
             if (type === 'block') {
-                console.log(type);
 
                 dispatch(Logout(token))
             }
@@ -103,6 +108,11 @@ function HomePage({ navigation }) {
                             data={HomeProduct}
                             extraData={spinner}
                             horizontal={true}
+                            refreshControl={
+                                <RefreshControl
+                                    //refresh control used for the Pull to Refresh
+                                    refreshing={spinner}
+                                    onRefresh={onRefresh} />}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item, index }) => (
 
@@ -131,55 +141,55 @@ function HomePage({ navigation }) {
 
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
-                    QuickRebort && QuickRebort.reports ?
+                    QuickRebort &&
 
-                        <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                    <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                            <View style={styles.SCard}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <View style={styles.ImgWrab}>
-                                        <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                        <View style={styles.WrabText}>
-                                            <Text style={styles.ProdText}>{i18n.t('products')}</Text>
-                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('haveProduct')}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.num}>{QuickRebort.reports.products}</Text>
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
                                 </View>
-                            </View>
-                            <View style={styles.SCard}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <View style={styles.ImgWrab}>
-                                        <Image source={require('../../assets/Images/comment.png')} style={styles.SImg} resizeMode='contain' />
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{i18n.t('products')}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('haveProduct')}</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                        <View style={styles.WrabText}>
-                                            <Text style={styles.ProdText}>{i18n.t('comments')}</Text>
-                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Storecomments')}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.num}>{QuickRebort.reports.comments}</Text>
                                 </View>
+                                <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.products : null}</Text>
                             </View>
-                            <View style={styles.SCard}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <View style={styles.ImgWrab}>
-                                        <Image source={require('../../assets/Images/star_home.png')} style={styles.SImg} resizeMode='contain' />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                        <View style={styles.WrabText}>
-                                            <Text style={styles.ProdText}>{i18n.t('rateing')}</Text>
-                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Yourfeedbacks')}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
+                        </View>
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/comment.png')} style={styles.SImg} resizeMode='contain' />
                                 </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{i18n.t('comments')}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Storecomments')}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.comments : null}</Text>
                             </View>
-                        </Animatable.View>
-                        :
-                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        </View>
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/star_home.png')} style={styles.SImg} resizeMode='contain' />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{i18n.t('rateing')}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Yourfeedbacks')}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.rates : null}</Text>
+                            </View>
+                        </View>
+                    </Animatable.View>
+                    // :
+                    // <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                 }
             </Container>
         </ScrollView>

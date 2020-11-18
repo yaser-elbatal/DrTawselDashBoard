@@ -21,7 +21,7 @@ function Previousoffers({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [base64, setBase64] = useState('');
     const [userImage, setUserImage] = useState(null);
-    console.log(Banners);
+
     useEffect(() => {
 
         dispatch(GetBanners(token, lang))

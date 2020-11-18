@@ -63,13 +63,14 @@ function TRegister({ navigation, route }) {
     }
 
     return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <BackBtn navigation={navigation} />
-            <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
-                style={styles.container}
-            >
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <BackBtn navigation={navigation} />
+
                 <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>
                     <Text style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
                     <Text style={styles.UText}>{i18n.t('Activity')}</Text>
@@ -114,8 +115,8 @@ function TRegister({ navigation, route }) {
 
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', flex: 1, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10, flex: .9, fontSize: 10, }}>
-                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('Franch')}</Text>
+                    <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', flex: .9, fontSize: 10, }}>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', paddingStart: 10, alignSelf: 'flex-start' }}>{i18n.t('Franch')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
@@ -153,7 +154,7 @@ function TRegister({ navigation, route }) {
                 </View>
                 <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 20, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ paddingEnd: 80, flex: .9, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('DeliveryServ')}</Text>
+                        <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>{i18n.t('DeliveryServ')}</Text>
                     </View>
                     {
                         data.map((item, index) => {
@@ -190,8 +191,9 @@ function TRegister({ navigation, route }) {
 
                 </View>
                 <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConfirmSignUp} />
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
+
     )
 }
 

@@ -6,7 +6,7 @@ import i18n from '../../locale/i18n';
 import { InputIcon } from '../../common/InputText';
 import { validateUserName, validatePhone, validateEmail, validatePassword, validateTwoPasswords } from '../../common/Validation';
 import { useDispatch, useSelector } from 'react-redux';
-import { width } from '../../consts/HeightWidth';
+import { width, height } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import { ValidEmailPhone } from '../../store/action/AuthAction';
@@ -23,7 +23,6 @@ function Fregister({ navigation }) {
     const Validation = useSelector(state => state.auth.Validate ? state.auth.Validate.success : false);
 
 
-    console.log(Validation);
     const [data, setData] = useState([
 
 
@@ -73,12 +72,12 @@ function Fregister({ navigation }) {
 
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <BackBtn navigation={navigation} />
-            <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : null}
-                style={styles.container}
-            >
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <BackBtn navigation={navigation} />
 
                 <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
@@ -133,7 +132,7 @@ function Fregister({ navigation }) {
                 />
 
                 <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                    <View style={{ paddingEnd: 80, fontFamily: 'flatMedium', paddingStart: 10 }}>
+                    <View style={{ paddingEnd: 95, fontFamily: 'flatMedium', paddingStart: 10 }}>
                         <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('owner')}</Text>
                     </View>
                     {
@@ -174,8 +173,9 @@ function Fregister({ navigation }) {
 
                 </View>
                 <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNext} disabled={!Validation} />
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
+
     )
 }
 const styles = StyleSheet.create({

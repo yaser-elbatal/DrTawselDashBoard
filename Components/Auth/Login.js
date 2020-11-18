@@ -83,7 +83,6 @@ function Login({ navigation }) {
         });
 
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
         });
         registerForPushNotificationsAsync().then(token => AsyncStorage.setItem('deviceID', token));
 
@@ -109,7 +108,6 @@ function Login({ navigation }) {
                 return;
             }
             token = (await Notifications.getExpoPushTokenAsync()).data;
-            console.log(token);
         } else {
             alert('Must use physical device for Push Notifications');
         }
@@ -127,22 +125,21 @@ function Login({ navigation }) {
         return token;
     }
 
-    console.log(expoPushToken);
 
     return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
 
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
-            <BackBtn navigation={navigation} />
-            <View style={{ flexDirection: 'column', marginHorizontal: 20, alignSelf: 'flex-start' }}>
-                <Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Text>
-                <Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Text>
-            </View>
-            <Container loading={spinner}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS == "ios" ? "padding" : "height"}
-                    style={styles.container}
-                >
+                <BackBtn navigation={navigation} />
+                <View style={{ flexDirection: 'column', marginHorizontal: 20, alignSelf: 'flex-start' }}>
+                    <Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Text>
+                    <Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Text>
+                </View>
+                <Container loading={spinner}>
 
                     <View style={{ overflow: 'hidden' }}>
                         <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
@@ -171,9 +168,10 @@ function Login({ navigation }) {
                     <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
 
                     <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 30, marginTop: 10 }} />
-                </KeyboardAvoidingView>
-            </Container>
-        </ScrollView>
+                </Container>
+            </ScrollView>
+        </KeyboardAvoidingView>
+
     )
 }
 const styles = StyleSheet.create({

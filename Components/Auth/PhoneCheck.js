@@ -47,15 +47,16 @@ function PhoneCheck({ navigation }) {
         }
     }
     return (
-        <Container loading={spinner}>
-            <View style={{ backgroundColor: Colors.bg, flex: 1 }}>
-                <BackBtn navigation={navigation} />
-                <View style={{ marginHorizontal: 20, }}>
-                    <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
-                        <Text animation='slideInLeft' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                        <Text animation='slideInRight' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterPhone')}</Text>
-                    </View>
+        <View style={{ backgroundColor: Colors.bg, flex: 1 }}>
+            <BackBtn navigation={navigation} />
+            <View style={{ marginHorizontal: 20, }}>
+                <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
+                    <Text animation='slideInLeft' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
+                    <Text animation='slideInRight' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterPhone')}</Text>
                 </View>
+            </View>
+            <Container loading={spinner}>
+
                 <InputIcon
                     label={i18n.t('phone')}
                     placeholder={i18n.t('phone')}
@@ -68,11 +69,11 @@ function PhoneCheck({ navigation }) {
 
                 < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConFirmPhone} />
 
+            </Container>
 
-            </View>
+        </View>
 
 
-        </Container>
     )
 }
 const styles = StyleSheet.create({

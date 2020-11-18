@@ -48,7 +48,6 @@ function Register({ navigation }) {
     let DebName = Depatrmens.map(deb => ({ label: deb.name, value: deb.id }))
     let DebId = Depatrmens.map(deb => ({ label: deb.name }))
 
-    console.log('city=========' + city, 'department=========' + department);
 
 
 

@@ -14,7 +14,6 @@ function myProfil({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     // const myProf = useSelector(state => state.profile.user.data);
 
-    // console.log(myProf);
 
     const dispatch = useDispatch();
 

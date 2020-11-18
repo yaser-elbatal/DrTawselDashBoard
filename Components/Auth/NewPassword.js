@@ -58,17 +58,17 @@ function NewPassword({ navigation, route }) {
         }
     }
     return (
-        <Container loading={spinner}>
 
-            <View style={styles.container}>
+        <View style={styles.container}>
 
-                <BackBtn navigation={navigation} />
-                <View style={{ marginHorizontal: 20, }}>
-                    <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
-                        <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
-                        <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enternewPass')}</Text>
-                    </View>
+            <BackBtn navigation={navigation} />
+            <View style={{ marginHorizontal: 20, }}>
+                <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('forgetPss')}</Text>
+                    <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enternewPass')}</Text>
                 </View>
+            </View>
+            <Container loading={spinner}>
 
                 <InputIcon
                     label={i18n.t('password')}
@@ -87,9 +87,10 @@ function NewPassword({ navigation, route }) {
                     styleCont={{ marginTop: 0 }}
                 />
                 <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
-            </View>
+            </Container>
 
-        </Container>
+        </View>
+
 
 
 

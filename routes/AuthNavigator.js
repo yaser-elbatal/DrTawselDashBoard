@@ -71,6 +71,8 @@ import OrderManageAccDetailes from '../Components/DrawerComponent/ManageAccount/
 import EditProd from '../Components/DrawerComponent/Products/EditProd';
 import ChooseLang from '../Components/Start/ChooseLang';
 import InitScreen from '../Components/Start/Initial';
+import PaginationHooks from '../common/HooksPagination';
+import Pagination from '../common/Pagination';
 
 
 const Stack = createStackNavigator();
@@ -80,7 +82,7 @@ const Drawer = createDrawerNavigator();
 export const MainStackNav = () => {
 
     return (
-        <Stack.Navigator initialRouteName="InitScreen" headerMode='none'>
+        <Stack.Navigator initialRouteName="ChooseLang" headerMode='none'>
             <Stack.Screen name="InitScreen" component={InitScreen} />
             <Stack.Screen name="ChooseLang" component={ChooseLang} />
             <Stack.Screen name="Home" component={Slider} />
@@ -184,6 +186,9 @@ const drawerScreen = () => {
             <Drawer.Screen name="ManageAccount" component={ManageAccount} />
             <Drawer.Screen name="Report" component={Report} />
             <DrawerStack.Screen name="EditProd" component={EditProd} />
+            <DrawerStack.Screen name="PaginationHooks" component={PaginationHooks} />
+            <DrawerStack.Screen name="Pagination" component={Pagination} />
+
 
 
         </Drawer.Navigator>

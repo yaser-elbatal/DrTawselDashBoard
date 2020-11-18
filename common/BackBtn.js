@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, TouchableOpacity, StyleSheet, I18nManager } from 'react-native'
+import { View, Image, TouchableOpacity, StyleSheet, I18nManager, Platform } from 'react-native'
 import { width, height } from '../consts/HeightWidth'
 
 function BackBtn({ navigation }) {
@@ -24,7 +24,7 @@ function BackBtn({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-end',
-        bottom: 15,
+        bottom: Platform.OS === 'ios' ? 45 : 25,
         left: 10,
         right: 0
 

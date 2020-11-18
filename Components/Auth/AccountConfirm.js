@@ -60,16 +60,16 @@ function AccountConfirm({ navigation, route }) {
     }
 
     return (
-        <Container loading={spinner}>
-            <View style={styles.container}>
+        <View style={styles.container}>
 
-                <BackBtn navigation={navigation} />
-                <View style={{ marginHorizontal: 20, }}>
-                    <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
-                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
-                        <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
-                    </View>
+            <BackBtn navigation={navigation} />
+            <View style={{ marginHorizontal: 20, }}>
+                <View style={{ flexDirection: 'column', alignSelf: 'flex-start' }}>
+                    <Text animation='flipInX' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('confirmAcc')}</Text>
+                    <Text animation='flipInX' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterCod')}</Text>
                 </View>
+            </View>
+            <Container loading={spinner}>
 
                 <InputIcon
                     label={i18n.t('code')}
@@ -81,8 +81,9 @@ function AccountConfirm({ navigation, route }) {
 
                 />
                 < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ActivateCode} />
-            </View>
-        </Container>
+            </Container>
+
+        </View>
 
     )
 }

@@ -12,19 +12,20 @@ function InitScreen({ navigation }) {
     const dispatch = useDispatch();
     const [Intros, setIntros] = useState('')
 
-    console.log('d' + Intros);
     async function fetchData() {
 
         await AsyncStorage.getItem("Inro", (err, res) => {
             setIntros(res)
         })
         if (lang === null || lang === undefined) {
-            navigation.navigate('ChooseLang');
-        } else if (Intros) {
-            navigation.navigate('Login');
+            navigation.push('ChooseLang');
+        } else if (!Intros) {
+            navigation.push("Home");
+
         }
         else {
-            navigation.navigate("Home");
+            navigation.push('Login');
+
         }
         AsyncStorage.getItem('init').then(init => {
             if (init !== 'true') {

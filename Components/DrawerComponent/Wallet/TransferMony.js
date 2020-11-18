@@ -89,14 +89,14 @@ function TransferMony({ navigation, route }) {
 
 
     return (
+        <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : "height"} style={{ backgroundColor: 'white', flex: 1 }}>
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
 
-            <Header navigation={navigation} label={i18n.t('Banktransfer')} />
+                <Header navigation={navigation} label={i18n.t('Banktransfer')} />
 
 
-            <Container loading={spinner}>
-                <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
+                <Container loading={spinner}>
 
                     <TouchableOpacity onPress={_pickImage}>
                         {
@@ -148,10 +148,10 @@ function TransferMony({ navigation, route }) {
 
                     />
                     <BTN title={i18n.t("send")} onPress={SubmitHandler} ContainerStyle={{ marginVertical: width * .1, borderRadius: 10 }} TextStyle={{ fontSize: width * .04, }} />
-                </KeyboardAvoidingView>
-            </Container>
+                </Container>
 
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
 
 
     )

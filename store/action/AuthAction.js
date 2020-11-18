@@ -201,6 +201,16 @@ export const CheckPhone = (lang, phone, navigation) => {
         }).then(res => {
             if (res.data.success) {
                 navigation.navigate('AccConfrm', { token: res.data.data.token })
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
             }
             else {
                 Toast.show({
@@ -232,7 +242,16 @@ export const ResendCode = (token, navigation, lang) => {
         }).then(res => {
             if (res.data.success) {
                 navigation.navigate('NewPass', { token: token })
-
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
             }
             else
                 Toast.show({
@@ -263,6 +282,16 @@ export const ResetPassword = (password, token, navigation) => {
         }).then(res => {
             if (res.data.success) {
                 navigation.navigate('Login')
+                Toast.show({
+                    text: res.data.message,
+                    type: res.data.success ? "success" : "danger",
+                    duration: 3000,
+                    textStyle: {
+                        color: "white",
+                        fontFamily: 'flatMedium',
+                        textAlign: 'center'
+                    }
+                });
             }
             else {
                 Toast.show({
@@ -320,10 +349,12 @@ export const ValidEmailPhone = (key) => {
                     text: res.data.message,
                     type: "danger",
                     duration: 3000,
+                    position: 'top',
                     textStyle: {
                         color: "white",
                         fontFamily: 'flatMedium',
-                        textAlign: 'center'
+                        textAlign: 'center',
+
                     }
                 })
                 : null

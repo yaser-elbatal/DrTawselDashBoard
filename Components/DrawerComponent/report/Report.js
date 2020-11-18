@@ -22,7 +22,6 @@ function Report({ navigation }) {
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.user.data);
 
-    console.log(user.id);
 
     useEffect(() => {
 

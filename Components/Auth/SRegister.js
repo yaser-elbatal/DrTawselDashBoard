@@ -17,6 +17,7 @@ import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import Container from '../../common/Container';
 import * as Animatable from 'react-native-animatable';
+import { InputImage } from '../../common/InputIcon';
 
 const isIOS = Platform.OS === 'ios';
 const latitudeDelta = 0.0922;
@@ -40,7 +41,7 @@ function SRegister({ navigation, route }) {
     const [city, setCity] = useState(null);
     // const [MyLocation, setLocation] = useState('');
     const [spinner, setSpinner] = useState(true);
-    const [LOcation, setLOcation] = useState('')
+    const [LOcation, setLOcation] = useState()
     const [department, setDepartment] = useState(null)
     const [nameAR, setNameAr] = useState('');
     const [nameEN, setNameEN] = useState('');
@@ -59,7 +60,6 @@ function SRegister({ navigation, route }) {
         fetchData();
 
     }
-    console.log(LOcation);
     const _validate = () => {
 
         let nameErr = validateUserName(nameAR)
@@ -85,7 +85,6 @@ function SRegister({ navigation, route }) {
         getCity += mapCoordinate.latitude + ',' + mapCoordinate.longitude;
         getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
-        console.log('locations data', getCity);
 
         try {
             const { data } = await axios.get(getCity);
@@ -119,19 +118,15 @@ function SRegister({ navigation, route }) {
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
         getCity += userLocation.latitude + ',' + userLocation.longitude;
         getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
-        console.log("getCity  ", getCity)
         // ReactotronConfig.log(getCity);
         try {
             const { data } = await axios.get(getCity);
-            console.log('a' + data);
             setLOcation(data.results[0].formatted_address)
-            // console.log("city  " , data.results[0].formatted_address)
-            // console.log("city  " , city)
+
         } catch (e) {
             console.log(e);
         }
         const { data } = await axios.get(getCity);
-        console.log('a' + data);
         setLOcation(data.results[0].formatted_address)
     };
 
@@ -181,13 +176,13 @@ function SRegister({ navigation, route }) {
     }
 
     return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+                <BackBtn navigation={navigation} />
 
-        <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
-            <BackBtn navigation={navigation} />
-            <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
-                style={styles.container}
-            >
                 <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.TextLogin}>{i18n.t('createAcc')}</Text>
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('Activity')}</Text>
@@ -229,8 +224,22 @@ function SRegister({ navigation, route }) {
                         styleCont={{ marginTop: 0 }}
 
                     />
-                    <TouchableOpacity onPress={() => mapRegion.latitude == null ? setisopened(false) : setisopened(true)}>
-                        <InputIcon
+
+
+                    <TouchableOpacity onPress={() => mapRegion.latitude == null ? setisopened(false) : setisopened(true)} style={{ height: width * .14, flexDirection: 'row', overflow: 'hidden', marginHorizontal: "5%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingEnd: 20, marginTop: 0 }}>
+                        {
+                            mapRegion.latitude == null ?
+                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12, marginStart: 5 }} numberOfLines={1}>{i18n.t('Location')}</Text>
+                                :
+                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12, marginStart: 5 }}>{LOcation}</Text>
+
+
+                        }
+                        <Image source={require('../../assets/Images/location_gray.png')} style={{ width: 15, height: 15 }} resizeMode='contain' />
+                    </TouchableOpacity>
+
+
+                    {/* <InputIcon
                             label={i18n.t('Location')}
                             placeholder={i18n.t('Location')}
                             onChangeText={() => setLOcation()}
@@ -240,8 +249,7 @@ function SRegister({ navigation, route }) {
                             onPress={() => mapRegion.latitude == null ? setisopened(false) : setisopened(true)}
                             image={require('../../assets/Images/location_gray.png')}
 
-                        />
-                    </TouchableOpacity>
+                        /> */}
 
 
                     {
@@ -280,9 +288,9 @@ function SRegister({ navigation, route }) {
                                                             <Image source={require('../../assets/Images/map_pin.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />
                                                         </Marker>
                                                     </MapView>
-                                                    <Animatable.View animation='lightSpeedIn' easing="ease-out" delay={500}>
+                                                    <View >
                                                         <Button title={i18n.t('save')} onPress={() => setisopened(false)} color={Colors.sky} />
-                                                    </Animatable.View>
+                                                    </View>
 
                                                 </View>
                                             </View>
@@ -297,7 +305,7 @@ function SRegister({ navigation, route }) {
                             (<View />)
                     }
 
-                    <View style={{ borderWidth: .6, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
+                    <View style={{ borderWidth: .6, marginTop: 20, borderRadius: 5, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .14, borderColor: Colors.InputColor, marginHorizontal: '5%', }}>
                         <Dropdown
                             placeholder={i18n.t('city')}
                             data={cityName}
@@ -333,8 +341,9 @@ function SRegister({ navigation, route }) {
                     />
                     <BTN title={i18n.t('continue')} ContainerStyle={styles.LoginBtn} onPress={NavigateToNextLocation} />
                 </Container>
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
+
     )
 }
 
