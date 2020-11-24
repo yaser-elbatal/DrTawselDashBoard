@@ -10,27 +10,68 @@ export const Edit_Product = 'Edit_Product';
 export const Addextra_Products = 'Addextra_Products';
 export const Get_Product_extra = 'Get_Product_extra';
 export const Search_Product = 'Search_Product';
+export const RESET_STATES = 'RESET_STATES';
 
 
 
 export const Delete_Extra_Products = 'Delete_Extra_Products'
 
 
-export const GetProducts = (token, lang) => {
-    return async (dispatch) => {
+export const GetProducts = (token, lang, page) => {
+    return async (dispatch, getState) => {
+        const { products } = getState().product
         await axios({
             method: 'GET',
             url: consts.url + 'provider-products',
             headers: { Authorization: 'Bearer ' + token, },
-            params: { lang }
+            params: { lang, page }
 
-        }).then(res => dispatch({ type: Get_Products, data: res.data })
-
+        }).then(res => {
+            dispatch({ type: Get_Products, totalpage: res.data.extra.total_pages, data: [...products, ...res.data.data,], });
+            console.log('res' + res.data.extra.total_pages);
+        }
 
 
         )
     }
 }
+
+
+export const GetOneProducts = (token, lang, page) => {
+    return async (dispatch) => {
+        await axios({
+            method: 'GET',
+            url: consts.url + 'provider-products',
+            headers: { Authorization: 'Bearer ' + token, },
+            params: { lang, page }
+
+        }).then(res => {
+            dispatch({ type: Get_Products, totalpage: res.data.extra.total_pages, data: [...res.data.data], });
+            console.log('res' + res.data.extra.total_pages);
+        }
+
+
+        )
+    }
+}
+
+// export const GetProducts = (token, lang, page) => {
+//     return async (dispatch) => {
+//         await axios({
+//             method: 'GET',
+//             url: consts.url + 'provider-products',
+//             headers: { Authorization: 'Bearer ' + token, },
+//             params: { lang, page }
+
+//         }).then(res => {
+//             dispatch({ type: Get_Products, data: res.data.data, tatalPage: res.data.extra.total_pages });
+//             console.log('Total', res.data.extra.total_pages);
+//         }
+
+
+//         )
+//     }
+// }
 
 
 
@@ -61,6 +102,7 @@ export const DeleteProduct = (token, lang, id) => {
         }).then(res => {
 
             if (res.data.success) {
+                dispatch({ type: Delete_Product, data: res.data.data })
 
                 Toast.show({
                     text: res.data.message,
@@ -242,3 +284,5 @@ export const SerachForPorducts = (token, lang, word) => {
         })
     }
 }
+
+export const resetStates = () => ({ type: RESET_STATES })

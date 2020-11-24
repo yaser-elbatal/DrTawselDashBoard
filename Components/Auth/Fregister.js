@@ -76,7 +76,7 @@ function Fregister({ navigation }) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} keyboardShouldPersistTaps="handled" >
                 <BackBtn navigation={navigation} />
 
                 <View style={{ flexDirection: 'column', paddingStart: '5%', alignSelf: 'flex-start' }}>

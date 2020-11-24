@@ -33,7 +33,6 @@ export const SignIn = (phone, password, device_id, lang, navigation) => {
         })
 
             .then(res => {
-                console.log(res.data);
                 handelLogin(dispatch, res.data, navigation)
             })
 

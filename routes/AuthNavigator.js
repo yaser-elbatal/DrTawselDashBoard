@@ -127,7 +127,7 @@ export const AppStackNavigator = () => {
 
             <DrawerStack.Screen name="ProductDet" component={ProductDet} />
             <DrawerStack.Screen name="EditProducts" component={EditProduct} />
-            <DrawerStack.Screen name="Products" component={Products} />
+            {/* <DrawerStack.Screen name="Products" component={Products} /> */}
 
             <DrawerStack.Screen name="SpecialOrders" component={SpecialOrders} />
             <DrawerStack.Screen name="IncomingRequests" component={IncomingRequests} />

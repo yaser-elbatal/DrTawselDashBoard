@@ -38,9 +38,10 @@ const InputIcon = ({
                 style={[styles.textInput, inputStyle, { borderColor: focused ? Colors.sky : Colors.InputColor, }]}
                 placeholder={focused ? null : placeholder}
                 value={value}
+                returnKeyType="done"
                 onChangeText={onChangeText}
                 onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
+                onBlur={value ? () => setFocused(true) : () => setFocused(false)}
 
 
                 {...props}

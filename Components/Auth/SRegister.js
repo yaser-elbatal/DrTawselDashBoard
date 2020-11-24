@@ -102,7 +102,25 @@ function SRegister({ navigation, route }) {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         let userLocation = {};
         if (status !== 'granted') {
-            alert('صلاحيات تحديد موقعك الحالي ملغاه');
+
+            Alert.alert(
+                //title
+                'Hello',
+                //body
+                'صلاحيات تحديد موقعك الحالي ملغاه ?',
+                [
+                    // {
+                    //     text: 'Yes',
+                    //     onPress: () => console.log('Yes Pressed')
+                    // },
+                    {
+                        text: 'ok',
+                        onPress: () => console.log('No Pressed'), style: 'cancel'
+                    },
+                ],
+                { cancelable: false },
+                //clicking out side of alert will not cancel
+            );
 
         } else {
             const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});

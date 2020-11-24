@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, I18nManager, } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, I18nManager, ActivityIndicator, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../consts/Colors';
 import { width, height } from '../consts/HeightWidth';
@@ -50,39 +50,61 @@ function Card({ navigation }) {
 
     return (
 
-        <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <FlatList
-                horizontal
-                pagingEnabled={true}
-                showsHorizontalScrollIndicator={false}
-                data={Orderdata}
-                keyExtractor={(item) => item.id}
-                renderItem={(item) => (
-                    <View style={{
-                        height: width * .3,
-                        width: width * .29,
-                        marginStart: 5,
-                        borderRadius: 25,
-                        borderTopStartRadius: 0,
-                        flex: 1,
-                        overflow: 'hidden'
-                    }}>
-                        <LinearGradient
-                            colors={item.item.color}
-                            style={styles.Linear}  >
-                            <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', }}>
-                                <Image source={require('../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
-                                <Text style={[styles.Text, { marginTop: 5, }]}>{item.item.title}</Text>
-                                <Text style={styles.Text}>{item.item.number}</Text>
-                            </View>
-                        </LinearGradient>
+        spinner ?
 
-                    </View>
+            (
+                <View style={{
+                    flex: 1,
+                    width: '100%',
+                    zIndex: 99999,
+                    backgroundColor: '#ffffff1c',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                    marginTop: 50
+                }}>
+                    <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center', }} />
+                </View>
+
+            )
 
 
+            :
+            <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <FlatList
+                    horizontal
+                    pagingEnabled={true}
+                    showsHorizontalScrollIndicator={false}
+                    data={Orderdata}
+                    keyExtractor={(item) => item.id}
+                    renderItem={(item) => (
+                        <View style={{
+                            height: width * .3,
+                            width: width * .29,
+                            marginStart: 5,
+                            borderRadius: 25,
+                            borderTopStartRadius: 0,
+                            flex: 1,
+                            overflow: 'hidden'
+                        }}>
+                            <LinearGradient
+                                colors={item.item.color}
+                                style={styles.Linear}  >
+                                <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center', }}>
+                                    <Image source={require('../assets/Images/carts_order_icon.png')} style={{ width: 20, height: 20 }} />
+                                    <Text style={[styles.Text, { marginTop: 5, }]}>{item.item.title}</Text>
+                                    <Text style={styles.Text}>{item.item.number}</Text>
+                                </View>
+                            </LinearGradient>
 
-                )} />
-        </Animatable.View>
+
+                        </View>
+
+
+
+                    )} />
+            </Animatable.View>
+
     )
 }
 const styles = StyleSheet.create({

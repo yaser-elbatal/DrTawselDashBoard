@@ -23,15 +23,15 @@ function Previousoffers({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [base64, setBase64] = useState(null);
     const [userImage, setUserImage] = useState();
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
 
     const [Loader, setLoader] = useState(false)
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
-            dispatch(GetBanners(token, lang)).then(() => setSpinner(false))
+            setLoader(true)
+            dispatch(GetBanners(token, lang)).then(() => setLoader(false))
         });
 
         return unsubscribe;

@@ -332,7 +332,7 @@ function AddProduct({ navigation }) {
                             Sizes.map((size, index) => {
                                 return (
 
-                                    <View key={index + '_'} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
+                                    <View key={index.toString()} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
                                         <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
                                             <View style={{
                                                 height: 15,
@@ -445,7 +445,7 @@ function AddProduct({ navigation }) {
                         {
                             data.map((item, index) => {
                                 return (
-                                    <TouchableOpacity onPress={() => { setavailable(item.id) }} key={item.id.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
+                                    <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
                                         <View style={{
                                             height: 15,
                                             width: 15,
@@ -553,8 +553,8 @@ function AddProduct({ navigation }) {
                     {
                         ExtraProduct.map((proExtra, index) =>
                             (
-                                <>
-                                    <View style={{ backgroundColor: '#F7F7F7', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} key={index + '_'}>
+                                < View key={index.toString()}>
+                                    <View style={{ backgroundColor: '#F7F7F7', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 50, marginHorizontal: '5%', flexDirection: 'row' }} >
                                         <View style={{ flexDirection: 'row', paddingStart: 10 }}>
                                             <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar} / </Text>
                                             <Text style={{ paddingHorizontal: 10, fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_en}</Text>
@@ -565,7 +565,7 @@ function AddProduct({ navigation }) {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{ width, height: 1, backgroundColor: Colors.bg }}></View>
-                                </>
+                                </View>
                             )
                         )
 

@@ -86,3 +86,59 @@ function Pagination() {
 }
 
 export default Pagination
+// const Ids = [...new Set(randomUserData.map(item => item.id))]
+// const NOT_REDUNDUNT = Ids.map(id => randomUserData.find(item => item.id == id))
+// console.log("Page" + page);
+
+
+
+
+
+
+
+
+
+
+
+
+// const onEndReach = async () => {
+
+
+
+//     setloading(true);
+
+//     await axios({
+//         method: 'GET',
+//         url: consts.url + 'provider-products',
+//         headers: { Authorization: 'Bearer ' + token, },
+//         params: { lang, page }
+
+//     }).then(responseJson => {
+
+//         setpage(page + 1);
+//         SetrandomUserData([...randomUserData, ...responseJson.data.data]);
+//         setTotalPage(responseJson.data.extra.total_pages)
+//         setloading(false)
+
+//     }).catch(error => {
+//         setloading(false)
+//         console.log('Error selecting random data: ' + error)
+//     })
+
+
+
+// }
+
+
+
+
+
+
+
+
+// Keystore credentials
+// Keystore password: 1d45d603292c47748e253d9083276b1b
+// Key alias: QHlhc3NlcmVsYmF0YWwvRGFzaGJvYXJkRHJUYXdzZWw =
+//     Key password: 65232aa75e964bb79c3f901e72da1aed
+
+// Path to Keystore: @yasserelbatal__DashboardDrTawsel.bak.jks

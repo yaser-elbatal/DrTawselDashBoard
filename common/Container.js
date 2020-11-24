@@ -18,7 +18,7 @@ const Container = ({ loading, children }) => {
                 alignSelf: 'center',
                 marginTop: 50
             }}>
-                <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center', }} />
+                <ActivityIndicator visible={loading} size="large" color={Colors.sky} style={{ alignSelf: 'center', }} />
             </View>
 
         );

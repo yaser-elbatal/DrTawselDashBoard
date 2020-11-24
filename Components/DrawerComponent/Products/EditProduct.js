@@ -257,35 +257,35 @@ const EditProduct = ({ navigation, route }) => {
     return (
         <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : 'height'} style={{ backgroundColor: 'white', flex: 1 }}>
 
-            <Container loading={spinner}>
 
-                <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
 
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ right: 20, bottom: 15 }}>
-                            <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
-                                <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    {
-                                        I18nManager.isRTL ?
-                                            <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-                                            :
-                                            <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ right: 20, bottom: 15 }}>
+                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                                {
+                                    I18nManager.isRTL ?
+                                        <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+                                        :
+                                        <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
 
-                                    }
-                                </TouchableOpacity>
-                            </ImageBackground>
-                        </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-                            <View style={{ marginTop: 45, marginHorizontal: 20 }}>
-                                <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
-                                <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
-                            </View>
-                        </TouchableOpacity>
-
+                                }
+                            </TouchableOpacity>
+                        </ImageBackground>
                     </View>
-                    <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
-                    {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
+                    <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+                        <View style={{ marginTop: 45, marginHorizontal: 20 }}>
+                            <Image source={require('../../../assets/Images/circlegreen.png')} style={{ height: 10, width: 10, position: 'absolute', alignSelf: 'flex-end', }} />
+                            <Image source={{ uri: user.avatar }} style={{ height: 45, width: 45, borderRadius: 50, }} />
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
+                {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
+                <Container loading={spinner}>
 
                     <InputIcon
 
@@ -625,9 +625,8 @@ const EditProduct = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </Modal>
                     </View>
-
-                </ScrollView>
-            </Container>
+                </Container>
+            </ScrollView>
         </KeyboardAvoidingView>
 
     )
