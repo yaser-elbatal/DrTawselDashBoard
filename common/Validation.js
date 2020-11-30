@@ -40,7 +40,7 @@ export const ValdiateSelect = (id) => {
     id === null ? i18n.t('SelectYN') : undefined
 }
 export const validateUserName = userName =>
-    userName.length < 2 ? i18n.t('usernameErr') : null;
+    userName === '' || userName.length < 2 ? i18n.t('usernameErr') : null;
 
 export const validateAccountNum = (code) =>
     code === '' || code.length < 14 ? i18n.t('validateAccountNum') : null;

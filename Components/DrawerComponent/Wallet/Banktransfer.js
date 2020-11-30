@@ -54,7 +54,7 @@ function Banktransfer({ navigation }) {
                                         <View style={{ flexDirection: 'row', alignItems: 'center', flex: .5 }}>
                                             <Image source={{ uri: acc.image }} style={{ width: 60, height: 60 }} />
                                             <View style={{ flexDirection: 'column', alignItems: 'center', paddingHorizontal: 2 }}>
-                                                <Text style={{ fontSize: 8, color: 'blue', fontFamily: 'flatMedium' }}> {acc.bank_name}</Text>
+                                                <Text style={{ fontSize: 10, color: 'blue', fontFamily: 'flatMedium' }}> {acc.bank_name}</Text>
                                             </View>
                                         </View>
                                         <View style={{ flexDirection: 'column', flex: .5, justifyContent: 'center' }}>
@@ -73,8 +73,8 @@ function Banktransfer({ navigation }) {
                                             </View>
 
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>IBAN   :   </Text>
-                                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium', }}>  {acc.iban_number}  </Text>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>IBaN   :    </Text>
+                                                <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}>  {acc.iban_number}  </Text>
 
                                             </View>
                                         </View>

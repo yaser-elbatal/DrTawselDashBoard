@@ -385,7 +385,7 @@ function AddProduct({ navigation }) {
                                 <InputIcon
                                     styleCont={{ marginTop: 20 }}
                                     placeholder={`${i18n.t('MidlePrice')} (${i18n.t('optional')})`}
-                                    label={i18n.t('MidlePrice')}
+                                    label={`${i18n.t('MidlePrice')} (${i18n.t('optional')})`}
                                     onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
                                     value={mid_price}
                                     keyboardType='numeric'
@@ -394,7 +394,7 @@ function AddProduct({ navigation }) {
                                 selectedRadion === 3 ?
                                     <InputIcon
                                         styleCont={{ marginTop: 20 }}
-                                        label={i18n.t('SmallPrice')}
+                                        label={`${i18n.t('SmallPrice')} (${i18n.t('optional')})`}
                                         placeholder={`${i18n.t('SmallPrice')} (${i18n.t('optional')})`}
 
                                         onChangeText={(e) => { setsmall_price(e); handaleChange(e, 2) }}

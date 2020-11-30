@@ -217,7 +217,7 @@ function EditProfile({ navigation }) {
 const styles = StyleSheet.create({
     MainText: {
         fontFamily: 'flatMedium',
-        fontSize: 16,
+        fontSize: 18,
         margin: 20,
         paddingStart: 15
     },

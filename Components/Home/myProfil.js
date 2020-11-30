@@ -55,11 +55,8 @@ function myProfil({ navigation }) {
 
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <Animatable.View animation="pulse" easing="ease-out" delay={500} style={{ flex: 1 }} >
-
                 {renderLoader()}
-
                 <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
-
                 <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
                     <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
                         {
@@ -74,7 +71,7 @@ function myProfil({ navigation }) {
 
                 <View style={styles.ScrolContainer}>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 5, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={{ alignItems: 'center', alignSelf: "flex-end", marginHorizontal: 10, bottom: 20, width: 50, height: 50, borderRadius: 50, backgroundColor: Colors.sky, justifyContent: 'center' }}>
                         <Image source={require('../../assets/Images/EditRename.png')} style={{ width: 30, height: 30 }} />
                     </TouchableOpacity>
                     <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
@@ -85,37 +82,31 @@ function myProfil({ navigation }) {
 
                             <View style={styles.Wrab}>
                                 <Text style={styles.user}>{user.name}</Text>
-
                             </View>
+
                             <View style={styles.Line}></View>
+
                             <View style={styles.Wrab}>
                                 <Text style={styles.user}>{user.phone}</Text>
-
                             </View>
+
                             <View style={styles.Line}></View>
-
-
 
                             <View style={styles.Wrab}>
                                 <Text style={styles.user}>{user.provider.city}</Text>
-
                             </View>
+
                             <View style={styles.Line}></View>
 
                             <View style={styles.Wrab}>
                                 <Text style={styles.user}>{user.email}</Text>
-
                             </View>
+
                             <View style={styles.Line}></View>
-
-
                         </View>
-
-
                     </ScrollView>
                 </View>
             </Animatable.View>
-
         </View>
 
     )
@@ -123,14 +114,14 @@ function myProfil({ navigation }) {
 const styles = StyleSheet.create({
     MainText: {
         fontFamily: 'flatMedium',
-        fontSize: 16,
+        fontSize: 18,
         margin: 20,
         marginTop: -10,
         alignSelf: 'flex-start'
     },
     user: {
         fontFamily: 'flatMedium',
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.fontNormal
     },
     EditImg: {

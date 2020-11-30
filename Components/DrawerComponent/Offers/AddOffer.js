@@ -80,67 +80,52 @@ function Previousoffers({ navigation }) {
         <ScrollView style={{ flex: 1 }}>
             <HomeHeader navigation={navigation} label={i18n.t('offers')} onPress={() => navigation.navigate('MyProfile')} />
 
-            <Container loading={spinner}>
 
-                <Card />
-                <BTN title={i18n.t('AddOffer')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 5 }} onPress={() => setModalVisible(true)} />
-
+            <Card />
+            <BTN title={i18n.t('AddOffer')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 5 }} onPress={() => setModalVisible(true)} />
 
 
 
+
+            <Container loading={Loader}>
                 {
 
-                    Loader ?
-                        <View style={{
-                            flex: 1,
-                            width: '100%',
-                            // height: '100%',
-                            zIndex: 99999,
-                            backgroundColor: Colors.bg,
-                            alignItems: 'center',
-                            opacity: .5,
-                            justifyContent: 'center',
-                            alignSelf: 'center',
-                        }}>
-                            <ActivityIndicator size="large" color={Colors.sky} style={{ alignSelf: 'center' }} />
-                        </View>
+                    !Banners.length ?
+                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                         :
-                        !Banners.length ?
-                            <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                            :
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                data={Banners}
-                                extraData={spinner, Loader}
-                                keyExtractor={(item) => "_" + item.id}
-                                renderItem={({ item, index }) =>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={Banners}
+                            extraData={spinner, Loader}
+                            keyExtractor={(item) => "_" + item.id}
+                            renderItem={({ item, index }) =>
 
 
-                                    (
-                                        <View style={styles.Card}>
-                                            <View style={{ flexDirection: 'row', height: '100%', }}>
-                                                <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
-                                                <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
+                                (
+                                    <View style={styles.Card}>
+                                        <View style={{ flexDirection: 'row', height: '100%', }}>
+                                            <Image source={{ uri: item.image }} style={{ height: '100%', width: '25%' }} />
+                                            <View style={{ flexDirection: 'column', justifyContent: 'center', margin: 10, width: '85%' }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '80%' }}>
 
-                                                        <Text style={[styles.CardText, { color: Colors.sky }]}>{i18n.t('num')}:{index + 1}</Text>
+                                                    <Text style={[styles.CardText, { color: Colors.sky, top: 20, fontSize: 16 }]}>{i18n.t('num')} : {index + 1}</Text>
 
 
-                                                        <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} >
-                                                            <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 22, width: 22, }} />
-                                                        </TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} style={{ marginTop: 10 }}>
+                                                        <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 22, width: 22, }} />
+                                                    </TouchableOpacity>
 
-                                                    </View>
-                                                    <View style={{ flexDirection: 'row', }}>
-                                                        <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
-                                                        <Text style={styles.CardText}>{item.date}</Text>
-                                                    </View>
-                                                    <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
                                                 </View>
+                                                <View style={{ flexDirection: 'row', top: 15 }}>
+                                                    <Text style={styles.CardText}>{i18n.t('Dateaddition')} : </Text>
+                                                    <Text style={styles.CardText}> {item.date}</Text>
+                                                </View>
+                                                <BTN title={item.status} ContainerStyle={styles.LoginBtn} onPress={() => { }} TextStyle={{ color: item.type === 'rejected' ? Colors.RedColor : item.type == 'waiting' ? Colors.IconBlack : item.type == 'accepted' ? Colors.GradianGreen : null }} />
                                             </View>
                                         </View>
+                                    </View>
 
-                                    )} />}
+                                )} />}
 
                 <View style={styles.centeredView}>
                     <Modal

@@ -27,7 +27,7 @@ export const GetProducts = (token, lang, page) => {
             params: { lang, page }
 
         }).then(res => {
-            dispatch({ type: Get_Products, totalpage: res.data.extra.total_pages, data: [...products, ...res.data.data,], });
+            dispatch({ type: Get_Products, totalpage: res.data.extra.total_pages, data: page == 1 ? res.data.data : [...products, ...res.data.data] });
             console.log('res' + res.data.extra.total_pages);
         }
 

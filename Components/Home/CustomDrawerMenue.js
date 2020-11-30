@@ -239,7 +239,7 @@ function CustomDrawerMenue({ navigation }) {
                             <Text style={[styles.hellText, { color: Clicle === 15 ? Colors.bg : '#000000' }]}>{i18n.t('ManageAcc')}</Text>
                         </View>
                     </TouchableOpacity> */}
-                    <TouchableOpacity onPress={() => { navigation.navigate('Pagination'); setClick(15) }}>
+                    {/* <TouchableOpacity onPress={() => { navigation.navigate('Pagination'); setClick(15) }}>
                         <View style={{ backgroundColor: Clicle === 15 ? Colors.sky : Colors.bg, marginTop: 30, width: '95%', flexDirection: 'row' }}>
                             {
                                 Clicle === 15 ?
@@ -249,7 +249,7 @@ function CustomDrawerMenue({ navigation }) {
 
                             <Text style={[styles.hellText, { color: Clicle === 15 ? Colors.bg : '#000000' }]}>{i18n.t('ManageAcc')}</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
 
 

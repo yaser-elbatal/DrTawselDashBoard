@@ -43,6 +43,8 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
 
     }
 
+
+    console.log(OrderDet);
     const ConfirmIncomingOrders = () => {
         setSpinner(true)
         dispatch(ConfirmOrders(token, OrderId))
@@ -194,15 +196,18 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                     <View style={styles.modalView}>
                                         <View style={{ margin: 20, }}>
                                             {
-                                                Detailes.map((ex, index) => {
-                                                    return (
-                                                        <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
-                                                            <Text style={{ fontFamily: 'flatMedium', }}>_{ex.name}</Text>
-                                                            <Text style={{ fontFamily: 'flatMedium', paddingHorizontal: 20, color: Colors.sky }}>{ex.price} {i18n.t('Rial')}</Text>
+                                                Detailes.length === 0 ?
+                                                    <Text style={{ fontFamily: 'flatMedium', marginVertical: 20 }}>لا يوجد تفاصيل للمنتج بعد</Text>
+                                                    :
+                                                    Detailes.map((ex, index) => {
+                                                        return (
+                                                            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
+                                                                <Text style={{ fontFamily: 'flatMedium', }}>_{ex.name}</Text>
+                                                                <Text style={{ fontFamily: 'flatMedium', paddingHorizontal: 20, color: Colors.sky }}>{ex.price} {i18n.t('Rial')}</Text>
 
-                                                        </View>
-                                                    )
-                                                })
+                                                            </View>
+                                                        )
+                                                    })
                                             }
 
                                             <BTN title={i18n.t('close')} ContainerStyle={styles.LoginBtn} onPress={() => setModalVisible(false)} />
@@ -254,20 +259,25 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
 
                         {
                             click4 ?
-                                <View style={{ flexDirection: 'row', marginHorizontal: '7%' }}>
-                                    <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
+                                <View style={{ flexDirection: 'row', marginHorizontal: '7%', marginVertical: 10 }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={styles.name}>{i18n.t('productPrice')}</Text>
-                                        <Text style={[styles.name, { paddingVertical: 15 }]}>{i18n.t('Deliveryprice')}</Text>
+                                        <Text style={[styles.name, {}]}>{i18n.t('Deliveryprice')}</Text>
+                                        <Text style={[styles.name, {}]}>{i18n.t('Valueaddedtax')}</Text>
+
                                         <Text style={styles.name}>{i18n.t('total')}</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
-                                        <Text style={{ marginHorizontal: 20, paddingVertical: 11 }}>:</Text>
+                                        <Text style={{ marginHorizontal: 20, paddingVertical: 5 }}>:</Text>
+                                        <Text style={{ marginHorizontal: 20, paddingVertical: 5 }}>:</Text>
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={styles.sname}>{OrderDet.sum} {i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, { paddingVertical: 15 }]}>{OrderDet.shipping}{i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, {}]}>{OrderDet.shipping}{i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, {}]}>{OrderDet.added_value}{i18n.t('Rial')}</Text>
+
                                         <Text style={[styles.sname, { color: Colors.RedColor, }]}>{OrderDet.total} {i18n.t('Rial')}</Text>
                                     </View>
                                 </View>
@@ -310,7 +320,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'flatMedium',
-        fontSize: width * .03,
+        fontSize: width * .039,
         color: Colors.fontNormal
     },
     sname: {

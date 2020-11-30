@@ -35,7 +35,7 @@ function AllOrders({ navigation, route }) {
         return unsubscribe;
     }, [navigation, route])
 
-
+    console.log(OrderRequest.data);
 
     const handleChange = (e) => {
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, } from 'react-native';
+import { View, StyleSheet, Image, Text, FlatList, TouchableOpacity, RefreshControl, ActivityIndicator, Platform, } from 'react-native';
 import { CheckBox, } from "native-base";
 
 
@@ -15,13 +15,11 @@ import { GetProducts, DeleteProduct, SerachForPorducts, GetOneProducts, resetSta
 import Container from '../../../common/Container';
 import { Dropdown } from 'react-native-material-dropdown';
 import { MenueInfo } from '../../../store/action/MenueAction';
-import * as Animatable from 'react-native-animatable';
 import { Toast } from "native-base";
-import axios from 'axios';
-import consts from '../../../consts';
 import { useIsFocused } from '@react-navigation/native';
 
 
+const isIOS = Platform.OS === 'ios';
 
 function Products({ navigation }) {
 
@@ -43,8 +41,15 @@ function Products({ navigation }) {
     const [randomUserData, SetrandomUserData] = useState([])
     const [page, setpage] = useState(1)
     const [DeleteArr, setDeleteArr] = useState([]);
-    // const [totalPages, setTotalPage] = useState(null)
-    // console.log(randomUserData);
+    const [refreshing, setRefreshing] = useState(false);
+
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setpage(1)
+        dispatch(GetProducts(token, lang, 1)).then(() => setRefreshing(false));
+    }, []);
+
 
     const data2 = [
         {
@@ -62,26 +67,21 @@ function Products({ navigation }) {
     useEffect(() => {
 
 
-        if (isFocused) {
+        const unsubscribe = navigation.addListener('focus', () => {
+
             setLoader(true)
-            console.log('isFocused,',);
+            console.log('isFocusedss,',);
             setpage(1)
-            dispatch(GetOneProducts(token, lang, page))
+            dispatch(GetProducts(token, lang, page))
             dispatch(MenueInfo(lang, token))
                 .then(() => setLoader(false))
 
-            console.log("s" + myProducts);
 
-        }
-        else {
-            setpage(1)
-
-            return
-        }
-        return () => { dispatch(resetStates()), setpage(1) }
+        })
+        return unsubscribe
 
 
-    }, [isFocused]);
+    }, []);
 
 
 
@@ -107,10 +107,10 @@ function Products({ navigation }) {
 
     const handleChandDrpDown = (val) => {
         setLoader(true)
-        val == 1 ?
-            myProducts.reverse()
 
-            : myProducts
+        myProducts.reverse()
+
+
         setLoader(false)
 
 
@@ -132,7 +132,7 @@ function Products({ navigation }) {
     const DeleteMenueMultiIteM = () => {
         setLoader(true)
 
-        dispatch(DeleteProduct(token, lang, DeleteArr)).then(() => setpage(0)).then(() => dispatch(GetOneProducts(token, lang, 1))).then(() => setSelection2(false), setLoader(false))
+        dispatch(DeleteProduct(token, lang, DeleteArr)).then(() => { setpage(1), dispatch(GetProducts(token, lang, 1)) }).then(() => setSelection2(false), setLoader(false))
         setDeleteArr([])
         setloading(false)
 
@@ -142,7 +142,7 @@ function Products({ navigation }) {
     const DeletProduct = (id) => {
 
         setLoader(true)
-        dispatch(DeleteProduct(token, lang, id)).then(() => setpage(0)).then(() => dispatch(GetOneProducts(token, lang, 1))).then(() => setLoader(false))
+        dispatch(DeleteProduct(token, lang, id)).then(() => { setpage(1), dispatch(GetProducts(token, lang, 1)) }).then(() => setLoader(false))
         setDeleteArr([])
         setloading(false)
 
@@ -162,8 +162,7 @@ function Products({ navigation }) {
         setTimeout(() => dispatch(SerachForPorducts(token, lang, e)).then(() => setLoader(false)), 1000)
 
     }
-    console.log(page);
-
+    console.log('Page' + page);
 
 
     const onEndReach = () => {
@@ -173,34 +172,15 @@ function Products({ navigation }) {
             return;
 
         }
-
-        dispatch(GetProducts(token, lang, page))
+        setloading(true)
         setpage(page + 1);
+        dispatch(GetProducts(token, lang, page))
         setloading(false)
-
-        // await axios({
-        //     method: 'GET',
-        //     url: consts.url + 'provider-products',
-        //     headers: { Authorization: 'Bearer ' + token, },
-        //     params: { lang, page }
-
-        // }).then(responseJson => {
-
-        //     SetrandomUserData([...randomUserData, ...myProducts]);
-        //     setpage(page + 1);
-        //     setloading(false)
-
-        // })
-        //     .catch(error => {
-        //         setloading(false)
-        //         console.log('Error selecting random data: ' + error)
-        //     })
 
 
 
 
     }
-    // console.log(myProducts);
     const Ids = myProducts ? [...new Set(myProducts.map(item => item.id))] : []
     const NOT_REDUNDUNT = Ids.map(id => myProducts.find(item => item.id == id))
     return (
@@ -215,10 +195,15 @@ function Products({ navigation }) {
                     data={NOT_REDUNDUNT}
                     extraData={Loader}
                     keyExtractor={(item, index) => index.toString()}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />}
                     onEndReached={onEndReach}
+                    onEndReachedThreshold={isIOS ? .01 : .05}
                     onScroll={() => setloading(true)
                     }
-                    onEndReachedThreshold={0.1}
 
                     renderItem={({ item, index }) => {
                         return (
@@ -231,14 +216,13 @@ function Products({ navigation }) {
                                             <View style={styles.FWrab}>
                                                 <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
                                                 <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
-                                                <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
 
-                                                <Text style={[styles.name, { color: Colors.IconBlack }]}>{item.menu + ' ـــ '}{item.name}</Text>
+                                                <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.name, { color: Colors.IconBlack, alignSelf: 'flex-start', width: 130 }]} numberOfLines={1} >{item.menu + ' ـــ '}{item.name}</Text>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Text style={styles.nText}>{item.price - (item.price * (item.discount / 100))}</Text>
+                                                    <Text style={styles.nText}>{item.price - (item.price * (item.discount / 100))} {i18n.t('Rial')}</Text>
                                                     {
                                                         item.discount == 0 ? null :
-                                                            <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price}</Text>
+                                                            <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', paddingHorizontal: 5, fontSize: 14 }]}>{item.price} {i18n.t('Rial')}</Text>
                                                     }
                                                 </View>
 

@@ -67,7 +67,7 @@ function ContactUs({ navigation }) {
                         placeholder={i18n.t('username')}
                         onChangeText={(e) => setName(e)}
                         value={name}
-                        styleCont={{ marginTop: 20 }}
+                        styleCont={{ marginTop: 40 }}
                     />
                     <InputIcon
                         label={i18n.t('email')}

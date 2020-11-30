@@ -5,7 +5,7 @@ const initialState = { products: [], product: null, size: [], ExtraProduct: null
 export default (state = initialState, action) => {
     switch (action.type) {
         case Get_Products:
-            return { ...state, products: action.data, totalpage: action.totalpage }
+            return { products: action.data, totalpage: action.totalpage }
 
         case Product_Detailes:
             return { product: action.data.data, EditProduct: action.data.data }

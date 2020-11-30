@@ -20,22 +20,15 @@ function HomePage({ navigation }) {
 
     const user = useSelector(state => state.auth.user.data);
     const token = useSelector(state => state.auth.user.data.token)
-    const [spinner, setSpinner] = useState(true);
     const lang = useSelector(state => state.lang.language);
     const HomeProduct = useSelector(state => state.home.product);
     const QuickRebort = useSelector(state => state.home.extra);
+
     const dispatch = useDispatch();
+
     const isFocused = useIsFocused();
-
-
-
-    const onRefresh = () => {
-        //Clear old data of the list
-
-        //Call the Service to get the latest data
-        dispatch(GetHomeProducts(token, lang));
-        dispatch(GetQuickReborts(token, lang))
-    };
+    const [refreshing, setRefreshing] = useState(false);
+    const [spinner, setSpinner] = useState(true);
 
 
 
@@ -43,9 +36,7 @@ function HomePage({ navigation }) {
 
     useEffect(() => {
 
-
         const unsubscribe = navigation.addListener('focus', () => {
-            setSpinner(true)
             dispatch(GetHomeProducts(token, lang)).then(() => dispatch(GetQuickReborts(token, lang))).then(() => setSpinner(false))
 
         });
@@ -72,7 +63,6 @@ function HomePage({ navigation }) {
 
         });
 
-
         const subscriptions = Notifications.addNotificationResponseReceivedListener(response => {
             const type = response.notification.request.content.data.type;
             if (type === 'block') {
@@ -85,41 +75,38 @@ function HomePage({ navigation }) {
     }, [])
 
 
-
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(GetHomeProducts(token, lang));
+        dispatch(GetQuickReborts(token, lang)).then(() => setRefreshing(false));
+    }, []);
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, }}>
-
+        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, }}
+            refreshControl={< RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
             <Card />
 
-            <Text style={styles.MainText}>{i18n.t('newProduct')}</Text>
+            <Text style={[styles.MainText, { marginBottom: 0 }]}>{i18n.t('newProduct')}</Text>
             <Container loading={spinner} >
 
                 {
                     HomeProduct && HomeProduct.length ?
-
 
                         <FlatList
                             showsHorizontalScrollIndicator={false}
                             data={HomeProduct}
                             extraData={spinner}
                             horizontal={true}
-                            refreshControl={
-                                <RefreshControl
-                                    //refresh control used for the Pull to Refresh
-                                    refreshing={spinner}
-                                    onRefresh={onRefresh} />}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item, index }) => (
-
 
                                 <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
                                     <View style={{ flexDirection: 'column', flex: 1 }}>
                                         <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
                                         <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Text style={styles.prod}>{item.name}</Text>
-                                            <Text style={[styles.prod, { color: Colors.sky, }]}>{item.price}{i18n.t('RS')}</Text>
+                                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.prod, { fontWeight: '900', width: 100 }]}>{item.name}</Text>
+                                            <Text style={[styles.prod, { color: Colors.sky, fontSize: 16 }]}>{item.price} {i18n.t('Rial')}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>
@@ -127,14 +114,7 @@ function HomePage({ navigation }) {
                         :
                         < Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
 
-
-
                 }
-
-
-
-
-
 
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
@@ -156,6 +136,7 @@ function HomePage({ navigation }) {
                                     <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.products : null}</Text>
                                 </View>
                             </View>
+
                             <View style={styles.SCard}>
                                 <View style={{ flexDirection: 'row', height: '100%', }}>
                                     <View style={styles.ImgWrab}>
@@ -170,6 +151,7 @@ function HomePage({ navigation }) {
                                     <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.comments : null}</Text>
                                 </View>
                             </View>
+
                             <View style={styles.SCard}>
                                 <View style={{ flexDirection: 'row', height: '100%', }}>
                                     <View style={styles.ImgWrab}>
@@ -184,6 +166,7 @@ function HomePage({ navigation }) {
                                     <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.rates : null}</Text>
                                 </View>
                             </View>
+
                         </Animatable.View>
                         :
                         <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
@@ -220,19 +203,20 @@ const styles = StyleSheet.create({
         width: '90%',
         margin: 20,
         shadowColor: Colors.bg,
-        marginTop: -10,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 1,
         overflow: 'hidden',
+        marginTop: -5
 
     },
     MainText: {
         fontFamily: 'flatMedium',
         fontSize: 20,
-        margin: 20,
-        alignSelf: 'flex-start'
+        marginVertical: 20,
+        alignSelf: 'flex-start',
+        marginStart: 5,
 
     },
     ImgWrab: {
@@ -251,19 +235,19 @@ const styles = StyleSheet.create({
 
     ProdText: {
         fontFamily: 'flatMedium',
-        fontSize: 14,
+        fontSize: 15,
         color: Colors.IconBlack,
         alignSelf: 'flex-start',
         paddingVertical: 5
     },
     prod: {
         fontFamily: 'flatMedium',
-        fontSize: 12
+        fontSize: 14
     },
     Card: {
-        margin: 10,
+        margin: 13,
         borderRadius: 20,
-        width: width * .5,
+        width: width * .55,
         height: height * .25,
         backgroundColor: Colors.bg,
         flex: 1,

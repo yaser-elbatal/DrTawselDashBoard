@@ -31,7 +31,7 @@ function TransferMony({ navigation, route }) {
 
     const _validate = () => {
         let BanknameErr = validateUserName(Bankname)
-        let AccountnameErr = validateUserName(Bankname)
+        let AccountnameErr = validateUserName(accountNAme)
         let accountnumErr = validateAccountNum(accountnum)
         let moneyErr = valdiateMoney(money);
         let baseErr = base64 == '' ? i18n.t('PickImage') : null;
@@ -117,6 +117,7 @@ function TransferMony({ navigation, route }) {
                         inputStyle={{ borderRadius: 25 }}
 
                     />
+
                     <InputIcon
                         label={i18n.t("AccountUser")}
                         placeholder={i18n.t("AccountUser")}
