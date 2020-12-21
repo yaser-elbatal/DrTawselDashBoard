@@ -219,7 +219,7 @@ function Login({ navigation }) {
                         placeholder={i18n.t('phone')}
                         onChangeText={(e) => setPhone(e)}
                         value={phone}
-
+                        styleCont={{ marginTop: 20 }}
                         keyboardType='numeric' />
 
                     <InputIcon
