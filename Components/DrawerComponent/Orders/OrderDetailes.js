@@ -28,7 +28,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
     const { OrderId } = route.params
     const [spinner, setSpinner] = useState(true);
 
-
+    console.log(token);
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setSpinner(true)
@@ -164,7 +164,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                     :
                                     OrderDet.products.map(item => (
 
-                                        <View key={`${item.id}`} style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
+                                        <View key={`${item.id}` + '_'} style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
                                             <Text style={styles.name}>{item.name}</Text>
                                             <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
                                             <Text style={styles.name}>{i18n.t('nume')} : {item.quantity}</Text>
@@ -201,7 +201,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                                     :
                                                     Detailes.map((ex, index) => {
                                                         return (
-                                                            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
+                                                            <View key={index + '_'} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
                                                                 <Text style={{ fontFamily: 'flatMedium', }}>_{ex.name}</Text>
                                                                 <Text style={{ fontFamily: 'flatMedium', paddingHorizontal: 20, color: Colors.sky }}>{ex.price} {i18n.t('Rial')}</Text>
 
@@ -262,6 +262,8 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                 <View style={{ flexDirection: 'row', marginHorizontal: '7%', marginVertical: 10 }}>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={styles.name}>{i18n.t('productPricess')}</Text>
+                                        <Text style={[styles.name, { paddingVertical: 5 }]}>{i18n.t('ExProduct')}</Text>
+
                                         <Text style={[styles.name, { paddingVertical: 5 }]}>{i18n.t('Deliveryprice')}</Text>
                                         <Text style={[styles.name, { paddingVertical: 5 }]}>{i18n.t('Valueaddedtax')}</Text>
 
@@ -270,13 +272,17 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
                                         <Text style={{ marginHorizontal: 20, }}>:</Text>
+
+                                        <Text style={{ marginHorizontal: 20, }}>:</Text>
                                         <Text style={{ marginHorizontal: 20, }}>:</Text>
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
-                                        <Text style={styles.sname}>{OrderDet.sum} {i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.shipping}{i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.added_value}{i18n.t('Rial')}</Text>
+                                        <Text style={styles.sname}>{OrderDet.sum}  {i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.extra_prices} {i18n.t('Rial')}</Text>
+
+                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.shipping} {i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.added_value} {i18n.t('Rial')}</Text>
 
                                         <Text style={[styles.sname, { color: Colors.RedColor, marginTop: 10 }]}>{OrderDet.total} {i18n.t('Rial')}</Text>
                                     </View>
