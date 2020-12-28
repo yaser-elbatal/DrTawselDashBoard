@@ -43,6 +43,8 @@ const en = {
   Yourproducts: 'Your products',
   AddMenue: '+ Add Menu',
   Select: 'select All',
+  nume: 'number',
+  productPricess: 'Product price Total',
   filter: 'Filter By',
   num: 'number',
   AddProd: '+  Add Product',

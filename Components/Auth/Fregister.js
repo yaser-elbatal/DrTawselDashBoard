@@ -10,7 +10,6 @@ import { width, height } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import { ValidEmailPhone } from '../../store/action/AuthAction';
-import * as Animatable from 'react-native-animatable';
 
 function Fregister({ navigation }) {
 

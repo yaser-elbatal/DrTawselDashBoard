@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         marginStart: 20,
         marginVertical: 5,
         shadowColor: Colors.bg,
-        marginTop: 0,
+        marginTop: 5,
         backgroundColor: Colors.bg,
         shadowOpacity: 0.25,
         shadowRadius: 3.84,

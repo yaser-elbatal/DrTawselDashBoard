@@ -78,7 +78,7 @@ export const GetOneProducts = (token, lang, page) => {
 export const ProductDetailes = (token, lang, id) => {
     return async (dispatch) => {
         await axios({
-            method: 'GET',
+            method: 'Post',
             url: `${consts.url}product?id=${id}`,
             headers: { Authorization: 'Bearer ' + token, },
             params: { lang }

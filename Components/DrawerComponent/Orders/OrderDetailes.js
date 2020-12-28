@@ -167,7 +167,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                         <View key={`${item.id}`} style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, margin: 20, backgroundColor: Colors.bg, width: '90%', height: 40, borderWidth: 1, borderColor: Colors.InputColor, marginTop: 0 }}>
                                             <Text style={styles.name}>{item.name}</Text>
                                             <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
-                                            <Text style={styles.name}>{item.quantity}{i18n.t('Meals')}</Text>
+                                            <Text style={styles.name}>{i18n.t('nume')} : {item.quantity}</Text>
                                             <View style={{ height: 50, width: 1, backgroundColor: Colors.InputColor }}></View>
                                             <TouchableWithoutFeedback onPress={() => { setModalVisible(true); setDetailes(item.extras) }}>
                                                 <Text style={[styles.name, { color: Colors.sky, fontSize: 14, }]}>{i18n.t('detailes')}</Text>
@@ -261,24 +261,24 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                             click4 ?
                                 <View style={{ flexDirection: 'row', marginHorizontal: '7%', marginVertical: 10 }}>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
-                                        <Text style={styles.name}>{i18n.t('productPrice')}</Text>
-                                        <Text style={[styles.name, {}]}>{i18n.t('Deliveryprice')}</Text>
-                                        <Text style={[styles.name, {}]}>{i18n.t('Valueaddedtax')}</Text>
+                                        <Text style={styles.name}>{i18n.t('productPricess')}</Text>
+                                        <Text style={[styles.name, { paddingVertical: 5 }]}>{i18n.t('Deliveryprice')}</Text>
+                                        <Text style={[styles.name, { paddingVertical: 5 }]}>{i18n.t('Valueaddedtax')}</Text>
 
-                                        <Text style={styles.name}>{i18n.t('total')}</Text>
+                                        <Text style={[styles.name, { paddingVertical: 5 }]}>{i18n.t('total')}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
-                                        <Text style={{ marginHorizontal: 20, paddingVertical: 5 }}>:</Text>
-                                        <Text style={{ marginHorizontal: 20, paddingVertical: 5 }}>:</Text>
+                                        <Text style={{ marginHorizontal: 20, }}>:</Text>
+                                        <Text style={{ marginHorizontal: 20, }}>:</Text>
                                         <Text style={{ marginHorizontal: 20 }}>:</Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', }}>
                                         <Text style={styles.sname}>{OrderDet.sum} {i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, {}]}>{OrderDet.shipping}{i18n.t('Rial')}</Text>
-                                        <Text style={[styles.sname, {}]}>{OrderDet.added_value}{i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.shipping}{i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { marginTop: 10 }]}>{OrderDet.added_value}{i18n.t('Rial')}</Text>
 
-                                        <Text style={[styles.sname, { color: Colors.RedColor, }]}>{OrderDet.total} {i18n.t('Rial')}</Text>
+                                        <Text style={[styles.sname, { color: Colors.RedColor, marginTop: 10 }]}>{OrderDet.total} {i18n.t('Rial')}</Text>
                                     </View>
                                 </View>
                                 : null
@@ -295,7 +295,6 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                     : OrderDet.status === 'READY' ?
                                         <>
                                             < BTN title={i18n.t('findDelegate')} ContainerStyle={[styles.LoginBtn, { backgroundColor: Colors.InputColor }]} disabled={true} onPress={() => { }} />
-                                            <Text style={{ color: 'red', fontFamily: 'flatMedium', margin: 20 }}> {i18n.t('findDelegate')}..........</Text>
                                         </>
                                         :
                                         null
