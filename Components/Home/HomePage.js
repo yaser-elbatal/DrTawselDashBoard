@@ -70,15 +70,14 @@ function HomePage({ navigation }) {
                 dispatch(Logout(token))
             }
         });
-        setSpinner(false)
         return () => { subscription.remove(), unsubscribe, subscriptions };
     }, [])
 
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        dispatch(GetHomeProducts(token, lang));
-        dispatch(GetQuickReborts(token, lang)).then(() => setRefreshing(false));
+        dispatch(GetHomeProducts(token, lang)).then(() => dispatch(GetQuickReborts(token, lang))).then(() => setRefreshing(false))
+
     }, []);
 
     return (
@@ -103,73 +102,77 @@ function HomePage({ navigation }) {
 
                                 <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
                                     <View style={{ flexDirection: 'column', flex: 1 }}>
-                                        <Image source={{ uri: item.image }} style={{ width: '100%', flex: .8 }} />
-                                        <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.prod, { fontWeight: '900', width: 100 }]}>{item.name}</Text>
+                                        <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%' }} />
+                                        <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
+                                            <Text style={[styles.prod, { fontWeight: '900', }]}>{item.name.length > 20 ? (item.name).substr(0, 20) + '...' : item.name}</Text>
                                             <Text style={[styles.prod, { color: Colors.sky, fontSize: 16 }]}>{item.price} {i18n.t('Rial')}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>
                             )} />
                         :
-                        < Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                            < Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                            <Text style={[styles.prod, { color: 'red' }]}>{i18n.t('notaddpr')}</Text>
+                        </View>
+
 
                 }
 
                 <Text style={styles.MainText}>{i18n.t('Quickreports')}</Text>
                 {
-                    QuickRebort ?
+                    QuickRebort && QuickRebort.reports &&
 
-                        <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                    <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                            <View style={styles.SCard}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <View style={styles.ImgWrab}>
-                                        <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                        <View style={styles.WrabText}>
-                                            <Text style={styles.ProdText}>{i18n.t('products')}</Text>
-                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('haveProduct')}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.products : null}</Text>
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/nounproducticon.png')} style={styles.SImg} resizeMode='contain' />
                                 </View>
-                            </View>
-
-                            <View style={styles.SCard}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <View style={styles.ImgWrab}>
-                                        <Image source={require('../../assets/Images/comment.png')} style={styles.SImg} resizeMode='contain' />
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{i18n.t('products')}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('haveProduct')}</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                        <View style={styles.WrabText}>
-                                            <Text style={styles.ProdText}>{i18n.t('comments')}</Text>
-                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Storecomments')}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.comments : null}</Text>
                                 </View>
+                                <Text style={styles.num}>{QuickRebort.reports.products}</Text>
                             </View>
+                        </View>
 
-                            <View style={styles.SCard}>
-                                <View style={{ flexDirection: 'row', height: '100%', }}>
-                                    <View style={styles.ImgWrab}>
-                                        <Image source={require('../../assets/Images/star_home.png')} style={styles.SImg} resizeMode='contain' />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                        <View style={styles.WrabText}>
-                                            <Text style={styles.ProdText}>{i18n.t('rateing')}</Text>
-                                            <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Yourfeedbacks')}</Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.num}>{QuickRebort.reports ? QuickRebort.reports.rates : null}</Text>
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/comment.png')} style={styles.SImg} resizeMode='contain' />
                                 </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{i18n.t('comments')}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Storecomments')}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.num}>{QuickRebort.reports.comments}</Text>
                             </View>
+                        </View>
 
-                        </Animatable.View>
-                        :
-                        <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
+                        <View style={styles.SCard}>
+                            <View style={{ flexDirection: 'row', height: '100%', }}>
+                                <View style={styles.ImgWrab}>
+                                    <Image source={require('../../assets/Images/star_home.png')} style={styles.SImg} resizeMode='contain' />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                    <View style={styles.WrabText}>
+                                        <Text style={styles.ProdText}>{i18n.t('rateing')}</Text>
+                                        <Text style={[styles.ProdText, { color: Colors.fontNormal }]}>{i18n.t('Yourfeedbacks')}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.num}>{QuickRebort.reports.rates}</Text>
+                            </View>
+                        </View>
+
+                    </Animatable.View>
+                    // :
+                    // <Image source={require('../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
                 }
             </Container>
         </ScrollView>
@@ -242,7 +245,8 @@ const styles = StyleSheet.create({
     },
     prod: {
         fontFamily: 'flatMedium',
-        fontSize: 14
+        fontSize: 12,
+        color: Colors.IconBlack
     },
     Card: {
         margin: 13,

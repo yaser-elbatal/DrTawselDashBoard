@@ -16,15 +16,12 @@ function Header({ label, navigation, }) {
         <>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ right: 20, bottom: 15 }}>
-                    <ImageBackground source={require('../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                    <ImageBackground source={require('../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }} resizeMode='contain'>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
-                            {
-                                I18nManager.isRTL ?
-                                    <Image source={require('../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-                                    :
-                                    <Image source={require('../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
 
-                            }
+
+                            <Image source={require('../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+
                         </TouchableOpacity>
                     </ImageBackground>
                 </View>

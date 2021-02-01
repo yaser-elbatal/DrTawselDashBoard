@@ -19,6 +19,7 @@ import Container from '../../../common/Container';
 import { Dropdown } from 'react-native-material-dropdown';
 import { getCititis } from '../../../store/action/CitiesAction';
 import { GetProfile } from '../../../store/action/ProfileAction';
+import Loading from '../../../common/LoadIng';
 
 const { width } = Dimensions.get('window')
 const { height } = Dimensions.get('window')
@@ -57,7 +58,7 @@ function RestaurantInfo({ navigation }) {
     const [WebUrl, setWebUrl] = useState(user.provider.website_url);
     const [InitMap, setInitMap] = useState(false)
     const [available, setAvailable] = useState(user.provider.available)
-
+    const [loading, setloading] = useState(false)
     const [data, setData] = useState([
 
         { id: 0, title: `${i18n.t("no")}` },
@@ -187,8 +188,8 @@ function RestaurantInfo({ navigation }) {
         let val = _validate()
 
         if (!val) {
-            setSpinner(true)
-            dispatch(EditProvider(token, lang, nameAR, nameEN, mapRegion.latitude, mapRegion.longitude, city, WebUrl, CommercialRegister, selectedRadion, selecCommerical, SelectDelivery, BranchNum, from, to, base64, available, city2, navigation)).then(() => dispatch(GetProfile(token, lang))).then(() => setSpinner(false))
+            setloading(true)
+            dispatch(EditProvider(token, lang, nameAR, nameEN, mapRegion.latitude, mapRegion.longitude, city, WebUrl, CommercialRegister, selectedRadion, selecCommerical, SelectDelivery, BranchNum, from, to, base64, available, city2, navigation)).then(() => dispatch(GetProfile(token, lang))).then(() => setloading(false))
         }
         else {
             setSpinner(false);
@@ -210,7 +211,9 @@ function RestaurantInfo({ navigation }) {
 
                     <TouchableOpacity onPress={_pickImage}>
 
-                        <Image source={{ uri: userImage }} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} />
+
+                        <Image source={userImage ? { uri: userImage } : require('../../../assets/Images/add_photo.png')} style={{ width: 200, height: 150, marginTop: 30, alignSelf: 'center', borderRadius: 15 }} resizeMode='contain' />
+
                     </TouchableOpacity>
 
                     <InputIcon
@@ -514,7 +517,10 @@ function RestaurantInfo({ navigation }) {
 
 
                     </View>
-                    <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateRestaurantInfo} />
+                    <Loading loading={loading}>
+                        <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={UpdateRestaurantInfo} />
+
+                    </Loading>
                 </Container>
             </ScrollView>
         </KeyboardAvoidingView>

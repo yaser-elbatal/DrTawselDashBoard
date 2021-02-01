@@ -10,6 +10,7 @@ import { width, height } from '../../consts/HeightWidth';
 import BTN from '../../common/BTN';
 import { Toaster } from '../../common/Toaster';
 import { ValidEmailPhone } from '../../store/action/AuthAction';
+import { InputPassword } from '../../common/InputPassword';
 
 function Fregister({ navigation }) {
 
@@ -19,6 +20,12 @@ function Fregister({ navigation }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [selectedRadion, setSelectedRadio] = useState(null)
+    const [showPass, setShowPass] = useState(false);
+    const [showPass2, setShowPass2] = useState(false);
+
+
+
+
     const Validation = useSelector(state => state.auth.Validate ? state.auth.Validate.success : false);
 
 
@@ -109,28 +116,30 @@ function Fregister({ navigation }) {
                     styleCont={{ marginTop: 0 }}
                 />
 
-                <InputIcon
+
+                <InputPassword
                     label={i18n.t('password')}
-                    placeholder={i18n.t('password')}
                     onChangeText={(e) => setPassword(e)}
                     value={password}
-                    secureTextEntry
+                    secureTextEntry={!showPass}
+                    image={require('../../assets/Images/view.png')}
+                    onPress={() => setShowPass(!showPass)}
                     styleCont={{ marginTop: 0 }}
-
-
-
                 />
-                <InputIcon
+                <InputPassword
                     label={i18n.t('confirmPass')}
-                    placeholder={i18n.t('confirmPass')}
                     onChangeText={(e) => setConfirmPassword(e)}
                     value={confirmPassword}
-                    secureTextEntry
-
-                    styleCont={{ marginTop: 0 }}
+                    secureTextEntry={!showPass2}
+                    image={require('../../assets/Images/view.png')}
+                    onPress={() => setShowPass2(!showPass2)}
+                    styleCont={{ marginTop: 10 }}
                 />
 
-                <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
+
+
+
+                <View style={{ height: width * .14, marginHorizontal: '5%', marginTop: 10, borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
                     <View style={{ paddingEnd: 95, fontFamily: 'flatMedium', paddingStart: 10 }}>
                         <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium' }}>{i18n.t('owner')}</Text>
                     </View>

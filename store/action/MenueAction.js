@@ -39,6 +39,16 @@ export const AddMenue = (token, lang, nameAr, nameEn,) => {
             if (res.data.success) {
                 dispatch({ type: Add_menue, data: res.data })
             }
+            Toast.show({
+                text: res.data.message,
+                type: res.data.success ? "success" : "danger",
+                duration: 3000,
+                textStyle: {
+                    color: "white",
+                    textAlign: 'center',
+                    fontFamily: 'flatMedium'
+                }
+            });
 
         })
     }
@@ -64,19 +74,21 @@ export const UpdateMenue = (token, lang, nameAr, nameEn, id) => {
                 duration: 3000,
                 textStyle: {
                     color: "white",
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    fontFamily: 'flatMedium'
                 }
             });
         })
     }
 }
 
-export const DeleteMenue = (token, id) => {
+export const DeleteMenue = (token, id, lang) => {
     return async (dispatch) => {
         await axios({
             method: 'DELETE',
             url: consts.url + 'delete-menu',
             data: { id },
+            params: { lang, },
             headers: { Authorization: 'Bearer ' + token, },
 
         }).then(res => {
@@ -88,7 +100,8 @@ export const DeleteMenue = (token, id) => {
                     duration: 3000,
                     textStyle: {
                         color: "white",
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        fontFamily: 'flatMedium'
                     }
                 });
             }

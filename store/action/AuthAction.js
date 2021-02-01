@@ -97,8 +97,8 @@ const loginFailed = (dispatch, error, navigation) => {
 
 export const SignUp = (data, navigation) => {
     return async (dispatch) => {
-        await AsyncStorage.getItem('deviceID').then(deviceId => {
-            axios({
+        await AsyncStorage.getItem('deviceID').then(async deviceId => {
+            await axios({
                 url: consts.url + 'sign-up',
 
                 method: 'POST',
@@ -131,9 +131,10 @@ export const SignUp = (data, navigation) => {
                     lang: data.lang,
                 }
             }).then(res => {
-                console.log('toooooooken' + res.data.data.token);
-                dispatch({ type: Sign_up, payload: res.data })
+
                 if (res.data.success) {
+
+                    dispatch({ type: Sign_up, payload: res.data })
                     navigation.navigate('ActivateCode', { token: res.data.data.token })
                 }
 
@@ -199,6 +200,7 @@ export const CheckPhone = (lang, phone, navigation) => {
             data: { lang, phone }
         }).then(res => {
             if (res.data.success) {
+
                 navigation.navigate('AccConfrm', { token: res.data.data.token })
                 Toast.show({
                     text: res.data.message,

@@ -17,6 +17,8 @@ import { Dropdown } from 'react-native-material-dropdown';
 import { MenueInfo } from '../../../store/action/MenueAction';
 import { Toast } from "native-base";
 import { useIsFocused } from '@react-navigation/native';
+import { ToasterNative } from '../../../common/ToasterNative';
+import Loading from '../../../common/LoadIng';
 
 
 const isIOS = Platform.OS === 'ios';
@@ -26,10 +28,11 @@ function Products({ navigation }) {
     const dispatch = useDispatch();
 
     const [isSelected2, setSelection2] = useState(false);
-    const [spinner, setSpinner] = useState(false);
     const [Search, setSearch] = useState('');
+
     const [Loader, setLoader] = useState(true)
     const [loading, setloading] = useState(false)
+    const [spinner, setSpinner] = useState(false);
 
     const isFocused = useIsFocused();
 
@@ -38,7 +41,6 @@ function Products({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const Menue = useSelector(state => state.menue.menue.data);
     const totalPage = useSelector(state => state.product.totalpage);
-    const [randomUserData, SetrandomUserData] = useState([])
     const [page, setpage] = useState(1)
     const [DeleteArr, setDeleteArr] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -66,22 +68,21 @@ function Products({ navigation }) {
 
     useEffect(() => {
 
+        setpage(1)
 
-        const unsubscribe = navigation.addListener('focus', () => {
-
+        if (isFocused) {
             setLoader(true)
-            console.log('isFocusedss,',);
             setpage(1)
-            dispatch(GetProducts(token, lang, page))
-            dispatch(MenueInfo(lang, token))
-                .then(() => setLoader(false))
+            dispatch(GetProducts(token, lang, page)).then(() => dispatch(MenueInfo(lang, token))).then(() => setLoader(false))
 
 
-        })
-        return unsubscribe
+        }
 
 
-    }, []);
+
+
+
+    }, [isFocused]);
 
 
 
@@ -105,12 +106,11 @@ function Products({ navigation }) {
         }
     };
 
+
+
     const handleChandDrpDown = (val) => {
         setLoader(true)
-
         myProducts.reverse()
-
-
         setLoader(false)
 
 
@@ -157,9 +157,10 @@ function Products({ navigation }) {
 
         if (e == '') {
             setLoader(true)
-            dispatch(SerachForPorducts(token, lang, e))
+            dispatch(SerachForPorducts(token, lang, e)).then(() => setLoader(false))
         }
-        setTimeout(() => dispatch(SerachForPorducts(token, lang, e)).then(() => setLoader(false)), 1000)
+        dispatch(SerachForPorducts(token, lang, e)).then(() => setLoader(false)).then(() => setloading(false))
+
 
     }
     console.log('Page' + page);
@@ -193,7 +194,6 @@ function Products({ navigation }) {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={NOT_REDUNDUNT}
-                    extraData={Loader}
                     keyExtractor={(item, index) => index.toString()}
                     refreshControl={
                         <RefreshControl
@@ -207,17 +207,19 @@ function Products({ navigation }) {
 
                     renderItem={({ item, index }) => {
                         return (
-                            <Container loading={Loader}>
+
+                            <Loading loading={Loader}>
 
                                 <TouchableOpacity onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id })}>
                                     <View style={styles.Card}>
                                         <View style={{ flexDirection: 'row', flex: .75 }}>
                                             <Image source={{ uri: item.image }} style={{ height: '100%', width: '40%' }} />
                                             <View style={styles.FWrab}>
-                                                <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
-                                                <Text style={styles.nText}>{i18n.t('num')} # {index + 1}</Text>
+                                                <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5, }} onPress={() => toggleChecked(item.id)} />
+                                                <Text style={styles.nText}># {i18n.t('num')} {index + 1}</Text>
+                                                <Text style={[styles.name, { color: Colors.IconBlack, alignSelf: 'flex-start', }]} >{item.name.length > 20 ? (item.name).substr(0, 20) + '...' : item.name}</Text>
 
-                                                <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.name, { color: Colors.IconBlack, alignSelf: 'flex-start', width: 130 }]} numberOfLines={1} >{item.menu + ' ـــ '}{item.name}</Text>
+                                                <Text style={[styles.name, { color: Colors.IconBlack, alignSelf: 'flex-start', }]} >{item.menu.length > 20 ? (item.menu).substr(0, 20) + '...' : item.menu}</Text>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                     <Text style={styles.nText}>{item.price - (item.price * (item.discount / 100))} {i18n.t('Rial')}</Text>
                                                     {
@@ -245,10 +247,12 @@ function Products({ navigation }) {
 
                                     </View>
                                 </TouchableOpacity>
-                            </Container>
+                            </Loading>
 
                         )
                     }}
+
+
                     ListFooterComponent={
                         loading ? (
                             <ActivityIndicator
@@ -281,15 +285,8 @@ function Products({ navigation }) {
                                 <Text style={{ marginStart: 12, fontFamily: 'flatMedium', color: Colors.inputTextMainColor, fontSize: width * .03, paddingHorizontal: 5 }}>{i18n.t('Select')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={DeleteArr.length == 0 ?
-                                () => Toast.show({
-                                    text: i18n.t('SelectElement'),
-                                    type: "danger",
-                                    duration: 3000,
-                                    textStyle: {
-                                        color: "white",
-                                        textAlign: 'center'
-                                    }
-                                })
+                                () => ToasterNative(i18n.t('SelectElement'), 'danger', 'bottom')
+
                                 : DeleteMenueMultiIteM} style={{ borderWidth: .4, paddingHorizontal: 15, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', height: width * .09, borderColor: Colors.InputColor, }}>
                                 <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, }}> {i18n.t('delete')}</Text>
                             </TouchableOpacity>
@@ -363,7 +360,7 @@ const styles = StyleSheet.create({
         height: 130,
         width: '90%',
         marginStart: 20,
-        marginVertical: 5,
+        marginVertical: 15,
         shadowColor: Colors.bg,
         marginTop: 0,
         backgroundColor: Colors.bg,
@@ -382,7 +379,8 @@ const styles = StyleSheet.create({
     FWrab: {
         flexDirection: 'column',
         justifyContent: 'center',
-        marginStart: 5
+        marginStart: 5,
+        marginTop: 5
     },
     nText: {
         color: Colors.sky,

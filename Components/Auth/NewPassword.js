@@ -13,12 +13,17 @@ import { ResetPassword } from '../../store/action/AuthAction'
 import { Toaster } from '../../common/Toaster'
 import Container from '../../common/Container'
 import * as Animatable from 'react-native-animatable';
+import { InputPassword } from '../../common/InputPassword'
+import Loading from '../../common/LoadIng'
 
 
 function NewPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [spinner, setSpinner] = useState(false);
+    const [showPass, setShowPass] = useState(false);
+    const [showPass2, setShowPass2] = useState(false);
+
     const { token } = route.params;
 
     useEffect(() => {
@@ -68,27 +73,28 @@ function NewPassword({ navigation, route }) {
                     <Text animation='bounceIn' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enternewPass')}</Text>
                 </View>
             </View>
-            <Container loading={spinner}>
 
-                <InputIcon
-                    label={i18n.t('password')}
-                    placeholder={i18n.t('password')}
-                    onChangeText={(e) => setPassword(e)}
-                    value={password}
-                    secureTextEntry
-                    styleCont={{ marginTop: 20 }}
-                />
-                <InputIcon
-                    label={i18n.t('confirmPass')}
-                    placeholder={i18n.t('confirmPass')}
-                    onChangeText={(e) => setConfirmPassword(e)}
-                    value={confirmPassword}
-                    secureTextEntry
-                    styleCont={{ marginTop: 0 }}
-                />
+            <InputPassword
+                label={i18n.t('password')}
+                onChangeText={(e) => setPassword(e)}
+                value={password}
+                secureTextEntry={!showPass}
+                image={require('../../assets/Images/view.png')}
+                onPress={() => setShowPass(!showPass)}
+                styleCont={{ marginTop: 0 }}
+            />
+            <InputPassword
+                label={i18n.t('confirmPass')}
+                onChangeText={(e) => setConfirmPassword(e)}
+                value={confirmPassword}
+                secureTextEntry={!showPass2}
+                image={require('../../assets/Images/view.png')}
+                onPress={() => setShowPass2(!showPass2)}
+                styleCont={{ marginTop: 0 }}
+            />
+            <Loading loading={spinner} >
                 <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
-            </Container>
-
+            </Loading>
         </View>
 
 

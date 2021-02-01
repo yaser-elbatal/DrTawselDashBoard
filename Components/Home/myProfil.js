@@ -57,15 +57,11 @@ function myProfil({ navigation }) {
             <Animatable.View animation="pulse" easing="ease-out" delay={500} style={{ flex: 1 }} >
                 {renderLoader()}
                 <Image source={{ uri: user.avatar }} style={styles.ImgBackGround} />
-                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
+                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20, transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }} resizeMode='contain'>
                     <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                                :
-                                <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
 
-                        }
+                        <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
+
                     </TouchableOpacity>
                 </ImageBackground>
 

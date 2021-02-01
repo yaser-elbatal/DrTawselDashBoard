@@ -8,6 +8,7 @@ import { Toaster } from '../../../common/Toaster'
 import BTN from '../../../common/BTN'
 import { useSelector, useDispatch } from 'react-redux'
 import { EditPasswordSettingsProfile } from '../../../store/action/ProfileAction'
+import { InputPassword } from '../../../common/InputPassword'
 
 
 function ChangePassword({ navigation }) {
@@ -19,6 +20,9 @@ function ChangePassword({ navigation }) {
     const [password, setPassword] = useState('');
     const [Newpassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPass, setShowPass] = useState(false);
+    const [showPass2, setShowPass2] = useState(false);
+    const [showPass3, setShowPass3] = useState(false);
 
     const user = useSelector(state => state.auth.user.data)
 
@@ -74,38 +78,40 @@ function ChangePassword({ navigation }) {
                     <Text style={styles.MainText}>{i18n.t('cnagePass')}</Text>
 
 
-                    <InputIcon
+                    <InputPassword
                         label={i18n.t('password')}
-                        placeholder={i18n.t('password')}
                         onChangeText={(e) => setPassword(e)}
                         value={password}
-                        secureTextEntry
+                        secureTextEntry={!showPass}
+                        image={require('../../../assets/Images/view.png')}
+                        onPress={() => setShowPass(!showPass)}
                         styleCont={{ marginTop: 0 }}
-
-
-
                     />
-                    <InputIcon
+
+
+                    <InputPassword
                         label={i18n.t('NewPassword')}
-                        placeholder={i18n.t('NewPassword')}
                         onChangeText={(e) => setNewPassword(e)}
                         value={Newpassword}
-                        secureTextEntry
+                        secureTextEntry={!showPass3}
+                        image={require('../../../assets/Images/view.png')}
                         styleCont={{ marginTop: 0 }}
+                        onPress={() => setShowPass3(!showPass3)}
 
 
 
                     />
-                    <InputIcon
+                    <InputPassword
                         label={i18n.t('confirmPass')}
-                        placeholder={i18n.t('confirmPass')}
                         onChangeText={(e) => setConfirmPassword(e)}
                         value={confirmPassword}
-                        secureTextEntry
-                        styleCont={{ marginTop: 0 }}
-
-
+                        secureTextEntry={!showPass2}
+                        image={require('../../../assets/Images/view.png')}
+                        onPress={() => setShowPass2(!showPass2)}
+                        styleCont={{ marginTop: 10 }}
                     />
+
+
                     <BTN title={i18n.t('save')} ContainerStyle={styles.LoginBtn} onPress={SubmitLoginHandler} />
 
                 </View>

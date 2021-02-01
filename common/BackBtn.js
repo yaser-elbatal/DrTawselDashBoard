@@ -5,13 +5,14 @@ import { width, height } from '../consts/HeightWidth'
 function BackBtn({ navigation }) {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/Images/bluBack.png')} style={styles.BGImage} resizeMode='contain' />
+            <Image source={require('../assets/Images/bluBack.png')} style={[styles.BGImage, { transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }]} resizeMode='contain' />
             <TouchableOpacity style={styles.Btn} onPress={() => navigation.goBack()}>
                 {
                     I18nManager.isRTL ?
-                        <Image source={require('../assets/Images/left.png')} style={styles.arrow} resizeMode='contain' />
-                        :
                         <Image source={require('../assets/Images/arrowwhite.png')} style={styles.arrow} resizeMode='contain' />
+
+                        :
+                        <Image source={require('../assets/Images/left.png')} style={styles.arrow} resizeMode='contain' />
 
 
                 }
@@ -23,9 +24,8 @@ function BackBtn({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'flex-end',
         bottom: Platform.OS === 'ios' ? 45 : 25,
-        left: 10,
+        left: 0,
         right: 0
 
     },

@@ -138,15 +138,9 @@ function EditProfile({ navigation }) {
 
 
 
-                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginLeft: -20 }} resizeMode='contain'>
+                <ImageBackground source={require('../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], right: 0, left: 0, alignSelf: 'flex-end', marginLeft: -10 }} resizeMode='contain'>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        {
-                            I18nManager.isRTL ?
-                                <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                                :
-                                <Image source={require('../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-
-                        }
+                        <Image source={require('../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, padding: 15, top: 15 }} resizeMode='contain' />
                     </TouchableOpacity>
                 </ImageBackground>
 

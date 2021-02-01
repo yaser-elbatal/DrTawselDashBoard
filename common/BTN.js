@@ -11,15 +11,13 @@ function BTN({
     disabled
 }) {
     return (
-        <View style={{ overflow: 'hidden' }}>
-            <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
-                <TouchableOpacity style={[styles.container, ContainerStyle]} onPress={onPress} disabled={disabled}>
-                    <Text style={[styles.sText, TextStyle]}>
-                        {title}
-                    </Text>
-                </TouchableOpacity>
-            </Animatable.View>
-        </View>
+
+        <TouchableOpacity style={[styles.container, ContainerStyle]} onPress={onPress} disabled={disabled}>
+            <Text style={[styles.sText, TextStyle]}>
+                {title}
+            </Text>
+        </TouchableOpacity>
+
     )
 }
 const styles = StyleSheet.create({
@@ -27,15 +25,16 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.sky,
         width: '85%',
         marginHorizontal: 30,
-        height: 50,
+        height: 55,
         marginTop: 30,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 5
     },
     sText: {
         fontFamily: 'flatMedium',
         color: Colors.bg,
-        fontSize: 18,
+        fontSize: 20,
         textAlign: 'center',
         alignSelf: 'center'
     }

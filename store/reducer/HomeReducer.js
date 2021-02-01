@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
         // case Add_product:
         //     return { ...state, product: action.data.data, }
         case 'NotificationCount':
-            return { NotifyCount: action.data, }
+            return { ...state, NotifyCount: action.data, }
 
         default:
             return state;

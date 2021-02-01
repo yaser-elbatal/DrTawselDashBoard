@@ -22,6 +22,8 @@ import { SignIn } from '../../store/action/AuthAction';
 import * as Permissions from 'expo-permissions';
 // import { Notifications } from 'expo'
 import Container from '../../common/Container';
+import Loading from '../../common/LoadIng';
+import { InputPassword } from '../../common/InputPassword';
 
 
 Notifications.setNotificationHandler({
@@ -41,8 +43,9 @@ function Login({ navigation }) {
     const [password, setPassword] = useState('');
     const [isLoading, Setisloading] = useState(false);
     const [userId, setUserId] = useState(null);
+    const [showPass, setShowPass] = useState(false);
 
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
 
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
@@ -77,21 +80,22 @@ function Login({ navigation }) {
     }
 
     useEffect(() => {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-        });
+        if (Constants.isDevice) {
+            registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        });
-        registerForPushNotificationsAsync().then(token => AsyncStorage.setItem('deviceID', token));
+            notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+                setNotification(notification);
+            });
 
-        setSpinner(false)
+            responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+                console.log(response);
+            });
 
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener);
-            Notifications.removeNotificationSubscription(responseListener);
-        };
+            return () => {
+                Notifications.removeNotificationSubscription(notificationListener);
+                Notifications.removeNotificationSubscription(responseListener);
+            };
+        }
     }, []);
 
     async function registerForPushNotificationsAsync() {
@@ -104,52 +108,13 @@ function Login({ navigation }) {
                 finalStatus = status;
             }
             if (finalStatus !== 'granted') {
-
-                Alert.alert(
-                    //title
-                    'Hello',
-                    //body
-                    'Failed to get push token for push notification!',
-                    [
-                        // {
-                        //     text: 'Yes',
-                        //     onPress: () => console.log('Yes Pressed')
-                        // },
-                        {
-                            text: 'ok',
-                            onPress: () => console.log('No Pressed'), style: 'cancel'
-                        },
-                    ],
-                    { cancelable: false },
-                    //clicking out side of alert will not cancel
-                );
-
-                // alert('Failed to get push token for push notification!');
+                alert('Failed to get push token for push notification!');
                 return;
             }
             token = (await Notifications.getExpoPushTokenAsync()).data;
+            console.log(token);
         } else {
-            Alert.alert(
-                //title
-                'Hello',
-                //body
-                'Must use physical device for Push Notifications',
-                [
-                    // {
-                    //     text: 'Yes',
-                    //     onPress: () => console.log('Yes Pressed')
-                    // },
-                    {
-                        text: 'ok',
-                        onPress: () => console.log('No Pressed'), style: 'cancel'
-                    },
-                ],
-                { cancelable: false },
-                //clicking out side of alert will not cancel
-            );
-
-
-            // alert('Must use physical device for Push Notifications');
+            alert('Must use physical device for Push Notifications');
         }
 
         if (Platform.OS === 'android') {
@@ -160,10 +125,13 @@ function Login({ navigation }) {
                 lightColor: '#FF231F7C',
             });
         }
-        AsyncStorage.setItem('deviceID', token);
+
+        if (token)
+            AsyncStorage.setItem('deviceID', token);
 
         return token;
     }
+
 
 
 
@@ -207,37 +175,39 @@ function Login({ navigation }) {
                     <Text animation='slideInLeft' delay={500} style={styles.TextLogin}>{i18n.t('login')}</Text>
                     <Text animation='slideInRight' style={styles.UText}>{i18n.t('loginInf')}</Text>
                 </View>
-                <Container loading={spinner}>
 
-                    <View style={{ overflow: 'hidden' }}>
-                        <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
-                            <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
-                        </Animatable.View>
-                    </View>
-                    <InputIcon
-                        label={i18n.t('phone')}
-                        placeholder={i18n.t('phone')}
-                        onChangeText={(e) => setPhone(e)}
-                        value={phone}
-                        styleCont={{ marginTop: 20 }}
-                        keyboardType='numeric' />
+                <View style={{ overflow: 'hidden' }}>
+                    <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
+                        <Image source={require('../../assets/Images/Login.png')} style={styles.IMG} resizeMode='contain' />
+                    </Animatable.View>
+                </View>
+                <InputIcon
+                    label={i18n.t('phone')}
+                    placeholder={i18n.t('phone')}
+                    onChangeText={(e) => setPhone(e)}
+                    value={phone}
+                    styleCont={{ marginTop: 20 }}
+                    keyboardType='numeric' />
 
-                    <InputIcon
-                        label={i18n.t('password')}
-                        placeholder={i18n.t('password')}
-                        onChangeText={(e) => setPassword(e)}
-                        value={password}
-                        secureTextEntry
-                        styleCont={{ marginTop: 0 }}
-                    />
 
-                    <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
+                <InputPassword
+                    label={i18n.t('password')}
+                    onChangeText={(e) => setPassword(e)}
+                    value={password}
+                    secureTextEntry={!showPass}
+                    image={require('../../assets/Images/view.png')}
+                    onPress={() => setShowPass(!showPass)}
+                    styleCont={{ marginTop: 0 }}
+                />
 
+                <SText title={i18n.t('forgetPassword')} onPress={() => navigation.navigate('PhoneCheck')} style={styles.FPass} />
+
+                <Loading loading={spinner}>
 
                     <BTN title={i18n.t('entry')} onPress={SubmitLoginHandler} ContainerStyle={styles.LoginBtn} />
+                </Loading>
 
-                    <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 15, marginVertical: 30, marginTop: 10 }} />
-                </Container>
+                <SText title={i18n.t('createAcc')} onPress={() => navigation.navigate('Fregister')} style={{ color: Colors.sky, fontSize: 18, margin: 10, }} />
             </ScrollView>
         </KeyboardAvoidingView>
 
@@ -272,7 +242,9 @@ const styles = StyleSheet.create({
     FPass: {
         alignSelf: 'flex-start',
         marginHorizontal: 20,
-        fontSize: 14
+        fontSize: 14,
+        color: Colors.fontBold
+
     },
     LoginBtn: {
         borderRadius: 5,

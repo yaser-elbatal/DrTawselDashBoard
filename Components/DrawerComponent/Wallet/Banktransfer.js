@@ -49,18 +49,18 @@ function Banktransfer({ navigation }) {
 
                             <TouchableOpacity onPress={() => navigation.navigate('TransferMony', { AccountId: acc.id })} key={acc.id.toString()} >
                                 <View style={{ marginHorizontal: '5%', backgroundColor: '#F8F8F8', borderRadius: 10, padding: 10, overflow: 'hidden', marginTop: 5 }} key={acc.id}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', flex: .5 }}>
-                                            <Image source={{ uri: acc.image }} style={{ width: 60, height: 60 }} />
-                                            <View style={{ flexDirection: 'column', alignItems: 'center', paddingHorizontal: 2 }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', flex: .4 }}>
+                                            <Image source={{ uri: acc.image }} style={{ width: 100, height: 100, borderRadius: 5 }} />
+                                            {/* <View style={{ flexDirection: 'column', alignItems: 'center', paddingHorizontal: 2 }}>
                                                 <Text style={{ fontSize: 10, color: 'blue', fontFamily: 'flatMedium' }}> {acc.bank_name}</Text>
-                                            </View>
+                                            </View> */}
                                         </View>
-                                        <View style={{ flexDirection: 'column', flex: .5, justifyContent: 'center' }}>
+                                        <View style={{ flexDirection: 'column', flex: .5, justifyContent: 'center', paddingVertical: 9 }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('bankname')} : </Text>
-                                                <Text style={{ fontSize: width * .025, color: Colors.RedColor, fontFamily: 'flatMedium' }}>{acc.bank_name}</Text>
+                                                <Text style={{ fontSize: 12, color: Colors.RedColor, fontFamily: 'flatMedium' }}>{acc.bank_name}</Text>
                                             </View>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
                                                 <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium' }}>{i18n.t('Accname')} : </Text>
@@ -73,7 +73,7 @@ function Banktransfer({ navigation }) {
                                             </View>
 
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>IBaN   :    </Text>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>: IBaN      </Text>
                                                 <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}>  {acc.iban_number}  </Text>
 
                                             </View>

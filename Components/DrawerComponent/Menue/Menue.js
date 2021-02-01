@@ -19,6 +19,7 @@ import { Toaster } from '../../..//common/Toaster';
 import { validateUserName } from '../../../common/Validation';
 import Container from '../../../common/Container';
 import * as Animatable from 'react-native-animatable';
+import { ToasterNative } from '../../../common/ToasterNative';
 
 function Menue({ navigation, route }) {
 
@@ -62,15 +63,8 @@ function Menue({ navigation, route }) {
         });
 
         if (route.params) {
-            Toast.show({
-                text: i18n.t('AddMen'),
-                type: "danger",
-                duration: 3000,
-                textStyle: {
-                    color: "white",
-                    textAlign: 'center'
-                }
-            });
+            ToasterNative(i18n.t('AddMen'), 'danger', 'bottom')
+
         }
 
         return unsubscribe;
@@ -92,14 +86,12 @@ function Menue({ navigation, route }) {
         if (!val) {
             setLoader(true)
             dispatch(AddMenue(token, lang, nameAR, nameEN)).then(() => dispatch(MenueInfo(lang, token)).then(() => setLoader(false)))
-
-
             setModalVisible(false)
             setNameAr('');
             setNameEN('')
         }
         else {
-            Toaster(_validate());
+            ToasterNative(_validate(), 'danger', 'top')
 
         }
     }
@@ -121,9 +113,8 @@ function Menue({ navigation, route }) {
 
     const EditMEnue = () => {
         setLoader(true);
-        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData)).then(() => dispatch(MenueInfo(lang, token))).then(() => setLoader(false))
+        dispatch(UpdateMenue(token, lang, nameAREdit, nameENEdit, MenueData)).then(() => dispatch(MenueInfo(lang, token))).then(() => setLoader(false)).then(() => setEditMaodVisible(false))
 
-        setEditMaodVisible(false)
     }
 
 
@@ -135,12 +126,12 @@ function Menue({ navigation, route }) {
     const toggleChecked = (itemId) => {
 
         if (isChecked(itemId)) {
-
             let Deleted = DeleteArr.filter((id) => id !== itemId);
             setDeleteArr(Deleted)
 
 
-        } else {
+        }
+        else {
             setDeleteArr(DeleteArr.concat([itemId]))
 
         }
@@ -153,7 +144,6 @@ function Menue({ navigation, route }) {
         setLoader(true)
 
         setSearch(e);
-
 
         if (e == '') {
             setLoader(true)
@@ -168,7 +158,7 @@ function Menue({ navigation, route }) {
 
     const DeleteMenueMultiIteM = () => {
         setLoader(true)
-        dispatch(DeleteMenue(token, DeleteArr)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSelection2(false), setLoader(false)))
+        dispatch(DeleteMenue(token, DeleteArr, lang)).then(() => dispatch(MenueInfo(lang, token)).then(() => setSelection2(false), setLoader(false)))
         setDeleteArr([])
     }
 
@@ -222,16 +212,7 @@ function Menue({ navigation, route }) {
                     <Text style={{ fontFamily: 'flatMedium', fontSize: width * .03, paddingHorizontal: 15, color: Colors.inputTextMainColor }}>{i18n.t('Select')}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={DeleteArr.length == 0 ?
-                    () => Toast.show({
-                        text: i18n.t('SelectElement'),
-                        type: "danger",
-                        duration: 3000,
-                        textStyle: {
-                            color: "white",
-                            textAlign: 'center'
-                        }
-                    })
+                <TouchableOpacity onPress={DeleteArr.length == 0 ? () => ToasterNative(i18n.t('SelectElement'), 'danger', 'bottom')
                     : DeleteMenueMultiIteM} style={{ borderWidth: .4, backgroundColor: Colors.bg, alignItems: 'center', justifyContent: 'center', borderColor: Colors.InputColor, }}>
                     <Text style={{ fontFamily: 'flatMedium', paddingVertical: 5, paddingHorizontal: 15, color: Colors.inputTextMainColor }}> {i18n.t('delete')}</Text>
                 </TouchableOpacity>
@@ -263,46 +244,49 @@ function Menue({ navigation, route }) {
 
             <Container loading={Loader} >
                 {
-                    !Menue ?
-                        <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                        : !Menue.length ?
+                    Menue &&
+                        Menue.length === 0 ?
+                        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                             <Image source={require('../../../assets/Images/empty.png')} style={{ height: 150, width: 150, alignSelf: 'center' }} />
-                            :
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                data={Menue}
-                                extraData={Loader}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item, index }) =>
+                            <Text style={{ fontSize: 16, color: Colors.RedColor, fontFamily: 'flatMedium', }}>{i18n.t('menueAdd')}</Text>
+
+                        </View>
+                        :
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={Menue}
+                            extraData={Loader}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item, index }) =>
 
 
-                                    (
-                                        <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                                (
+                                    <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
 
-                                            <View style={styles.Card} key={index}>
-                                                <View style={styles.FWrab}>
-                                                    <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
-                                                    <Text style={styles.nText}>{i18n.t('num')} # {item.id}</Text>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                        <Text style={[styles.name, { color: Colors.IconBlack }]}>{i18n.t('name')} :   </Text>
-                                                        <Text style={styles.name}>{item.name}</Text>
-                                                    </View>
+                                        <View style={styles.Card} key={index}>
+                                            <View style={styles.FWrab}>
+                                                <CheckBox checked={isChecked(item.id)} color={isChecked(item.id) ? Colors.sky : '#DBDBDB'} style={{ backgroundColor: isChecked(item.id) ? Colors.sky : Colors.bg, marginStart: -10, borderRadius: 5 }} onPress={() => toggleChecked(item.id)} />
+                                                <Text style={styles.nText}> {i18n.t('num')}:  {item.id}</Text>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Text style={[styles.name, { color: Colors.IconBlack }]}> {i18n.t('name')} :   </Text>
+                                                    <Text style={styles.name}>{item.name}</Text>
                                                 </View>
-                                                <View style={styles.SWarb}>
-                                                    <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
-                                                        <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
-                                                    </TouchableOpacity>
+                                            </View>
+                                            <View style={styles.SWarb}>
+                                                <TouchableOpacity style={styles.Edit} onPress={() => edit(item)}>
+                                                    <Image source={require('../../../assets/Images/Icon_edit.png')} style={styles.Img} resizeMode='contain' />
+                                                </TouchableOpacity>
 
-                                                    <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
-                                                        <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
-                                                    </TouchableOpacity>
-
-                                                </View>
+                                                <TouchableOpacity style={styles.Delete} onPress={() => DeleteMeueIteM(item.id)}>
+                                                    <Image source={require('../../../assets/Images/trash_white.png')} style={styles.Img} resizeMode='contain' />
+                                                </TouchableOpacity>
 
                                             </View>
-                                        </Animatable.View>
-                                    )
-                                } />
+
+                                        </View>
+                                    </Animatable.View>
+                                )
+                            } />
                 }
 
 
@@ -467,7 +451,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#E3E3E3',
         height: '50%',
         justifyContent: 'center',
-        width: 30
+        width: 30,
+        padding: 15
     },
     Delete: {
         backgroundColor: Colors.RedColor,

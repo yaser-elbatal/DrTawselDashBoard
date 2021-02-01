@@ -15,6 +15,8 @@ import { Toaster } from '../../common/Toaster';
 import { CheckPhone } from '../../store/action/AuthAction'
 import Container from '../../common/Container';
 import * as Animatable from 'react-native-animatable';
+import Loading from '../../common/LoadIng'
+import { ToasterNative } from '../../common/ToasterNative'
 
 function PhoneCheck({ navigation }) {
     const [Phone, setPhone] = useState('');
@@ -42,8 +44,8 @@ function PhoneCheck({ navigation }) {
 
         }
         else {
-            Toaster(_validate())
             setSpinner(false)
+            ToasterNative(_validate(), 'danger', 'bottom')
         }
     }
     return (
@@ -55,21 +57,21 @@ function PhoneCheck({ navigation }) {
                     <Text animation='slideInRight' easing="ease-out" delay={500} style={styles.UText}>{i18n.t('enterPhone')}</Text>
                 </View>
             </View>
-            <Container loading={spinner}>
 
-                <InputIcon
-                    label={i18n.t('phone')}
-                    placeholder={i18n.t('phone')}
-                    keyboardType='numeric'
-                    styleCont={{ marginTop: 20 }}
-                    onChangeText={(e) => setPhone(e)}
-                    value={Phone}
+            <InputIcon
+                label={i18n.t('phone')}
+                placeholder={i18n.t('phone')}
+                keyboardType='numeric'
+                styleCont={{ marginTop: 20 }}
+                onChangeText={(e) => setPhone(e)}
+                value={Phone}
 
-                />
+            />
+            <Loading loading={spinner} stylecont={{ marginTop: -150 }}>
 
                 < BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConFirmPhone} />
 
-            </Container>
+            </Loading>
 
         </View>
 

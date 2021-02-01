@@ -159,13 +159,16 @@ const styles = StyleSheet.create({
         bottom: 40
     },
     Button: {
-        bottom: Platform.OS === 'ios' ? -20 : -18,
+        bottom: -10,
         width,
         backgroundColor: Colors.sky,
-        flex: 1,
         marginHorizontal: -16,
         alignItems: 'center',
-        padding: Platform.OS === 'ios' ? 15 : 10
+        padding: 25,
+        // paddingTop: Platform.OS == 'ios' ? 27 : 15,
+
+
+
 
     },
     textBtn: {
@@ -173,7 +176,8 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         textAlign: 'center',
         fontWeight: '200',
-        fontSize: 20,
+        fontSize: 24,
+        bottom: 10
     },
     buttonCircle: {
         width: 40,

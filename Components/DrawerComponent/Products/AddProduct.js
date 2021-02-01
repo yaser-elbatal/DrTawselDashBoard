@@ -22,6 +22,8 @@ import Container from '../../../common/Container';
 import { validateUserName } from '../../../common/Validation';
 import { Toaster } from '../../../common/Toaster';
 import { GetHomeProducts } from '../../../store/action/HomeAction';
+import { ToasterNative } from '../../../common/ToasterNative';
+import Loading from '../../../common/LoadIng';
 
 
 function AddProduct({ navigation }) {
@@ -33,6 +35,7 @@ function AddProduct({ navigation }) {
     const ExtraProduct = useSelector(state => state.ExtraProduct.ExtraProduct);
     const [ProductExtra, setProductExtra] = useState([])
     const [Show, setShow] = useState(false);
+    const [loading, setloading] = useState(false);
 
 
     const [nameAR, setNameAr] = useState('');
@@ -112,13 +115,11 @@ function AddProduct({ navigation }) {
         let nameErr = validateUserName(nameAR)
         let nameEnErr = validateUserName(nameEN)
         let SelectChoice = available === null ? i18n.t('SelectYN') : SelectChoice;
-        // let DisErr = Discount == '' ? 'Enter Discount' : null;
         let piceErr = large_price == '' ? i18n.t('EnterPrice') : null;
         let baseErr = base64 == null ? i18n.t('PickImage') : null;
         let quantityErr = quantity == '' ? i18n.t('EnterQuatity') : null;
         let DetErr = detailesAr == '' ? i18n.t('enterDetaliesAr') : null;
         let Det = detailesEn == '' ? i18n.t('EnterDetailesEn') : null;
-        // let Kiloes = availableKilos == '' ? 'Enter availableKilos' : null;
         let MenueIdErr = MenueId == '' ? i18n.t('SelectMenue') : null;
 
 
@@ -128,14 +129,19 @@ function AddProduct({ navigation }) {
     const Add_Product = () => {
         let val = _validate();
         if (!val) {
-            setSpinner(true)
-            dispatch(Add_Products(token, lang, nameAR, nameEN, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct)).then(() => setSpinner(false))
+            setloading(true)
+            dispatch(Add_Products(token, lang, nameAR, nameEN, detailesAr, detailesEn, available, availableKilos, Discount, quantity, small_price, mid_price, large_price, MenueId, base64, navigation, ExtraProduct)).then(() => setloading(false)).catch((err) => {
+                setloading(false)
+                ToasterNative(err, 'danger', 'bottom');
+
+
+            })
 
         }
 
         else {
-            setSpinner(false);
-            Toaster(_validate());
+            setloading(false)
+            ToasterNative(_validate(), 'danger', 'bottom');
 
 
         }
@@ -183,17 +189,27 @@ function AddProduct({ navigation }) {
     };
 
     const _pickImage = async () => {
+        let { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-        askPermissionsAsync();
-        let result = await ImagePicker.launchImageLibraryAsync({
-            aspect: [4, 3],
-            base64: true
-        });
+        if (status === 'granted') {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                base64: true,
+                aspect: [4, 3],
+                quality: .5,
+            });
 
-        if (!result.cancelled) {
-            setUserImage(result.uri);
-            setBase64(result.base64);
+            if (!result.cancelled) {
+                setUserImage(result.uri);
+                setBase64(result.base64);
+            }
+
         }
+        else {
+            ToasterNative(i18n.t('CammeraErr'), "danger", 'top')
+
+        }
+
+
     };
 
 
@@ -303,7 +319,7 @@ function AddProduct({ navigation }) {
 
         <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : 'height'} style={{ backgroundColor: 'white', flex: 1 }}>
 
-            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Colors.bg }} showsVerticalScrollIndicator={false}>
                 <Header navigation={navigation} label={i18n.t('AddPro')} />
                 <Container loading={spinner}>
 
@@ -332,7 +348,7 @@ function AddProduct({ navigation }) {
                             Sizes.map((size, index) => {
                                 return (
 
-                                    <View key={index.toString()} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 30, flexDirection: 'row' }}>
+                                    <View key={index.toString()} style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 25, flexDirection: 'row' }}>
                                         <TouchableOpacity onPress={() => { setSelectedRadio(size.id) }} style={{ flexDirection: 'row', alignItems: 'center', }}>
                                             <View style={{
                                                 height: 15,
@@ -438,61 +454,50 @@ function AddProduct({ navigation }) {
                         value={quantity}
                     />
 
-                    <View style={{ height: width * .14, marginHorizontal: '4%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                        <View style={{ paddingEnd: 150, fontFamily: 'flatMedium', paddingStart: 10 }}>
-                            <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
+                    <View style={{ height: width * .14, marginHorizontal: '4%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
+                        <View style={{}}>
+                            <Text style={{ color: Colors.fontNormal, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                         </View>
-                        {
-                            data.map((item, index) => {
-                                return (
-                                    <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
-                                        <View style={{
-                                            height: 15,
-                                            width: 15,
-                                            borderRadius: 12,
-                                            borderWidth: 2,
-                                            borderColor: available === item.id ? Colors.sky : Colors.fontNormal,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            alignSelf: 'center',
+                        <View style={{ flexDirection: 'row' }}>
 
-                                        }}>
-                                            {
-                                                available === item.id ?
-                                                    <View style={{
-                                                        height: 6,
-                                                        width: 6,
-                                                        borderRadius: 6,
-                                                        backgroundColor: Colors.sky,
-                                                    }} />
-                                                    : null
-                                            }
-                                        </View>
-                                        <Text style={[styles.sText, { color: available === item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                            {
+                                data.map((item, index) => {
+                                    return (
+                                        <TouchableOpacity onPress={() => { setavailable(item.id) }} key={index.toString()} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
+                                            <View style={{
+                                                height: 15,
+                                                width: 15,
+                                                borderRadius: 12,
+                                                borderWidth: 2,
+                                                borderColor: available === item.id ? Colors.sky : Colors.fontNormal,
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                alignSelf: 'center',
 
-                                    </TouchableOpacity>
+                                            }}>
+                                                {
+                                                    available === item.id ?
+                                                        <View style={{
+                                                            height: 6,
+                                                            width: 6,
+                                                            borderRadius: 6,
+                                                            backgroundColor: Colors.sky,
+                                                        }} />
+                                                        : null
+                                                }
+                                            </View>
+                                            <Text style={[styles.sText, { color: available === item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+
+                                        </TouchableOpacity>
 
 
 
-                                )
-                            })
-                        }
-
+                                    )
+                                })
+                            }
+                        </View>
                     </View>
 
-                    {/* <TouchableOpacity onPress={_pickImage} >
-                        <InputIcon
-                            styleCont={{ marginTop: 20 }}
-                            label={i18n.t('ProdPice')}
-                            placeholder={i18n.t('ProdPice')}
-                            onChangeText={(e) => setUserImage(e)}
-                            value={userImage}
-                            editable={false}
-                            imgStyle={{ width: 25, height: 25, bottom: 5 }}
-                            image={require('../../../assets/Images/camera_gray.png')}
-                            onPress={_pickImage}
-                        />
-                    </TouchableOpacity> */}
 
 
                     <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', overflow: 'hidden', marginHorizontal: "4%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingEnd: 20, marginTop: 15 }}>
@@ -500,7 +505,7 @@ function AddProduct({ navigation }) {
                             userImage ?
                                 <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }} numberOfLines={1}>{userImage}</Text>
                                 :
-                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }}>{i18n.t('ProdPice')}</Text>
+                                <Text style={{ color: Colors.fontNormal, fontFamily: 'flatMedium', fontSize: 12, paddingStart: 10 }}>{i18n.t('ProdPice')}</Text>
 
 
                         }
@@ -532,6 +537,7 @@ function AddProduct({ navigation }) {
                         placeholder={i18n.t('prodDetAr')}
                         multiline={true}
                         numberOfLines={10}
+                        inputStyle={{ paddingTop: Platform.OS === 'ios' ? 20 : 0, }}
                         onChangeText={(e) => setDetailesAr(e)}
                         value={detailesAr}
                         LabelStyle={{ bottom: width * .32 }}
@@ -544,6 +550,8 @@ function AddProduct({ navigation }) {
                         placeholder={i18n.t('prodDetEn')}
                         multiline={true}
                         numberOfLines={10}
+                        inputStyle={{ paddingTop: Platform.OS === 'ios' ? 25 : 0, }}
+
                         onChangeText={(e) => setDetailesEn(e)}
                         value={detailesEn}
                         LabelStyle={{ fontSize: 14, bottom: width * .32, }}
@@ -573,7 +581,10 @@ function AddProduct({ navigation }) {
 
                     <SText title={`+ ${i18n.t('AddSpecialProduct')}`} onPress={() => setEditMaodVisible(true)} style={{ color: Colors.sky, fontSize: 15, marginVertical: 20, marginTop: 0, textAlign: 'left', marginHorizontal: '5%' }} />
 
-                    <BTN title={`+ ${i18n.t('Add')}`} ContainerStyle={styles.LoginBtn} onPress={Add_Product} />
+                    <Loading loading={loading} stylecont={{ marginTop: -10 }}>
+                        <BTN title={`+ ${i18n.t('Add')}`} ContainerStyle={styles.LoginBtn} onPress={Add_Product} />
+                    </Loading>
+
                     <View style={styles.centeredView}>
                         <Modal
                             animationType="slide"
@@ -585,7 +596,7 @@ function AddProduct({ navigation }) {
                                 <KeyboardAvoidingView behavior={(Platform.OS === 'ios') ? "padding" : null} style={{ backgroundColor: 'white', }}>
 
                                     <View style={styles.modalView}>
-                                        <ScrollView style={{ margin: 20, backgroundColor: Colors.bg, flex: 1 }}>
+                                        <ScrollView style={{ backgroundColor: Colors.bg, flex: 1, marginTop: 10 }} showsVerticalScrollIndicator={false}>
                                             <InputIcon
                                                 styleCont={{ marginTop: 10 }}
                                                 label={i18n.t('ExtraProductAr')}
@@ -614,8 +625,10 @@ function AddProduct({ navigation }) {
                                                 onChangeText={(e) => setPricePrdouctExtra(e)}
                                                 value={priceProductExtra}
                                             />
+                                            <Container loading={loading}>
 
-                                            <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={submitData} />
+                                                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={submitData} />
+                                            </Container>
                                         </ScrollView>
                                     </View>
                                 </KeyboardAvoidingView>
@@ -652,7 +665,8 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginHorizontal: '5%',
         width: '90%',
-        marginVertical: 5
+        marginVertical: 5,
+        marginBottom: 5
 
     },
     Img: {

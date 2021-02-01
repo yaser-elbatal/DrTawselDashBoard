@@ -69,121 +69,121 @@ const ProductDet = ({ navigation, route }) => {
 
                     <>
                         <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} resizeMode='cover' />
-                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20 }} resizeMode='contain'>
-                            <TouchableOpacity onPress={() => navigation.goBack()}>
-                                {
-                                    I18nManager.isRTL ?
-                                        <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
-                                        :
-                                        <Image source={require('../../../assets/Images/left.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
 
-                                }
+                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20, transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }} resizeMode='contain'>
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 25, width: 25, marginTop: 45 }} resizeMode='contain' />
                             </TouchableOpacity>
                         </ImageBackground>
+
                         <View style={styles.ScrolContainer}>
-                            <ScrollView style={{ flex: 1, margin: 20, marginTop: 0 }} showsVerticalScrollIndicator={false}>
-                                <Text style={[styles.num, { marginBottom: 0, paddingVertical: 0, marginTop: 10, color: Colors.IconBlack, alignSelf: 'flex-start' }]}>{i18n.t('num')} #{ProductDetA.id}</Text>
+                            <ScrollView style={{ flex: 1, marginTop: 0 }} showsVerticalScrollIndicator={false}>
+                                <View style={{ margin: 20, marginTop: 25 }}>
+                                    <Text style={[styles.num, { color: Colors.IconBlack, alignSelf: 'flex-start' }]}># {i18n.t('num')} {ProductDetA.id}</Text>
 
-                                <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
-                                    <View style={styles.Wrab}>
-                                        <View style={{ flexDirection: 'row', }}>
-                                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.text, { width: 100 }]}>{ProductDetA.name_ar}</Text>
-                                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.text, { paddingHorizontal: 10, width: 100 }]}>{ProductDetA.name_en}</Text>
+                                    <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
+                                        <View style={styles.Wrab}>
+                                            <View style={{ flexDirection: 'row', }}>
+                                                <Text style={[styles.text, { color: Colors.sky, }]}>{ProductDetA.name}</Text>
+                                            </View>
+
+                                            <View >
+                                                {
+                                                    ProductDetA.available == 0 ?
+                                                        <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+                                                        :
+                                                        <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+
+
+                                                }
+                                            </View>
+
+
                                         </View>
+                                        <View style={{ flexDirection: 'column', alignItems: 'flex-start', marginTop: 10 }}>
+                                            <Text style={[styles.num, { color: Colors.IconBlack }]}>{ProductDetA.menu}</Text>
+                                            <View style={{ flexDirection: 'row', marginTop: 25 }}>
+                                                <Text style={[styles.num, { fontSize: 18, }]}>{ProductDetA.price - (ProductDetA.price * (ProductDetA.discount / 100))} {i18n.t('Rial')}</Text>
+                                                {
+                                                    ProductDetA.discount == 0 ? null :
+                                                        <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.RedColor, paddingHorizontal: 15, fontSize: 16 }]}>{ProductDetA.price} {i18n.t('Rial')}</Text>
 
-                                        <View >
+                                                }
+                                                {
+                                                    ProductDetA.available_kilos == 0 ?
+                                                        null :
+                                                        <Text style={[styles.num, { color: Colors.IconBlack, paddingHorizontal: 3 }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
+
+                                                }
+
+                                            </View>
+
+                                        </View>
+                                    </View>
+
+
+                                    <TouchableOpacity onPress={() => setClick1(!click1)} style={{ marginTop: 25 }}>
+                                        <View style={{ backgroundColor: '#F6F6F6', height: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, }}>
+
+                                            <Text style={styles.nMenu}>{i18n.t('orderDetailes')}</Text>
                                             {
-                                                ProductDetA.available == 0 ?
-                                                    <Image source={require('../../../assets/Images/off_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
+                                                click1 ?
+
+                                                    <Image source={require('../../../assets/Images/noun_down_blue.png')} style={{ width: 12, height: 10, }} />
                                                     :
-                                                    <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />
-
-
-                                            }
-                                        </View>
-
-
-                                    </View>
-                                    <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-                                        <Text style={[styles.num, { color: Colors.IconBlack }]}>{ProductDetA.menu}</Text>
-                                        <View style={{ flexDirection: 'row', }}>
-                                            <Text style={[styles.num, { fontSize: 18, }]}>{ProductDetA.price - (ProductDetA.price * (ProductDetA.discount / 100))} {i18n.t('Rial')}</Text>
-                                            {
-                                                ProductDetA.discount == 0 ? null :
-                                                    <Text style={[styles.num, { textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', color: Colors.RedColor, paddingHorizontal: 15, fontSize: 16 }]}>{ProductDetA.price} {i18n.t('Rial')}</Text>
-
-                                            }
-                                            {
-                                                ProductDetA.available_kilos == 0 ?
-                                                    null :
-                                                    <Text style={[styles.num, { color: Colors.IconBlack, paddingHorizontal: 3 }]}>({i18n.t('Availablekilos') + ' : ' + ProductDetA.available_kilos})</Text>
+                                                    <Image source={require('../../../assets/Images/noun_down_gray.png')} style={{ width: 12, height: 10, }} />
 
                                             }
 
                                         </View>
+                                    </TouchableOpacity>
+                                    {
+                                        click1 ?
+                                            <Text style={{ marginVertical: 15, fontFamily: 'flatMedium', fontSize: 14, color: Colors.fontNormal, alignSelf: 'flex-start', paddingHorizontal: 10 }}>
+                                                {ProductDetA.details}
 
-                                    </View>
+
+                                            </Text>
+                                            :
+                                            null
+                                    }
+                                    <TouchableOpacity onPress={() => setClick2(!click2)}>
+                                        <View style={{ backgroundColor: '#F6F6F6', height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, marginTop: 10 }}>
+                                            <Text style={styles.nMenu}>{i18n.t('Additions')}</Text>
+                                            {
+                                                click2 ?
+
+                                                    <Image source={require('../../../assets/Images/noun_down_blue.png')} style={{ width: 12, height: 10, }} />
+                                                    :
+                                                    <Image source={require('../../../assets/Images/noun_down_gray.png')} style={{ width: 12, height: 10, }} />
+
+                                            }
+                                        </View>
+                                    </TouchableOpacity>
+                                    {
+                                        click2 ?
+
+                                            ProductDetA.extras && ProductDetA.extras.length ?
+                                                ProductDetA.extras.map((size, index) => (
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5, paddingHorizontal: 20 }} key={index + 1}>
+                                                        <Text style={styles.name} key={size.id}> {size.name} </Text>
+                                                        <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15, alignSelf: 'flex-start' }]}>{size.price} {i18n.t('Rial')}</Text>
+
+                                                    </View>
+
+
+
+
+                                                ))
+                                                :
+                                                <Text style={styles.name}>{i18n.t('nothing')}</Text>
+
+                                            : null
+                                    }
+
                                 </View>
 
 
-                                <TouchableOpacity onPress={() => setClick1(!click1)}>
-                                    <View style={{ backgroundColor: '#F6F6F6', height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, }}>
-
-                                        <Text style={styles.nMenu}>{i18n.t('orderDetailes')}</Text>
-                                        {
-                                            click1 ?
-
-                                                <Image source={require('../../../assets/Images/noun_down_blue.png')} style={{ width: 12, height: 10, }} />
-                                                :
-                                                <Image source={require('../../../assets/Images/noun_down_gray.png')} style={{ width: 12, height: 10, }} />
-
-                                        }
-
-                                    </View>
-                                </TouchableOpacity>
-                                {
-                                    click1 ?
-                                        <Text style={{ marginVertical: 15, fontFamily: 'flatMedium', fontSize: 14, color: Colors.fontNormal, alignSelf: 'flex-start', paddingHorizontal: 15 }}>
-                                            {ProductDetA.details}
-
-
-                                        </Text>
-                                        :
-                                        null
-                                }
-                                <TouchableOpacity onPress={() => setClick2(!click2)}>
-                                    <View style={{ backgroundColor: '#F6F6F6', height: 40, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, marginTop: 10 }}>
-                                        <Text style={styles.nMenu}>{i18n.t('Additions')}</Text>
-                                        {
-                                            click2 ?
-
-                                                <Image source={require('../../../assets/Images/noun_down_blue.png')} style={{ width: 12, height: 10, }} />
-                                                :
-                                                <Image source={require('../../../assets/Images/noun_down_gray.png')} style={{ width: 12, height: 10, }} />
-
-                                        }
-                                    </View>
-                                </TouchableOpacity>
-                                {
-                                    click2 ?
-
-                                        ProductDetA.extras && ProductDetA.extras.length ?
-                                            ProductDetA.extras.map((size, index) => (
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5, paddingHorizontal: 20 }} key={index + 1}>
-                                                    <Text style={styles.name} key={size.id}> {size.name} </Text>
-                                                    <Text style={[styles.num, { marginBottom: 0, paddingHorizontal: 15, alignSelf: 'flex-start' }]}>{size.price} {i18n.t('Rial')}</Text>
-
-                                                </View>
-
-
-
-
-                                            ))
-                                            :
-                                            <Text style={styles.name}>{i18n.t('nothing')}</Text>
-
-                                        : null
-                                }
                             </ScrollView>
                         </View>
                     </>
@@ -210,15 +210,15 @@ const styles = StyleSheet.create({
     },
     nMenu: {
         fontFamily: 'flatMedium',
-        fontSize: 14,
+        fontSize: 16,
+        color: Colors.IconBlack
 
     },
     num: {
         fontFamily: 'flatMedium',
         fontSize: 16,
         color: Colors.sky,
-        marginBottom: 10,
-        paddingVertical: 3
+
     },
     EditImg: {
         width: 20,
@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
         bottom: 0, height: '60%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+        overflow: 'hidden',
     },
     Container: {
         width: '88%',

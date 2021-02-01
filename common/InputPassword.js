@@ -5,7 +5,7 @@ import Colors from "../consts/Colors";
 
 const { width } = Dimensions.get('window')
 
-const InputIcon = ({
+const InputPassword = ({
     KeyboardStyle,
     label,
     value,
@@ -17,9 +17,8 @@ const InputIcon = ({
     styleCont,
     imageFocused,
     onPress,
-    editable,
     imgStyle,
-
+    editable,
     ...props
 }) => {
 
@@ -28,75 +27,68 @@ const InputIcon = ({
     return (
 
         <View style={[styles.containerTableTextOverInput, styleCont]}>
-
-            <Text style={[styles.labelText, {
-                paddingHorizontal: focused ? 10 : 0, color: focused ? Colors.sky : Colors.fontNormal, fontSize: 13
-            }, LabelStyle]}  >
-                {focused ? label : null}
+            <Text style={[styles.labelText,
+            {
+                color: focused || value ? Colors.sky : Colors.fontNormal, paddingHorizontal: 10, fontSize: 13,
+                bottom: focused || value ? width * .13 : null
+            }, LabelStyle
+            ]}  >
+                {label}
             </Text>
 
             <TextInput
-                style={[styles.textInput, inputStyle, { borderColor: focused ? Colors.sky : Colors.InputColor, }]}
-                placeholder={focused ? null : placeholder}
+                style={[styles.textInput, { borderColor: focused || value ? Colors.sky : Colors.InputColor }, inputStyle]}
                 value={value}
                 onChangeText={onChangeText}
                 onFocus={() => setFocused(true)}
-                onBlur={value ? () => setFocused(true) : () => setFocused(false)}
+                onBlur={() => setFocused(false)}
+                {...props}
+                placeholder={placeholder}
                 editable={editable}
 
-                {...props}
             />
-            <TouchableOpacity onPress={onPress} style={{
-                left: width * .8,
-                bottom: width * .09
-            }}>
-                <Image source={image} style={[styles.image, imgStyle]} />
-
+            <TouchableOpacity onPress={onPress} style={{ position: 'absolute', alignSelf: 'flex-end', alignItems: 'center', padding: 15 }}>
+                <Image source={image} style={[styles.image, imgStyle]} resizeMode='contain' />
             </TouchableOpacity>
         </View>
 
 
     );
 };
-export { InputIcon };
+export { InputPassword };
 
 const styles = StyleSheet.create({
 
     containerTableTextOverInput: {
-        height: width * .2,
+        height: width * .15,
         position: "relative",
         marginHorizontal: "5%",
-        marginTop: 30
+        marginVertical: 10,
+        justifyContent: 'center',
 
     },
     labelText: {
-        left: 20,
+        left: 10,
         backgroundColor: Colors.bg,
         alignSelf: "flex-start",
         fontSize: width * .03,
         zIndex: 10,
         position: "absolute",
-        bottom: width * .175,
         fontFamily: 'flatMedium',
-        color: Colors.fontNormal,
-
 
 
     },
     textInput: {
         flex: 1,
-        justifyContent: "flex-start",
+        justifyContent: "flex-end",
         paddingHorizontal: 25,
         borderColor: '#E0E0E0',
         borderWidth: 1,
         borderRadius: 5,
         color: Colors.fontNormal,
-        paddingRight: 20,
-        paddingLeft: 20,
         textAlign: I18nManager.isRTL ? "right" : "left",
         fontFamily: "flatMedium",
         fontSize: 13,
-        // paddingTop: Platform.OS == 'ios' ? 15 : 0
     },
     image: {
         width: width * 0.04,
@@ -104,6 +96,7 @@ const styles = StyleSheet.create({
         height: width * 0.06,
         maxHeight: width * 0.12,
         resizeMode: "contain",
+        alignSelf: 'center'
 
     },
 });

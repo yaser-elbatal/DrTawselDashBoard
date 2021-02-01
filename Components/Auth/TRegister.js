@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Toaster } from '../../common/Toaster';
 import { SignUp } from '../../store/action/AuthAction';
 import * as Animatable from 'react-native-animatable';
+import Loading from '../../common/LoadIng';
+import { ToasterNative } from '../../common/ToasterNative';
 
 function TRegister({ navigation, route }) {
 
@@ -57,7 +59,8 @@ function TRegister({ navigation, route }) {
         }
         else {
             setSpinner(false)
-            Toaster(_validate());
+            Toaster();
+            ToasterNative(_validate(), 'danger', 'bottom')
 
         }
     }
@@ -190,7 +193,10 @@ function TRegister({ navigation, route }) {
                     }
 
                 </View>
-                <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConfirmSignUp} />
+                <Loading loading={spinner}>
+
+                    <BTN title={i18n.t('send')} ContainerStyle={styles.LoginBtn} onPress={ConfirmSignUp} />
+                </Loading>
             </ScrollView>
         </KeyboardAvoidingView>
 

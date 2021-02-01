@@ -16,7 +16,7 @@ import Orders from './OrdersReducer';
 import Comments from './CommentsReducer'
 import notifications from './NotificationsReducer';
 import reborts from './RebortChartReducer'
-
+import notifyStatue from './AllownotifyReducer'
 
 
 export default multiReducres = combineReducers({
@@ -35,5 +35,6 @@ export default multiReducres = combineReducers({
     Orders,
     Comments,
     notifications,
-    reborts
+    reborts,
+    notifyStatue
 });

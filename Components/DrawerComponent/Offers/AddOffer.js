@@ -82,7 +82,7 @@ function Previousoffers({ navigation }) {
 
 
             <Card />
-            <BTN title={i18n.t('AddOffer')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 5 }} onPress={() => setModalVisible(true)} />
+            <BTN title={i18n.t('AddOffer')} ContainerStyle={{ marginHorizontal: '5%', width: '90%', borderRadius: 25 }} onPress={() => setModalVisible(true)} />
 
 
 
@@ -111,7 +111,7 @@ function Previousoffers({ navigation }) {
                                                     <Text style={[styles.CardText, { color: Colors.sky, top: 20, fontSize: 16 }]}>{i18n.t('num')} : {index + 1}</Text>
 
 
-                                                    <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} style={{ marginTop: 10 }}>
+                                                    <TouchableOpacity onPress={() => DeleteCardBanners(item.id)} style={{ marginTop: 25 }}>
                                                         <Image source={require('../../../assets/Images/Email_delete.png')} style={{ height: 22, width: 22, }} />
                                                     </TouchableOpacity>
 
@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginHorizontal: 0,
         width: '80%',
-        backgroundColor: '#ECECEC'
+        backgroundColor: '#ECECEC',
+        marginBottom: 25
 
     },
     Card: {

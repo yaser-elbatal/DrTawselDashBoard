@@ -1,16 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity, I18nManager } from 'react-native'
 import Header from '../../../common/Header'
 import i18n from '../../../locale/i18n'
 import Colors from '../../../consts/Colors'
 import HomeHeader from '../../../common/HomeHeader'
 import * as Animatable from 'react-native-animatable';
+import { useDispatch, useSelector } from 'react-redux'
 
+import { GetNotifyStatue } from '../../../store/action/AllowNotifyAction';
 
 const { width } = Dimensions.get('window')
+
 function Settings({ navigation }) {
 
     const [Select, setSelect] = useState(false)
+    const dispatch = useDispatch()
+
+
+
+    const token = useSelector(state => state.auth.user.data.token);
+    const lang = useSelector(state => state.lang.language);
+    const notifyStatue = useSelector(state => state.notifyStatue.notify);
+
+    console.log(notifyStatue);
+    useEffect(() => {
+
+        dispatch(GetNotifyStatue(token, lang))
+
+    }, [lang])
+
+    const ChangeStatueNotify = () => {
+        setSelect(!Select)
+        dispatch(GetNotifyStatue(token, lang))
+
+    }
+
 
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
@@ -83,7 +107,7 @@ function Settings({ navigation }) {
                 </View>
                 <View style={styles.Container}>
                     <Text style={styles.text}>{i18n.t('notifications')}</Text>
-                    <TouchableOpacity onPress={() => setSelect(!Select)}>
+                    <TouchableOpacity onPress={ChangeStatueNotify}>
                         {
                             Select ?
                                 <Image source={require('../../../assets/Images/on_notifcatiom.png')} style={styles.BImg} resizeMode='contain' />

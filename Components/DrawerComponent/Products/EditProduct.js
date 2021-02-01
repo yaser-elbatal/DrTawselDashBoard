@@ -263,15 +263,11 @@ const EditProduct = ({ navigation, route }) => {
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ right: 20, bottom: 15 }}>
-                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                        <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }} resizeMode='contain'>
                             <TouchableOpacity onPress={() => navigation.goBack()}>
-                                {
-                                    I18nManager.isRTL ?
-                                        <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
-                                        :
-                                        <Image source={require('../../../assets/Images/left.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
 
-                                }
+                                <Image source={require('../../../assets/Images/arrowwhite.png')} style={{ height: 30, width: 30, marginTop: 45 }} resizeMode='contain' />
+
                             </TouchableOpacity>
                         </ImageBackground>
                     </View>
@@ -417,45 +413,48 @@ const EditProduct = ({ navigation, route }) => {
                     />
 
 
-                    <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', }}>
-                        <View style={{ paddingEnd: 150, paddingStart: 10 }}>
+                    <View style={{ height: width * .14, marginHorizontal: '5%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 }}>
+                        <View style={{}}>
                             <Text style={{ color: Colors.inputTextMainColor, fontFamily: 'flatMedium', }}>{i18n.t('available')}</Text>
                         </View>
-                        {
-                            data.map((item, index) => {
-                                return (
-                                    <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
-                                        <View style={{
-                                            height: 15,
-                                            width: 15,
-                                            borderRadius: 12,
-                                            borderWidth: 2,
-                                            borderColor: available == item.id ? Colors.sky : Colors.fontNormal,
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            alignSelf: 'center',
+                        <View style={{ flexDirection: 'row' }}>
+                            {
+                                data.map((item, index) => {
+                                    return (
+                                        <TouchableOpacity onPress={() => setavailable(item.id)} key={"_" + index} style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, }}>
+                                            <View style={{
+                                                height: 15,
+                                                width: 15,
+                                                borderRadius: 12,
+                                                borderWidth: 2,
+                                                borderColor: available == item.id ? Colors.sky : Colors.fontNormal,
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                alignSelf: 'center',
 
-                                        }}>
-                                            {
-                                                available == item.id ?
-                                                    <View style={{
-                                                        height: 6,
-                                                        width: 6,
-                                                        borderRadius: 6,
-                                                        backgroundColor: Colors.sky,
-                                                    }} />
-                                                    : null
-                                            }
-                                        </View>
-                                        <Text style={[styles.sText, { color: available == item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
+                                            }}>
+                                                {
+                                                    available == item.id ?
+                                                        <View style={{
+                                                            height: 6,
+                                                            width: 6,
+                                                            borderRadius: 6,
+                                                            backgroundColor: Colors.sky,
+                                                        }} />
+                                                        : null
+                                                }
+                                            </View>
+                                            <Text style={[styles.sText, { color: available == item.id ? Colors.sky : Colors.fontNormal, left: 6, bottom: 1 }]}>{item.title}</Text>
 
-                                    </TouchableOpacity>
+                                        </TouchableOpacity>
 
 
 
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            }
+
+                        </View>
 
                     </View>
 
@@ -554,8 +553,8 @@ const EditProduct = ({ navigation, route }) => {
                                     <View key={'_' + index}>
                                         <View style={{ backgroundColor: '#F3F3F3', width: '90%', justifyContent: 'space-between', alignItems: 'center', height: 45, marginHorizontal: '5%', flexDirection: 'row' }}>
                                             <View style={{ flexDirection: 'row', paddingStart: 10 }}>
-                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar}</Text>
-                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en}</Text>
+                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor }}>{proExtra.name_ar.length > 15 ? (proExtra.name_ar).substr(0, 15) + '...' : proExtra.name_ar}</Text>
+                                                <Text style={{ fontFamily: 'flatMedium', color: Colors.inputTextMainColor, paddingHorizontal: 10 }}>{proExtra.name_en.length > 15 ? (proExtra.name_en).substr(0, 15) + '...' : proExtra.name_en}</Text>
 
                                                 <Text style={{ fontFamily: 'flatMedium', color: Colors.sky }}>{proExtra.price}{i18n.t('Rial')}</Text>
                                             </View>

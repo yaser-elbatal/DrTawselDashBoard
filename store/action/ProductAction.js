@@ -1,6 +1,7 @@
 import consts from "../../consts";
 import { Toast } from "native-base";
 import axios from 'axios';
+import { ToasterNative } from "../../common/ToasterNative";
 
 export const Get_Products = 'Get_Products';
 export const Add_product = 'Aet_Products';
@@ -168,19 +169,12 @@ export const Add_Products = (token, lang, name_ar, name_en, details_ar, details_
         }).then(res => {
 
             if (res.data.success) {
+                dispatch({ type: Add_product, data: res.data })
                 navigation.navigate('SuccessAddition')
 
-                dispatch({ type: Add_product, data: res.data })
             }
-            Toast.show({
-                text: res.data.message,
-                type: res.data.success ? "success" : "danger",
-                duration: 3000,
-                textStyle: {
-                    color: "white",
-                    textAlign: 'center'
-                }
-            });
+
+            ToasterNative(res.data.message, res.data.success ? "success" : "danger", 'bottom')
 
 
 

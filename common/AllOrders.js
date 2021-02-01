@@ -47,23 +47,23 @@ function AllOrders({ navigation, route }) {
         }
         setTimeout(() => dispatch(GetOrders(token, statues, lang, e)), 1000)
     }
-
+    console.log(OrderRequest);
 
 
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <Header navigation={navigation} label={label} />
-            <Container loading={spinner}>
 
-                <InputIcon
-                    placeholder={i18n.t('search1')}
-                    label={i18n.t('search1')}
-                    value={Search}
-                    onChangeText={(e) => handleChange(e)}
-                    image={require('../assets/Images/search.png')}
-                    styleCont={{ marginTop: 20, }}
-                />
-                <Card />
+            <InputIcon
+                placeholder={i18n.t('search1')}
+                label={i18n.t('search1')}
+                value={Search}
+                onChangeText={(e) => handleChange(e)}
+                image={require('../assets/Images/search.png')}
+                styleCont={{ marginTop: 20, }}
+            />
+            <Card />
+            <Container loading={spinner}>
 
                 <FlatList
                     showsVerticalScrollIndicator={false}

@@ -71,7 +71,7 @@ function Wallet({ navigation }) {
             {/* <HomeHeader navigation={navigation} label={i18n.t('wallet')} onPress={() => navigation.navigate('MyProfile')} /> */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                 <View style={{ marginHorizontal: -30, marginVertical: -10 }}>
-                    <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center' }} resizeMode='contain'>
+                    <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }} resizeMode='contain'>
                         <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} style={{ top: 20 }}>
                             <Image source={require('../../../assets/Images/menu.png')} style={{ height: 25, width: 25, }} resizeMode='contain' />
                         </TouchableOpacity>
