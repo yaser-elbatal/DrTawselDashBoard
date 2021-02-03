@@ -127,13 +127,13 @@ function Previousoffers({ navigation }) {
 
                                 )} />}
 
-                <View style={styles.centeredView}>
+                <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(false)}>
                     <Modal
                         animationType="slide"
                         transparent={true}
                         visible={modalVisible} >
 
-                        <View style={[styles.centeredView, { backgroundColor: Colors.bg, opacity: Platform.OS == 'ios' ? .98 : .89 }]}>
+                        <TouchableOpacity onPress={() => setModalVisible(false)} style={[styles.centeredView, { backgroundColor: Colors.bg, opacity: Platform.OS == 'ios' ? .98 : .89 }]}>
                             <View style={styles.modalView}>
                                 <View style={{ margin: 20, }}>
                                     <Text style={{ fontFamily: 'flatMedium', fontSize: 14, }}>{i18n.t('AddBanner')} </Text>
@@ -151,9 +151,9 @@ function Previousoffers({ navigation }) {
                                     <BTN title={i18n.t('AddBanner')} ContainerStyle={styles.LoginBtn1} onPress={Add_Banner} />
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </Modal>
-                </View>
+                </TouchableOpacity>
             </Container>
         </ScrollView>
 

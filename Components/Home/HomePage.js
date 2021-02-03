@@ -23,7 +23,7 @@ function HomePage({ navigation }) {
     const lang = useSelector(state => state.lang.language);
     const HomeProduct = useSelector(state => state.home.product);
     const QuickRebort = useSelector(state => state.home.extra);
-
+    console.log(HomeProduct);
     const dispatch = useDispatch();
 
     const isFocused = useIsFocused();
@@ -84,29 +84,45 @@ function HomePage({ navigation }) {
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, }}
             refreshControl={< RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <HomeHeader navigation={navigation} image={user.avatar} label={i18n.t('Hello') + user.name + '!'} title={i18n.t('Dash')} onPress={() => navigation.navigate('MyProfile')} />
-            <Card />
 
-            <Text style={[styles.MainText, { marginBottom: 0 }]}>{i18n.t('newProduct')}</Text>
             <Container loading={spinner} >
+
+                <Card />
+
+                <Text style={[styles.MainText, { marginBottom: 0 }]}>{i18n.t('newProduct')}</Text>
 
                 {
                     HomeProduct && HomeProduct.length ?
 
                         <FlatList
-                            showsHorizontalScrollIndicator={false}
                             data={HomeProduct}
                             extraData={spinner}
                             horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            style={{ flex: 1, marginStart: 10 }}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item, index }) => (
 
                                 <TouchableOpacity style={styles.Card} key={item.id} onPress={() => navigation.navigate('ProductDet', { ProductsId: item.id, index: index })}>
-                                    <View style={{ flexDirection: 'column', flex: 1 }}>
-                                        <Image source={{ uri: item.image }} style={{ width: '100%', height: '70%' }} />
-                                        <View style={{ margin: 10, flex: .2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
-                                            <Text style={[styles.prod, { fontWeight: '900', }]}>{item.name.length > 20 ? (item.name).substr(0, 20) + '...' : item.name}</Text>
-                                            <Text style={[styles.prod, { color: Colors.sky, fontSize: 16 }]}>{item.price} {i18n.t('Rial')}</Text>
+                                    <View style={{ flexDirection: 'column', height: 210 }}>
+                                        <Image source={{ uri: item.image }} style={{ width: '100%', height: 120 }} />
+                                        <View style={[styles.imgOverLay]} />
+
+                                        <View style={{ flexDirection: 'column', margin: 10, flex: 1, paddingVertical: 5, }}>
+                                            <Text style={[styles.prod, { fontWeight: '900', alignSelf: 'flex-start', }]}>{item.name.length > 50 ? (item.name).substr(0, 40) + '...' : item.name}</Text>
+                                            {/* <Text style={[styles.prod, { color: Colors.sky, fontSize: 16, }]}>{item.price} {i18n.t('Rial')}</Text> */}
+
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', paddingVertical: 5, }}>
+                                                <Text style={styles.nText}>{item.price - (item.price * (item.discount / 100))} {i18n.t('Rial')}</Text>
+
+                                                {
+                                                    item.discount == 0 ? null :
+                                                        <Text style={[styles.nText, { color: 'red', textDecorationLine: 'line-through', textDecorationColor: Colors.RedColor, textDecorationStyle: 'solid', padding: 5, fontSize: 14 }]}>{item.price} {i18n.t('Rial')}</Text>
+                                                }
+
+                                            </View>
                                         </View>
+
                                     </View>
                                 </TouchableOpacity>
                             )} />
@@ -179,6 +195,7 @@ function HomePage({ navigation }) {
 
 
 
+
     )
 }
 const styles = StyleSheet.create({
@@ -245,18 +262,33 @@ const styles = StyleSheet.create({
     },
     prod: {
         fontFamily: 'flatMedium',
-        fontSize: 12,
+        fontSize: 14,
         color: Colors.IconBlack
+    },
+    imgOverLay: {
+        backgroundColor: "rgba(0, 0, 0, 0.16)",
+        position: 'absolute',
+        height: 120,
+        width: '100%',
+        zIndex: 1,
+    },
+    nText: {
+        color: Colors.sky,
+        fontFamily: 'flatMedium',
+        alignSelf: 'flex-start',
+        fontSize: 18,
+        paddingTop: 5,
+
     },
     Card: {
         margin: 13,
         borderRadius: 20,
-        width: width * .55,
-        height: height * .25,
+        width: width * .5,
+
         backgroundColor: Colors.bg,
-        flex: 1,
         borderTopStartRadius: 0,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        flex: 1
     },
     WrabText: {
         flexDirection: 'column',

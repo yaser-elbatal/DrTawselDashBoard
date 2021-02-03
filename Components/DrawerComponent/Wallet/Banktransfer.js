@@ -73,7 +73,7 @@ function Banktransfer({ navigation }) {
                                             </View>
 
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>: IBaN      </Text>
+                                                <Text style={{ fontSize: width * .03, color: Colors.fontNormal, fontFamily: 'flatMedium', alignSelf: 'flex-start' }}>{i18n.t('Iban')} :  </Text>
                                                 <Text style={{ fontSize: width * .025, color: Colors.IconBlack, fontFamily: 'flatMedium', alignSelf: 'flex-end' }}>  {acc.iban_number}  </Text>
 
                                             </View>

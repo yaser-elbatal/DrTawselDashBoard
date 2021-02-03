@@ -220,7 +220,9 @@ function Products({ navigation }) {
                                                 <Text style={[styles.name, { color: Colors.IconBlack, alignSelf: 'flex-start', }]} >{item.name.length > 20 ? (item.name).substr(0, 20) + '...' : item.name}</Text>
 
                                                 <Text style={[styles.name, { color: Colors.IconBlack, alignSelf: 'flex-start', }]} >{item.menu.length > 20 ? (item.menu).substr(0, 20) + '...' : item.menu}</Text>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <View style={{
+                                                    flexDirection: 'row', alignItems: 'center', paddingVertical: 5
+                                                }}>
                                                     <Text style={styles.nText}>{item.price - (item.price * (item.discount / 100))} {i18n.t('Rial')}</Text>
                                                     {
                                                         item.discount == 0 ? null :
@@ -357,7 +359,6 @@ const styles = StyleSheet.create({
     Card: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 130,
         width: '90%',
         marginStart: 20,
         marginVertical: 15,
@@ -379,8 +380,9 @@ const styles = StyleSheet.create({
     FWrab: {
         flexDirection: 'column',
         justifyContent: 'center',
-        marginStart: 5,
-        marginTop: 5
+
+        padding: 5
+
     },
     nText: {
         color: Colors.sky,
@@ -399,7 +401,6 @@ const styles = StyleSheet.create({
         fontFamily: 'flatMedium',
         fontSize: 12,
         color: Colors.fontNormal,
-        paddingVertical: 5
     },
     SWarb: {
         flexDirection: 'column',

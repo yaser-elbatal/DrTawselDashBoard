@@ -49,6 +49,7 @@ const en = {
   CammeraErr: 'You do not have permission to access images',
   notaddpr: 'There are no products added yet',
   menueAdd: 'There are no menue added yet',
+  Iban: "IBAN",
   filter: 'Filter By',
   num: 'number',
   AddProd: '+  Add Product',

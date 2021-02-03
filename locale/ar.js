@@ -19,6 +19,7 @@ const ar = {
   haveNoAcc: "ليس لديك حساب ؟",
   DoneReb: 'سيتم ارسال التقرير اليك',
   haveAcc: 'لديك حساب بالفعل؟',
+  Iban: 'رقم الإيبان',
   EnterPrice: 'ادخل السعر',
   clock: 'دقيقه',
   haveProduct: 'المنتجات الخاصة بك',

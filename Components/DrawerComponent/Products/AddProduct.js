@@ -339,6 +339,7 @@ function AddProduct({ navigation }) {
                         value={nameEN}
                         styleCont={{ marginTop: 0 }}
 
+
                     />
 
                     <Text style={{ marginStart: 20, fontFamily: 'flatMedium', fontSize: 16, alignSelf: 'flex-start' }}>{i18n.t('addSize')}</Text>
@@ -405,6 +406,7 @@ function AddProduct({ navigation }) {
                                     onChangeText={(e) => { setmid_price(e); handaleChange(e, 3) }}
                                     value={mid_price}
                                     keyboardType='numeric'
+
                                 />
                                 :
                                 selectedRadion === 3 ?
@@ -443,6 +445,8 @@ function AddProduct({ navigation }) {
                         keyboardType='numeric'
                         onChangeText={(e) => setavailableKilos(e)}
                         value={availableKilos}
+
+
                     />
 
                     <InputIcon
@@ -452,6 +456,7 @@ function AddProduct({ navigation }) {
                         keyboardType='numeric'
                         onChangeText={(e) => setQuantity(e)}
                         value={quantity}
+
                     />
 
                     <View style={{ height: width * .14, marginHorizontal: '4%', borderColor: Colors.InputColor, borderWidth: .9, borderRadius: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
@@ -503,7 +508,7 @@ function AddProduct({ navigation }) {
                     <TouchableOpacity onPress={_pickImage} style={{ height: width * .14, flexDirection: 'row', overflow: 'hidden', marginHorizontal: "4%", borderWidth: 1, borderColor: Colors.InputColor, borderRadius: 5, alignItems: 'center', justifyContent: 'space-between', paddingEnd: 20, marginTop: 15 }}>
                         {
                             userImage ?
-                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12 }} numberOfLines={1}>{userImage}</Text>
+                                <Text style={{ color: Colors.InputColor, fontFamily: 'flatMedium', fontSize: 12, marginStart: 10 }} numberOfLines={1}>{userImage}</Text>
                                 :
                                 <Text style={{ color: Colors.fontNormal, fontFamily: 'flatMedium', fontSize: 12, paddingStart: 10 }}>{i18n.t('ProdPice')}</Text>
 

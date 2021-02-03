@@ -25,7 +25,7 @@ function HomeHeader({ label, title, navigation, onPress, }) {
                 </TouchableOpacity>
 
             </View>
-            <View style={{ flexDirection: 'column', margin: 15, }}>
+            <View style={{ flexDirection: 'column', margin: 5, marginBottom: 0, marginTop: 25 }}>
                 <Text style={{ fontFamily: 'flatMedium', fontSize: 20, alignSelf: 'flex-start' }}>{label}</Text>
                 <Text style={{ fontFamily: 'flatMedium', fontSize: 12, color: Colors.fontNormal, alignSelf: 'flex-start', paddingVertical: 5 }}>{title}</Text>
             </View>

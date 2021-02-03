@@ -39,7 +39,7 @@ function Settings({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: Colors.bg }}>
             <HomeHeader navigation={navigation} label={i18n.t('settings')} onPress={() => navigation.navigate('MyProfile')} />
-            <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Animatable.View animation="lightSpeedIn" easing="ease-out" delay={500} >
 
                 <View style={styles.wrap}>
 
@@ -124,19 +124,19 @@ function Settings({ navigation }) {
 const styles = StyleSheet.create({
     wrap: {
         flexDirection: 'column',
-        marginTop: 25,
         backgroundColor: '#F1F1F1',
+        justifyContent: 'center',
+        marginTop: 50
     },
     Container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 10,
-        padding: 10,
+        padding: 20,
         alignItems: 'center',
     },
     Img: {
-        height: 25,
-        width: 25,
+        height: 20,
+        width: 20,
     },
     BImg: {
         height: 50,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'flatMedium',
         fontSize: 14,
-        color: Colors.fontNormal
+        color: Colors.inputTextMainColor
     }
 })
 export default Settings

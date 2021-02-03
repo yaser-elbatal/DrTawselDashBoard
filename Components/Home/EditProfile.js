@@ -146,7 +146,7 @@ function EditProfile({ navigation }) {
 
                 <View style={styles.ScrolContainer}>
 
-                    <Text style={styles.MainText}>{i18n.t('myProfile')}</Text>
+                    <Text style={styles.MainText}>{i18n.t('edit') + " " + i18n.t('myProfile')}</Text>
 
 
                     <View style={{ margin: 20, marginTop: 0, }}>
@@ -157,6 +157,8 @@ function EditProfile({ navigation }) {
                             onChangeText={(e) => setNameEN(e)}
                             value={nameEN}
                             styleCont={{ marginTop: 0 }}
+                            multiline={true}
+                            numberOfLines={1}
 
                         />
 
@@ -166,7 +168,8 @@ function EditProfile({ navigation }) {
                             placeholder={i18n.t('email')}
                             onChangeText={(e) => setemail(e)}
                             value={email}
-
+                            multiline={true}
+                            numberOfLines={1}
                             keyboardType='email-address'
                             styleCont={{ marginTop: 0 }}
                         />
@@ -176,7 +179,8 @@ function EditProfile({ navigation }) {
                             placeholder={i18n.t('phone')}
                             onChangeText={(e) => setPhone(e)}
                             value={phone}
-
+                            multiline={true}
+                            numberOfLines={1}
                             keyboardType='numeric'
                             styleCont={{ marginTop: 0 }}
                         />

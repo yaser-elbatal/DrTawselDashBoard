@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Container from '../../../common/Container';
 import { ProductDetailes } from '../../../store/action/ProductAction';
 import * as Animatable from 'react-native-animatable';
+import { width, height } from '../../../consts/HeightWidth';
 
 
 const ProductDet = ({ navigation, route }) => {
@@ -47,7 +48,7 @@ const ProductDet = ({ navigation, route }) => {
                     width: '100%',
                     height: '100%',
                     zIndex: 1,
-                    backgroundColor: '#23232387',
+                    backgroundColor: 'white',
                     position: 'absolute',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -67,7 +68,7 @@ const ProductDet = ({ navigation, route }) => {
             {
                 !ProductDetA ? null :
 
-                    <>
+                    <View style={{ flex: 1, }}>
                         <Image source={{ uri: ProductDetA.image }} style={styles.ImgBackGround} resizeMode='cover' />
 
                         <ImageBackground source={require('../../../assets/Images/bluBack.png')} style={{ height: 120, width: 120, alignItems: 'center', justifyContent: 'center', position: 'absolute', marginTop: -20, marginLeft: -20, transform: I18nManager.isRTL ? [{ rotateY: '0deg' }] : [{ rotateY: '-180deg' }], }} resizeMode='contain'>
@@ -83,7 +84,7 @@ const ProductDet = ({ navigation, route }) => {
 
                                     <View style={{ flexDirection: 'column', justifyContent: 'center', }}>
                                         <View style={styles.Wrab}>
-                                            <View style={{ flexDirection: 'row', }}>
+                                            <View style={{ flexDirection: 'row', flex: 1 }}>
                                                 <Text style={[styles.text, { color: Colors.sky, }]}>{ProductDetA.name}</Text>
                                             </View>
 
@@ -186,7 +187,7 @@ const ProductDet = ({ navigation, route }) => {
 
                             </ScrollView>
                         </View>
-                    </>
+                    </View>
             }
 
         </Animatable.View>
@@ -245,8 +246,8 @@ const styles = StyleSheet.create({
     },
 
     ImgBackGround: {
-        width: '100%',
-        height: '50%',
+        width,
+        height: '50%'
     },
     Line: {
         height: 1,
@@ -259,7 +260,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         backgroundColor: Colors.bg,
-        bottom: 0, height: '60%',
+        bottom: 0,
+        height: '53%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         overflow: 'hidden',

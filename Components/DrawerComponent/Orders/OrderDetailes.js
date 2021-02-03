@@ -102,7 +102,7 @@ function OrderDetailes({ navigation, route, onPressDetailes }) {
                                             !OrderDet.user ? null :
 
                                                 <View style={{ flexDirection: 'column', }}>
-                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '58%' }}>
+                                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '70%' }}>
                                                         <Text style={styles.sname}>{OrderDet.user.name}</Text>
                                                         <TouchableOpacity style={{ alignSelf: 'flex-end', }} onPress={() => { Linking.openURL('http://api.whatsapp.com/send?phone=' + OrderDet.user.phone) }}>
                                                             <Image source={require('../../../assets/Images/whatsapp.png')} style={{ width: 20, height: 20, }} resizeMode='contain' />

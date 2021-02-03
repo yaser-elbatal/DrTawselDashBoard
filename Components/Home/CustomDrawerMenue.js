@@ -56,10 +56,10 @@ function CustomDrawerMenue({ navigation }) {
                 <Animatable.View animation="fadeInUp" easing="ease-out" delay={500} style={{ flexDirection: 'column', marginTop: 15, color: '#000000' }}>
 
                     <TouchableOpacity onPress={() => { setClick(0); navigation.navigate('HomePage') }} >
-                        <View style={{ backgroundColor: Clicle === 0 ? Colors.sky : Colors.bg, width: '95%', flexDirection: 'row' }}>
+                        <View style={{ backgroundColor: Clicle === 0 ? Colors.sky : Colors.bg, width: '95%', flexDirection: 'row', }}>
                             {
                                 Clicle === 0 ?
-                                    <View style={{ height: '100%', width: 10, backgroundColor: '#000000' }}></View>
+                                    <View style={{ height: '100%', width: 20, backgroundColor: '#000000', }}></View>
                                     : null
                             }
                             <Text style={[styles.hellText, { color: Clicle === 0 ? Colors.bg : '#000000' }]}>{i18n.t('HomePage')}</Text>
@@ -269,7 +269,7 @@ function CustomDrawerMenue({ navigation }) {
 const styles = StyleSheet.create({
     hellText: {
         fontFamily: 'flatMedium',
-        fontSize: 18,
+        fontSize: 20,
         color: Colors.bg,
         padding: 10,
         alignSelf: 'flex-start',

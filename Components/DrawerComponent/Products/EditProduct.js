@@ -279,7 +279,7 @@ const EditProduct = ({ navigation, route }) => {
                     </TouchableOpacity>
 
                 </View>
-                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, }}>{i18n.t('edit')}</Text>
+                <Text style={{ marginHorizontal: 25, fontFamily: 'flatMedium', fontSize: 18, alignSelf: 'flex-start' }}>{i18n.t('edit')}</Text>
                 {/* <Header navigation={navigation} label={i18n.t('AddPro')} /> */}
                 <Container loading={spinner}>
 
